@@ -14,7 +14,7 @@ public class Booking {
 	}
 	
     /**
-    * @return format: customerUsername: periodDetails
+    * @return format: customerUsername:period
     */
 	@Override
 	public String toString() {

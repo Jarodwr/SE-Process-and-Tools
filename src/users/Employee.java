@@ -13,12 +13,20 @@ public class Employee extends User {
 		//Tokenize string and add all timeslots to the availability with addTimeSlotToAvailability()
 	}
 
+	/**
+	 * 
+	 * @return username:timetable
+	 */
 	public String availabilityToString() {
 		
 		return "";
 	}
 	
-	private boolean addTimeSlotToAvailability() {
+	public boolean addTimeSlotToAvailability() {
+		return false;
+	}
+	
+	public boolean removeTimeSlotFromAbailability() {
 		return false;
 	}
 	

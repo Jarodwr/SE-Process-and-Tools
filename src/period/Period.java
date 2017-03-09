@@ -22,7 +22,8 @@ public class Period {
 	}
 	
     /**
-     * format: "hh:mm dd/mm/yyyy - hh:mm dd/mm/yyyy"
+     * date format: hh:mm dd/mm/yyyy
+     * format: "startDate,endDate"
      */
 	@Override
 	public String toString() {

@@ -34,16 +34,7 @@ public class Timetable {
 	}
 
 	/**
-	 * Creates a string representing all periods on the timetable in
-	 * chronological order
-	 * Example:
-	 * --------------
-	 * period1details
-	 * --------------
-	 * period2details
-	 * --------------
-	 * period3details
-	 * --------------
+	 * @return period1|period2|period3|period4
 	 */
 	public String toString() {
 		return "";

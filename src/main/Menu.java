@@ -1,14 +1,8 @@
 package main;
 
-import bookingmanager.BookingManager;
-import usermanager.UserManager;
-
 public class Menu {
-
-	UserManager userManager;
-	BookingManager bookingManager;
 	
-	Menu() {
+	public Menu() {
 
 	}
 	
@@ -31,53 +25,103 @@ public class Menu {
      * If there is no active user then default to only displaying 
      * 'Register' and 'Login'.
      */
-	public void displayOptions() {
+	public int displayOptions(boolean[] permissions) {
+		
+		return 1;
+	}
+	
+	/**
+	 * Displays initial register screen where customer details are added
+	 * such as username, password, name, address, phone number.
+	 * @return username:password:name:address:phoneNumber
+	 */
+	public String register() {
+		
+		return "";
+	}
+	
+	/**
+	 * Displays login screen where user enters their username and password
+	 * @return username:password
+	 */
+	public String login() {
+		
+		return "";
+	}
+	
+	/**
+	 * Confirmation screen for logging out
+	 */
+	public boolean logout() {
+		return false;
+	}
+	
+	/**
+	 * Prints all bookings to screen
+	 * @param bookings booking1|booking2|booking3
+	 */
+	public void viewBookings(String bookings) {
 		
 	}
 	
-	// All of these private functions just display the text and call
-	// the related function from userManager or bookingManager to get
-	// the appropriate string
-	
-	private void register() {
+	/**
+	 * Prints availability timetable to screen
+	 * @param availability period1|period2|period3|period4
+	 */
+	public void viewBookingAvailability(String availability) {
 		
 	}
 	
-	private void login() {
+	/**
+	 * Views screen where user can enter new booking information
+	 * @return customerUsername:startDate,endDate
+	 */
+	public String addNewBooking() {
+		return "";
+	}
+	
+	/**
+	 * Add working times until the owner decides to stop
+	 * @return startDate1,endDate1|startDate2,endDate2|startDate3,endDate3
+	 */
+	public String addWorkingTimes() {
+		
+		return "";
+	}
+	
+	/**
+	 * prints employee timetables
+	 * @param employeeTimetables employee1Username:timetable*employee2Username:timetable*employee3Username*timetable
+	 */
+	public void showEmployeeAvailability(String employeeTimetables) {
 		
 	}
 	
-	private void viewCurrentBookings() {
+	/**
+	 * Views screen for adding new employees with working times
+	 * @return employeeUsername:employeePassword:timetable
+	 */
+	public String addEmployee() {
 		
+		return "";
 	}
 	
-	private void viewBookingAvailability() {
+	/**
+	 * Format: "Success: [Subject],[Details]"
+	 * Example: "Success: Login, username1 logged in" 
+	 * @param subject
+	 * @param details
+	 */
+	public void success(String subject, String details) {
 		
 	}
-	
-	private void addNewBooking() {
-		
-	}
-	
-	
-	private void viewAllBookings() {
-		
-	}
-	
-	private void addWorkingTimes() {
-		
-	}
-	
-	
-	private void showEmployeeAvailability() {
-		
-	}
-	
-	private void addEmployee() {
-		
-	}
-	
-	private void logout() {
+	/**
+	 * Format: "Failure: [Subject],[Details]"
+	 * Example: "Failure: Login, password for username1 incorrect" 
+	 * @param subject
+	 * @param details
+	 */
+	public void failure(String subject, String details) {
 		
 	}
 }
