@@ -1,6 +1,11 @@
 package controller;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import database.SQLiteConnection;
+import database.UserExistsException;
+
 import java.util.StringTokenizer;
 
 import bookings.Booking;
@@ -23,6 +28,7 @@ public class Controller {
 		//initialize databases and add them to ArrayList
 		
 		//initialize view
+		Menu view = new Menu();
 		view.displayOptions(new boolean[10]);
 	}
 	
@@ -46,12 +52,33 @@ public class Controller {
 		else {
 			
 			//If the password is correct, display a success message
-			view.success("Login", "Welcome back " + username);
+			view.success("Login", "Welcome back, " + username + "!");
 		}
 	}
 	
-	private void register() {
-		
+	private void register(){
+		//Initializes the view and grabs input
+				String userDetails = view.register();
+				
+				//Tokenizes input so it's usable
+				StringTokenizer st = new StringTokenizer(userDetails, ":");
+				
+				String username = st.nextToken();
+				String password = st.nextToken();
+				String name = st.nextToken();
+				String address = st.nextToken();
+				String mobileno = st.nextToken();
+				
+				if (SQLiteConnection.createCustomer(username, password, name, address, mobileno)) { /* TODO add cases for staff and owners */
+					
+				}
+				else
+				{
+					view.failure("Register", "Your username is already in the database");
+				}
+				
+				//Search for the user in the arrayList and make sure the password is correct
+				
 	}
 	
 	private void logout() {
@@ -91,14 +118,25 @@ public class Controller {
 	 * @return Returns the user with the username being searched
 	 */
 	private User searchUser(String username) {
-		//Needs some sort of user not found exception
-		return new Customer("", "", "", "", "");
+		ResultSet rs;
+		try {
+			rs = SQLiteConnection.getUserRow(username);
+			return new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 	
 	/**
 	 * Loops through 'users' and writes all user information to a text file
 	 * @param filePath filepath of the txt file being written
 	 * @return Return true if successful
+	 * 
+	 * 
+	 * 
+	 * Spencer note: Redundant, remove when 100% sure we dont need it
 	 */
 	private boolean writeUserInfoToText(String filePath) {
 		
