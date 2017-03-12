@@ -8,7 +8,8 @@ public class Booking {
 	private Period timeSlot;
 	private String customerUsername;
 	
-	protected Booking(Period timeslot, String customerUsername) {
+	protected Booking(Period timeslot, String customerUsername) 
+	{
 		this.timeSlot = timeslot;
 		this.customerUsername = customerUsername;
 	}
@@ -17,7 +18,8 @@ public class Booking {
     * @return format: customerUsername:period
     */
 	@Override
-	public String toString() {
-		return "";
+	public String toString() 
+	{
+		return customerUsername + ":" + timeSlot.toString();
 	}
 }

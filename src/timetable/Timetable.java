@@ -36,7 +36,19 @@ public class Timetable {
 	/**
 	 * @return period1|period2|period3|period4
 	 */
-	public String toString() {
-		return "";
+	public String toString() 
+	{
+		String string = "";
+		 		
+		 for(int i = 0; i > periods.size(); i++)
+		 {
+		 	string += periods.get(i).toString();
+		 
+		 	if(periods.get(i+1) != null)
+		 	{
+		 		string += "|";
+		 	}
+		 }
+		 return string;
 	}
 }
