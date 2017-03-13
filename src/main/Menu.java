@@ -33,22 +33,22 @@ public class Menu {
 		int userSelection;
 		
 		while (true) {
-			System.out.println("--------------------------\n Appointment Booing System\n --------------------------");
-			System.out.println("Please enter the identificaion number of your choice from the options below: ");
+			System.out.println("--------------------------\n Appointment Booking System\n --------------------------");
+			System.out.println("Please enter the identification number of your choice from the options below: ");
 			System.out.println("0 - Login");
 			System.out.println("1 - Register");
 			try {
 				int selectedOption = Integer.parseInt(scanner.nextLine());
 				userSelection = selectedOption;
 			} catch (NumberFormatException e) {
-				System.out.println("Sorry you have provided invalid option! Please try again:");
+				System.out.println("Sorry you have provided an invalid option! Please try again:");
 				continue;
 			}
 			
 			if (userSelection > -1 && userSelection < 3)
 				break;
 			else
-				System.out.println("Sorry you have provided invalid option! Please try again:");
+				System.out.println("Sorry you have provided an invalid option! Please try again:");
 		}
 		
 		
