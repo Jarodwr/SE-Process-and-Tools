@@ -51,8 +51,6 @@ public class Menu {
 			else
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
 		}
-		
-		
 
 		
 		return userSelection;
@@ -64,20 +62,55 @@ public class Menu {
 	 * @return username:password:name:address:phoneNumber
 	 */
 	public String register() {
-		System.out.print("Enter your username: ");
-		String username = scanner.nextLine();
-		System.out.print("Enter your password: ");
-		String password = scanner.nextLine();
-		System.out.print("Enter your name: ");
-		String name = scanner.nextLine();
-		System.out.print("Enter your address: ");
-		String address = scanner.nextLine();
-		System.out.print("Enter your mobileno: ");
-		String mobileno = scanner.nextLine();
-
-		System.out.println();
 		
-		return username+":"+password+":"+name+":"+address+":"+mobileno;
+    System.out.println();
+		
+		String username;
+		String password;
+		String name;
+		String address;
+		String phoneNo;
+		
+		
+		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
+		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
+		 * 
+		 */
+
+		while (true) {
+			
+			System.out.print("Enter your Username: ");
+			username = scanner.nextLine();
+			
+			System.out.print("Enter your Password: ");
+			password = scanner.nextLine();
+			
+			System.out.print("Enter your Name: ");
+			name = scanner.nextLine();
+			
+			System.out.print("Enter your Address: ");
+			address = scanner.nextLine();
+			
+			System.out.print("Enter your Phone Number: ");
+			phoneNo = scanner.nextLine();
+			
+			
+			
+			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
+				break;
+		    }else{
+		    	
+		    	System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
+		    }
+			
+		
+		
+		
+		
+		
+		}
+		
+		return username+":"+password+":"+name+":"+address+":"+phoneNo;
 	}
 	
 	/**
@@ -85,15 +118,44 @@ public class Menu {
 	 * @return username:password
 	 */
 	public String login() {
+		String username;
+		String password;
 		
-		/*No error check yet, putting this here as a reminder to do it later*/
-		
-		System.out.print("Enter your username: ");
-		String username = scanner.nextLine();
-		System.out.print("Enter your password: ");
-		String password = scanner.nextLine();
+		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
+		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
+		 * 
+		 */
 
-		System.out.println();
+		while (true) {
+			
+			System.out.print("Enter your username: ");
+			username = scanner.nextLine();
+			
+			System.out.print("Enter your password: ");
+			password = scanner.nextLine();
+			
+			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
+				//Temporary, will fix this checking system later
+				break;
+		    }else{
+		    	
+		    	/*We are avoiding characters that could manipulate the database.
+		    	 * We will just return incorrect password before going any further
+		    	 */
+		    	System.out.println("/n You have entered incorrect username and/or password. Please try again!");
+		    	
+		    	
+		    	
+		    }
+			
+		
+		
+		
+		
+		
+		}
+
+		
 		
 		return username+":"+password;
 	}
