@@ -24,15 +24,37 @@ public class Controller {
 	private Timetable availability = new Timetable();
 	private ArrayList<Booking> bookings = new ArrayList<Booking>();
 	
+	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
+	
 	public Controller() {
 		//initialize databases and add them to ArrayList
 		
 		//initialize view
 		Menu view = new Menu();
-		view.displayOptions(new boolean[10]);
+
+		boolean breakLoop = false; // exit program case
+		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
+		activeUser = null;
+		
+		while(!breakLoop) {
+			int option = view.displayOptions(currentPerms);
+			switch(option) { /* TODO */
+			case 0: activeUser = login();
+					currentPerms = activeUser.getPermissions();
+				break;
+			case 1: activeUser = register();
+				break;
+			case 9: logout();
+			case 10: breakLoop = true;
+				break;
+			default: System.out.println("Sorry you have provided an invalid option! Please try again:");
+				break;
+			}
+			
+		}
 	}
 	
-	private void login() {
+	private User login() {
 		
 		//Initializes the view and grabs input
 		String loginDetails = view.login();
@@ -48,15 +70,17 @@ public class Controller {
 			
 			//If the password is incorrect, display a failure message
 			view.failure("Login", "Incorrect Password");
+			return null;
 		}
 		else {
 			
 			//If the password is correct, display a success message
 			view.success("Login", "Welcome back, " + username + "!");
+			return searchUser(username);
 		}
 	}
 	
-	private void register(){
+	private User register(){
 		//Initializes the view and grabs input
 				String userDetails = view.register();
 				
@@ -70,11 +94,13 @@ public class Controller {
 				String mobileno = st.nextToken();
 				
 				if (SQLiteConnection.createCustomer(username, password, name, address, mobileno)) { /* TODO add cases for staff and owners */
-					
+
+					return searchUser(username);
 				}
 				else
 				{
-					view.failure("Register", "Your username is already in the database");
+					view.failure("Register", "The entered username is already in the database");
+					return null;
 				}
 				
 				//Search for the user in the arrayList and make sure the password is correct

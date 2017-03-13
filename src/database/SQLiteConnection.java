@@ -1,14 +1,6 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-
-import database.DatabaseException;
-import database.UserExistsException;
+import java.sql.*;
 
 public class SQLiteConnection {
 	private static Connection conn = null;
@@ -19,22 +11,41 @@ public class SQLiteConnection {
 				Class.forName("org.sqlite.JDBC");
 				conn = DriverManager.getConnection("jdbc:sqlite:Users.sqlite");
 			} catch (Exception x) {
-				System.out.println("error connecting to SQLite");
+				System.out.println(x.getMessage());
 			}
 		}
 
 		return conn;
 	}
 	
+	public static void createUsersTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS Userinfo (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
+				try {
+					Connection c = getDBConnection();
+					Statement stmt = c.createStatement();
+			            stmt.execute(sql);
+				}
+				catch(Exception e){
+					System.out.println(e.getMessage());
+				}
+	}
+	
 	public static ResultSet getUserRow(String username) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Playerinfo WHERE Username=?";
+		String query = "SELECT * FROM Userinfo WHERE Username=?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, username);
 		ResultSet rs = pst.executeQuery();
 
 		return rs;
+	}
+	public static void deleteUser(String username) throws SQLException {
+		Connection c = getDBConnection();
+		String query = "DELETE FROM Userinfo WHERE username = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, username);
+		pst.executeUpdate();
 	}
 	
 	public static boolean createCustomer(String username, String password, String name, String address, String mobileno) {
@@ -46,7 +57,7 @@ public class SQLiteConnection {
 				return false; // remove userexistsexception
 			rs.close();
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Playerinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setString(1, username);
 			ps.setString(2, password);
 			ps.setString(3, name);
