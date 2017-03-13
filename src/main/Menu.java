@@ -50,7 +50,6 @@ public class Menu {
 			else
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
 		}
-		
 
 		
 		return userSelection;
@@ -63,7 +62,52 @@ public class Menu {
 	 */
 	public String register() {
 		
-		return "";
+		String username;
+		String password;
+		String name;
+		String address;
+		String phoneNo;
+		
+		
+		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
+		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
+		 * 
+		 */
+
+		while (true) {
+			
+			System.out.print("Enter your Username: ");
+			username = scanner.nextLine();
+			
+			System.out.print("Enter your Password: ");
+			password = scanner.nextLine();
+			
+			System.out.print("Enter your Name: ");
+			name = scanner.nextLine();
+			
+			System.out.print("Enter your Address: ");
+			address = scanner.nextLine();
+			
+			System.out.print("Enter your Phone Number: ");
+			phoneNo = scanner.nextLine();
+			
+			
+			
+			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
+				break;
+		    }else{
+		    	
+		    	System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
+		    }
+			
+		
+		
+		
+		
+		
+		}
+		
+		return username+":"+password+":"+name+":"+address+":"+phoneNo;
 	}
 	
 	/**
@@ -71,10 +115,10 @@ public class Menu {
 	 * @return username:password
 	 */
 	public String login() {
-		char username;
-		char password;
+		String username;
+		String password;
 		
-		/**In order to avoid wring characters from being inserted, we have implimented a limit of allowable characters
+		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
 		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
 		 * 
 		 */
@@ -82,12 +126,13 @@ public class Menu {
 		while (true) {
 			
 			System.out.print("Enter your username: ");
-			username = scanner.next().charAt(0);
+			username = scanner.nextLine();
 			
 			System.out.print("Enter your password: ");
-			password = scanner.next().charAt(0);
+			password = scanner.nextLine();
 			
-			if (Character.toString(username).matches("^[a-pA-P0-9]*$") && Character.toString(password).matches("^[a-pA-P0-9]*$")) {
+			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
+				//Temporary, will fix this checking system later
 				break;
 		    }else{
 		    	
@@ -97,8 +142,7 @@ public class Menu {
 		    	System.out.println("/n You have entered incorrect username and/or password. Please try again!");
 		    	
 		    	
-		    	/*This line below will be in the register area, will delete it soon*/
-		    	//System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
+		    	
 		    }
 			
 		
