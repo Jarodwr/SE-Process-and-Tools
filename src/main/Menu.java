@@ -37,6 +37,7 @@ public class Menu {
 			System.out.println("Please enter the identification number of your choice from the options below: ");
 			System.out.println("0 - Login");
 			System.out.println("1 - Register");
+			System.out.println("10 - Exit"); // added by Spencer - exit case
 			try {
 				int selectedOption = Integer.parseInt(scanner.nextLine());
 				userSelection = selectedOption;
@@ -45,7 +46,7 @@ public class Menu {
 				continue;
 			}
 			
-			if (userSelection > -1 && userSelection < 3)
+			if (userSelection > -1 && userSelection < 11) // changed to 11 by Spencer - I'll include invalid option checking in my contrller main aswell
 				break;
 			else
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
@@ -63,8 +64,20 @@ public class Menu {
 	 * @return username:password:name:address:phoneNumber
 	 */
 	public String register() {
+		System.out.print("Enter your username: ");
+		String username = scanner.nextLine();
+		System.out.print("Enter your password: ");
+		String password = scanner.nextLine();
+		System.out.print("Enter your name: ");
+		String name = scanner.nextLine();
+		System.out.print("Enter your address: ");
+		String address = scanner.nextLine();
+		System.out.print("Enter your mobileno: ");
+		String mobileno = scanner.nextLine();
+
+		System.out.println();
 		
-		return "";
+		return username+":"+password+":"+name+":"+address+":"+mobileno;
 	}
 	
 	/**

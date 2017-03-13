@@ -1,14 +1,6 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-
-import database.DatabaseException;
-import database.UserExistsException;
+import java.sql.*;
 
 public class SQLiteConnection {
 	private static Connection conn = null;
@@ -29,7 +21,7 @@ public class SQLiteConnection {
 	public static ResultSet getUserRow(String username) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Playerinfo WHERE Username=?";
+		String query = "SELECT * FROM Userinfo WHERE Username=?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, username);
 		ResultSet rs = pst.executeQuery();
@@ -46,7 +38,7 @@ public class SQLiteConnection {
 				return false; // remove userexistsexception
 			rs.close();
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Playerinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setString(1, username);
 			ps.setString(2, password);
 			ps.setString(3, name);
