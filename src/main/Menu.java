@@ -101,14 +101,14 @@ public class Menu {
 		    	//System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
 		    }
 			
-		//password = scanner.nextLine();
+		
 		
 		
 		
 		
 		}
 
-		System.out.println();
+		
 		
 		return username+":"+password;
 	}
