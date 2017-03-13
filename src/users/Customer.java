@@ -5,6 +5,7 @@ public class Customer extends User {
 	private String name;
 	private String address;
 	private String phoneNumber;
+	public final boolean[] permissions = {false, false, true, true, false, false, false, false, false, true};
 	
 	public Customer(String username, String password, String name, String address, String phoneNumber) {
 		super(username, password);
@@ -31,6 +32,6 @@ public class Customer extends User {
 	
 	@Override
 	public String toString() {
-		return "";
+		return this.username + ":" + this.password + ":" + this.name + ":" + this.address + ":" + this.phoneNumber;
 	}
 }

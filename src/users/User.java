@@ -5,8 +5,8 @@ package users;
 */
 public abstract class User {
 
-	private String username;
-	private String password;
+	protected String username;
+	protected String password;
 	
 	/**
 	 * Current format of permissions is as follows:
