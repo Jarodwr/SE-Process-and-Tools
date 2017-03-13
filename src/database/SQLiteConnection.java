@@ -11,11 +11,23 @@ public class SQLiteConnection {
 				Class.forName("org.sqlite.JDBC");
 				conn = DriverManager.getConnection("jdbc:sqlite:Users.sqlite");
 			} catch (Exception x) {
-				System.out.println("error connecting to SQLite");
+				System.out.println(x.getMessage());
 			}
 		}
 
 		return conn;
+	}
+	
+	public static void createUsersTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS Userinfo (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
+				try {
+					Connection c = getDBConnection();
+					Statement stmt = c.createStatement();
+			            stmt.execute(sql);
+				}
+				catch(Exception e){
+					System.out.println(e.getMessage());
+				}
 	}
 	
 	public static ResultSet getUserRow(String username) throws SQLException {
@@ -27,6 +39,13 @@ public class SQLiteConnection {
 		ResultSet rs = pst.executeQuery();
 
 		return rs;
+	}
+	public static void deleteUser(String username) throws SQLException {
+		Connection c = getDBConnection();
+		String query = "DELETE FROM Userinfo WHERE username = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, username);
+		pst.executeUpdate();
 	}
 	
 	public static boolean createCustomer(String username, String password, String name, String address, String mobileno) {
