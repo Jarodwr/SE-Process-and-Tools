@@ -95,13 +95,14 @@ public class Menu {
 			phoneNo = scanner.nextLine();
 			
 			
-			
+			/*
 			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
 				break;
 		    }else{
 		    	
 		    	System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
-		    }
+		    }*/
+			break;
 			
 		
 		
