@@ -225,7 +225,7 @@ public class Menu {
 	 * @param details
 	 */
 	public void success(String subject, String details) {
-		
+		System.out.println(subject + ": " + details);
 	}
 	/**
 	 * Format: "Failure: [Subject],[Details]"
@@ -234,6 +234,6 @@ public class Menu {
 	 * @param details
 	 */
 	public void failure(String subject, String details) {
-		
+		System.out.println(subject + ": " + details);
 	}
 }
