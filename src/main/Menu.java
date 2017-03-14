@@ -134,19 +134,20 @@ public class Menu {
 			System.out.print("Enter your password: ");
 			password = scanner.nextLine();
 			
-			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
-				//Temporary, will fix this checking system later
-				break;
-		    }else{
-		    	
-		    	/*We are avoiding characters that could manipulate the database.
-		    	 * We will just return incorrect password before going any further
-		    	 */
-		    	System.out.println("/n You have entered incorrect username and/or password. Please try again!");
-		    	
-		    	
-		    	
-		    }
+//			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
+//				//Temporary, will fix this checking system later
+//				break;
+//		    }else{
+//		    	
+//		    	/*We are avoiding characters that could manipulate the database.
+//		    	 * We will just return incorrect password before going any further
+//		    	 */
+//		    	System.out.println("/n You have entered incorrect username and/or password. Please try again!");
+//		    	
+//		    	
+//		    	
+//		    }
+			break;
 			
 		
 		
