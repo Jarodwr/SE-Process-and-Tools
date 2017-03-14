@@ -7,7 +7,7 @@ public class Period {
 	private Date start;
 	private Date end;
 	
-	Period(Date start, Date end) {
+	public Period(Date start, Date end) {
 		
 		this.start = start;
 		this.end = end;
@@ -26,9 +26,13 @@ public class Period {
      * format: "startDate,endDate"
      */
 	@Override
-	public String toString() {
-		
-		return "";
+	public String toString() 
+	{
+		@SuppressWarnings("deprecation")
+		String first = start.getHours() + ":" + start.getMinutes() + " " + start.getDay() + "/" + start.getMonth() + "/" + start.getYear();
+		@SuppressWarnings("deprecation")
+		String second = end.getHours() + ":" + end.getMinutes() + " " + end.getDay() + "/" + end.getMonth() + "/" + end.getYear();
+		return first + "," + second;
 	}
 	
 }
