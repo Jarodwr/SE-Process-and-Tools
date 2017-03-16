@@ -31,28 +31,65 @@ public class Menu {
      */
 	public int displayOptions(boolean[] permissions) {
 		int userSelection;
+		int optionNum = 0;
+		String [] option = {"Log In", "Register", "View Current Bookings", 
+		                     "View Available Tiems", "Add New Booking", "View Summary of Bookings", 
+		                     "Add working time/date", "Add an Employee", "Log out"};
+		
 		
 		while (true) {
-			System.out.println("--------------------------\n Appointment Booking System\n --------------------------");
+			System.out.println("--------------------------\nAppointment Booking System\n--------------------------");
 			System.out.println("Please enter the identification number of your choice from the options below: ");
-			System.out.println("0 - Login");
-			System.out.println("1 - Register");
-			System.out.println("10 - Exit"); // added by Spencer - exit case
+			
+			for(int i = 0; i < permissions.length; i++) //go through permissions and print each of the available options
+			{
+				if(permissions[i])
+				{
+					optionNum++;
+					System.out.println(optionNum + ".\t" + option[i]);
+				}
+			}
+			optionNum = 0;
+			if(permissions[9] == false) //if you can't log out as you are not logged in, there is a break
+			{
+				System.out.println("10.\tExit"); // added by Spencer - exit case
+			}
+			System.out.print("Enter your option: ");
+			
 			try {
 				int selectedOption = Integer.parseInt(scanner.nextLine());
+				int optionval = 0;
+				boolean match = false;
+				for(int i = 0; i < permissions.length; i++) //check which option they have selected
+				{
+					if(permissions[i])
+					{
+						optionval++;
+						if(optionval == selectedOption)
+						{
+							match = true;
+							selectedOption = i;
+							break;
+						}
+					}
+				}
+				{
+					if(!permissions[9] && selectedOption != 10)
+					{
+						selectedOption = 11;
+					}
+					
+				}
 				userSelection = selectedOption;
 			} catch (NumberFormatException e) {
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
 				continue;
 			}
-			
 			if (userSelection > -1 && userSelection < 11) // changed to 11 by Spencer - I'll include invalid option checking in my contrller main aswell
 				break;
 			else
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
 		}
-
-		
 		return userSelection;
 	}
 	
