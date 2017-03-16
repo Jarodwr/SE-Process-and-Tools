@@ -73,6 +73,7 @@ public class Menu {
 						}
 					}
 				}
+				if(!match) //if there is no match, and you can't log out and they haven't selected logout continue through loop
 				{
 					if(!permissions[9] && selectedOption != 10)
 					{
