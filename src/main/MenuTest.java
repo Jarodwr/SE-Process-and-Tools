@@ -5,26 +5,59 @@ package main;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
+import java.io.*;
+import java.util.Scanner;
+
+import org.junit.*;
 
 
 public class MenuTest {
 
+	Menu view = new Menu();
+	
+	@BeforeClass
+	public static void setup()
+	{
+		
+	}
+	
 	@Test
-	public void loginTest() {
+	public void loginValidTest() {
 		
-		Menu view = new Menu();
+		/*This check is also done during user registration*/
 		
-		String loginOutput = view.login();
+		Boolean loginCheck = view.validatelogin("username","password");
 		
-		if (loginOutput.equals("user:test")) {
-			fail("Not yet implemented");
+		if (!loginCheck) {
+			fail("Login invalid character check failed.");
 		}
 	}
 	
 	@Test
-	public void plop() {
-		fail("failed");
+	public void loginInvalidTest() {
+		
+		/*This check is also done during user registration*/
+		
+		Boolean loginCheck = view.validatelogin("username","!password");
+		
+		if (!loginCheck) {
+			fail("Login invalid character found.");
+		}
+	}
+	
+	@Test
+	public void UserLoginTest1()
+	{
+		String data = "Hello, World!\r\n";
+		InputStream stdin = System.in;
+		try {
+		  System.setIn(new ByteArrayInputStream(data.getBytes()));
+		  Scanner scanner = new Scanner(System.in);
+		  System.out.println(scanner.nextLine());
+		} finally {
+		  System.setIn(stdin);
+		}
+		
 	}
 
 }

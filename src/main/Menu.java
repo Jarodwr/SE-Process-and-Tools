@@ -99,15 +99,17 @@ public class Menu {
 	 * such as username, password, name, address, phone number.
 	 * @return username:password:name:address:phoneNumber
 	 */
-	public String register() {
+	public String register() 
+	{
 		
-    System.out.println();
+		System.out.println();
 		
 		String username;
 		String password;
 		String name;
 		String address;
 		String phoneNo;
+		Boolean validatedDetails;
 		
 		
 		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
@@ -133,23 +135,50 @@ public class Menu {
 			phoneNo = scanner.nextLine();
 			
 			
+			validatedDetails = validatelogin(username,password);
+			
 			/*
-			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
+			 * The idea behind this check is to avoid characters that can cause internal
+			 * errors like the character ":" from being passed along to the database code.
+			 */
+			
+			if (validatedDetails)
 				break;
-		    }else{
-		    	
-		    	System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
-		    }*/
-			break;
+			else
+				System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
+		}
 			
 		
 		
 		
 		
 		
-		}
+		
 		
 		return username+":"+password+":"+name+":"+address+":"+phoneNo;
+	}
+	
+	/**
+	 * Validate that the login details do not contain invalid characters
+	 * @param username
+	 * @param password
+	 * @return success
+	 */
+	
+	public Boolean validatelogin(String username,String password) {
+		
+		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
+		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
+		 * 
+		 */
+		
+		if (username.matches("[A-Za-z0-9]+") && password.matches("[A-Za-z0-9]+")){
+			return true;
+		} else {
+			return false;
+		}
+		
+
 	}
 	
 	/**
@@ -159,11 +188,7 @@ public class Menu {
 	public String login() {
 		String username;
 		String password;
-		
-		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
-		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
-		 * 
-		 */
+		Boolean validatedDetails;
 
 		while (true) {
 			
@@ -173,26 +198,18 @@ public class Menu {
 			System.out.print("Enter your password: ");
 			password = scanner.nextLine();
 			
-//			if (Character.toString(username.charAt(0)).matches("^[a-pA-P0-9]*$") && Character.toString(password.charAt(0)).matches("^[a-pA-P0-9]*$")) {
-//				//Temporary, will fix this checking system later
-//				break;
-//		    }else{
-//		    	
-//		    	/*We are avoiding characters that could manipulate the database.
-//		    	 * We will just return incorrect password before going any further
-//		    	 */
-//		    	System.out.println("/n You have entered incorrect username and/or password. Please try again!");
-//		    	
-//		    	
-//		    	
-//		    }
-			break;
+			validatedDetails = validatelogin(username,password);
 			
-		
-		
-		
-		
-		
+			/*If the input contains invalid characters we can just assume 
+			 * password is incorrect since we would have checked this during registration.
+			 * The idea behind this check is to avoid characters that can cause internal
+			 * errors like the character ":" from being passed along to the database code.
+			 */
+			
+			if (validatedDetails)
+				break;
+			else
+				System.out.println("Your username and/or password is incorrect. Please try again.");
 		}
 
 		
@@ -252,9 +269,39 @@ public class Menu {
 	 * Views screen for adding new employees with working times
 	 * @return employeeUsername:employeePassword:timetable
 	 */
-	public String addEmployee() {
+	public String addEmployee() 
+	{
+		System.out.println("--------------------------\nAdd Employee\n--------------------------");
 		
-		return "";
+		String username;
+		String password;
+		Boolean validatedDetails;
+		
+		
+		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
+		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
+		 * 
+		 */
+		System.out.print("Enter your Username: ");
+		username = scanner.nextLine();
+		
+		System.out.print("Enter your Password: ");
+		password = scanner.nextLine();
+		
+		validatedDetails = validatelogin(username,password);
+		
+		/*
+		 * The idea behind this check is to avoid characters that can cause internal
+		 * errors like the character ":" from being passed along to the database code.
+		 */
+		
+		if (!validatedDetails)
+		{
+			System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
+			return null;
+		}
+			
+		return username+":"+password+":"+"";
 	}
 	
 	/**

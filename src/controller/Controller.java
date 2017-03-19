@@ -135,8 +135,34 @@ public class Controller {
 		
 	}
 	
-	private void addEmployee() {
+	private User addEmployee() 
+	{
+		String newEmployee = view.addEmployee();
 		
+		//Tokenizes input so it's usable
+		StringTokenizer st = new StringTokenizer(newEmployee, ":");
+		
+		String username = st.nextToken();
+		String password = st.nextToken();
+		String timetable = st.nextToken();
+		
+		if(searchUser(username) == null)
+		{
+			if (SQLiteConnection.createCustomer(username, password, timetable, null, null)) { /* TODO add cases for staff and owners */
+	
+				return searchUser(username);
+			}
+			else
+			{
+				view.failure("Add Employee", "The entered username is already in the database");
+				return null;
+			}
+		}
+		else
+		{
+			view.failure("Add Employee", "The entered name is already in the database");
+			return null;
+		}
 	}
 	
 	/**
