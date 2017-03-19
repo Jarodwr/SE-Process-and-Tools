@@ -99,9 +99,10 @@ public class Menu {
 	 * such as username, password, name, address, phone number.
 	 * @return username:password:name:address:phoneNumber
 	 */
-	public String register() {
+	public String register() 
+	{
 		
-    System.out.println();
+		System.out.println();
 		
 		String username;
 		String password;
@@ -268,9 +269,39 @@ public class Menu {
 	 * Views screen for adding new employees with working times
 	 * @return employeeUsername:employeePassword:timetable
 	 */
-	public String addEmployee() {
+	public String addEmployee() 
+	{
+		System.out.println("--------------------------\nAdd Employee\n--------------------------");
 		
-		return "";
+		String username;
+		String password;
+		Boolean validatedDetails;
+		
+		
+		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
+		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
+		 * 
+		 */
+		System.out.print("Enter your Username: ");
+		username = scanner.nextLine();
+		
+		System.out.print("Enter your Password: ");
+		password = scanner.nextLine();
+		
+		validatedDetails = validatelogin(username,password);
+		
+		/*
+		 * The idea behind this check is to avoid characters that can cause internal
+		 * errors like the character ":" from being passed along to the database code.
+		 */
+		
+		if (!validatedDetails)
+		{
+			System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
+			return null;
+		}
+			
+		return username+":"+password+":"+"";
 	}
 	
 	/**
