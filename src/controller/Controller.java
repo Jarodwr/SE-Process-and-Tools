@@ -57,16 +57,10 @@ public class Controller {
 	private User login() {
 		
 		//Initializes the view and grabs input
-		String loginDetails = view.login();
-		
-		//Tokenizes input so it's usable
-		StringTokenizer st = new StringTokenizer(loginDetails, ":");
-		
-		String username = st.nextToken();
-		String password = st.nextToken();
+		String[] loginDetails = view.login();
 		
 		//Search for the user in the arrayList and make sure the password is correct
-		if (searchUser(username).checkPassword(password)) {
+		if (searchUser(loginDetails[0]).checkPassword(loginDetails[1])) {
 			
 			//If the password is incorrect, display a failure message
 			view.failure("Login", "Incorrect Password");
@@ -75,27 +69,18 @@ public class Controller {
 		else {
 			
 			//If the password is correct, display a success message
-			view.success("Login", "Welcome back, " + username + "!");
-			return searchUser(username);
+			view.success("Login", "Welcome back, " + loginDetails[0] + "!");
+			return searchUser(loginDetails[0]);
 		}
 	}
 	
 	private User register(){
 		//Initializes the view and grabs input
-				String userDetails = view.register();
+				String[] userDetails = view.register();
 				
-				//Tokenizes input so it's usable
-				StringTokenizer st = new StringTokenizer(userDetails, ":");
-				
-				String username = st.nextToken();
-				String password = st.nextToken();
-				String name = st.nextToken();
-				String address = st.nextToken();
-				String mobileno = st.nextToken();
-				
-				if (SQLiteConnection.createCustomer(username, password, name, address, mobileno)) { /* TODO add cases for staff and owners */
+				if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) { /* TODO add cases for staff and owners */
 
-					return searchUser(username);
+					return searchUser(userDetails[0]);
 				}
 				else
 				{
