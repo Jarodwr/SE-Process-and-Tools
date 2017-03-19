@@ -34,7 +34,7 @@ public class Menu {
 		int optionNum = 0;
 		String [] option = {"Log In", "Register", "View Current Bookings", 
 		                     "View Available Tiems", "Add New Booking", "View Summary of Bookings", 
-		                     "Add working time/date", "Add an Employee", "Log out"};
+		                     "Add working time/date", "Show all worker availability", "Add an Employee", "Log out"};
 		
 		
 		while (true) {
@@ -263,7 +263,7 @@ public class Menu {
 	 * Views screen for adding new employees with working times
 	 * @return [employee][0 - details, 1 - timetable][]
 	 */
-	public String addEmployee() 
+	public String[] addEmployee() 
 	{
 		System.out.println("--------------------------\nAdd Employee\n--------------------------");
 		
@@ -295,7 +295,7 @@ public class Menu {
 			return null;
 		}
 			
-		return username+":"+password+":"+"";
+		return new String[] {username, password};
 	}
 	
 	/**
