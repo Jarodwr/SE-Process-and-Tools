@@ -12,6 +12,7 @@ import bookings.Booking;
 import main.Menu;
 import timetable.Timetable;
 import users.Customer;
+import users.Owner;
 import users.User;
 
 public class Controller {
@@ -41,6 +42,9 @@ public class Controller {
 			switch(option) { /* TODO */
 			case 0: activeUser = login();
 					currentPerms = activeUser.getPermissions();
+					if (activeUser.isOwner()) {
+						System.out.println("DEBUG: Owner is logged in!");
+					}
 				break;
 			case 1: activeUser = register();
 				break;
@@ -135,34 +139,8 @@ public class Controller {
 		
 	}
 	
-	private User addEmployee() 
-	{
-		String newEmployee = view.addEmployee();
+	private void addEmployee() {
 		
-		//Tokenizes input so it's usable
-		StringTokenizer st = new StringTokenizer(newEmployee, ":");
-		
-		String username = st.nextToken();
-		String password = st.nextToken();
-		String timetable = st.nextToken();
-		
-		if(searchUser(username) == null)
-		{
-			if (SQLiteConnection.createCustomer(username, password, timetable, null, null)) { /* TODO add cases for staff and owners */
-	
-				return searchUser(username);
-			}
-			else
-			{
-				view.failure("Add Employee", "The entered username is already in the database");
-				return null;
-			}
-		}
-		else
-		{
-			view.failure("Add Employee", "The entered name is already in the database");
-			return null;
-		}
 	}
 	
 	/**
@@ -173,7 +151,18 @@ public class Controller {
 		ResultSet rs;
 		try {
 			rs = SQLiteConnection.getUserRow(username);
-			return new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+			if (SQLiteConnection.getOwnerRow(username) != null) {
+				rs = SQLiteConnection.getOwnerRow(username);
+				String business = rs.getString("businessname");
+
+				rs = SQLiteConnection.getUserRow(username);
+				
+				return new Owner(username, rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+			}
+			else {
+				return new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

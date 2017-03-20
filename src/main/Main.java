@@ -5,12 +5,16 @@ import database.SQLiteConnection;
 
 public class Main {
 
-	//testcommit5
 	public static void main(String[] args) {
-		SQLiteConnection.createUsersTable(); // Create table if it doesn't exist for user info
-		
+		SQLiteConnection.createTables(); // Create table if it doesn't exist for all info
+		debugCreateOwnerBusiness();
 		Controller bookingSystem = new Controller();
 
+	}
+	
+	public static void debugCreateOwnerBusiness() {
+		SQLiteConnection.createBusiness("SARJ's Milk Business", "Cherry Lane", "0123456789");
+		SQLiteConnection.createOwner("SARJ's Milk Business", "Ownertest", "1234", "Name", "Address", "MobileNo");
 	}
 
 }

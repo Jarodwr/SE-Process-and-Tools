@@ -46,6 +46,10 @@ public abstract class User {
 		return permissions;
 	}
 	
+	public boolean isOwner() {
+		return false;
+	}
+	
    /**
    * All user classes need to implement a format to be stored in the text file/database 
    */
