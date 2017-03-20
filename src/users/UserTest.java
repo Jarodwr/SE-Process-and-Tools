@@ -15,12 +15,6 @@ public class UserTest {
 	}
 	
 	@Test
-	public void EmployeeToStringTest() {
-		Employee testEmployee = new Employee("employeeName", "employeePassword", "availability");
-		fail("test not complete");
-	}
-	
-	@Test
 	public void OwnerToStringTest() {
 		Owner testOwner = new Owner("username","password","businessName","name","address","phoneNumber");
 		if (!testOwner.toString().equals("username:password:businessName:name:address:phoneNumber"))
