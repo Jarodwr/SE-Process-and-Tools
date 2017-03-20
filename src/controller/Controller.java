@@ -61,14 +61,14 @@ public class Controller {
 			case 9: logout(view.logout());
 			case 10: breakLoop = true;
 				break;
-			default: System.out.println("Sorry you have provided an invalid option! Please try again:");
+			default: view.failure("Sorry you have provided an invalid option! Please try again", "");
 				break;
 			}
 			
 		}
 	}
 	
-	private User login(String[] loginDetails) {
+	protected User login(String[] loginDetails) {
 				
 		//Search for the user in the arrayList and make sure the password is correct
 		if (searchUser(loginDetails[0]).checkPassword(loginDetails[1])) {

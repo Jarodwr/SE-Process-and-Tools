@@ -10,7 +10,6 @@ public class Main {
 		SQLiteConnection.createUsersTable(); // Create table if it doesn't exist for user info
 		
 		Controller bookingSystem = new Controller();
-
 	}
 
 }
