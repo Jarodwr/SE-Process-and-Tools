@@ -132,11 +132,7 @@ public class Controller {
 	private void showWorkerAvailability() {
 		
 	}
-	
-<<<<<<< HEAD
-	private void addEmployee() {
-		
-=======
+
 	private void addEmployee(String[] newEmployee) 
 	{
 		String username = newEmployee[0];
@@ -158,7 +154,6 @@ public class Controller {
 		{
 			view.failure("Add Employee", "The entered name is already in the database");
 		}
->>>>>>> e392c93f245d48b9b7d559cc0f01acc23ab67c61
 	}
 	
 	/**
