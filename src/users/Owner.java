@@ -17,6 +17,22 @@ public class Owner extends User {
 		this.phoneNumber = phoneNumber;
 	}
 	
+	public String getBusinessName() {
+		return this.businessName;
+	}
+	
+	public String getUsername() {
+		return this.username;
+	}
+	
+	public String getAddress() {
+		return this.address;
+	}
+	
+	public String getPhoneNumber() {
+		return this.phoneNumber;
+	}
+	
 	@Override
 	public String toString() {
 		

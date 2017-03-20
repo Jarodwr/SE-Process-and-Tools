@@ -40,37 +40,42 @@ public class Controller {
 		while(!breakLoop) {
 			int option = view.displayOptions(currentPerms);
 			switch(option) { /* TODO */
-			case 0: activeUser = login();
+			case 0: activeUser = login(view.login());
 					currentPerms = activeUser.getPermissions();
 					if (activeUser.isOwner()) {
 						System.out.println("DEBUG: Owner is logged in!");
 					}
 				break;
-			case 1: activeUser = register();
+			case 1: activeUser = register(view.register());
 				break;
-			case 9: logout();
+			case 2: viewCurrentBookings();
+				break;
+			case 3: viewAvailableTimes();
+				break;
+			case 4: addNewBooking(view.addNewBooking());
+				break;
+			case 5: viewSummaryOfBookings();
+				break;
+			case 6: addWorkingTimes(view.addWorkingTimes());
+				break;
+			case 7: showWorkerAvailability();
+				break;
+			case 8: addEmployee(view.addEmployee());
+				break;
+			case 9: logout(view.logout());
 			case 10: breakLoop = true;
 				break;
-			default: System.out.println("Sorry you have provided an invalid option! Please try again:");
+			default: view.failure("Sorry you have provided an invalid option! Please try again", "");
 				break;
 			}
 			
 		}
 	}
 	
-	private User login() {
-		
-		//Initializes the view and grabs input
-		String loginDetails = view.login();
-		
-		//Tokenizes input so it's usable
-		StringTokenizer st = new StringTokenizer(loginDetails, ":");
-		
-		String username = st.nextToken();
-		String password = st.nextToken();
-		
+	protected User login(String[] loginDetails) {
+				
 		//Search for the user in the arrayList and make sure the password is correct
-		if (searchUser(username).checkPassword(password)) {
+		if (searchUser(loginDetails[0]).checkPassword(loginDetails[1])) {
 			
 			//If the password is incorrect, display a failure message
 			view.failure("Login", "Incorrect Password");
@@ -79,39 +84,28 @@ public class Controller {
 		else {
 			
 			//If the password is correct, display a success message
-			view.success("Login", "Welcome back, " + username + "!");
-			return searchUser(username);
+			view.success("Login", "Welcome back, " + loginDetails[0] + "!");
+			return searchUser(loginDetails[0]);
 		}
 	}
 	
-	private User register(){
-		//Initializes the view and grabs input
-				String userDetails = view.register();
-				
-				//Tokenizes input so it's usable
-				StringTokenizer st = new StringTokenizer(userDetails, ":");
-				
-				String username = st.nextToken();
-				String password = st.nextToken();
-				String name = st.nextToken();
-				String address = st.nextToken();
-				String mobileno = st.nextToken();
-				
-				if (SQLiteConnection.createCustomer(username, password, name, address, mobileno)) { /* TODO add cases for staff and owners */
+	private User register(String[] userDetails){
+		
+		if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) { /* TODO add cases for staff and owners */
 
-					return searchUser(username);
-				}
-				else
-				{
-					view.failure("Register", "The entered username is already in the database");
-					return null;
-				}
-				
-				//Search for the user in the arrayList and make sure the password is correct
+			return searchUser(userDetails[0]);
+		}
+		else
+		{
+			view.failure("Register", "The entered username is already in the database");
+			return null;
+		}
+		
+		//Search for the user in the arrayList and make sure the password is correct
 				
 	}
 	
-	private void logout() {
+	private void logout(boolean success) {
 		
 	}
 	
@@ -123,7 +117,7 @@ public class Controller {
 		
 	}
 	
-	private void addNewBooking() {
+	private void addNewBooking(String[] booking) {
 		
 	}
 	
@@ -131,7 +125,7 @@ public class Controller {
 		
 	}
 	
-	private void addWorkingTimes() {
+	private void addWorkingTimes(String[][] workingTimes) {
 		
 	}
 	
@@ -139,8 +133,32 @@ public class Controller {
 		
 	}
 	
+<<<<<<< HEAD
 	private void addEmployee() {
 		
+=======
+	private void addEmployee(String[] newEmployee) 
+	{
+		String username = newEmployee[0];
+		String password = newEmployee[1];
+		String timetable = newEmployee[2];
+		
+		if(searchUser(username) == null)
+		{
+			if (SQLiteConnection.createCustomer(username, password, timetable, null, null)) { /* TODO add cases for staff and owners */
+	
+				searchUser(username);
+			}
+			else
+			{
+				view.failure("Add Employee", "The entered username is already in the database");
+			}
+		}
+		else
+		{
+			view.failure("Add Employee", "The entered name is already in the database");
+		}
+>>>>>>> e392c93f245d48b9b7d559cc0f01acc23ab67c61
 	}
 	
 	/**

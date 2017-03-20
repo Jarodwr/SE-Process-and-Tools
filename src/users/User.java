@@ -21,7 +21,7 @@ public abstract class User {
 	 * 8 - Add an employee
 	 * 9 - Log out
 	 */
-	protected final static boolean[] permissions = {true, true, false, false, false, false, false, false, false, false};
+	protected final static boolean[] permissions = {true, true, false, false, false, false, false, false, false, true};
 	
 	public User(String username, String password) {
 		this.username = username;

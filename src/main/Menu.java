@@ -34,7 +34,7 @@ public class Menu {
 		int optionNum = 0;
 		String [] option = {"Log In", "Register", "View Current Bookings", 
 		                     "View Available Tiems", "Add New Booking", "View Summary of Bookings", 
-		                     "Add working time/date", "Add an Employee", "Log out"};
+		                     "Add working time/date", "Show all worker availability", "Add an Employee", "Log out"};
 		
 		
 		while (true) {
@@ -97,9 +97,9 @@ public class Menu {
 	/**
 	 * Displays initial register screen where customer details are added
 	 * such as username, password, name, address, phone number.
-	 * @return username:password:name:address:phoneNumber
+	 * @return [0] username, [1] password, [2] name, [3] address, [4] phoneNumber
 	 */
-	public String register() 
+	public String[] register() 
 	{
 		
 		System.out.println();
@@ -148,14 +148,7 @@ public class Menu {
 				System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
 		}
 			
-		
-		
-		
-		
-		
-		
-		
-		return username+":"+password+":"+name+":"+address+":"+phoneNo;
+		return new String[] {username, password, name, address, phoneNo};
 	}
 	
 	/**
@@ -183,9 +176,9 @@ public class Menu {
 	
 	/**
 	 * Displays login screen where user enters their username and password
-	 * @return username:password
+	 * @return [0] username, [1] password
 	 */
-	public String login() {
+	public String[] login() {
 		String username;
 		String password;
 		Boolean validatedDetails;
@@ -214,7 +207,7 @@ public class Menu {
 
 		
 		
-		return username+":"+password;
+		return new String[] {username, password};
 	}
 	
 	/**
@@ -226,50 +219,51 @@ public class Menu {
 	
 	/**
 	 * Prints all bookings to screen
-	 * @param bookings booking1|booking2|booking3
+	 * @param [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod]
 	 */
-	public void viewBookings(String bookings) {
+	public void viewBookings(String[][] bookings) {
 		
 	}
 	
 	/**
 	 * Prints availability timetable to screen
-	 * @param availability period1|period2|period3|period4
+	 * @param [period][0 - start, 1 - end]
 	 */
-	public void viewBookingAvailability(String availability) {
+	public void viewBookingAvailability(String[][] availability) {
 		
 	}
 	
 	/**
 	 * Views screen where user can enter new booking information
-	 * @return customerUsername:startDate,endDate
+	 * @return [0] customerUsername, [1] startDate, [2] endDate
 	 */
-	public String addNewBooking() {
-		return "";
+	public String[] addNewBooking() {
+		return new String[3];
 	}
 	
 	/**
 	 * Add working times until the owner decides to stop
-	 * @return startDate1,endDate1|startDate2,endDate2|startDate3,endDate3
+	 * @return [period][0 - start, 1 - end]
 	 */
-	public String addWorkingTimes() {
+	public String[][] addWorkingTimes() {
 		
-		return "";
+		return new String[0][0];
 	}
 	
 	/**
 	 * prints employee timetables
 	 * @param employeeTimetables employee1Username:timetable*employee2Username:timetable*employee3Username*timetable
+	 * @param [employee][0 - details, 1 - timetable][]
 	 */
-	public void showEmployeeAvailability(String employeeTimetables) {
+	public void showEmployeeAvailability(String[][][] employeeTimetables) {
 		
 	}
 	
 	/**
 	 * Views screen for adding new employees with working times
-	 * @return employeeUsername:employeePassword:timetable
+	 * @return [employee][0 - details, 1 - timetable][]
 	 */
-	public String addEmployee() 
+	public String[] addEmployee() 
 	{
 		System.out.println("--------------------------\nAdd Employee\n--------------------------");
 		
@@ -301,7 +295,7 @@ public class Menu {
 			return null;
 		}
 			
-		return username+":"+password+":"+"";
+		return new String[] {username, password};
 	}
 	
 	/**

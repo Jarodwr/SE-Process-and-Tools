@@ -9,7 +9,6 @@ public class Main {
 		SQLiteConnection.createTables(); // Create table if it doesn't exist for all info
 		debugCreateOwnerBusiness();
 		Controller bookingSystem = new Controller();
-
 	}
 	
 	public static void debugCreateOwnerBusiness() {
