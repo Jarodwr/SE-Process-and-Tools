@@ -119,16 +119,10 @@ public class Controller {
 	
 	private void viewCurrentBookings() {
 		
-		String[][] bookingsStringArray = new String[bookings.size()][];
-		for (int i = 0; i < bookings.size(); i++) {
-			bookingsStringArray[i] = bookings.get(i).toStringArray();
-		}
-		
-		view.viewBookings(bookingsStringArray);
 	}
 	
 	private void viewAvailableTimes() {
-		
+		view.viewBookingAvailability(availability.toStringArray());
 	}
 	
 	private void addNewBooking(String[] booking) {
@@ -137,6 +131,13 @@ public class Controller {
 	
 	private void viewSummaryOfBookings() {
 		
+		String[][] bookingsStringArray = new String[bookings.size()][];
+		
+		for (int i = 0; i < bookings.size(); i++) {
+			bookingsStringArray[i] = bookings.get(i).toStringArray();
+		}
+		
+		view.viewBookings(bookingsStringArray);
 	}
 	
 	private void addWorkingTimes(String[][] workingTimes) {
@@ -195,19 +196,5 @@ public class Controller {
 			return null;
 		}
 		
-	}
-	
-	/**
-	 * Loops through 'users' and writes all user information to a text file
-	 * @param filePath filepath of the txt file being written
-	 * @return Return true if successful
-	 * 
-	 * 
-	 * 
-	 * Spencer note: Redundant, remove when 100% sure we dont need it
-	 */
-	private boolean writeUserInfoToText(String filePath) {
-		
-		return false;
 	}
 }

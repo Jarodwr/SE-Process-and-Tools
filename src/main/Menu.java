@@ -33,7 +33,7 @@ public class Menu {
 		int userSelection;
 		int optionNum = 0;
 		String [] option = {"Log In", "Register", "View Current Bookings", 
-		                     "View Available Tiems", "Add New Booking", "View Summary of Bookings", 
+		                     "View Available Times", "Add New Booking", "View Summary of Bookings", 
 		                     "Add working time/date", "Show all worker availability", "Add an Employee", "Log out"};
 		
 		
