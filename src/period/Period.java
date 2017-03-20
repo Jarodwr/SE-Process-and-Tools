@@ -25,14 +25,14 @@ public class Period {
      * date format: hh:mm dd/mm/yyyy
      * format: "startDate,endDate"
      */
-	@Override
-	public String toString() 
+	public String[] toStringArray() 
 	{
 		@SuppressWarnings("deprecation")
 		String first = start.getHours() + ":" + start.getMinutes() + " " + start.getDay() + "/" + start.getMonth() + "/" + start.getYear();
 		@SuppressWarnings("deprecation")
 		String second = end.getHours() + ":" + end.getMinutes() + " " + end.getDay() + "/" + end.getMonth() + "/" + end.getYear();
-		return first + "," + second;
+		String[] period = {first, second};
+		return period;
 	}
 	
 }

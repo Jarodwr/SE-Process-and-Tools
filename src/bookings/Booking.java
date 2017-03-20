@@ -17,9 +17,12 @@ public class Booking {
     /**
     * @return format: customerUsername:period
     */
-	@Override
-	public String toString() 
+	public String[][] toStringArray() 
 	{
-		return customerUsername + ":" + timeSlot.toString();
+		String[][] booking = new String[2][2];
+		booking[0][0] = customerUsername;
+		booking[1] = timeSlot.toStringArray();
+		
+		return booking;
 	}
 }
