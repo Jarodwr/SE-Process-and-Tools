@@ -5,7 +5,7 @@ public class Customer extends User {
 	private String name;
 	private String address;
 	private String phoneNumber;
-	public final boolean[] permissions = {false, false, true, true, false, false, false, false, false, true};
+	protected boolean[] permissions = {false, false, true, true, false, false, false, false, false, true};
 	
 	public Customer(String username, String password, String name, String address, String phoneNumber) {
 		super(username, password);
@@ -28,6 +28,10 @@ public class Customer extends User {
 	public String getPhoneNumber() {
 		
 		return this.phoneNumber;
+	}
+	
+	public boolean[] getPermissions() {
+		return permissions;
 	}
 	
 	@Override

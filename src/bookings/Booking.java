@@ -17,12 +17,10 @@ public class Booking {
     /**
     * @return format: customerUsername:period
     */
-	public String[][] toStringArray() 
+	public String[] toStringArray() 
 	{
-		String[][] booking = new String[2][2];
-		booking[0][0] = customerUsername;
-		booking[1] = timeSlot.toStringArray();
+		String[] ts = timeSlot.toStringArray();
 		
-		return booking;
+		return new String[]{customerUsername, ts[0], ts[1]};
 	}
 }

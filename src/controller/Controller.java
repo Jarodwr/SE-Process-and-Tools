@@ -38,6 +38,14 @@ public class Controller {
 		activeUser = null;
 		
 		while(!breakLoop) {
+			if (activeUser != null) {
+				for (int i = 0; i < activeUser.getPermissions().length; i++) {
+					if (activeUser.getPermissions()[i])
+						System.out.println("true");
+					else
+						System.out.println("false");
+				}
+			}
 			int option = view.displayOptions(currentPerms);
 			switch(option) { /* TODO */
 			case 0: activeUser = login(view.login());
@@ -111,6 +119,12 @@ public class Controller {
 	
 	private void viewCurrentBookings() {
 		
+		String[][] bookingsStringArray = new String[bookings.size()][];
+		for (int i = 0; i < bookings.size(); i++) {
+			bookingsStringArray[i] = bookings.get(i).toStringArray();
+		}
+		
+		view.viewBookings(bookingsStringArray);
 	}
 	
 	private void viewAvailableTimes() {
