@@ -39,7 +39,7 @@ public class Owner extends User {
 		return this.username + ":" + this.password + ":" + this.businessName + ":" + this.name + ":" + this.address + ":" + this.phoneNumber;
 	}
 	
-	private boolean isOwner() {
+	public boolean isOwner() {
 		return true;
 	}
 }
