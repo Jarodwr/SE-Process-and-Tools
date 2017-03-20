@@ -250,20 +250,93 @@ public class Menu {
 	 */
 	public void viewBookings(String[][] bookings) {
 		
-		System.out.println("--------------------\nBookings\n--------------------");
+		/*Variables to be used to determine each column length*/
+		int longestNameLength = 0; //Store the longest customer name (in length of the string)
+		int longeststartTimeLength = 0; //Store the longest booking start period (in length of the string)
+		int longestendTimeLength = 0; //Store the longest booking end period (in length of the string)
+		
+		/*
+		 * In order to make sure the table is printed properly,
+		 * we need need to make sure that the cells are balanced in length
+		 * So we need to first fine the longest Strings for each column.
+		 */
+		for (int i=0;i < bookings.length; i++) {
+			for (int j = 0; j < bookings[i].length; j++) {
+				
+				//Check if the length of the customer name is currently the longest
+				if (j == 0 && bookings[i][j].length() > longestNameLength)
+					longestNameLength = bookings[i][j].length();
+				
+				//Check if the length of the customer start time is currently the longest
+				if (j == 1 && bookings[i][j].length() > longestNameLength)
+					longeststartTimeLength = bookings[i][j].length();
+				
+				//Check if the length of the customer end time is currently the longest
+				if (j == 2 && bookings[i][j].length() > longestNameLength)
+					longestendTimeLength = bookings[i][j].length();
+			}
+		}
+		
+		
+					
+		//Menu Title			
+		System.out.println("\n--------------------\nBookings\n--------------------\n");
 
-		/*Console Output format would be like this Sample format: Anesu: 5pm-7pm*/
-				for (int i=0;i < bookings.length; i++) {
-					for (int j = 0; j < bookings[i].length; j++) {
-						System.out.print(bookings[i][j]);
-						if (j == 0)
-							System.out.print(": "); //Colon after customer Name
-						else
-							if (j < bookings[i].length-1)
-							System.out.print("-"); //1.e 5pm-7pm
+		
+		/*Table Title*/
+		
+		String tableTitles = "     Customer Name"; //Customer table column title
+		for (int k = 0; k < (longestNameLength - "Customer Name".length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
+		tableTitles += "   | Start Period"; //Start Period table column title
+		for (int k = 0; k < (longeststartTimeLength - "Start Period".length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
+
+		tableTitles += "   | End Period"; //End Period table column title
+		for (int k = 0; k < (longestendTimeLength - "End Period".length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
+		System.out.println(tableTitles); //Print out the table header titles
+		
+		for (int k = 0; k < (tableTitles.length()); k++)
+			System.out.print("-"); //Add dashes "-" under the table header
+		
+		System.out.println(); //Create a new line for the rest of the table contents
+		
+		
+				for (int i=0;i < bookings.length; i++) { //Go through all the bookings rows
+					for (int j = 0; j < bookings[i].length; j++) { //Go through all the bookings columns
+						
+						
+						System.out.print("     "+bookings[i][j]); //Print out the current booking detail
+						
+						/*Add enough spaces to keep table column length balanced*/
+						
+						if (j == 0) //Add spaces after Customer name
+							for (int k = 0; k < (longestNameLength - bookings[i][j].length()); k++)
+								System.out.print(" ");
+						
+						if (j == 1) //Add spaces after Booking Start Time
+							for (int k = 0; k < (longeststartTimeLength - bookings[i][j].length()); k++)
+								System.out.print(" ");
+						
+						if (j == 2) //Add spaces after Booking End Time
+							for (int k = 0; k < (longestendTimeLength - bookings[i][j].length()); k++)
+								System.out.print(" ");
+							
+						System.out.print("     "); //Create a gap between columns
 					}
-					System.out.println();
+					System.out.println(); //create a new row
 				}
+				
+				for (int k = 0; k < (tableTitles.length()); k++)
+					System.out.print("-"); //Add dashes "-" under the table
+				
+				System.out.println("\n\n Press any key to go back to Menu...");
+				
+				scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
 	/**
