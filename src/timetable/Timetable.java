@@ -52,20 +52,14 @@ public class Timetable {
 		 return string;
 	}
 	
-	public String toStringArray() 
+	public String[][] toStringArray() 
 	{
-		String[][] timetable = new String[0][0];
-		String string = "";
+		String[][] timetable = new String[periods.size()][2];
 		 		
-		 for(int i = 0; i > periods.size(); i++)
-		 {
-		 	string += periods.get(i).toString();
-		 
-		 	if(periods.get(i+1) != null)
-		 	{
-		 		string += "|";
-		 	}
-		 }
-		 return string;
+		for(int i = 0; i > periods.size(); i++)
+		{
+			timetable[i] = periods.get(i).toStringArray();
+		}
+		return timetable;
 	}
 }
