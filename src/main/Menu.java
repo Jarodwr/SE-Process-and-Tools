@@ -214,7 +214,34 @@ public class Menu {
 	 * Confirmation screen for logging out
 	 */
 	public boolean logout() {
-		return false;
+		int userSelection; //Will be used to store the option selected by the user
+		
+		/*Print out the prompts in the console*/
+		System.out.println("Are you sure you want to logout?");
+		System.out.println("1 - Yes");
+		System.out.println("2- Cancel");
+		
+		while (true) { //Do not leave this Menu until a valid option is selected
+		try {
+			int selectedOption = Integer.parseInt(scanner.nextLine());
+			userSelection = selectedOption;
+			
+		} catch (NumberFormatException e) { //Catch an invalid entry that is not an integer
+			System.out.println("Sorry you have provided an invalid option! Please try again:");
+			continue;
+		}
+		
+		
+		if (userSelection > -1 && userSelection < 3) { //Make sure the entry option is within valid parameters
+			if (userSelection == 1)
+				return true; //Yes option selected
+			else
+				return false; //Cancel Option selected
+		} else {
+			//The number entered is not within the given boundaries
+			System.out.println("Sorry you have provided an invalid option! Please try again:");
+			}	
+		}
 	}
 	
 	/**
@@ -223,6 +250,20 @@ public class Menu {
 	 */
 	public void viewBookings(String[][] bookings) {
 		
+		System.out.println("--------------------\nBookings\n--------------------");
+
+		/*Console Output format would be like this Sample format: Anesu: 5pm-7pm*/
+				for (int i=0;i < bookings.length; i++) {
+					for (int j = 0; j < bookings[i].length; j++) {
+						System.out.print(bookings[i][j]);
+						if (j == 0)
+							System.out.print(": "); //Colon after customer Name
+						else
+							if (j < bookings[i].length-1)
+							System.out.print("-"); //1.e 5pm-7pm
+					}
+					System.out.println();
+				}
 	}
 	
 	/**
