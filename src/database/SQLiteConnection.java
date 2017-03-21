@@ -120,8 +120,10 @@ public class SQLiteConnection {
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, username);
 		ResultSet rs = pst.executeQuery();
-
-		return rs;
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
 	}
 	
 	public static ResultSet getOwnerRow(String username) throws SQLException {
@@ -132,7 +134,10 @@ public class SQLiteConnection {
 		pst.setString(1, username);
 		ResultSet rs = pst.executeQuery();
 
-		return rs;
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
 	}
 	
 	public static ResultSet getBusinessRow(String businessname) throws SQLException {
@@ -143,7 +148,10 @@ public class SQLiteConnection {
 		pst.setString(1, businessname);
 		ResultSet rs = pst.executeQuery();
 
-		return rs;
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
 	}
 	public static void deleteUser(String username) throws SQLException {
 		Connection c = getDBConnection();
@@ -158,9 +166,9 @@ public class SQLiteConnection {
 		try {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
 
-			if (rs.next())
-				return false; // remove userexistsexception
-			rs.close();
+			if (rs != null) {
+				return false;
+			}
 
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setString(1, username);
@@ -184,9 +192,9 @@ public class SQLiteConnection {
 		try {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
 
-			if (rs.next())
-				needToAddUser = false;
-			rs.close();
+			if (rs != null) {
+				return false;
+			}
 			if (needToAddUser) {
 				PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
 				ps.setString(1, username);
@@ -200,9 +208,9 @@ public class SQLiteConnection {
 			
 			ResultSet rs2 = getOwnerRow(username); // search through usernames to check if this user currently exists
 
-			if (rs2.next())
-				return false; 
-			rs2.close();
+			if (rs2 != null) {
+				return false;
+			}
 			
 			PreparedStatement ps2 = c.prepareStatement("INSERT INTO Ownerinfo VALUES (?, ?);"); // this links a user to a business, making them an owner
 			ps2.setString(1, businessname);
@@ -222,9 +230,9 @@ public class SQLiteConnection {
 		try {
 			ResultSet rs = getBusinessRow(businessname); // search through businessnames to check if this user currently exists
 
-			if (rs.next())
+			if (rs != null) {
 				return false;
-			rs.close();
+			}
 
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Businessinfo VALUES (?, ?, ?);"); // this creates a new user
 			ps.setString(1, businessname);

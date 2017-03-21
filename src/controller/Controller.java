@@ -53,7 +53,9 @@ public class Controller {
 			int option = view.displayOptions(currentPerms);
 			switch(option) { /* TODO */
 			case 0: activeUser = login(view.login());
-					currentPerms = activeUser.getPermissions();
+					if (activeUser != null) {
+						currentPerms = activeUser.getPermissions();
+					}
 					if (activeUser.isOwner()) {
 						dbg("Owner is logged in!");
 					}
@@ -85,8 +87,12 @@ public class Controller {
 	}
 	
 	protected User login(String[] loginDetails) {
-				
+			dbg("loginDetails[0] = " + loginDetails[0] + ", loginDetails[1] = " + loginDetails[1]);
 		//Search for the user in the arrayList and make sure the password is correct
+		if (searchUser(loginDetails[0]) == null) {
+			view.failure("Login", "Incorrect Password");
+			return null;
+		}
 		if (searchUser(loginDetails[0]).checkPassword(loginDetails[1])) {
 			
 			//If the password is incorrect, display a failure message
@@ -184,19 +190,25 @@ public class Controller {
 		try {
 			rs = SQLiteConnection.getUserRow(username);
 			if (SQLiteConnection.getOwnerRow(username) != null) {
-				rs = SQLiteConnection.getOwnerRow(username);
-				String business = rs.getString("businessname");
+				ResultSet rs2;
+				rs2 = SQLiteConnection.getOwnerRow(username);
+				String business = rs2.getString("businessname");
+				rs2.close();
 
 				rs = SQLiteConnection.getUserRow(username);
-				
-				return new Owner(username, rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				Owner owner = new Owner(username, rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				rs.close();
+				return owner;
 			}
 			else {
-				return new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				rs = SQLiteConnection.getUserRow(username);
+				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				rs.close();
+				return customer;
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			dbg(e.getMessage());
 			return null;
 		}
 		

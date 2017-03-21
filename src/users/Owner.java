@@ -6,7 +6,7 @@ public class Owner extends User {
 	private String name;
 	private String address;
 	private String phoneNumber;
-	protected boolean[] permissions = {false, false, true, true, true, true, true, true, true, true};
+	public final boolean[] permissions = {false, false, true, true, true, true, true, true, true, true};
 	
 	public Owner(String username, String password, String businessName, String businessOwnerName, String address, String phoneNumber) {
 		super(username, password);
@@ -37,10 +37,6 @@ public class Owner extends User {
 	public String toString() {
 		
 		return this.username + ":" + this.password + ":" + this.businessName + ":" + this.name + ":" + this.address + ":" + this.phoneNumber;
-	}
-	
-	public boolean[] getPermissions() {
-		return permissions;
 	}
 	
 	public boolean isOwner() {
