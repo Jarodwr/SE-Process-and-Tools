@@ -361,7 +361,17 @@ public class Menu {
 	 */
 	public String[][] addWorkingTimes() {
 		
-		return new String[0][0];
+		String[][] workingTimes = new String[1][2]; //We will use this to store the input of working times
+		
+		System.out.println("\nPlease enter The period of the employee's working times");
+		
+		System.out.println("\nStart time for the working period: ");
+		workingTimes[0][0] = scanner.nextLine(); //Get user (owner) input for the start of the working period
+		
+		System.out.println("End time for the working period: ");
+		workingTimes[0][1] = scanner.nextLine(); //Get user (owner) input for the start of the working period
+		
+		return workingTimes;
 	}
 	
 	/**
