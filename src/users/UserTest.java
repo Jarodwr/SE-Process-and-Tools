@@ -15,6 +15,14 @@ public class UserTest {
 	}
 	
 	@Test
+	public void checkPasswordTest() {
+		Customer testCustomer = new Customer("jarodwr","mypass","jarod","32 barkly st","0400000000");
+		if (testCustomer.checkPassword("not the right password")) {
+			fail();
+		}
+	}
+	
+	@Test
 	public void OwnerToStringTest() {
 		Owner testOwner = new Owner("username","password","businessName","name","address","phoneNumber");
 		if (!testOwner.toString().equals("username:password:businessName:name:address:phoneNumber"))

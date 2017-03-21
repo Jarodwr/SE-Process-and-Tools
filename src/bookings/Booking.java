@@ -8,7 +8,7 @@ public class Booking {
 	private Period timeSlot;
 	private String customerUsername;
 	
-	protected Booking(Period timeslot, String customerUsername) 
+	public Booking(Period timeslot, String customerUsername) 
 	{
 		this.timeSlot = timeslot;
 		this.customerUsername = customerUsername;

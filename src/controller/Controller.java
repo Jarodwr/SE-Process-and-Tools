@@ -3,6 +3,8 @@ package controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+
 import database.SQLiteConnection;
 import database.UserExistsException;
 
@@ -10,6 +12,7 @@ import java.util.StringTokenizer;
 
 import bookings.Booking;
 import main.Menu;
+import period.Period;
 import timetable.Timetable;
 import users.Customer;
 import users.Owner;
@@ -20,7 +23,6 @@ public class Controller {
 	private Menu view = new Menu();
 	
 	private User activeUser;
-	private ArrayList<User> users = new ArrayList<User>(); // Maybe turn this into an arrayList
 	
 	private Timetable availability = new Timetable();
 	private ArrayList<Booking> bookings = new ArrayList<Booking>();
@@ -28,7 +30,7 @@ public class Controller {
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
 	
 	public Controller() {
-		//initialize databases and add them to ArrayList
+		bookings.add(new Booking(new Period(new Date(2017,3,12,7,0), new Date(2017,3,12,9,0)),"John"));
 		
 		//initialize view
 		Menu view = new Menu();
