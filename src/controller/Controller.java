@@ -205,7 +205,7 @@ public class Controller {
 	private void dbg(String s) // fast way of adding System prints, dbg = debug
 	{
 		if (this.debugMode) {
-			System.out.println("DEBUG: " + s);
+			System.out.println("DEBUG: " + s); // fast af boi
 		}
 	}
 }
