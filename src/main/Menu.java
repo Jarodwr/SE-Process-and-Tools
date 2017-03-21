@@ -352,7 +352,22 @@ public class Menu {
 	 * @return [0] customerUsername, [1] startDate, [2] endDate
 	 */
 	public String[] addNewBooking() {
-		return new String[3];
+		
+		String[] bookingDetails = new String[3]; //We will use this to store the input of the booking details
+		
+		System.out.println("\nPlease enter the customer booking details below");
+		
+		System.out.println("\nCustomer username: ");
+		bookingDetails[0] = scanner.nextLine(); //Get user input for the customer's username
+		
+		System.out.println("Booking start time and date: ");
+		bookingDetails[1] = scanner.nextLine(); //Get user input for the booking start period
+		
+		System.out.println("Booking end time and date: ");
+		bookingDetails[2] = scanner.nextLine(); //Get user input for the booking end period
+		
+		
+		return bookingDetails;
 	}
 	
 	/**
@@ -393,7 +408,7 @@ public class Menu {
 		
 		String username;
 		String password;
-		Boolean validatedDetails;
+		Boolean validatedDetails; //Will be used to check if the login details do not contain illegal characters
 		
 		
 		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
@@ -413,7 +428,7 @@ public class Menu {
 		 * errors like the character ":" from being passed along to the database code.
 		 */
 		
-		if (!validatedDetails)
+		if (!validatedDetails) //Either username or password contains invalid characters
 		{
 			System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
 			return null;
