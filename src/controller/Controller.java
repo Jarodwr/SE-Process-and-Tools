@@ -26,6 +26,7 @@ public class Controller {
 	
 	private Timetable availability = new Timetable();
 	private ArrayList<Booking> bookings = new ArrayList<Booking>();
+	private boolean debugMode = false;
 	
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
 	
@@ -36,6 +37,7 @@ public class Controller {
 		Menu view = new Menu();
 
 		boolean breakLoop = false; // exit program case
+		debugMode = true; // remove this line while demoing
 		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
 		activeUser = null;
 		
@@ -43,9 +45,9 @@ public class Controller {
 			if (activeUser != null) {
 				for (int i = 0; i < activeUser.getPermissions().length; i++) {
 					if (activeUser.getPermissions()[i])
-						System.out.println("true");
+						dbg(" permissions: true");
 					else
-						System.out.println("false");
+						dbg(" permissions: false");
 				}
 			}
 			int option = view.displayOptions(currentPerms);
@@ -53,7 +55,7 @@ public class Controller {
 			case 0: activeUser = login(view.login());
 					currentPerms = activeUser.getPermissions();
 					if (activeUser.isOwner()) {
-						System.out.println("DEBUG: Owner is logged in!");
+						dbg("Owner is logged in!");
 					}
 				break;
 			case 1: activeUser = register(view.register());
@@ -198,5 +200,12 @@ public class Controller {
 			return null;
 		}
 		
+	}
+	
+	private void dbg(String s) // fast way of adding System prints, dbg = debug
+	{
+		if (this.debugMode) {
+			System.out.println("DEBUG: " + s);
+		}
 	}
 }
