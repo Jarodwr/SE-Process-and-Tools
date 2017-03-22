@@ -30,6 +30,7 @@ public class Controller {
 	
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
 	
+	@SuppressWarnings("deprecation")
 	public Controller() {
 		bookings.add(new Booking(new Period(new Date(2017,3,12,7,0), new Date(2017,3,12,9,0)),"John"));
 		
@@ -40,7 +41,6 @@ public class Controller {
 		debugMode = true; // remove this line while demoing
 		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
 		activeUser = null;
-		
 		while(!breakLoop) {
 			if (activeUser != null) {
 				for (int i = 0; i < activeUser.getPermissions().length; i++) {
@@ -55,10 +55,11 @@ public class Controller {
 			case 0: activeUser = login(view.login());
 					if (activeUser != null) {
 						currentPerms = activeUser.getPermissions();
+						if (activeUser.isOwner()) {
+							dbg("Owner is logged in!");
+						}
 					}
-					if (activeUser.isOwner()) {
-						dbg("Owner is logged in!");
-					}
+					
 				break;
 			case 1: activeUser = register(view.register());
 				break;
@@ -207,7 +208,7 @@ public class Controller {
 				return customer;
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			dbg(e.getMessage());
 			return null;
 		}
