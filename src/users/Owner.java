@@ -6,15 +6,25 @@ public class Owner extends User {
 	private String name;
 	private String address;
 	private String phoneNumber;
-	public final boolean[] permissions = {false, false, true, true, true, true, true, true, true, true};
 	
 	public Owner(String username, String password, String businessName, String businessOwnerName, String address, String phoneNumber) {
 		super(username, password);
-		
 		this.businessName = businessName;
 		this.name = businessOwnerName;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+		this.permissions = new boolean[] {
+				false, 	//Register
+				false, 	//Login
+				true, 	//View current bookings
+				true, 	//View available times
+				false, 	//Add new booking
+				true, 	//View summary of bookings
+				true, 	//Add working time/date
+				true, 	//Show all worker availability for next 7 days
+				true, 	//Add Employee
+				true	//Log out
+				};
 	}
 	
 	public String getBusinessName() {

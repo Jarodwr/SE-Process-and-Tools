@@ -32,7 +32,7 @@ public class Controller {
 	
 	@SuppressWarnings("deprecation")
 	public Controller() {
-		bookings.add(new Booking(new Period(new Date(2017,3,12,7,0), new Date(2017,3,12,9,0)),"John"));
+		bookings.add(new Booking("B00001","John", new Period(new Date(2017,3,12,7,0), new Date(2017,3,12,9,0))));
 		
 		//initialize view
 		Menu view = new Menu();

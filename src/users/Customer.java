@@ -5,7 +5,6 @@ public class Customer extends User {
 	private String name;
 	private String address;
 	private String phoneNumber;
-	protected boolean[] permissions = {false, false, true, true, false, false, false, false, false, true};
 	
 	public Customer(String username, String password, String name, String address, String phoneNumber) {
 		super(username, password);
@@ -13,6 +12,18 @@ public class Customer extends User {
 		this.name = name;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+		this.permissions = new boolean[] {
+				false, 	//Register
+				false, 	//Login
+				true, 	//View current bookings
+				true, 	//View available times
+				true, 	//Add new booking
+				false, 	//View summary of bookings
+				false, 	//Add working time/date
+				false, 	//Show all worker availability for next 7 days
+				false, 	//Add Employee
+				true	//Log out
+				};
 	}
 	
 	public String getName() {
@@ -28,10 +39,6 @@ public class Customer extends User {
 	public String getPhoneNumber() {
 		
 		return this.phoneNumber;
-	}
-	
-	public boolean[] getPermissions() {
-		return permissions;
 	}
 	
 	@Override
