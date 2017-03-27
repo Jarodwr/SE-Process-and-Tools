@@ -101,7 +101,7 @@ public class SQLiteConnection {
 	}
 	
 	public static void createBookingsTable()  {
-		String sql = "CREATE TABLE IF NOT EXISTS BookingsTable ( bookingId integer Primary Key, businessname Varchar(255), username Varchar(255), bookingData Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname))";
+		String sql = "CREATE TABLE IF NOT EXISTS BookingsTable ( bookingId integer Primary Key, businessname Varchar(255), username Varchar(255), starttimeunix Varchar(255), endtimeunix Varchar(255), bookingData Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname))";
 		try {
 			Connection c = getDBConnection();
 			Statement stmt = c.createStatement();
@@ -248,7 +248,7 @@ public class SQLiteConnection {
 		}
 	}
 	
-	public static boolean createBooking(int bookingId, String businessname, String customername, String data) {
+	public static boolean createBooking(int bookingId, String businessname, String customername, String unixstamp1, String unixstamp2, String data) {
 		Connection c = getDBConnection();
 		try {
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
@@ -257,11 +257,13 @@ public class SQLiteConnection {
 				return false;
 			}
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, bookingId);
 			ps.setString(2, businessname);
 			ps.setString(3, customername);
-			ps.setString(4, data);
+			ps.setString(4, unixstamp1);
+			ps.setString(5, unixstamp2);
+			ps.setString(6, data);
 			ps.executeUpdate();
 			ps.close();
 
@@ -317,6 +319,34 @@ public class SQLiteConnection {
 		String query = "SELECT * FROM BookingsTable WHERE bookingId=?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setInt(1, bookingId);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+		
+	}
+	private static ResultSet getBookingsByUsername(String username) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BookingsTable WHERE username=?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, username);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	
+	private static ResultSet getBookingsByPeriodStart(String periodstartunixstamp) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BookingsTable WHERE starttimeunix=?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, periodstartunixstamp);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
