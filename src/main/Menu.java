@@ -406,35 +406,20 @@ public class Menu {
 	{
 		System.out.println("--------------------------\nAdd Employee\n--------------------------");
 		
-		String username;
-		String password;
-		Boolean validatedDetails; //Will be used to check if the login details do not contain illegal characters
+		String name;
+		String phoneNo;
+		String address;
+
+		System.out.print("Name: ");
+		name = scanner.nextLine();
 		
+		System.out.print("Phone number: ");
+		phoneNo = scanner.nextLine();
 		
-		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
-		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
-		 * 
-		 */
-		System.out.print("Enter your Username: ");
-		username = scanner.nextLine();
-		
-		System.out.print("Enter your Password: ");
-		password = scanner.nextLine();
-		
-		validatedDetails = validatelogin(username,password);
-		
-		/*
-		 * The idea behind this check is to avoid characters that can cause internal
-		 * errors like the character ":" from being passed along to the database code.
-		 */
-		
-		if (!validatedDetails) //Either username or password contains invalid characters
-		{
-			System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
-			return null;
-		}
+		System.out.print("Address: ");
+		address = scanner.nextLine();
 			
-		return new String[] {username, password};
+		return new String[] {name, phoneNo, address};
 	}
 	
 	/**
