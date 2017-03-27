@@ -268,11 +268,11 @@ public class Menu {
 					longestNameLength = bookings[i][j].length();
 				
 				//Check if the length of the customer start time is currently the longest
-				if (j == 1 && bookings[i][j].length() > longestNameLength)
+				if (j == 1 && bookings[i][j].length() > longeststartTimeLength)
 					longeststartTimeLength = bookings[i][j].length();
 				
 				//Check if the length of the customer end time is currently the longest
-				if (j == 2 && bookings[i][j].length() > longestNameLength)
+				if (j == 2 && bookings[i][j].length() > longestendTimeLength)
 					longestendTimeLength = bookings[i][j].length();
 			}
 		}
@@ -283,18 +283,18 @@ public class Menu {
 		System.out.println("\n--------------------\nBookings\n--------------------\n");
 
 		
-		/*Table Title*/
+		/*Table Header*/
 		
-		String tableTitles = "     Customer Name"; //Customer table column title
+		String tableTitles = "     Customer Name"; //Customer table header
 		for (int k = 0; k < (longestNameLength - "Customer Name".length()); k++)
 			tableTitles += " "; //Add Spaces to balance the table column length
 		
-		tableTitles += "   | Start Period"; //Start Period table column title
+		tableTitles += "   | Start Period"; //Start Period table header
 		for (int k = 0; k < (longeststartTimeLength - "Start Period".length()); k++)
 			tableTitles += " "; //Add Spaces to balance the table column length
 		
 
-		tableTitles += "   | End Period"; //End Period table column title
+		tableTitles += "   | End Period"; //End Period table header
 		for (int k = 0; k < (longestendTimeLength - "End Period".length()); k++)
 			tableTitles += " "; //Add Spaces to balance the table column length
 		
@@ -344,7 +344,82 @@ public class Menu {
 	 * @param [period][0 - start, 1 - end]
 	 */
 	public void viewBookingAvailability(String[][] availability) {
+		/*Variables to be used to determine each column length*/
+		int longeststartTimeLength = 0; //Store the longest booking start period (in length of the string)
+		int longestendTimeLength = 0; //Store the longest booking end period (in length of the string)
 		
+		/*
+		 * In order to make sure the table is printed properly,
+		 * we need need to make sure that the cells are balanced in length
+		 * So we need to first fine the longest Strings for each column.
+		 */
+		for (int i=0;i < availability.length; i++) {
+			for (int j = 0; j < availability[i].length; j++) {
+				
+
+				
+				//Check if the length of the customer start time is currently the longest
+				if (j == 0 && availability[i][j].length() > longeststartTimeLength)
+					longeststartTimeLength = availability[i][j].length();
+				
+				//Check if the length of the customer end time is currently the longest
+				if (j == 1 && availability[i][j].length() > longestendTimeLength)
+					longestendTimeLength = availability[i][j].length();
+			}
+		}
+		
+		
+					
+		//Menu Title			
+		System.out.println("\n--------------------\nAvailable Bookings\n--------------------\n");
+
+		
+		/*Table header*/
+		
+		String tableTitles = "     Start Period"; //Start Period table header
+		for (int k = 0; k < (longeststartTimeLength - "Start Period".length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
+
+		tableTitles += "   | End Period"; //End Period table header
+		for (int k = 0; k < (longestendTimeLength - "End Period".length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
+		System.out.println(tableTitles); //Print out the table header titles
+		
+		for (int k = 0; k < (tableTitles.length()); k++)
+			System.out.print("-"); //Add dashes "-" under the table header
+		
+		System.out.println(); //Create a new line for the rest of the table contents
+		
+		
+				for (int i=0;i < availability.length; i++) { //Go through all the availability rows
+					for (int j = 0; j < availability[i].length; j++) { //Go through all the availability columns
+						
+						
+						System.out.print("     "+availability[i][j]); //Print out the current booking detail
+						
+						/*Add enough spaces to keep table column length balanced*/
+
+						if (j == 0) //Add spaces after Booking Start Time
+							for (int k = 0; k < (longeststartTimeLength - availability[i][j].length()); k++)
+								System.out.print(" ");
+						
+						if (j == 1) //Add spaces after Booking End Time
+							for (int k = 0; k < (longestendTimeLength - availability[i][j].length()); k++)
+								System.out.print(" ");
+							
+						System.out.print("     "); //Create a gap between columns
+					}
+					System.out.println(); //create a new row
+				}
+				
+				for (int k = 0; k < (tableTitles.length()); k++)
+					System.out.print("-"); //Add dashes "-" under the table
+				
+				System.out.println("\n\n Press any key to go back to Menu...");
+				
+				scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
 	/**
