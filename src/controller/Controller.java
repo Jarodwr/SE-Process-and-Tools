@@ -142,13 +142,17 @@ public class Controller {
 	
 	private void viewSummaryOfBookings() {
 		
-		String[][] bookingsStringArray = new String[bookings.size()][];
-		
-		for (int i = 0; i < bookings.size(); i++) {
-			bookingsStringArray[i] = bookings.get(i).toStringArray();
+		if (bookings.size() == 0) {
+			view.failure("View Booking Summaries", "No future bookings");
+		} else {
+			String[][] bookingsStringArray = new String[bookings.size()][];
+			
+			for (int i = 0; i < bookings.size(); i++) {
+				bookingsStringArray[i] = bookings.get(i).toStringArray();
+			}
+			
+			view.viewBookings(bookingsStringArray);
 		}
-		
-		view.viewBookings(bookingsStringArray);
 	}
 	
 	private void addWorkingTimes(String[][] workingTimes) {
@@ -186,7 +190,7 @@ public class Controller {
 	 * @param username username being searched
 	 * @return Returns the user with the username being searched
 	 */
-	private User searchUser(String username) {
+	protected User searchUser(String username) {
 		ResultSet rs;
 		try {
 			rs = SQLiteConnection.getUserRow(username);
