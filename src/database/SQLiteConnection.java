@@ -65,7 +65,7 @@ public class SQLiteConnection {
 	}
 	
 	public static void createEmployeeTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS Employeeinfo (businessname Varchar(255), employeeid integer primary key, name Varchar(255), address Varchar(255), mobileno Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
+		String sql = "CREATE TABLE IF NOT EXISTS Employeeinfo (businessname Varchar(255), employeeId integer primary key, name Varchar(255), address Varchar(255), mobileno Varchar(255), timetableId integer, Foreign Key(timetableId) references Timetableinfo(timetableId), Foreign Key(businessname) references Businessinfo(businessname))";
 				try {
 					Connection c = getDBConnection();
 					Statement stmt = c.createStatement();
@@ -77,7 +77,7 @@ public class SQLiteConnection {
 	}
 	
 	public static void createAvailabilitiesTable()  {
-		String sql = "CREATE TABLE IF NOT EXISTS EmployeeAvailabilities (businessname Varchar(255), name Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
+		String sql = "CREATE TABLE IF NOT EXISTS EmployeeAvailabilities (timetableId integer primary key, businessname Varchar(255), name Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
 		try {
 			Connection c = getDBConnection();
 			Statement stmt = c.createStatement();
@@ -270,6 +270,45 @@ public class SQLiteConnection {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno) {
+		Connection c = getDBConnection();
+		try {
+			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
+
+			if (rs != null) {
+				return false;
+			}
+
+			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
+			ps.setInt(1, employeeId);
+			ps.setString(2, businessname);
+			ps.setString(3, name);
+			ps.setString(4, address);
+			ps.setString(5, mobileno);
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	private static ResultSet getEmployeeRow(int employeeId) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Employeeinfo WHERE employeeId=?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setInt(1, employeeId);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
 	}
 
 	private static ResultSet getBookingRow(int bookingId) throws SQLException {
