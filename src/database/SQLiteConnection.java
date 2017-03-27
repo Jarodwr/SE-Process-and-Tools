@@ -247,4 +247,42 @@ public class SQLiteConnection {
 			return false;
 		}
 	}
+	
+	public static boolean createBooking(int bookingId, String businessname, String customername, String data) {
+		Connection c = getDBConnection();
+		try {
+			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
+
+			if (rs != null) {
+				return false;
+			}
+
+			PreparedStatement ps = c.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?);"); // this creates a new user
+			ps.setInt(1, bookingId);
+			ps.setString(2, businessname);
+			ps.setString(3, customername);
+			ps.setString(4, data);
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private static ResultSet getBookingRow(int bookingId) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BookingsTable WHERE bookingId=?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setInt(1, bookingId);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
 }
