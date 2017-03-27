@@ -313,7 +313,7 @@ public class SQLiteConnection {
 		else return null;
 	}
 
-	private static ResultSet getBookingRow(int bookingId) throws SQLException {
+	public static ResultSet getBookingRow(int bookingId) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE bookingId=?";
@@ -327,7 +327,7 @@ public class SQLiteConnection {
 		else return null;
 		
 	}
-	private static ResultSet getBookingsByUsername(String username) throws SQLException {
+	public static ResultSet getBookingsByUsername(String username) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE username=?";
@@ -341,10 +341,10 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	private static ResultSet getBookingsByPeriodStart(String periodstartunixstamp) throws SQLException {
+	public static ResultSet getBookingsByPeriodStart(String periodstartunixstamp) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM BookingsTable WHERE starttimeunix=?";
+		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER)";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, periodstartunixstamp);
 		ResultSet rs = pst.executeQuery();

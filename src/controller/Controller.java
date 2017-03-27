@@ -2,7 +2,9 @@ package controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import database.SQLiteConnection;
@@ -25,14 +27,12 @@ public class Controller {
 	private User activeUser;
 	
 	private Timetable availability = new Timetable();
-	private ArrayList<Booking> bookings = new ArrayList<Booking>();
 	private boolean debugMode = false;
 	
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
 	
 	@SuppressWarnings("deprecation")
 	public Controller() {
-		bookings.add(new Booking("B00001","John", new Period(new Date(2017,3,12,7,0), new Date(2017,3,12,9,0))));
 		
 		//initialize view
 		Menu view = new Menu();
@@ -141,14 +141,14 @@ public class Controller {
 	}
 	
 	private void viewSummaryOfBookings() {
-		
-		if (bookings.size() == 0) {
+		Booking[] bookings = getFutureBookings();
+		if (bookings.length == 0) {
 			view.failure("View Booking Summaries", "No future bookings");
 		} else {
-			String[][] bookingsStringArray = new String[bookings.size()][];
+			String[][] bookingsStringArray = new String[bookings.length][];
 			
-			for (int i = 0; i < bookings.size(); i++) {
-				bookingsStringArray[i] = bookings.get(i).toStringArray();
+			for (int i = 0; i < bookings.length; i++) {
+				bookingsStringArray[i] = bookings[i].toStringArray();
 			}
 			
 			view.viewBookings(bookingsStringArray);
@@ -217,6 +217,30 @@ public class Controller {
 			return null;
 		}
 		
+	}
+	
+	protected Booking[] getFutureBookings() {
+		ResultSet rs;
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String currentTime = sdf.format(Calendar.getInstance().getTime());
+		try {
+			rs = SQLiteConnection.getBookingsByPeriodStart(currentTime);
+			
+			do {
+				bookings.add(new Booking(rs.getString(1),rs.getString(3) , new Period(sdf.parse(rs.getString(4)), sdf.parse(rs.getString(5)))));
+				
+			} while (rs.next());
+			
+			if (!bookings.isEmpty()) {
+				Booking[] b = new Booking[bookings.size()];
+				bookings.toArray(b);
+				return b;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return new Booking[0];
 	}
 	
 	private void dbg(String s) // fast way of adding System prints, dbg = debug
