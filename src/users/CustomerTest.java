@@ -1,7 +1,5 @@
 package users;
 
-import static org.junit.Assert.*;
-
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -12,22 +10,16 @@ public class CustomerTest {
 	
 	@Test
 	public void testGetPermissions1() {
-		if (!Arrays.equals(testCustomer.getPermissions(), new boolean[] {false, false, true, true, true, false, false, false, false, true})) {
-			fail("incorrect permissions");
-		}
+		assert(!Arrays.equals(testCustomer.getPermissions(), new boolean[] {false, false, true, true, true, false, false, false, false, true}));
 	}
 	
 	@Test
 	public void testGetPermissions2() {
-		if (Arrays.equals(testCustomer.getPermissions(), new boolean[] {true, true, false, false, false, false, false, false, false, true})) {
-			fail("Uses default User permissions");
-		}
+		assert(Arrays.equals(testCustomer.getPermissions(), new boolean[] {true, true, false, false, false, false, false, false, false, true}));
 	}
 
 	@Test
 	public void testToString() {
-		if (!testCustomer.toString().equals("custUsername:custPass:custName:custAddress:custPhoneNo")) {
-			fail("does not return 'custUsername:custPass:custName:custAddress:custPhoneNo'");
-		}
+		assert(!testCustomer.toString().equals("custUsername:custPass:custName:custAddress:custPhoneNo"));
 	}
 }
