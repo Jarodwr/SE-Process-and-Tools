@@ -65,7 +65,7 @@ public class SQLiteConnection {
 	}
 	
 	public static void createEmployeeTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS Employeeinfo ( employeeId integer primary key, businessname Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255), timetableId integer, Foreign Key(timetableId) references Timetableinfo(timetableId), Foreign Key(businessname) references Businessinfo(businessname))";
+		String sql = "CREATE TABLE IF NOT EXISTS Employeeinfo (businessname Varchar(255), employeeId integer primary key, name Varchar(255), address Varchar(255), mobileno Varchar(255), timetableId integer, Foreign Key(timetableId) references Timetableinfo(timetableId), Foreign Key(businessname) references Businessinfo(businessname))";
 				try {
 					Connection c = getDBConnection();
 					Statement stmt = c.createStatement();
@@ -274,17 +274,17 @@ public class SQLiteConnection {
 		}
 	}
 	
-	public static boolean createEmployee(String employeeId, String businessname, String name, String address, String mobileno, int timetableId) {
+	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno, int timetableId) {
 		Connection c = getDBConnection();
 		try {
-			ResultSet rs = getEmployeeRow(Integer.parseInt(employeeId)); // search through businessnames to check if this user currently exists
+			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {
 				return false;
 			}
 
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
-			ps.setInt(1, Integer.parseInt(employeeId));
+			ps.setInt(1, employeeId);
 			ps.setString(2, businessname);
 			ps.setString(3, name);
 			ps.setString(4, address);

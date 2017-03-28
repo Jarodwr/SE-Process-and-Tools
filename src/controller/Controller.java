@@ -104,17 +104,16 @@ public class Controller {
 			return null;
 		}
 		if (searchUser(loginDetails[0]).checkPassword(loginDetails[1])) {
-			
-			LOGGER.log(Level.FINE, "LOGIN: Failed");
-			//If the password is incorrect, display a failure message
-			view.failure("Login", "Incorrect Username/Password");
-			return null;
-		}
-		else {
 			LOGGER.log(Level.FINE, "LOGIN: Success");
 			//If the password is correct, display a success message
 			view.success("Login", "Welcome back, " + loginDetails[0] + "!");
 			return searchUser(loginDetails[0]);
+		}
+		else {
+			LOGGER.log(Level.FINE, "LOGIN: Failed");
+			//If the password is incorrect, display a failure message
+			view.failure("Login", "Incorrect Username/Password");
+			return null;
 		}
 	}
 	
@@ -176,26 +175,40 @@ public class Controller {
 	}
 
 	//Need to add logging for this once it is completed
-	private void addEmployee(String[] newEmployee) 
+	private boolean addEmployee(String[] newEmployee) 
 	{
-		String username = newEmployee[0];
-		String password = newEmployee[1];
-		String timetable = newEmployee[2];
+		String name = newEmployee[0];
+		String phonenumber = newEmployee[1];
+		String address = newEmployee[2];
+		String id = newEmployee[3];
 		
-		if(searchUser(username) == null)
+		if(!validate(name, "[A-Za-z]+"))
+  		{
+			view.failure("Add Employee", "Name is not Valid");
+			return false;
+		}
+		if(!validate(phonenumber, "[0-9]+"))
 		{
-			if (SQLiteConnection.createCustomer(username, password, timetable, null, null)) { /* TODO add cases for staff and owners */
-	
-				searchUser(username);
-			}
-			else
-			{
-				view.failure("Add Employee", "The entered username is already in the database");
-			}
+			view.failure("Add Employee", "Name is not Valid");
+			return false;
+		}
+		if(!validate(address, "[A-Za-z0-9']+"))
+		{
+			view.failure("Add Employee", "Name is not Valid");
+			return false;
+		}
+		
+		
+		
+		if (SQLiteConnection.createEmployee(Integer.parseInt(id), "", name, address, phonenumber, 0)) 
+		{ /* TODO add cases for staff and owners */
+			view.success("Add Employee", "Successfully added to the database");
+			return true;
 		}
 		else
 		{
-			view.failure("Add Employee", "The entered name is already in the database");
+			view.failure("Add Employee", "The entered username is already in the database");
+			return false;
 		}
 	}
 	
@@ -254,5 +267,17 @@ public class Controller {
 			System.out.println(e);
 		}
 		return new Booking[0];
+	}
+	
+	private boolean validate(String string, String regex)
+	{
+		if(string.matches(regex))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
