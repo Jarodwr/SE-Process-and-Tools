@@ -240,7 +240,6 @@ public class Controller {
 			}
 
 		} catch (Exception e) {
-			LOGGER.log(Level.WARNING, "SEARCH USER: Exception: " + e.getMessage());
 			return null;
 		}
 		
