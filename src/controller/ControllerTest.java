@@ -2,6 +2,7 @@ package controller;
 
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -60,32 +61,79 @@ public class ControllerTest {
 	}
 	
 	@Test
-	private void testGetBookingsAfter01() {
-		Booking[] testBooking = c.getBookingsAfter(sdf.parse("20170330123000"));
+	public void testGetBookingsAfter01() {
+		Booking[] testBooking;
+		try {
+			testBooking = c.getBookingsAfter(sdf.parse("20170330123000"));
+			assert(testBooking[0].getBookingId().equals("4"));
+			assert(testBooking[1].getBookingId().equals("3"));
+			assert(testBooking[2].getBookingId().equals("1"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	private void testGetBookingsAfter02() {
-		Booking[] testBooking = c.getBookingsAfter(new Date());
+	public void testGetBookingsAfter02() {
+		Booking[] testBooking;
+		try {
+			testBooking = c.getBookingsAfter(sdf.parse("00000000000000"));
+			assert(testBooking[0].getBookingId().equals("2"));
+			assert(testBooking[1].getBookingId().equals("4"));
+			assert(testBooking[2].getBookingId().equals("3"));
+			assert(testBooking[3].getBookingId().equals("1"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	private void testGetBookingsAfter03() {
-		Booking[] testBooking = c.getBookingsAfter(new Date());
+	public void testGetBookingsAfter03() {
+		Booking[] testBooking;
+		try {
+			testBooking = c.getBookingsAfter(sdf.parse("90170330123000"));
+			assert(testBooking.length == 0);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	private void testGetBookingsAfter04() {
-		Booking[] testBooking = c.getBookingsAfter(new Date());
+	public void testGetBookingsAfter04() {
+		Booking[] testBooking;
+		try {
+			testBooking = c.getBookingsAfter(sdf.parse("20170330123000"));
+			assert(testBooking[0].getBookingId() == "1");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	private void testGetBookingsAfter05() {
-		Booking[] testBooking = c.getBookingsAfter(new Date());
+	public void testGetBookingsAfter05() {
+		Booking[] testBooking;
+		try {
+			testBooking = c.getBookingsAfter(sdf.parse("20170330123000"));
+			assert(testBooking[0].getBookingId() == "1");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	private void testGetBookingsAfter06() {
-		Booking[] testBooking = c.getBookingsAfter(new Date());
+	public void testGetBookingsAfter06() {
+		Booking[] testBooking;
+		try {
+			testBooking = c.getBookingsAfter(sdf.parse("20170330123000"));
+			assert(testBooking[0].getBookingId() == "1");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
