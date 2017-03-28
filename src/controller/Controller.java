@@ -176,39 +176,26 @@ public class Controller {
 	}
 
 	//Need to add logging for this once it is completed
-	private boolean addEmployee(String[] newEmployee) 
+	private void addEmployee(String[] newEmployee) 
 	{
-		String name = newEmployee[0];
-		String phonenumber = newEmployee[1];
-		String address = newEmployee[2];
-		String id = newEmployee[3];
+		String username = newEmployee[0];
+		String password = newEmployee[1];
+		String timetable = newEmployee[2];
 		
-		if(!validate(name, "[A-Za-z]+"))
-  		{
-			view.failure("Add Employee", "Name is not Valid");
-			return false;
-		}
-		if(!validate(phonenumber, "[0-9]+"))
+		if(searchUser(username) == null)
 		{
-			view.failure("Add Employee", "Name is not Valid");
-			return false;
-		}
-		if(!validate(address, "[A-Za-z0-9']+"))
-		{
-			view.failure("Add Employee", "Name is not Valid");
-			return false;
-		}
-		
-		
-		
-		if (SQLiteConnection.createEmployee(Integer.parseInt(id), "", name, address, phonenumber, 0)) 
-		{ /* TODO add cases for staff and owners */
-			return true;
+			if (SQLiteConnection.createCustomer(username, password, timetable, null, null)) { /* TODO add cases for staff and owners */
+	
+				searchUser(username);
+			}
+			else
+			{
+				view.failure("Add Employee", "The entered username is already in the database");
+			}
 		}
 		else
 		{
-			view.failure("Add Employee", "The entered username is already in the database");
-			return false;
+			view.failure("Add Employee", "The entered name is already in the database");
 		}
 	}
 	
@@ -267,17 +254,5 @@ public class Controller {
 			System.out.println(e);
 		}
 		return new Booking[0];
-	}
-	
-	private boolean validate(String string, String regex)
-	{
-		if(string.matches(regex))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 	}
 }
