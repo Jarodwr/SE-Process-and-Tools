@@ -104,17 +104,16 @@ public class Controller {
 			return null;
 		}
 		if (searchUser(loginDetails[0]).checkPassword(loginDetails[1])) {
-			
-			LOGGER.log(Level.FINE, "LOGIN: Failed");
-			//If the password is incorrect, display a failure message
-			view.failure("Login", "Incorrect Username/Password");
-			return null;
-		}
-		else {
 			LOGGER.log(Level.FINE, "LOGIN: Success");
 			//If the password is correct, display a success message
 			view.success("Login", "Welcome back, " + loginDetails[0] + "!");
 			return searchUser(loginDetails[0]);
+		}
+		else {
+			LOGGER.log(Level.FINE, "LOGIN: Failed");
+			//If the password is incorrect, display a failure message
+			view.failure("Login", "Incorrect Username/Password");
+			return null;
 		}
 	}
 	
