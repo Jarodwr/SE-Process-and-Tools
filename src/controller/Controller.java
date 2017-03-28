@@ -202,6 +202,7 @@ public class Controller {
 		
 		if (SQLiteConnection.createEmployee(Integer.parseInt(id), "", name, address, phonenumber, 0)) 
 		{ /* TODO add cases for staff and owners */
+			view.success("Add Employee", "Successfully added to the database");
 			return true;
 		}
 		else
