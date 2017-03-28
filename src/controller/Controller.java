@@ -152,7 +152,7 @@ public class Controller {
 	}
 	
 	private void viewSummaryOfBookings() {
-		Booking[] bookings = getFutureBookings();
+		Booking[] bookings = getBookingsAfter(Calendar.getInstance().getTime());
 		if (bookings.length == 0) {
 			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
 			view.failure("View Booking Summaries", "No future bookings");
@@ -245,11 +245,11 @@ public class Controller {
 		
 	}
 	
-	protected Booking[] getFutureBookings() {
+	protected Booking[] getBookingsAfter(Date date) {
 		ResultSet rs;
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String currentTime = sdf.format(Calendar.getInstance().getTime());
+		String currentTime = sdf.format(date);
 		try {
 			rs = SQLiteConnection.getBookingsByPeriodStart(currentTime);
 			
