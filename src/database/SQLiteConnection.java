@@ -274,7 +274,7 @@ public class SQLiteConnection {
 		}
 	}
 	
-	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno, int availabilityId) {
+	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno, int timetableId) {
 		Connection c = getDBConnection();
 		try {
 			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
@@ -289,7 +289,7 @@ public class SQLiteConnection {
 			ps.setString(3, name);
 			ps.setString(4, address);
 			ps.setString(5, mobileno);
-			ps.setInt(6, availabilityId);
+			ps.setInt(6, timetableId);
 			ps.executeUpdate();
 			ps.close();
 
@@ -379,12 +379,12 @@ public class SQLiteConnection {
 		}
 	}
 
-	private static ResultSet getAvailabilityRow(int availabilityId) throws SQLException {
+	private static ResultSet getAvailabilityRow(int timetableId) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Timetableinfo WHERE availabilityId=?";
+		String query = "SELECT * FROM Timetableinfo WHERE timetableId=?";
 		PreparedStatement pst = c.prepareStatement(query);
-		pst.setInt(1, availabilityId);
+		pst.setInt(1, timetableId);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
