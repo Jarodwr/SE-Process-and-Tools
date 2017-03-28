@@ -61,7 +61,7 @@ public class ControllerTest {
 	
 	@Test
 	private void testGetBookingsAfter01() {
-		Booking[] testBooking = c.getBookingsAfter(sdf.parse("20170330123000") throws Exception);
+		Booking[] testBooking = c.getBookingsAfter(sdf.parse("20170330123000"));
 	}
 	
 	@Test
