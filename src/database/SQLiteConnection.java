@@ -77,7 +77,7 @@ public class SQLiteConnection {
 	}
 	
 	public static void createAvailabilitiesTable()  {
-		String sql = "CREATE TABLE IF NOT EXISTS EmployeeAvailabilities (timetableId integer primary key, businessname Varchar(255), name Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
+		String sql = "CREATE TABLE IF NOT EXISTS Timetableinfo (timetableId integer primary key, businessname Varchar(255), name Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
 		try {
 			Connection c = getDBConnection();
 			Statement stmt = c.createStatement();
