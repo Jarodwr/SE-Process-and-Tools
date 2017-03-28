@@ -1,5 +1,6 @@
 package period;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Period {
@@ -27,10 +28,11 @@ public class Period {
      */
 	public String[] toStringArray() 
 	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		@SuppressWarnings("deprecation")
-		String first = start.getHours() + ":" + start.getMinutes() + " " + start.getDay() + "/" + start.getMonth() + "/" + start.getYear();
+		String first = sdf.format(start);
 		@SuppressWarnings("deprecation")
-		String second = end.getHours() + ":" + end.getMinutes() + " " + end.getDay() + "/" + end.getMonth() + "/" + end.getYear();
+		String second = sdf.format(end);
 		String[] period = {first, second};
 		return period;
 	}

@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,6 +12,10 @@ import database.SQLiteConnection;
 import database.UserExistsException;
 
 import java.util.StringTokenizer;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+
+import com.sun.istack.internal.logging.Logger;
 
 import bookings.Booking;
 import main.Menu;
@@ -21,13 +26,12 @@ import users.Owner;
 import users.User;
 
 public class Controller {
-	
+	private Logger LOGGER = Logger.getLogger(Controller.class.getName(), Controller.class);
 	private Menu view = new Menu();
 	
 	private User activeUser;
 	
-	private Timetable availability = new Timetable();
-	private boolean debugMode = false;
+	//private boolean debugMode = false;
 	
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
 	
@@ -38,17 +42,12 @@ public class Controller {
 		Menu view = new Menu();
 
 		boolean breakLoop = false; // exit program case
-		debugMode = true; // remove this line while demoing
+		//debugMode = true; // remove this line while demoing
 		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
 		activeUser = null;
 		while(!breakLoop) {
 			if (activeUser != null) {
-				for (int i = 0; i < activeUser.getPermissions().length; i++) {
-					if (activeUser.getPermissions()[i])
-						dbg(" permissions: true");
-					else
-						dbg(" permissions: false");
-				}
+				LOGGER.log(Level.FINE, "Active user permissions : " + Arrays.toString(activeUser.getPermissions()));
 			}
 			int option = view.displayOptions(currentPerms);
 			switch(option) { /* TODO */
@@ -56,31 +55,41 @@ public class Controller {
 					if (activeUser != null) {
 						currentPerms = activeUser.getPermissions();
 						if (activeUser.isOwner()) {
-							dbg("Owner is logged in!");
+							LOGGER.log(Level.FINE, "User is owner");
 						}
 					}
 					
 				break;
-			case 1: activeUser = register(view.register());
+			case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
+				activeUser = register(view.register());
 				break;
-			case 2: viewCurrentBookings();
+			case 2: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW CURRENT BOOKINGS");
+				viewCurrentBookings();
 				break;
-			case 3: viewAvailableTimes();
+			case 3: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW AVAILABLE TIMES");
+				viewAvailableTimes();
 				break;
-			case 4: addNewBooking(view.addNewBooking());
+			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
+				addNewBooking(view.addNewBooking());
 				break;
-			case 5: viewSummaryOfBookings();
+			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
+				viewSummaryOfBookings();
 				break;
-			case 6: addWorkingTimes(view.addWorkingTimes());
+			case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
+				addWorkingTimes(view.addWorkingTimes());
 				break;
-			case 7: showWorkerAvailability();
+			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
+				showWorkerAvailability();
 				break;
-			case 8: addEmployee(view.addEmployee());
+			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
+				addEmployee(view.addEmployee());
 				break;
-			case 9: logout(view.logout());
+			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
+				logout(view.logout());
 			case 10: breakLoop = true;
 				break;
-			default: view.failure("Sorry you have provided an invalid option! Please try again", "");
+			default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
+				view.failure("Sorry you have provided an invalid option! Please try again", "");
 				break;
 			}
 			
@@ -88,7 +97,7 @@ public class Controller {
 	}
 	
 	protected User login(String[] loginDetails) {
-			dbg("loginDetails[0] = " + loginDetails[0] + ", loginDetails[1] = " + loginDetails[1]);
+		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
 		//Search for the user in the arrayList and make sure the password is correct
 		if (searchUser(loginDetails[0]) == null) {
 			view.failure("Login", "Incorrect Password");
@@ -96,12 +105,13 @@ public class Controller {
 		}
 		if (searchUser(loginDetails[0]).checkPassword(loginDetails[1])) {
 			
+			LOGGER.log(Level.FINE, "LOGIN: Failed");
 			//If the password is incorrect, display a failure message
-			view.failure("Login", "Incorrect Password");
+			view.failure("Login", "Incorrect Username/Password");
 			return null;
 		}
 		else {
-			
+			LOGGER.log(Level.FINE, "LOGIN: Success");
 			//If the password is correct, display a success message
 			view.success("Login", "Welcome back, " + loginDetails[0] + "!");
 			return searchUser(loginDetails[0]);
@@ -109,13 +119,14 @@ public class Controller {
 	}
 	
 	private User register(String[] userDetails){
-		
+		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
 		if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) { /* TODO add cases for staff and owners */
-
+			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");
 			return searchUser(userDetails[0]);
 		}
 		else
 		{
+			LOGGER.log(Level.FINE, "LOGIN: Failure, username already taken");
 			view.failure("Register", "The entered username is already in the database");
 			return null;
 		}
@@ -133,7 +144,7 @@ public class Controller {
 	}
 	
 	private void viewAvailableTimes() {
-		view.viewBookingAvailability(availability.toStringArray());
+		//view.viewBookingAvailability(availability.toStringArray());
 	}
 	
 	private void addNewBooking(String[] booking) {
@@ -143,6 +154,7 @@ public class Controller {
 	private void viewSummaryOfBookings() {
 		Booking[] bookings = getFutureBookings();
 		if (bookings.length == 0) {
+			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
 			view.failure("View Booking Summaries", "No future bookings");
 		} else {
 			String[][] bookingsStringArray = new String[bookings.length][];
@@ -150,7 +162,7 @@ public class Controller {
 			for (int i = 0; i < bookings.length; i++) {
 				bookingsStringArray[i] = bookings[i].toStringArray();
 			}
-			
+			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 			view.viewBookings(bookingsStringArray);
 		}
 	}
@@ -163,6 +175,7 @@ public class Controller {
 		
 	}
 
+	//Need to add logging for this once it is completed
 	private void addEmployee(String[] newEmployee) 
 	{
 		String username = newEmployee[0];
@@ -213,7 +226,7 @@ public class Controller {
 			}
 
 		} catch (Exception e) {
-			dbg(e.getMessage());
+			LOGGER.log(Level.WARNING, "SEARCH USER: Exception: " + e.getMessage());
 			return null;
 		}
 		
@@ -241,12 +254,5 @@ public class Controller {
 			System.out.println(e);
 		}
 		return new Booking[0];
-	}
-	
-	private void dbg(String s) // fast way of adding System prints, dbg = debug
-	{
-		if (this.debugMode) {
-			System.out.println("DEBUG: " + s); // fast af boi
-		}
 	}
 }
