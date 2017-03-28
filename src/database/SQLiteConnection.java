@@ -77,7 +77,7 @@ public class SQLiteConnection {
 	}
 	
 	public static void createAvailabilitiesTable()  {
-		String sql = "CREATE TABLE IF NOT EXISTS Timetableinfo (timetableId integer primary key, businessname Varchar(255), name Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
+		String sql = "CREATE TABLE IF NOT EXISTS Timetableinfo (timetableId integer primary key, businessname Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
 		try {
 			Connection c = getDBConnection();
 			Statement stmt = c.createStatement();
@@ -348,6 +348,43 @@ public class SQLiteConnection {
 		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER) ORDER BY CAST(starttimeunix AS INTEGER)";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, periodstartunixstamp);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	
+	public static boolean createAvailability(int availabilityId, String businessname, String availabilities) {
+		Connection c = getDBConnection();
+		try {
+			ResultSet rs = getAvailabilityRow(availabilityId); // search through businessnames to check if this user currently exists
+
+			if (rs != null) {
+				return false;
+			}
+
+			PreparedStatement ps = c.prepareStatement("INSERT INTO Timetableinfo VALUES (?, ?, ?);"); // this creates a new user
+			ps.setInt(1, availabilityId);
+			ps.setString(2, businessname);
+			ps.setString(3, availabilities);
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private static ResultSet getAvailabilityRow(int availabilityId) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Timetableinfo WHERE availabilityId=?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setInt(1, availabilityId);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {

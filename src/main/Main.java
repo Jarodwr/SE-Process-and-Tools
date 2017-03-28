@@ -13,6 +13,7 @@ public class Main {
 		SQLiteConnection.createTables(); // Create table if it doesn't exist for all info
 		debugCreateOwnerBusiness();
 		debugCreateBookingsTable();
+		debugCreateEmptyAvailability();
 		Controller bookingSystem = new Controller();
 	}
 	
@@ -26,6 +27,10 @@ public class Main {
 		SQLiteConnection.createBooking(2, "SARJ's Milk Business", "Joe", "20161011123000", "20181011173000", "test");
 		SQLiteConnection.createBooking(3, "SARJ's Milk Business", "Bob", "20170330143001", "20181011173000", "test");
 		SQLiteConnection.createBooking(4, "SARJ's Milk Business", "Bill", "20170330123000", "20181011173000", "test");
+	}
+	
+	public static void debugCreateEmptyAvailability() {
+		SQLiteConnection.createAvailability(0, "SARJ's Milk Business", " ");
 	}
 
 }
