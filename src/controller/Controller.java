@@ -190,12 +190,12 @@ public class Controller {
 		}
 		if(!validate(phonenumber, "[0-9]+"))
 		{
-			view.failure("Add Employee", "Name is not Valid");
+			view.failure("Add Employee", "Phone number is not Valid");
 			return false;
 		}
-		if(!validate(address, "[A-Za-z0-9']+"))
+		if(!validate(address, "[A-Za-z0-9' ]+"))
 		{
-			view.failure("Add Employee", "Name is not Valid");
+			view.failure("Add Employee", "Address is not Valid");
 			return false;
 		}
 		
@@ -203,7 +203,7 @@ public class Controller {
 		
 		if (SQLiteConnection.createEmployee(Integer.parseInt(id), "", name, address, phonenumber, 0)) 
 		{ /* TODO add cases for staff and owners */
-			view.success("Add Employee", "Successfully added to the database");
+			view.success("Add Employee", name + " was successfully added to the database");
 			return true;
 		}
 		else
