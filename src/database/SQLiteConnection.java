@@ -344,7 +344,7 @@ public class SQLiteConnection {
 	public static ResultSet getBookingsByPeriodStart(String periodstartunixstamp) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER)";
+		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER) ORDER BY CAST(starttimeunix AS INTEGER)";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, periodstartunixstamp);
 		ResultSet rs = pst.executeQuery();
