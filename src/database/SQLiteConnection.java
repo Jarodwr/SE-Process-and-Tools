@@ -274,7 +274,7 @@ public class SQLiteConnection {
 		}
 	}
 	
-	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno) {
+	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno, int availabilityId) {
 		Connection c = getDBConnection();
 		try {
 			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
@@ -283,12 +283,13 @@ public class SQLiteConnection {
 				return false;
 			}
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, employeeId);
 			ps.setString(2, businessname);
 			ps.setString(3, name);
 			ps.setString(4, address);
 			ps.setString(5, mobileno);
+			ps.setInt(6, availabilityId);
 			ps.executeUpdate();
 			ps.close();
 
