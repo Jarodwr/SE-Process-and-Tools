@@ -484,6 +484,7 @@ public class Menu {
 		String name;
 		String phoneNo;
 		String address;
+		String id;
 
 		System.out.print("Name: ");
 		name = scanner.nextLine();
@@ -493,8 +494,11 @@ public class Menu {
 		
 		System.out.print("Address: ");
 		address = scanner.nextLine();
+		
+		System.out.print("Employee ID: ");
+		id = scanner.nextLine();
 			
-		return new String[] {name, phoneNo, address};
+		return new String[] {name, phoneNo, address, id};
 	}
 	
 	/**
