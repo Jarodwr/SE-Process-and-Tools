@@ -356,17 +356,17 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	public static boolean createAvailability(int availabilityId, String businessname, String availabilities) {
+	public static boolean createAvailability(int timetableId, String businessname, String availabilities) {
 		Connection c = getDBConnection();
 		try {
-			ResultSet rs = getAvailabilityRow(availabilityId); // search through businessnames to check if this user currently exists
+			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {
 				return false;
 			}
 
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Timetableinfo VALUES (?, ?, ?);"); // this creates a new user
-			ps.setInt(1, availabilityId);
+			ps.setInt(1, timetableId);
 			ps.setString(2, businessname);
 			ps.setString(3, availabilities);
 			ps.executeUpdate();
