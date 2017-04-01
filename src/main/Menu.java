@@ -339,7 +339,7 @@ public class Menu {
 				
 				//Check if the length of the customer start time is currently the longest
 				if (j == 1 && bookings[i][j].length() > longeststartTimeLength)
-					longeststartTimeLength = bookings[i][j].length();
+					longeststartTimeLength = formatDate(bookings[i][j]).length();
 				
 				//Check if atleast this date is within seven days
 				if (j ==1) {
@@ -349,16 +349,15 @@ public class Menu {
 				
 				//Check if the length of the customer end time is currently the longest
 				if (j == 2 && bookings[i][j].length() > longestendTimeLength)
-					longestendTimeLength = bookings[i][j].length();
+					longestendTimeLength = formatDate(bookings[i][j]).length();
 			}
 		}
-		
 		
 					
 		//Menu Title			
 		System.out.println("\n--------------------\nBookings\n--------------------\n");
 
-		if (canPrintSomething) {
+		if (canPrintSomething) { // If there is any bookings within the next 7 days
 		/*Table Header*/
 		
 		String tableTitles = "     Customer Name"; //Customer table header
@@ -393,18 +392,18 @@ public class Menu {
 						/*Add enough spaces to keep table column length balanced*/
 						
 						if (j == 0) //Add spaces after Customer name
-							for (int k = 0; k < (longestNameLength - bookings[i][j].length()); k++)
+							for (int k = 0; k < ("Customer Name".length() - longestNameLength); k++)
 								System.out.print(" ");
 						
 						if (j == 1) //Add spaces after Booking Start Time
-							for (int k = 0; k < (longeststartTimeLength - bookings[i][j].length()); k++)
+							for (int k = 0; k < (bookings[i][j].length() - longeststartTimeLength); k++)
 								System.out.print(" ");
 						
 						if (j == 2) //Add spaces after Booking End Time
-							for (int k = 0; k < (longestendTimeLength - bookings[i][j].length()); k++)
+							for (int k = 0; k < ("End Period".length() - longestendTimeLength); k++)
 								System.out.print(" ");
 							
-						System.out.print("     "); //Create a gap between columns
+						//System.out.print("     "); //Create a gap between columns
 					}
 					System.out.println(); //create a new row
 				}
