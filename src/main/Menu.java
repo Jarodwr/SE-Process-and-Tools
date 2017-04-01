@@ -1,5 +1,10 @@
 package main;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Menu {
@@ -244,6 +249,70 @@ public class Menu {
 		}
 	}
 	
+	
+	
+	/**
+	 * Check if the given booking is within 7 days
+	 * @param bookingTime
+	 * @return success
+	 */
+	
+	public boolean checkBookingWithinWeek(String bookingTime) {
+		
+		/* Current Date and Time */
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		
+		try {
+		
+		/* Given Date and Time */
+		SimpleDateFormat formatedDate = new SimpleDateFormat("yyyyMMddHHmmss");
+		Date newDate = formatedDate.parse(bookingTime);
+		
+		/*Compare between the dates*/
+		  Calendar c=Calendar.getInstance();
+		  c.setTime(date);
+		  c.add(Calendar.DATE,7); //Add 7 days to the current date
+		  if(c.getTime().compareTo(newDate)<0){
+			  return false; //It's more than seven days.
+			  
+		  }
+		  else
+		  {
+			  return true; //It's less than 7 days.
+		  }
+		} catch (ParseException e) {
+	        e.printStackTrace();
+	    }
+		
+		// Something clearly went wrong if we get here
+		return false;
+		
+		
+		
+	}
+	
+	/**
+	 * Converts date to a readable format
+	 * @param date
+	 * @return farmatedDate
+	 */
+	
+	public String formatDate(String date) {
+	
+		try {
+		
+			SimpleDateFormat formatedDate = new SimpleDateFormat("yyyyMMddHHmmss");
+			Date newDate = formatedDate.parse(date);
+			formatedDate.applyPattern("dd/MM/yyyy HH:mm:ss");
+			return formatedDate.format(newDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				}
+	
+		return "";
+		}
+	
 	/**
 	 * Prints all bookings to screen
 	 * @param [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod]
@@ -254,6 +323,7 @@ public class Menu {
 		int longestNameLength = 0; //Store the longest customer name (in length of the string)
 		int longeststartTimeLength = 0; //Store the longest booking start period (in length of the string)
 		int longestendTimeLength = 0; //Store the longest booking end period (in length of the string)
+		Boolean canPrintSomething = false; //Check if there is something within 7 days
 		
 		/*
 		 * In order to make sure the table is printed properly,
@@ -271,6 +341,12 @@ public class Menu {
 				if (j == 1 && bookings[i][j].length() > longeststartTimeLength)
 					longeststartTimeLength = bookings[i][j].length();
 				
+				//Check if atleast this date is within seven days
+				if (j ==1) {
+					if (checkBookingWithinWeek(bookings[i][j])) //Check if we need to bother print the table
+						canPrintSomething = true; //Yes we can print the table
+				}
+				
 				//Check if the length of the customer end time is currently the longest
 				if (j == 2 && bookings[i][j].length() > longestendTimeLength)
 					longestendTimeLength = bookings[i][j].length();
@@ -282,7 +358,7 @@ public class Menu {
 		//Menu Title			
 		System.out.println("\n--------------------\nBookings\n--------------------\n");
 
-		
+		if (canPrintSomething) {
 		/*Table Header*/
 		
 		String tableTitles = "     Customer Name"; //Customer table header
@@ -309,8 +385,10 @@ public class Menu {
 				for (int i=0;i < bookings.length; i++) { //Go through all the bookings rows
 					for (int j = 0; j < bookings[i].length; j++) { //Go through all the bookings columns
 						
-						
-						System.out.print("     "+bookings[i][j]); //Print out the current booking detail
+						if (j == 1 || j == 2)
+							System.out.print("     "+formatDate(bookings[i][j])); //Print out dates in correct format
+						else
+							System.out.print("     "+bookings[i][j]); //Print out customer name
 						
 						/*Add enough spaces to keep table column length balanced*/
 						
@@ -333,6 +411,9 @@ public class Menu {
 				
 				for (int k = 0; k < (tableTitles.length()); k++)
 					System.out.print("-"); //Add dashes "-" under the table
+		} else {
+			System.out.println("There are no bookings within the next seven days.");
+		}
 				
 				System.out.println("\n\n Press any key to go back to Menu...");
 				
