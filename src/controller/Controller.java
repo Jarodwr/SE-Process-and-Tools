@@ -1,7 +1,6 @@
 package controller;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,10 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import database.SQLiteConnection;
-import database.UserExistsException;
+import employee.Employee;
 
-import java.util.StringTokenizer;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 
 import com.sun.istack.internal.logging.Logger;
@@ -20,7 +17,6 @@ import com.sun.istack.internal.logging.Logger;
 import bookings.Booking;
 import main.Menu;
 import period.Period;
-import timetable.Timetable;
 import users.Customer;
 import users.Owner;
 import users.User;
@@ -28,16 +24,14 @@ import users.User;
 public class Controller {
 	private Logger LOGGER = Logger.getLogger(Controller.class.getName(), Controller.class);
 	private Menu view = new Menu();
-	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	private User activeUser;
 	
 	//private boolean debugMode = false;
 	
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
 	
-	@SuppressWarnings("deprecation")
 	public Controller() {
-		
 		
 	}
 	
@@ -55,15 +49,16 @@ public class Controller {
 						LOGGER.log(Level.FINE, "Active user permissions : " + Arrays.toString(activeUser.getPermissions()));
 					}
 					int option = view.displayOptions(currentPerms);
-					switch(option) { /* TODO */
-					case 0: activeUser = login(view.login());
+					switch(option) {
+					
+					case 0: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGIN");
+					activeUser = login(view.login());
 							if (activeUser != null) {
 								currentPerms = activeUser.getPermissions();
 								if (activeUser.isOwner()) {
 									LOGGER.log(Level.FINE, "User is owner");
 								}
-							}
-							
+							}	
 						break;
 					case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
 						activeUser = register(view.register());
@@ -104,34 +99,28 @@ public class Controller {
 	protected User login(String[] loginDetails) {
 		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
 		//Search for the user in the arrayList and make sure the password is correct
-		if (searchUser(loginDetails[0]) == null) {
-			view.failure("Login", "Incorrect Password");
-			return null;
-		}
-		if (searchUser(loginDetails[0]).checkPassword(loginDetails[1])) {
-			
+		User user = authenticate(loginDetails[0], loginDetails[1]);
+
+		if (user == null) {
 			LOGGER.log(Level.FINE, "LOGIN: Failed");
-			//If the password is incorrect, display a failure message
 			view.failure("Login", "Incorrect Username/Password");
-			return null;
-		}
-		else {
+		} else {
 			LOGGER.log(Level.FINE, "LOGIN: Success");
-			//If the password is correct, display a success message
-			view.success("Login", "Welcome back, " + loginDetails[0] + "!");
-			return searchUser(loginDetails[0]);
+			view.success("Login", "Welcome back, " + user.getUsername());
 		}
+		
+		return user;
 	}
 	
-	private User register(String[] userDetails){
+	protected User register(String[] userDetails){
 		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
-		if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) { /* TODO add cases for staff and owners */
+		if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
 			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");
 			return searchUser(userDetails[0]);
 		}
 		else
 		{
-			LOGGER.log(Level.FINE, "LOGIN: Failure, username already taken");
+			LOGGER.log(Level.FINE, "REGISTER: Failure, username already taken");
 			view.failure("Register", "The entered username is already in the database");
 			return null;
 		}
@@ -157,18 +146,23 @@ public class Controller {
 	}
 	
 	private void viewSummaryOfBookings() {
-		Booking[] bookings = getBookingsAfter(Calendar.getInstance().getTime());
-		if (bookings.length == 0) {
-			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
-			view.failure("View Booking Summaries", "No future bookings");
-		} else {
-			String[][] bookingsStringArray = new String[bookings.length][];
-			
-			for (int i = 0; i < bookings.length; i++) {
-				bookingsStringArray[i] = bookings[i].toStringArray();
+		try {
+			Booking[] bookings = bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart(sdf.format(Calendar.getInstance().getTime())));
+
+			if (bookings.length == 0) {
+				LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
+				view.failure("View Booking Summaries", "No future bookings");
+			} else {
+				String[][] bookingsStringArray = new String[bookings.length][];
+				
+				for (int i = 0; i < bookings.length; i++) {
+					bookingsStringArray[i] = bookings[i].toStringArray();
+				}
+				LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
+				view.viewBookings(bookingsStringArray);
 			}
-			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
-			view.viewBookings(bookingsStringArray);
+		} catch (Exception e) {
+			
 		}
 	}
 	
@@ -250,30 +244,6 @@ public class Controller {
 		
 	}
 	
-	protected Booking[] getBookingsAfter(Date date) {
-		ResultSet rs;
-		ArrayList<Booking> bookings = new ArrayList<Booking>();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String currentTime = sdf.format(date);
-		try {
-			rs = SQLiteConnection.getBookingsByPeriodStart(currentTime);
-			
-			do {
-				bookings.add(new Booking(rs.getString(1),rs.getString(3) , new Period(sdf.parse(rs.getString(4)), sdf.parse(rs.getString(5)))));
-				
-			} while (rs.next());
-			
-			if (!bookings.isEmpty()) {
-				Booking[] b = new Booking[bookings.size()];
-				bookings.toArray(b);
-				return b;
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return new Booking[0];
-	}
-	
 	private boolean validate(String string, String regex)
 	{
 		if(string.matches(regex))
@@ -284,5 +254,57 @@ public class Controller {
 		{
 			return false;
 		}
+	}
+	
+	protected Booking[] bookingResultsetToArray(ResultSet rs) {
+		
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		try {
+			do {
+				bookings.add(new Booking(rs.getString(1),rs.getString(3) , new Period(sdf.parse(rs.getString(4)), sdf.parse(rs.getString(5)))));
+				
+			} while (rs.next());
+		} catch (Exception e) {
+			
+		}
+		if (!bookings.isEmpty()) {
+			Booking[] b = new Booking[bookings.size()];
+			bookings.toArray(b);
+			return b;
+		} else {
+			return new Booking[0];
+		}
+	}
+	
+	protected User authenticate(String username, String password) {
+		User found = searchUser(username);
+		System.out.println(found.checkPassword(password));
+		if (found != null && found.checkPassword(password)) {
+			return found;
+		}
+		return null;
+	}
+	
+	protected String[] getEmployeeList(ResultSet rs) {
+		
+		ArrayList<String> employees = new ArrayList<String>();
+		try {
+			do {
+				employees.add(rs.getString(1) + ":" + rs.getString(3));
+			} while (rs.next());
+		} catch (Exception e) {
+			
+		}
+		if (!employees.isEmpty()) {
+			String[] b = new String[employees.size()];
+			employees.toArray(b);
+			return b;
+		} else {
+			return null;
+		}
+	}
+	
+	protected Calendar getEmployeeAvailability(String employeeID) {
+		return null;
 	}
 }

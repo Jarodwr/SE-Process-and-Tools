@@ -50,7 +50,7 @@ public abstract class User {
    * @return boolean Returns false if the password is incorrect
    */
 	public boolean checkPassword(String password) {
-		return false;
+		return password.equals(this.password);
 	}
 	
 	public boolean[] getPermissions() {
