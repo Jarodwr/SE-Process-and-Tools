@@ -38,62 +38,67 @@ public class Controller {
 	@SuppressWarnings("deprecation")
 	public Controller() {
 		
+		
+	}
+	
+	public void run()
+	{
 		//initialize view
-		Menu view = new Menu();
+				Menu view = new Menu();
 
-		boolean breakLoop = false; // exit program case
-		//debugMode = true; // remove this line while demoing
-		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
-		activeUser = null;
-		while(!breakLoop) {
-			if (activeUser != null) {
-				LOGGER.log(Level.FINE, "Active user permissions : " + Arrays.toString(activeUser.getPermissions()));
-			}
-			int option = view.displayOptions(currentPerms);
-			switch(option) { /* TODO */
-			case 0: activeUser = login(view.login());
+				boolean breakLoop = false; // exit program case
+				//debugMode = true; // remove this line while demoing
+				boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
+				activeUser = null;
+				while(!breakLoop) {
 					if (activeUser != null) {
-						currentPerms = activeUser.getPermissions();
-						if (activeUser.isOwner()) {
-							LOGGER.log(Level.FINE, "User is owner");
-						}
+						LOGGER.log(Level.FINE, "Active user permissions : " + Arrays.toString(activeUser.getPermissions()));
+					}
+					int option = view.displayOptions(currentPerms);
+					switch(option) { /* TODO */
+					case 0: activeUser = login(view.login());
+							if (activeUser != null) {
+								currentPerms = activeUser.getPermissions();
+								if (activeUser.isOwner()) {
+									LOGGER.log(Level.FINE, "User is owner");
+								}
+							}
+							
+						break;
+					case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
+						activeUser = register(view.register());
+						break;
+					case 2: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW CURRENT BOOKINGS");
+						viewCurrentBookings();
+						break;
+					case 3: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW AVAILABLE TIMES");
+						viewAvailableTimes();
+						break;
+					case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
+						addNewBooking(view.addNewBooking());
+						break;
+					case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
+						viewSummaryOfBookings();
+						break;
+					case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
+						addWorkingTimes(view.addWorkingTimes());
+						break;
+					case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
+						showWorkerAvailability();
+						break;
+					case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
+						addEmployee(view.addEmployee());
+						break;
+					case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
+						logout(view.logout());
+					case 10: breakLoop = true;
+						break;
+					default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
+						view.failure("Sorry you have provided an invalid option! Please try again", "");
+						break;
 					}
 					
-				break;
-			case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
-				activeUser = register(view.register());
-				break;
-			case 2: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW CURRENT BOOKINGS");
-				viewCurrentBookings();
-				break;
-			case 3: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW AVAILABLE TIMES");
-				viewAvailableTimes();
-				break;
-			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
-				addNewBooking(view.addNewBooking());
-				break;
-			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
-				viewSummaryOfBookings();
-				break;
-			case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
-				addWorkingTimes(view.addWorkingTimes());
-				break;
-			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
-				showWorkerAvailability();
-				break;
-			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
-				addEmployee(view.addEmployee());
-				break;
-			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
-				logout(view.logout());
-			case 10: breakLoop = true;
-				break;
-			default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
-				view.failure("Sorry you have provided an invalid option! Please try again", "");
-				break;
-			}
-			
-		}
+				}
 	}
 	
 	protected User login(String[] loginDetails) {

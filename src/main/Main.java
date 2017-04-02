@@ -15,6 +15,7 @@ public class Main {
 		debugCreateBookingsTable();
 		debugCreateEmptyAvailability();
 		Controller bookingSystem = new Controller();
+		bookingSystem.run();
 	}
 	
 	public static void debugCreateOwnerBusiness() {
