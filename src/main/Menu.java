@@ -315,7 +315,7 @@ public class Menu {
 	
 	/**
 	 * Prints all bookings to screen
-	 * @param [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod]
+	 * @param [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod, 3 - services]
 	 */
 	public void viewBookings(String[][] bookings) {
 		
@@ -323,8 +323,8 @@ public class Menu {
 		int longestNameLength = 0; //Store the longest customer name (in length of the string)
 		int longeststartTimeLength = 0; //Store the longest booking start period (in length of the string)
 		int longestendTimeLength = 0; //Store the longest booking end period (in length of the string)
-		Boolean canPrintSomething = false; //Check if there is something within 7 days
-		
+		int longestServicesLength = 0; //Store the longest booking end period (in length of the string)
+		Boolean canPrintSomething = false; // Check if there is something within 7 days
 		/*
 		 * In order to make sure the table is printed properly,
 		 * we need need to make sure that the cells are balanced in length
@@ -350,6 +350,10 @@ public class Menu {
 				//Check if the length of the customer end time is currently the longest
 				if (j == 2 && bookings[i][j].length() > longestendTimeLength)
 					longestendTimeLength = formatDate(bookings[i][j]).length();
+				
+				//Check if the length of the customer services is currently the longest
+				if (j == 3 && bookings[i][j].length() > longestServicesLength)
+					longestServicesLength = formatDate(bookings[i][j]).length();
 			}
 		}
 		
@@ -373,6 +377,10 @@ public class Menu {
 		for (int k = 0; k < (longestendTimeLength - "End Period".length()); k++)
 			tableTitles += " "; //Add Spaces to balance the table column length
 		
+		tableTitles += "   | Services"; //Services table header
+		for (int k = 0; k < (longestServicesLength - "Services".length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
 		System.out.println(tableTitles); //Print out the table header titles
 		
 		for (int k = 0; k < (tableTitles.length()); k++)
@@ -382,10 +390,13 @@ public class Menu {
 		
 		
 				for (int i=0;i < bookings.length; i++) { //Go through all the bookings rows
+					
+					
+					if (checkBookingWithinWeek(bookings[i][1])) { //Check if this is within 7 days
 					for (int j = 0; j < bookings[i].length; j++) { //Go through all the bookings columns
 						
 						if (j == 1 || j == 2)
-							System.out.print("     "+formatDate(bookings[i][j])); //Print out dates in correct format
+								System.out.print("     "+formatDate(bookings[i][j])); //Print out dates in correct format
 						else
 							System.out.print("     "+bookings[i][j]); //Print out customer name
 						
@@ -402,10 +413,15 @@ public class Menu {
 						if (j == 2) //Add spaces after Booking End Time
 							for (int k = 0; k < ("End Period".length() - longestendTimeLength); k++)
 								System.out.print(" ");
+						
+						if (j == 3) //Add spaces after Servies
+							for (int k = 0; k < ("Services".length() - longestServicesLength); k++)
+								System.out.print(" ");
 							
-						//System.out.print("     "); //Create a gap between columns
+						
 					}
 					System.out.println(); //create a new row
+					}
 				}
 				
 				for (int k = 0; k < (tableTitles.length()); k++)
@@ -552,6 +568,7 @@ public class Menu {
 	public void showEmployeeAvailability(String[][][] employeeTimetables) {
 		
 	}
+	
 	
 	/**
 	 * Views screen for adding new employees with working times
