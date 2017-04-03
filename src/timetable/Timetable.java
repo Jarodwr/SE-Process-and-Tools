@@ -1,6 +1,7 @@
 package timetable;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import period.Period;
 
@@ -20,7 +21,15 @@ public class Timetable {
 	 * @return Returns true if there is no clash and the period is 
 	 * successfully added
 	 */
-	public boolean addPeriod(String start, String end) {
+	public boolean addPeriod(Period newPeriod) {
+		for (int i = 0; i < periods.size(); i++) {
+			Period combined = periods.get(i).combineWith(newPeriod);
+			if (combined != null) {
+				newPeriod = combined;
+				periods.remove(periods.get(i));
+				i = 0;
+			}
+		}
 		return false;
 	}
 	
@@ -29,8 +38,14 @@ public class Timetable {
 	 * @param start This parameter is used to locate the period in question
 	 * @return If successfully removed, will return true
 	 */
-	public boolean removePeriod(String start) {
+	public boolean removePeriod(Period period) {
 		return false;
+	}
+	
+	public Period[] getAllPeriods() {
+		Period[] p = new Period[periods.size()];
+		periods.toArray(p);
+		return p;
 	}
 
 	/**
@@ -61,5 +76,20 @@ public class Timetable {
 			timetable[i] = periods.get(i).toStringArray();
 		}
 		return timetable;
+	}
+	
+	public void mergeTimetable(String timetable) {
+		StringTokenizer st = new StringTokenizer(timetable, "|");
+		while (st.hasMoreTokens()) {
+			StringTokenizer p = new StringTokenizer(st.nextToken());
+			addPeriod(new Period(p.nextToken(), p.nextToken()));
+		}
+	}
+	
+	public void mergeTimetable(Timetable timetable) {
+		Period[] periods = timetable.getAllPeriods();
+		for (Period p : periods) {
+			addPeriod(p);
+		}
 	}
 }

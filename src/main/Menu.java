@@ -544,12 +544,29 @@ public class Menu {
 		return workingTimes;
 	}
 	
+//	/**
+//	 * prints employee timetables
+//	 * @param employeeTimetables employee1Username:timetable*employee2Username:timetable*employee3Username*timetable
+//	 * @param [employee][0 - details, 1 - timetable][]
+//	 */
+//	public void showEmployeeAvailability(String[][][] employeeTimetables) {
+//		
+//	}
+	
+	//REPLACEMENT FOR showEmployeeAvailability(String[][][] employeeTimetables)
+	
 	/**
-	 * prints employee timetables
-	 * @param employeeTimetables employee1Username:timetable*employee2Username:timetable*employee3Username*timetable
-	 * @param [employee][0 - details, 1 - timetable][]
+	 * @param employees [employee][1 - ID, 2 - name]
+	 * @return ID of chosen employee, return null if no employee chosen
 	 */
-	public void showEmployeeAvailability(String[][][] employeeTimetables) {
+	public String showEmployeeList(String[][] employees) {
+		return "";
+	}
+	
+	/**
+	 * @param timetable [timetable][period][start, end]
+	 */
+	public void showTimetable(String[][] timetable) {
 		
 	}
 	

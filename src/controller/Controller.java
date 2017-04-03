@@ -144,9 +144,8 @@ public class Controller {
 	
 	/* doesn't work yet don't use */
 	private Timetable getAvailableTimes() {
-		/*
+		
 		Timetable t = new Timetable();
-		Timetable temp = new Timetable();
 		try {
 			ResultSet rsEmployees = SQLiteConnection.getAllEmployees();
 			ResultSet rsTimetables;
@@ -155,21 +154,19 @@ public class Controller {
 				return null;
 			}
 			while(rsEmployees.next()) {
-				rsTimetables = SQLiteConnection.getEmployeeAvailability(rsEmployees.getString("employeeId"));
+				rsTimetables = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
 				if (!rsTimetables.next()) {
 					continue;
 				}
-				temp.ParseStringtoArray(rsEmployees.getString("availability"));
-				t.mergeTimetable(temp);
+				t.mergeTimetable(rsEmployees.getString("availability"));
 				
 			}
 			return t;
 		}
 		catch(Exception e) {
 			return null;
-		} */
+		}
 		//view.viewBookingAvailability(availability.toStringArray());
-		return null;
 	}
 	
 	private void addNewBooking(String[] booking) {
@@ -202,7 +199,19 @@ public class Controller {
 	}
 	
 	private void showWorkerAvailability() {
-		
+		try {
+			String employeeID;
+			do {
+				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
+				Timetable t = new Timetable();
+				t.mergeTimetable(SQLiteConnection.getEmployeeAvailability(Integer.parseInt(employeeID)).getString(1));
+				view.showTimetable(t.toStringArray());
+			} while(employeeID != null);
+
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	//Need to add logging for this once it is completed
@@ -316,26 +325,22 @@ public class Controller {
 		return null;
 	}
 	
-	protected String[] getEmployeeList(ResultSet rs) {
+	protected String[][] getEmployeeList(ResultSet rs) {
 		
-		ArrayList<String> employees = new ArrayList<String>();
+		ArrayList<String[]> employees = new ArrayList<String[]>();
 		try {
 			do {
-				employees.add(rs.getString(1) + ":" + rs.getString(3));
+				employees.add(new String[] {rs.getString(1), rs.getString(3)});
 			} while (rs.next());
 		} catch (Exception e) {
 			
 		}
 		if (!employees.isEmpty()) {
-			String[] b = new String[employees.size()];
+			String[][] b = new String[employees.size()][];
 			employees.toArray(b);
 			return b;
 		} else {
 			return null;
 		}
-	}
-	
-	protected Calendar getEmployeeAvailability(String employeeID) {
-		return null;
 	}
 }
