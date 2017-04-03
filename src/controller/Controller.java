@@ -17,6 +17,7 @@ import com.sun.istack.internal.logging.Logger;
 import bookings.Booking;
 import main.Menu;
 import period.Period;
+import timetable.Timetable;
 import users.Customer;
 import users.Owner;
 import users.User;
@@ -138,7 +139,37 @@ public class Controller {
 	}
 	
 	private void viewAvailableTimes() {
+		
+	}
+	
+	/* doesn't work yet don't use */
+	private Timetable getAvailableTimes() {
+		/*
+		Timetable t = new Timetable();
+		Timetable temp = new Timetable();
+		try {
+			ResultSet rsEmployees = SQLiteConnection.getAllEmployees();
+			ResultSet rsTimetables;
+			if (!rsEmployees.next()) {
+				LOGGER.log(Level.WARNING, "No employees registered in the system");
+				return null;
+			}
+			while(rsEmployees.next()) {
+				rsTimetables = SQLiteConnection.getEmployeeAvailability(rsEmployees.getString("employeeId"));
+				if (!rsTimetables.next()) {
+					continue;
+				}
+				temp.ParseStringtoArray(rsEmployees.getString("availability"));
+				t.mergeTimetable(temp);
+				
+			}
+			return t;
+		}
+		catch(Exception e) {
+			return null;
+		} */
 		//view.viewBookingAvailability(availability.toStringArray());
+		return null;
 	}
 	
 	private void addNewBooking(String[] booking) {

@@ -111,6 +111,18 @@ public class SQLiteConnection {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	public static void createServicesTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS ServicesTable (servicename Varchar(255) Primary Key, serviceprice integer, serviceminutes integer)"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
+		try {
+			Connection c = getDBConnection();
+			Statement stmt = c.createStatement();
+	            stmt.execute(sql);
+		}
+		catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
 		
 	
 	public static ResultSet getUserRow(String username) throws SQLException {
