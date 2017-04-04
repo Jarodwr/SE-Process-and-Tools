@@ -60,7 +60,8 @@ public class Timetable {
 		 {
 		 	string += periods.get(i).toString();
 		 
-		 	if(periods.get(i+1) != null) {
+		 	if(periods.get(i+1) != null)
+		 	{
 		 		string += "|";
 		 	}
 		 }
@@ -70,8 +71,9 @@ public class Timetable {
 	public String[][] toStringArray() 
 	{
 		String[][] timetable = new String[periods.size()][2];
-		
-		for(int i = 0; i < periods.size(); i++) {
+		 		
+		for(int i = 0; i > periods.size(); i++)
+		{
 			timetable[i] = periods.get(i).toStringArray();
 		}
 		return timetable;

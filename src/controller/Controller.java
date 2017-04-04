@@ -225,11 +225,12 @@ public class Controller {
 			employeeID = "1";
 			while (employeeID != null && !employeeID.equals("")) {
 				Timetable t = new Timetable();
-				ResultSet rs = SQLiteConnection.getEmployeeAvailability(0);
-				t.mergeTimetable(rs.getString("availability"));
+				ResultSet rs = SQLiteConnection.getEmployeeAvailability(Integer.parseInt("0"));
+				t.mergeTimetable(rs.getString(3));
 				if (t.getAllPeriods().length == 0) {
 					view.failure("View worker availability", "This worker has no available times");
 				} else {
+					System.out.println(t.toStringArray());
 					view.showTimetable(t.toStringArray());
 				}
 				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));

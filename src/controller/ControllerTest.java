@@ -18,10 +18,21 @@ public class ControllerTest {
 
 	static Controller c = new Controller();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	//customer login test data
 	static String[] testData1 = new String[2];
 	static String[] testData2 = new String[2];
 	static String[] testData3 = new String[2];
 	static String[] testData4 = new String[2];
+	//owner login test data
+	static String[] testData5 = new String[2];
+	static String[] testData6 = new String[2];
+	static String[] testData7 = new String[2];
+	static String[] testData8 = new String[2];
+	//registration test data
+	static String[] testData9 = new String[5];
+	static String[] testData10 = new String[5];
+
+	
 	@Before
 	public void setup()
 	{
@@ -36,8 +47,33 @@ public class ControllerTest {
 		
 		testData4[0] = "admin";
 		testData4[1] = "password";
+		
+		testData5[0] = "OwnerTest";
+		testData5[1] = "password";
+		
+		testData6[0] = "OwnerTest1";
+		testData6[1] = "1234";
+		
+		testData7[0] = "OwnerTest1";
+		testData7[1] = "password";
+		
+		testData8[0] = "Ownertest";
+		testData8[1] = "password";
+		
+		testData9[0] = "Ownertest";
+		testData9[1] = "password";
+		testData9[2] = "Russell";
+		testData9[3] = "Melbourne";
+		testData9[4] = "0387656789";
+		
+		testData10[0] = "admin";
+		testData10[1] = "password";
+		testData10[2] = "Russell";
+		testData10[3] = "Melbourne";
+		testData10[4] = "0387656789";
 	}
 	
+	//customer logining in test cases
 	@Test
 	public void customerlogin01() 
 	{
@@ -59,7 +95,45 @@ public class ControllerTest {
 	@Test
 	public void customerlogin04() 
 	{
-		assert(c.login(testData4) != null);
+		assert(!c.login(testData4).isOwner());
+	}
+	
+	//owner logging in test cases
+	@Test
+	public void ownererlogin01() 
+	{
+		assert(c.login(testData5) == null);
+	}
+	
+	@Test
+	public void ownererlogin02() 
+	{
+		assert(c.login(testData6) == null);
+	}
+	
+	@Test
+	public void ownererlogin03() 
+	{
+		assert(c.login(testData7) == null);
+	}
+	
+	@Test
+	public void ownererlogin04() 
+	{
+		assert(c.login(testData8).isOwner());
+	}
+	
+	//register a customer tests
+	@Test
+	public void customerregister01() 
+	{
+		assert(c.register(testData9).equals(null));
+	}
+	
+	@Test
+	public void customerregister02() 
+	{
+		assert(!c.register(testData10).equals(null));
 	}
 	
 	@Test
@@ -140,4 +214,5 @@ public class ControllerTest {
 			e.printStackTrace();
 		}
 	}
+	
 }
