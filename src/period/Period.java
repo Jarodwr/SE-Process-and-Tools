@@ -62,7 +62,6 @@ public class Period {
 	{
 		String first = sdf.format(start);
 		String second = sdf.format(end);
-		String[] period = {first, second};
-		return period;
+		return new String[]{first, second};
 	}
 }
