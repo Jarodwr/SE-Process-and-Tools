@@ -198,6 +198,27 @@ public class SQLiteConnection {
 		}
 	}
 	
+	public static boolean deleteCustomer(String username) {
+		Connection c = getDBConnection();
+		try {
+			ResultSet rs = getUserRow(username); // search through businessnames to check if this user currently exists
+
+			if (rs == null) {
+				return false;
+			}
+			
+			String query = "DELETE FROM Userinfo WHERE username = ?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, username);
+			pst.executeUpdate();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public static boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
 		Connection c = getDBConnection();
 		Boolean needToAddUser = true;
@@ -286,6 +307,27 @@ public class SQLiteConnection {
 		}
 	}
 	
+	public static boolean deleteBooking(int bookingId, String businessname) {
+		Connection c = getDBConnection();
+		try {
+			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
+
+			if (rs == null) {
+				return false;
+			}
+			
+			String query = "DELETE FROM BookingsTable WHERE bookingId = ?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setInt(1, bookingId);
+			pst.executeUpdate();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno, int timetableId) {
 		Connection c = getDBConnection();
 		try {
@@ -311,6 +353,28 @@ public class SQLiteConnection {
 			return false;
 		}
 	}
+	
+	public static boolean deleteEmployee(int employeeId, String businessname) {
+		Connection c = getDBConnection();
+		try {
+			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
+
+			if (rs == null) {
+				return false;
+			}
+			
+			String query = "DELETE FROM Employeeinfo WHERE employeeId = ?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setInt(1, employeeId);
+			pst.executeUpdate();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	
 	private static ResultSet getEmployeeRow(int employeeId) throws SQLException {
 		Connection c = getDBConnection();
