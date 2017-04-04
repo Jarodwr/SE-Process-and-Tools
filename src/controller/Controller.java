@@ -200,6 +200,23 @@ public class Controller {
 		
 	}
 	
+	private void showWorkingTimes() {
+		try {
+			String employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
+			while (!employeeID.equals("")) {
+				Timetable t = new Timetable();
+				ResultSet rs = SQLiteConnection.getEmployeeWorkingTimes(Integer.parseInt(employeeID), /*unixtimestamp for start of week*/);
+				t.mergeTimetable(rs.getString(1));
+				view.showTimetable(t.toStringArray());
+				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 	private void showWorkerAvailability() {
 		try {
 			String employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
@@ -210,7 +227,7 @@ public class Controller {
 				view.showTimetable(t.toStringArray());
 				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
 			}
-
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
