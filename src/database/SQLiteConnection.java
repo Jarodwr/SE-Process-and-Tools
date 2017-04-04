@@ -408,7 +408,6 @@ public class SQLiteConnection {
 	public static ResultSet getEmployeeAvailability(int employeeId) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Timetableinfo WHERE timetableId= (SELECT timetableId FROM Employeeinfo WHERE employeeId =?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setInt(1, employeeId);
 		ResultSet rs = pst.executeQuery();
@@ -418,11 +417,23 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
-	
 	public static ResultSet getAllEmployees() throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Employeeinfo";
+		PreparedStatement pst = c.prepareStatement(query);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	
+	public static ResultSet getShift(int employeeId, Date weekstarting) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM EmployeeWorkingTimes";
 		PreparedStatement pst = c.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
 
