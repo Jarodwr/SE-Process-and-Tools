@@ -686,7 +686,20 @@ public class Menu {
 	 * @return ID of chosen employee, return null if no employee chosen
 	 */
 	public String showEmployeeList(String[][] employees) {
-		return "";
+		
+		System.out.println("Employees:");
+		
+		for (int i=0;i < employees.length; i++) { //Go through all the employees rows
+			for (int j = 0; j < employees[i].length; j++) { //Go through all the employees columns
+				System.out.print(" "+employees[i][j]);
+			}
+			System.out.println(); //create a new row
+			}
+		
+		System.out.println("Select an employee of interest as identified above (Employee's ID): ");
+		//int selectedOption = Integer.parseInt(scanner.nextLine());
+		String selectedID = scanner.nextLine();
+		return selectedID;
 	}
 	
 	/* 
