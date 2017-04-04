@@ -707,6 +707,87 @@ public class Menu {
 	 */
 	
 	public void showTimetable(String[][] timetable) {
+		
+		/*Note this code will be replaced by simply calling printTable()
+		 * once thats fully working. 
+		 */
+		
+		/*Variables to be used to determine each column length*/
+		int longeststartTimeLength = 0; //Store the longest start period (in length of the string)
+		int longestendTimeLength = 0; //Store the longest end period (in length of the string)
+		
+		/*
+		 * In order to make sure the table is printed properly,
+		 * we need need to make sure that the cells are balanced in length
+		 * So we need to first fine the longest Strings for each column.
+		 */
+		for (int i=0;i < timetable.length; i++) {
+			for (int j = 0; j < timetable[i].length; j++) {
+				
+
+				
+				//Check if the length of the start time is currently the longest
+				if (j == 0 && timetable[i][j].length() > longeststartTimeLength)
+					longeststartTimeLength = timetable[i][j].length();
+				
+				//Check if the length of the end time is currently the longest
+				if (j == 1 && timetable[i][j].length() > longestendTimeLength)
+					longestendTimeLength = timetable[i][j].length();
+			}
+		}
+		
+		
+					
+		//Menu Title			
+		System.out.println("\n--------------------\nEmployee Availability\n--------------------\n");
+
+		
+		/*Table header*/
+		
+		String tableTitles = "     Start Period"; //Start Period table header
+		for (int k = 0; k < (longeststartTimeLength - "Start Period".length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
+
+		tableTitles += "   | End Period"; //End Period table header
+		for (int k = 0; k < (longestendTimeLength - "End Period".length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
+		System.out.println(tableTitles); //Print out the table header titles
+		
+		for (int k = 0; k < (tableTitles.length()); k++)
+			System.out.print("-"); //Add dashes "-" under the table header
+		
+		System.out.println(); //Create a new line for the rest of the table contents
+		
+		
+				for (int i=0;i < timetable.length; i++) { //Go through all the rows
+					for (int j = 0; j < timetable[i].length; j++) { //Go through all the columns
+						
+						
+						System.out.print("     "+timetable[i][j]); //Print out the current detail
+						
+						/*Add enough spaces to keep table column length balanced*/
+
+						if (j == 0) //Add spaces after Start Time
+							for (int k = 0; k < (longeststartTimeLength - timetable[i][j].length()); k++)
+								System.out.print(" ");
+						
+						if (j == 1) //Add spaces after End Time
+							for (int k = 0; k < (longestendTimeLength - timetable[i][j].length()); k++)
+								System.out.print(" ");
+							
+						System.out.print("     "); //Create a gap between columns
+					}
+					System.out.println(); //create a new row
+				}
+				
+				for (int k = 0; k < (tableTitles.length()); k++)
+					System.out.print("-"); //Add dashes "-" under the table
+				
+				System.out.println("\n\n Press any key to go back to Menu...");
+				
+				scanner.nextLine(); //Wait for any user input from the scanner
  		
  	}
 	
