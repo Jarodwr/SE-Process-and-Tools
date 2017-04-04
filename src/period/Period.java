@@ -39,6 +39,10 @@ public class Period {
 		if (otherPeriod.getStart().compareTo(this.end) * this.end.compareTo(otherPeriod.getEnd()) > 0) {
 			end = otherPeriod.getEnd();
 		}
+		
+		if (start.equals(this.start) && end.equals(this.end)) {
+			return null;
+		}
 		return new Period(start, end);
 	}
 	

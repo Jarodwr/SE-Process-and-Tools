@@ -200,13 +200,14 @@ public class Controller {
 	
 	private void showWorkerAvailability() {
 		try {
-			String employeeID;
-			do {
-				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
+			String employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
+			while (!employeeID.equals("")) {
 				Timetable t = new Timetable();
-				t.mergeTimetable(SQLiteConnection.getEmployeeAvailability(Integer.parseInt(employeeID)).getString(1));
+				ResultSet rs = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(employeeID));
+				t.mergeTimetable(rs.getString(1));
 				view.showTimetable(t.toStringArray());
-			} while(employeeID != null);
+				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
+			}
 
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -333,11 +334,13 @@ public class Controller {
 				employees.add(new String[] {rs.getString(1), rs.getString(3)});
 			} while (rs.next());
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		if (!employees.isEmpty()) {
 			String[][] b = new String[employees.size()][];
 			employees.toArray(b);
+			System.out.println(b[1][0]);
+			System.out.println(b[1][1]);
 			return b;
 		} else {
 			return null;
