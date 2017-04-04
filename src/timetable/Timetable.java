@@ -30,6 +30,7 @@ public class Timetable {
 				i = 0;
 			}
 		}
+		periods.add(newPeriod);
 		return false;
 	}
 	
@@ -81,7 +82,7 @@ public class Timetable {
 	public void mergeTimetable(String timetable) {
 		StringTokenizer st = new StringTokenizer(timetable, "|");
 		while (st.hasMoreTokens()) {
-			StringTokenizer p = new StringTokenizer(st.nextToken());
+			StringTokenizer p = new StringTokenizer(st.nextToken(), ",");
 			addPeriod(new Period(p.nextToken(), p.nextToken()));
 		}
 	}

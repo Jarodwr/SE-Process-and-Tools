@@ -1,6 +1,7 @@
 package controller;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,7 +157,7 @@ public class Controller {
 				return null;
 			}
 			while(rsEmployees.next()) {
-				rsTimetables = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
+				rsTimetables = SQLiteConnection.getEmployeeAvailability(rsEmployees.getString("employeeId"));
 				if (!rsTimetables.next()) {
 					continue;
 				}
@@ -221,15 +222,22 @@ public class Controller {
 	private void showWorkerAvailability() {
 		try {
 			String employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
-			while (!employeeID.equals("")) {
+			employeeID = "1";
+			while (employeeID != null && !employeeID.equals("")) {
 				Timetable t = new Timetable();
-				ResultSet rs = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(employeeID));
-				t.mergeTimetable(rs.getString(1));
-				view.showTimetable(t.toStringArray());
+				ResultSet rs = SQLiteConnection.getEmployeeAvailability("0");
+				t.mergeTimetable(rs.getString(3));
+				if (t.getAllPeriods().length == 0) {
+					view.failure("View worker availability", "This worker has no available times");
+				} else {
+					System.out.println(t.toStringArray());
+					view.showTimetable(t.toStringArray());
+				}
 				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
 			}
 			
 		} catch(Exception e) {
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -339,7 +347,6 @@ public class Controller {
 	
 	protected User authenticate(String username, String password) {
 		User found = searchUser(username);
-		System.out.println(found.checkPassword(password));
 		if (found != null && found.checkPassword(password)) {
 			return found;
 		}
@@ -359,8 +366,6 @@ public class Controller {
 		if (!employees.isEmpty()) {
 			String[][] b = new String[employees.size()][];
 			employees.toArray(b);
-			System.out.println(b[1][0]);
-			System.out.println(b[1][1]);
 			return b;
 		} else {
 			return null;
