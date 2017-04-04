@@ -354,7 +354,7 @@ public class SQLiteConnection {
 		}
 	}
 	
-	public static boolean deleteEmployee(int employeeId, String businessname) {
+	public static boolean deleteEmployee(int employeeId) {
 		Connection c = getDBConnection();
 		try {
 			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
@@ -490,6 +490,32 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
+	public static boolean updateAvailabilityforEmployee(int employeeId, int timetableId) {
+		Connection c = getDBConnection();
+		try {
+			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
+
+			if (rs == null) {
+				return false;
+			}
+			
+			ResultSet rs2 = getEmployeeRow(employeeId);
+			if (rs2 == null) {
+				return false;
+			}
+
+			PreparedStatement ps = c.prepareStatement("UPDATE Employeeinfo SET timetableId=? WHERE employeeId=?"); // this creates a new user
+			ps.setInt(1, timetableId);
+			ps.setInt(2, employeeId);
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	public static ResultSet getEmployeeAvailability(int employeeId) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
