@@ -374,7 +374,7 @@ public class SQLiteConnection {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {
-				return false;
+				deleteAvailabilities(timetableId, businessname);
 			}
 
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Timetableinfo VALUES (?, ?, ?);"); // this creates a new user
@@ -383,6 +383,27 @@ public class SQLiteConnection {
 			ps.setString(3, availabilities);
 			ps.executeUpdate();
 			ps.close();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean deleteAvailabilities(int timetableId, String businessname) {
+		Connection c = getDBConnection();
+		try {
+			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
+
+			if (rs == null) {
+				return false;
+			}
+			
+			String query = "DELETE FROM Timetableinfo WHERE timetableId = ?";
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setInt(1, timetableId);
+			pst.executeUpdate();
 
 			return true;
 		} catch (SQLException e) {
@@ -431,7 +452,9 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
+	
 	public static ResultSet getShifts(int employeeId, String unixtime) throws SQLException { /* TODO */
+		
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM EmployeeWorkingTimes";
