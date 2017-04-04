@@ -31,6 +31,10 @@ public class Period {
 	public Period combineWith(Period otherPeriod) {
 		Date start = this.start;
 		Date end = this.end;
+
+		if (otherPeriod.getStart().compareTo(this.start) * otherPeriod.getEnd().compareTo(this.end) == 0) {
+			return otherPeriod;
+		}
 		
 		if (otherPeriod.getStart().compareTo(this.start) * this.start.compareTo(otherPeriod.getEnd()) > 0) {
 			start = otherPeriod.getStart();

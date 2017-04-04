@@ -141,6 +141,7 @@ public class Controller {
 	
 	private void viewAvailableTimes() {
 		Timetable ConcatenatedTimetable = getAvailableTimes();
+		System.out.println(ConcatenatedTimetable.toString());
 		String[][] s = ConcatenatedTimetable.toStringArray();
 		view.viewBookingAvailability(s);
 	}
@@ -151,18 +152,14 @@ public class Controller {
 		Timetable t = new Timetable();
 		try {
 			ResultSet rsEmployees = SQLiteConnection.getAllEmployees();
-			ResultSet rsTimetables;
 			if (!rsEmployees.next()) {
 				LOGGER.log(Level.WARNING, "No employees registered in the system");
 				return null;
 			}
 			while(rsEmployees.next()) {
-				rsTimetables = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
-				if (!rsTimetables.next()) {
-					continue;
-				}
-				t.mergeTimetable(rsEmployees.getString("availability"));
-				
+				ResultSet rsTimetables = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
+
+				t.mergeTimetable(rsTimetables.getString("availability"));
 			}
 			return t;
 		}
@@ -188,6 +185,7 @@ public class Controller {
 				
 				for (int i = 0; i < bookings.length; i++) {
 					bookingsStringArray[i] = bookings[i].toStringArray();
+					System.out.println(bookingsStringArray[i]);
 				}
 				LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 				view.viewBookings(bookingsStringArray);
@@ -199,24 +197,6 @@ public class Controller {
 	
 	private void addWorkingTimes(String[][] workingTimes) {
 		
-	}
-	
-	private void showWorkingTimes() {
-		try {
-			String employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
-			String unixtime = view.selectWeek();
-			while (!employeeID.equals("")) {
-				Timetable t = new Timetable();
-				ResultSet rs = SQLiteConnection.getShifts(Integer.parseInt(employeeID), unixtime);
-				t.mergeTimetable(rs.getString(1));
-				view.showTimetable(t.toStringArray());
-				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
-			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 	
 	private void showWorkerAvailability() {
