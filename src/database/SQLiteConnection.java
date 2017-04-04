@@ -376,7 +376,7 @@ public class SQLiteConnection {
 	}
 
 	
-	private static ResultSet getEmployeeRow(int employeeId) throws SQLException {
+	public static ResultSet getEmployeeRow(int employeeId) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Employeeinfo WHERE employeeId=?";

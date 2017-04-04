@@ -37,5 +37,37 @@ public class SQLiteConnectionTest {
 			fail("Exception");
 		}
 	}
+	@Test
+	public void testEmployeeFunctions() {
+		try {
+
+			for(int i = 1; i < 6; i++) {
+				SQLiteConnection.deleteEmployee(i);
+				
+			}
+			SQLiteConnection.createBusiness("T Business", "Test Lane", "0412345678");
+			SQLiteConnection.createEmployee(1, "T Business", "Dad", "A", "1", 0);
+			SQLiteConnection.createEmployee(2, "T Business", "Mum", "A", "1", 0);
+			SQLiteConnection.createEmployee(3, "T Business", "Brother", "A", "1", 0);
+			SQLiteConnection.createEmployee(4, "T Business", "Sister", "A", "1", 0);
+			SQLiteConnection.createEmployee(5, "T Business", "Baby", "A", "1", 0);
+			String[] s = {"Dad", "Mum", "Brother", "Sister", "Baby"};
+			for(int i = 1; i < 6; i++) {
+				ResultSet rs = SQLiteConnection.getEmployeeRow(i);
+				assert(rs.getString("name").equals(s[i]));
+				
+			}
+
+			for(int i = 1; i < 6; i++) {
+				SQLiteConnection.deleteEmployee(i);
+				
+			}
+		
+		}
+		catch (Exception x) {
+			x.printStackTrace();
+			fail("Exception");
+		}
+	}
 
 }
