@@ -157,7 +157,7 @@ public class Controller {
 				return null;
 			}
 			while(rsEmployees.next()) {
-				rsTimetables = SQLiteConnection.getEmployeeAvailability(rsEmployees.getString("employeeId"));
+				rsTimetables = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
 				if (!rsTimetables.next()) {
 					continue;
 				}
@@ -225,7 +225,7 @@ public class Controller {
 			employeeID = "1";
 			while (employeeID != null && !employeeID.equals("")) {
 				Timetable t = new Timetable();
-				ResultSet rs = SQLiteConnection.getEmployeeAvailability("0");
+				ResultSet rs = SQLiteConnection.getEmployeeAvailability(Integer.parseInt("0"));
 				t.mergeTimetable(rs.getString(3));
 				if (t.getAllPeriods().length == 0) {
 					view.failure("View worker availability", "This worker has no available times");
