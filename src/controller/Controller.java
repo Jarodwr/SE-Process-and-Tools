@@ -203,9 +203,10 @@ public class Controller {
 	private void showWorkingTimes() {
 		try {
 			String employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
+			String unixtime = view.selectWeek();
 			while (!employeeID.equals("")) {
 				Timetable t = new Timetable();
-				ResultSet rs = SQLiteConnection.getEmployeeWorkingTimes(Integer.parseInt(employeeID), /*unixtimestamp for start of week*/);
+				ResultSet rs = SQLiteConnection.getShifts(Integer.parseInt(employeeID), unixtime);
 				t.mergeTimetable(rs.getString(1));
 				view.showTimetable(t.toStringArray());
 				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));

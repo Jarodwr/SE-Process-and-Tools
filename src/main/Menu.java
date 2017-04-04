@@ -757,4 +757,14 @@ public class Menu {
 	public void failure(String subject, String details) {
 		System.out.println(subject + ": " + details);
 	}
+
+	public String getWorkingTimesMenu(String[][] employeeList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/* use to select a week to view, can be used for anything that requires week choice */
+	public String selectWeek() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
