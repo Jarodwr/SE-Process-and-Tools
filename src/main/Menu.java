@@ -313,6 +313,115 @@ public class Menu {
 		return "";
 		}
 	
+	
+	/**
+	 * Prints a table
+	 * @param [contents], [headerTitles], title, checkSevenDayLimit, noContentsMessage
+	 */
+	public void printTable(String[][] contents,String[] headerTitles,String title, Boolean checkSevenDayLimit,String noContentsMessage) {
+		
+		int[] longestElements = null; //Storage to determine column length
+		
+		for (int i = 0; i < contents.length; i++)
+			longestElements[i] = 0; // Set the minimum length to compare later
+		
+		Boolean canPrintSomething = false;
+		if (checkSevenDayLimit) { //Do we need to check for the 7 day limit?
+			canPrintSomething = false; // Check if there is something within 7 days
+		} else {
+			canPrintSomething = true;
+		}
+		/*
+		 * In order to make sure the table is printed properly,
+		 * we need need to make sure that the cells are balanced in length
+		 * So we need to first fine the longest Strings for each column.
+		 */
+		for (int i=0;i < contents.length; i++) {
+			for (int j = 0; j < contents[i].length; j++) {
+				
+				//Check if the length of the contents within this column is currently the longest
+				if (j == 0 && contents[i][j].length() > longestElements[j])
+					longestElements[j] = contents[i][j].length();
+				
+				//Check if atleast this date is within seven days
+				if (j ==1 && checkSevenDayLimit) {
+					if (checkBookingWithinWeek(contents[i][j])) //Check if we need to bother print the table
+						canPrintSomething = true; //Yes we can print the table
+				}
+			}
+		}
+		
+					
+		//Menu Title			
+		System.out.println("\n--------------------\n"+title+"\n--------------------\n");
+
+		if (canPrintSomething) { // If there is any bookings within the next 7 days
+		/*Table Header*/
+			String tableTitles = "";
+			
+			
+		for (int i = 0; i < headerTitles.length;i++) {
+			
+			if (i == 0)
+				tableTitles += "     "+headerTitles[i]; // First table header title
+			else
+				tableTitles += "   | "+headerTitles[i]; // Second or more element of the table header title
+				
+		for (int k = 0; k < (longestElements[i] - headerTitles[i].length()); k++)
+			tableTitles += " "; //Add Spaces to balance the table column length
+		
+		}
+		
+		
+		System.out.println(tableTitles); // Print out the table header titles
+		
+		for (int k = 0; k < (tableTitles.length()); k++)
+			System.out.print("-"); //Add dashes "-" under the table header
+		
+		System.out.println(); //Create a new line for the rest of the table contents
+		
+		
+				for (int i=0;i < contents.length; i++) { //Go through all the bookings rows
+					
+					
+					if (checkBookingWithinWeek(contents[i][1]) && checkSevenDayLimit) { //Check if this is within 7 days
+					for (int j = 0; j < contents[i].length; j++) { //Go through all the bookings columns
+						
+						if (j == 1 || j == 2)
+								System.out.print("     "+formatDate(contents[i][j])); //Print out dates in correct format
+						else
+							System.out.print("     "+contents[i][j]); //Print out customer name
+						
+						/*Add enough spaces to keep table column length balanced*/
+						
+						if (j == 0) //Add spaces after Customer name
+							for (int k = 0; k < (headerTitles[j].length() - longestElements[j]); k++)
+								System.out.print(" ");
+						
+						if (j == 1) //Add spaces after Booking Start Time
+							for (int k = 0; k < (contents[i][j].length() - longestElements[j]); k++)
+								System.out.print(" ");
+						
+							
+						
+					}
+					System.out.println(); //create a new row
+					}
+				}
+				
+				for (int k = 0; k < (tableTitles.length()); k++)
+					System.out.print("-"); //Add dashes "-" under the table
+		} else {
+			System.out.println(noContentsMessage); // Print Message when nothing can be shown from the table
+		}
+				
+				System.out.println("\n\n Press any key to go back to Menu...");
+				
+				scanner.nextLine(); //Wait for any user input from the scanner
+	}
+	
+	
+	
 	/**
 	 * Prints all bookings to screen
 	 * @param [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod, 3 - services]
@@ -560,29 +669,12 @@ public class Menu {
 		return workingTimes;
 	}
 	
-//	/**
-//	 * prints employee timetables
-//	 * @param employeeTimetables employee1Username:timetable*employee2Username:timetable*employee3Username*timetable
-//	 * @param [employee][0 - details, 1 - timetable][]
-//	 */
-//	public void showEmployeeAvailability(String[][][] employeeTimetables) {
-//		
-//	}
-	
-	//REPLACEMENT FOR showEmployeeAvailability(String[][][] employeeTimetables)
-	
 	/**
-	 * @param employees [employee][1 - ID, 2 - name]
-	 * @return ID of chosen employee, return null if no employee chosen
+	 * prints employee timetables
+	 * @param employeeTimetables employee1Username:timetable*employee2Username:timetable*employee3Username*timetable
+	 * @param [employee][0 - details, 1 - timetable][]
 	 */
-	public String showEmployeeList(String[][] employees) {
-		return "";
-	}
-	
-	/**
-	 * @param timetable [timetable][period][start, end]
-	 */
-	public void showTimetable(String[][] timetable) {
+	public void showEmployeeAvailability(String[][][] employeeTimetables) {
 		
 	}
 	

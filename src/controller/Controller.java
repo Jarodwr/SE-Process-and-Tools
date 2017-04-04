@@ -139,7 +139,9 @@ public class Controller {
 	}
 	
 	private void viewAvailableTimes() {
-		
+		Timetable ConcatenatedTimetable = getAvailableTimes();
+		String[][] s = ConcatenatedTimetable.toStringArray();
+		view.viewBookingAvailability(s);
 	}
 	
 	/* doesn't work yet don't use */
