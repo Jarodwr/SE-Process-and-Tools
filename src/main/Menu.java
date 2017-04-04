@@ -707,7 +707,6 @@ public class Menu {
 	 */
 	
 	public void showTimetable(String[][] timetable) {
-		
 		/*Note this code will be replaced by simply calling printTable()
 		 * once thats fully working. 
 		 */
