@@ -1,4 +1,4 @@
-package database;
+package model.database;
 
 @SuppressWarnings("serial")
 public class DatabaseException extends RuntimeException {

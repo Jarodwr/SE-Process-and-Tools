@@ -1,9 +1,9 @@
-package timetable;
+package model.timetable;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import period.Period;
+import model.period.Period;
 
 public class Timetable {
 	
@@ -56,15 +56,16 @@ public class Timetable {
 	{
 		String string = "";
 		 		
-		 for(int i = 0; i > periods.size(); i++)
+		 for(int i = 0; i < periods.size(); i++)
 		 {
 		 	string += periods.get(i).toString();
 		 
-		 	if(periods.get(i+1) != null)
+		 	if(i != periods.size()-1)
 		 	{
 		 		string += "|";
 		 	}
 		 }
+		 System.out.println(string);
 		 return string;
 	}
 	
@@ -72,7 +73,7 @@ public class Timetable {
 	{
 		String[][] timetable = new String[periods.size()][2];
 		 		
-		for(int i = 0; i > periods.size(); i++)
+		for(int i = 0; i < periods.size(); i++)
 		{
 			timetable[i] = periods.get(i).toStringArray();
 		}

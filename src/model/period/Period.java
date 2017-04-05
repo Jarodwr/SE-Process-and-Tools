@@ -1,4 +1,4 @@
-package period;
+package model.period;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,7 +66,10 @@ public class Period {
 	{
 		String first = sdf.format(start);
 		String second = sdf.format(end);
-		String[] period = {first, second};
-		return period;
+		return new String[] {first, second};
+	}
+	
+	public String toString() {
+		return toStringArray()[0] + "," + toStringArray()[1];
 	}
 }

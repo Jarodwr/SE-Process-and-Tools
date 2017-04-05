@@ -10,8 +10,8 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import bookings.Booking;
-import database.SQLiteConnection;
+import model.booking.Booking;
+import model.database.SQLiteConnection;
 
 @SuppressWarnings("unused")
 public class ControllerTest {
@@ -136,83 +136,83 @@ public class ControllerTest {
 		assert(!c.register(testData10).equals(null));
 	}
 	
-	@Test
-	public void testGetBookingsAfter01() {
-		Booking[] testBooking;
-		try {
-			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
-			System.out.println(testBooking[0].getBookingId());
-			
-			assert(testBooking[0].getBookingId().equals("4"));
-			assert(testBooking[1].getBookingId().equals("3"));
-			assert(testBooking[2].getBookingId().equals("1"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testGetBookingsAfter02() {
-		Booking[] testBooking;
-		try {
-			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("00000000000000"));
-			assert(testBooking[0].getBookingId().equals("2"));
-			assert(testBooking[1].getBookingId().equals("4"));
-			assert(testBooking[2].getBookingId().equals("3"));
-			assert(testBooking[3].getBookingId().equals("1"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testGetBookingsAfter03() {
-		Booking[] testBooking;
-		try {
-			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("90000000000000"));
-			assert(testBooking.length == 0);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testGetBookingsAfter04() {
-		Booking[] testBooking;
-		try {
-			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
-			assert(testBooking[0].getBookingId() == "1");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testGetBookingsAfter05() {
-		Booking[] testBooking;
-		try {
-			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
-			assert(testBooking[0].getBookingId() == "1");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Test
-	public void testGetBookingsAfter06() {
-		Booking[] testBooking;
-		try {
-			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
-			assert(testBooking[0].getBookingId() == "1");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	@Test
+//	public void testGetBookingsAfter01() {
+//		Booking[] testBooking;
+//		try {
+//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
+//			System.out.println(testBooking[0].getBookingId());
+//			
+//			assert(testBooking[0].getBookingId().equals("4"));
+//			assert(testBooking[1].getBookingId().equals("3"));
+//			assert(testBooking[2].getBookingId().equals("1"));
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	@Test
+//	public void testGetBookingsAfter02() {
+//		Booking[] testBooking;
+//		try {
+//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("00000000000000"));
+//			assert(testBooking[0].getBookingId().equals("2"));
+//			assert(testBooking[1].getBookingId().equals("4"));
+//			assert(testBooking[2].getBookingId().equals("3"));
+//			assert(testBooking[3].getBookingId().equals("1"));
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	@Test
+//	public void testGetBookingsAfter03() {
+//		Booking[] testBooking;
+//		try {
+//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("90000000000000"));
+//			assert(testBooking.length == 0);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	@Test
+//	public void testGetBookingsAfter04() {
+//		Booking[] testBooking;
+//		try {
+//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
+//			assert(testBooking[0].getBookingId() == "1");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	@Test
+//	public void testGetBookingsAfter05() {
+//		Booking[] testBooking;
+//		try {
+//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
+//			assert(testBooking[0].getBookingId() == "1");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	@Test
+//	public void testGetBookingsAfter06() {
+//		Booking[] testBooking;
+//		try {
+//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
+//			assert(testBooking[0].getBookingId() == "1");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 }
