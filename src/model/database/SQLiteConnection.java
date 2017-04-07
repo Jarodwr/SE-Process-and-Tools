@@ -12,7 +12,8 @@ public class SQLiteConnection {
 		createEmployeeTable();
 		createAvailabilitiesTable();
 		createEmployeeWorkingTimesTable();
-		createBookingsTable();		
+		createBookingsTable();
+		createServicesTable();
 	}
 	
 	public static Connection getDBConnection() { // connects to a database only once, stays open after that
