@@ -1,12 +1,15 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.logging.Level;
 
 import com.sun.istack.internal.logging.Logger;
 
 import model.booking.Booking;
+import model.period.Period;
 import model.services.Services;
 import model.timetable.Timetable;
 import model.users.User;
@@ -93,10 +96,7 @@ public class Controller {
 		}
 	}
 	
-	private void editAvailability() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	protected User login(String[] loginDetails) {
 		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
@@ -206,6 +206,46 @@ public class Controller {
 	private void addWorkingTimes(String[][] workingTimes) {
 		
 	}
+	
+	
+	private void editAvailability() {
+		String employeeId;
+		Timetable t = new Timetable();
+		try {
+			employeeId = view.showEmployeeList(services.getEmployeeList());
+			if(employeeId != null && !employeeId.equals("")) {
+				LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
+				return;
+			}
+			
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		ArrayList<String> availabilities = view.addAvailableTimes();
+		Iterator<String> iter = availabilities.iterator();
+		while(iter.hasNext()) {
+			String[] start = iter.next().split(" ");
+			
+			if (!iter.hasNext()) {
+				break; // weird issue with console where we're missing an end period, just cancel here
+			}
+			
+			String end = iter.next();
+			if (start.length != 2) {
+				continue;
+			}
+			String weekday = start[0];
+			if (!Period.checkIsValidWeekday(weekday)) {
+				continue;
+			}
+			String starttime = Integer.toString(Period.convertDayToSeconds(weekday) + Period.convert24HrTimeToDaySeconds(start[1]));
+			String endtime = Integer.toString(Period.convertDayToSeconds(weekday) + Period.convert24HrTimeToDaySeconds(end));
+			t.addPeriod(new Period(starttime, endtime, false));
+		}
+		 
+	}
+	
 	
 	private void showWorkerAvailability() {
 		try {

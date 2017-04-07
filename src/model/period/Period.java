@@ -85,6 +85,14 @@ public class Period {
 		return calendarToUnix(c)/1000;
 			
 	}
+	public static boolean checkIsValidWeekday(String weekdayToCheck) {
+		for(String s : weekdays) {
+			if (weekdayToCheck.toLowerCase().toCharArray().equals(s)) {
+				return true;
+			}
+		}
+		return false;
+	}
     /**
      * Verifies that the current period isn't overlapping with another period
      * @param otherPeriod The other period currently being tested against
