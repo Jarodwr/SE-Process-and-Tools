@@ -23,6 +23,7 @@ public class Owner extends User {
 				true, 	//Add working time/date
 				true, 	//Show all worker availability for next 7 days
 				true, 	//Add Employee
+				true,	//Edit Availabilities
 				true	//Log out
 				};
 	}

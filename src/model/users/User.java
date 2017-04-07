@@ -31,6 +31,7 @@ public abstract class User {
 			false, 	//Add working time/date
 			false, 	//Show all worker availability for next 7 days
 			false, 	//Add Employee
+			false,	//Edit Availabilities
 			true	//Log out
 			};
 	

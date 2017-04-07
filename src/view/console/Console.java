@@ -27,7 +27,8 @@ public class Console {
 	 * 6 - Add working time/date
 	 * 7 - Show all worker availability for next 7 days
 	 * 8 - Add an employee
-	 * 9 - Log out
+	 * 9 - Edit Availabilities
+	 * 10 - Log out
 	 */
 	
     /**
@@ -56,7 +57,7 @@ public class Console {
 				}
 			}
 			optionNum = 0;
-			if(permissions[9] == false) //if you can't log out as you are not logged in, there is a break
+			if(permissions[10] == false) //if you can't log out as you are not logged in, there is a break
 			{
 				System.out.println("11.\tExit"); // added by Spencer - exit case
 			}
