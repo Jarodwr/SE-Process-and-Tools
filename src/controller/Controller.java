@@ -72,11 +72,11 @@ public class Controller {
 			switch(option) {
 			
 			
-			case 0: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
+			case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
 				System.out.println("Register new user:");
 				activeUser = register(view.register());
 				break;
-			case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGIN");
+			case 0: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGIN");
 				System.out.println("Login:");
 				activeUser = login(view.login());
 				if (activeUser != null) {
