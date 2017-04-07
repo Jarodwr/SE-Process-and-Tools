@@ -1,4 +1,4 @@
-package main;
+package view.console;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,11 +7,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Menu {
+public class Console {
 	private static Scanner scanner = new Scanner(System.in);
 	
 	
-	public Menu() {
+	public Console() {
 
 	}
 	

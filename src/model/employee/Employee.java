@@ -1,18 +1,25 @@
-package employee;
+package model.employee;
 
-import timetable.Timetable;
+import model.timetable.Timetable;
 
 public class Employee {
-	private Timetable availability = new Timetable();
-	private String username;
 	
-	public Employee(String username, Timetable availability) {
+	private String employeeId;
+	private String username;
+	private Timetable availability = new Timetable();
+
+	
+	public Employee(String employeeId, String username, Timetable availability) {
 		this.username = username;
 		this.availability = availability;
 	}
 	
 	public String getUsername() {
 		return username;
+	}
+	
+	public String getEmployeeId() {
+		return this.employeeId;
 	}
 	
 	public String[][] getAvailabilityString() {

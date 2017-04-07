@@ -2,10 +2,10 @@ package main;
 
 import java.util.Date;
 
-import bookings.Booking;
 import controller.Controller;
-import database.SQLiteConnection;
-import period.Period;
+import model.booking.Booking;
+import model.database.SQLiteConnection;
+import model.period.Period;
 
 public class Main {
 

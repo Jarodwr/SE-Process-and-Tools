@@ -1,7 +1,7 @@
-package bookings;
+package model.booking;
 
-import period.Period;
-import users.Customer;
+import model.period.Period;
+import model.users.Customer;
 
 public class Booking {
 	

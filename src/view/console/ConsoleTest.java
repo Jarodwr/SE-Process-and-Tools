@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main;
+package view.console;
 
 import static org.junit.Assert.*;
 
@@ -11,9 +11,9 @@ import java.util.Scanner;
 import org.junit.*;
 
 
-public class MenuTest {
+public class ConsoleTest {
 
-	Menu view = new Menu();
+	Console view = new Console();
 	
 	@BeforeClass
 	public static void setup()

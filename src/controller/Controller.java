@@ -1,32 +1,23 @@
 package controller;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-
-import database.SQLiteConnection;
-import employee.Employee;
-
 import java.util.logging.Level;
 
 import com.sun.istack.internal.logging.Logger;
 
-import bookings.Booking;
-import main.Menu;
-import period.Period;
-import timetable.Timetable;
-import users.Customer;
-import users.Owner;
-import users.User;
+import model.booking.Booking;
+import model.services.Services;
+import model.timetable.Timetable;
+import model.users.User;
+import view.console.Console;
 
 public class Controller {
 	private Logger LOGGER = Logger.getLogger(Controller.class.getName(), Controller.class);
-	private Menu view = new Menu();
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	
+	private Console view = new Console();
+	private Services services = new Services();
+
 	private User activeUser;
 	
 	//private boolean debugMode = false;
@@ -40,7 +31,7 @@ public class Controller {
 	public void run()
 	{
 		//initialize view
-				Menu view = new Menu();
+				Console view = new Console();
 
 				boolean breakLoop = false; // exit program case
 				//debugMode = true; // remove this line while demoing
@@ -101,7 +92,7 @@ public class Controller {
 	protected User login(String[] loginDetails) {
 		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
 		//Search for the user in the arrayList and make sure the password is correct
-		User user = authenticate(loginDetails[0], loginDetails[1]);
+		User user = services.authenticate(loginDetails[0], loginDetails[1]);
 
 		if (user == null) {
 			LOGGER.log(Level.FINE, "LOGIN: Failed");
@@ -116,9 +107,10 @@ public class Controller {
 	
 	protected User register(String[] userDetails){
 		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
-		if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
+//		if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
+		if (services.addCustomerToDatabase(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
 			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");
-			return searchUser(userDetails[0]);
+			return services.searchUser(userDetails[0]);
 		}
 		else
 		{
@@ -140,36 +132,14 @@ public class Controller {
 	}
 	
 	private void viewAvailableTimes() {
-		Timetable ConcatenatedTimetable = getAvailableTimes();
+		Timetable ConcatenatedTimetable = services.getAvailableTimes();
+		if (ConcatenatedTimetable.equals(null)) {
+			LOGGER.log(Level.WARNING, "No employees registered in the system");
+			view.failure("View Available Times", "No Employees registered in the system with available times");
+		}
+		System.out.println(ConcatenatedTimetable.toString());
 		String[][] s = ConcatenatedTimetable.toStringArray();
 		view.viewBookingAvailability(s);
-	}
-	
-	/* doesn't work yet don't use */
-	private Timetable getAvailableTimes() {
-		
-		Timetable t = new Timetable();
-		try {
-			ResultSet rsEmployees = SQLiteConnection.getAllEmployees();
-			ResultSet rsTimetables;
-			if (!rsEmployees.next()) {
-				LOGGER.log(Level.WARNING, "No employees registered in the system");
-				return null;
-			}
-			while(rsEmployees.next()) {
-				rsTimetables = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
-				if (!rsTimetables.next()) {
-					continue;
-				}
-				t.mergeTimetable(rsEmployees.getString("availability"));
-				
-			}
-			return t;
-		}
-		catch(Exception e) {
-			return null;
-		}
-		//view.viewBookingAvailability(availability.toStringArray());
 	}
 	
 	private void addNewBooking(String[] booking) {
@@ -178,7 +148,7 @@ public class Controller {
 	
 	private void viewSummaryOfBookings() {
 		try {
-			Booking[] bookings = bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart(sdf.format(Calendar.getInstance().getTime())));
+			Booking[] bookings = services.getBookingsAfter(Calendar.getInstance().getTime());
 
 			if (bookings.length == 0) {
 				LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
@@ -188,6 +158,7 @@ public class Controller {
 				
 				for (int i = 0; i < bookings.length; i++) {
 					bookingsStringArray[i] = bookings[i].toStringArray();
+					System.out.println(bookingsStringArray[i]);
 				}
 				LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 				view.viewBookings(bookingsStringArray);
@@ -201,39 +172,17 @@ public class Controller {
 		
 	}
 	
-	private void showWorkingTimes() {
-		try {
-			String employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
-			String unixtime = view.selectWeek();
-			while (!employeeID.equals("")) {
-				Timetable t = new Timetable();
-				ResultSet rs = SQLiteConnection.getShifts(Integer.parseInt(employeeID), unixtime);
-				t.mergeTimetable(rs.getString(1));
-				view.showTimetable(t.toStringArray());
-				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
-			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-	
 	private void showWorkerAvailability() {
 		try {
-			String employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
-			employeeID = "1";
-			while (employeeID != null && !employeeID.equals("")) {
-				Timetable t = new Timetable();
-				ResultSet rs = SQLiteConnection.getEmployeeAvailability(Integer.parseInt("0"));
-				t.mergeTimetable(rs.getString(3));
-				if (t.getAllPeriods().length == 0) {
+			String employeeId = view.showEmployeeList(services.getEmployeeList());
+			while (employeeId != null && !employeeId.equals("")) {
+				Timetable t = services.getEmployeeAvailability(employeeId);
+				if (t.equals(null) || t.getAllPeriods().length == 0) {
 					view.failure("View worker availability", "This worker has no available times");
 				} else {
-					System.out.println(t.toStringArray());
 					view.showTimetable(t.toStringArray());
 				}
-				employeeID = view.showEmployeeList(getEmployeeList(SQLiteConnection.getAllEmployees()));
+				employeeId = view.showEmployeeList(services.getEmployeeList());
 			}
 			
 		} catch(Exception e) {
@@ -251,25 +200,25 @@ public class Controller {
 		String address = newEmployee[2];
 		String id = newEmployee[3];
 		
-		if(!validate(name, "[A-Za-z]+"))
+		if(!services.validate(name, "[A-Za-z]+"))
   		{
 			view.failure("Add Employee", "Name is not Valid");
 			return false;
 		}
-		if(!validate(phonenumber, "[0-9]+"))
+		
+		if(!services.validate(phonenumber, "[0-9]+"))
 		{
 			view.failure("Add Employee", "Phone number is not Valid");
 			return false;
 		}
-		if(!validate(address, "[A-Za-z0-9' ]+"))
+		
+		if(!services.validate(address, "[A-Za-z0-9' ]+"))
 		{
 			view.failure("Add Employee", "Address is not Valid");
 			return false;
 		}
 		
-		
-		
-		if (SQLiteConnection.createEmployee(Integer.parseInt(id), "", name, address, phonenumber, 0)) 
+		if (services.addEmployeeToDatabase(id, "", name, address, phonenumber, 0))
 		{ /* TODO add cases for staff and owners */
 			view.success("Add Employee", name + " was successfully added to the database");
 			return true;
@@ -278,97 +227,6 @@ public class Controller {
 		{
 			view.failure("Add Employee", "The entered username is already in the database");
 			return false;
-		}
-	}
-	
-	/**
-	 * @param username username being searched
-	 * @return Returns the user with the username being searched
-	 */
-	protected User searchUser(String username) {
-		ResultSet rs;
-		try {
-			rs = SQLiteConnection.getUserRow(username);
-			if (SQLiteConnection.getOwnerRow(username) != null) {
-				ResultSet rs2;
-				rs2 = SQLiteConnection.getOwnerRow(username);
-				String business = rs2.getString("businessname");
-				rs2.close();
-
-				rs = SQLiteConnection.getUserRow(username);
-				Owner owner = new Owner(username, rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
-				rs.close();
-				return owner;
-			}
-			else {
-				rs = SQLiteConnection.getUserRow(username);
-				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
-				rs.close();
-				return customer;
-			}
-
-		} catch (Exception e) {
-			return null;
-		}
-		
-	}
-	
-	private boolean validate(String string, String regex)
-	{
-		if(string.matches(regex))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	protected Booking[] bookingResultsetToArray(ResultSet rs) {
-		
-		ArrayList<Booking> bookings = new ArrayList<Booking>();
-		try {
-			do {
-				bookings.add(new Booking(rs.getString(1),rs.getString(3) , new Period(sdf.parse(rs.getString(4)), sdf.parse(rs.getString(5)))));
-				
-			} while (rs.next());
-		} catch (Exception e) {
-			
-		}
-		if (!bookings.isEmpty()) {
-			Booking[] b = new Booking[bookings.size()];
-			bookings.toArray(b);
-			return b;
-		} else {
-			return new Booking[0];
-		}
-	}
-	
-	protected User authenticate(String username, String password) {
-		User found = searchUser(username);
-		if (found != null && found.checkPassword(password)) {
-			return found;
-		}
-		return null;
-	}
-	
-	protected String[][] getEmployeeList(ResultSet rs) {
-		
-		ArrayList<String[]> employees = new ArrayList<String[]>();
-		try {
-			do {
-				employees.add(new String[] {rs.getString(1), rs.getString(3)});
-			} while (rs.next());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (!employees.isEmpty()) {
-			String[][] b = new String[employees.size()][];
-			employees.toArray(b);
-			return b;
-		} else {
-			return null;
 		}
 	}
 }
