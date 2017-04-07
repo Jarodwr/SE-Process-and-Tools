@@ -34,8 +34,13 @@ public class ControllerTest {
 	static String[] testData11 = new String[5];
 	static String[] testData12 = new String[5];
 	static String[] testData13 = new String[5];
-	static String[] testData14 = new String[5];
-
+	
+	//add employee test data
+	static String[] testData14 = new String[4];
+	static String[] testData15 = new String[4];
+	static String[] testData16 = new String[4];
+	static String[] testData17 = new String[4];
+	
 	
 	@Before
 	public void setup()
@@ -93,6 +98,26 @@ public class ControllerTest {
 		testData13[2] = "Russell";
 		testData13[3] = "12 Melbourne";
 		testData13[4] = "abcd";
+		
+		testData14[0] = "Fred1234";
+		testData14[1] = "03123456789";
+		testData14[2] = "12 Melbourne";
+		testData14[3] = "s234567";
+		
+		testData15[0] = "Fred";
+		testData15[1] = "03123456789asdf";
+		testData15[2] = "12 Melbourne";
+		testData15[3] = "s234567";
+		
+		testData16[0] = "Fred";
+		testData16[1] = "03123456789";
+		testData16[2] = "Melbourne";
+		testData16[3] = "s234567";
+		
+		testData17[0] = "Fred";
+		testData17[1] = "03123456789";
+		testData17[2] = "12 Melbourne";
+		testData17[3] = "s234567";
 	}
 	
 	//customer logining in test cases
@@ -174,6 +199,31 @@ public class ControllerTest {
 	public void customerregister05() 
 	{
 		assert(c.register(testData13).equals(null));
+	}
+	
+	//add new employee tests
+	@Test
+	public void addemployeetest01() 
+	{
+		assert(!c.addEmployee(testData14));
+	}
+	
+	@Test
+	public void addemployeetest02() 
+	{
+		assert(!c.addEmployee(testData15));
+	}
+	
+	@Test
+	public void addemployeetest03() 
+	{
+		assert(!c.addEmployee(testData16));
+	}
+	
+	@Test
+	public void addemployeetest04() 
+	{
+		assert(c.addEmployee(testData17));
 	}
 	
 //	@Test

@@ -302,7 +302,7 @@ public class Controller {
 	}
 
 	//Need to add logging for this once it is completed
-	private boolean addEmployee(String[] newEmployee) 
+	boolean addEmployee(String[] newEmployee) 
 	{
 		String name = newEmployee[0];
 		String phonenumber = newEmployee[1];
