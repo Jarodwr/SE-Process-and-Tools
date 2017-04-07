@@ -1,0 +1,16 @@
+Apr 07, 2017 5:18:48 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: LOGIN
+Apr 07, 2017 5:18:52 PM controller.Controller login
+FINE: LOGIN: Login details: [Ownertest, 11234]
+Apr 07, 2017 5:18:52 PM controller.Controller login
+FINE: LOGIN: Failed
+Apr 07, 2017 5:18:57 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: LOGIN
+Apr 07, 2017 5:19:00 PM controller.Controller login
+FINE: LOGIN: Login details: [Ownertest, 1234]
+Apr 07, 2017 5:19:00 PM controller.Controller login
+FINE: LOGIN: Success
+Apr 07, 2017 5:19:00 PM controller.Controller run
+FINE: User is owner
+Apr 07, 2017 5:19:00 PM controller.Controller run
+FINE: Active user permissions : [false, false, true, true, false, true, true, true, true, true, true]

@@ -57,7 +57,7 @@ public class Console {
 				}
 			}
 			optionNum = 0;
-			if(permissions[11] == false) //if you can't log out as you are not logged in, there is a break
+			if(permissions[10] == false) //if you can't log out as you are not logged in, there is a break
 			{
 				System.out.println("11.\tExit"); // added by Spencer - exit case
 			}
@@ -82,9 +82,9 @@ public class Console {
 				}
 				if(!match) //if there is no match, and you can't log out and they haven't selected logout continue through loop
 				{
-					if(!permissions[11] && selectedOption != 12)
+					if(!permissions[10] && selectedOption != 11)
 					{
-						selectedOption = 12;
+						selectedOption = 11;
 					}
 					
 				}
