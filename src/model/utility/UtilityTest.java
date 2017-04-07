@@ -1,4 +1,4 @@
-package controller.utility;
+package model.utility;
 
 import static org.junit.Assert.*;
 

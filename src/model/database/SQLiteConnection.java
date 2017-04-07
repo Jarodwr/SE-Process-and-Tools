@@ -113,7 +113,7 @@ public class SQLiteConnection {
 	}
 	
 	public static void createServicesTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS ServicesTable (servicename Varchar(255) Primary Key, serviceprice integer, serviceminutes integer)"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
+		String sql = "CREATE TABLE IF NOT EXISTS ServicesTable (servicename Varchar(255) Primary Key, serviceprice integer, serviceminutes integer, businessname Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
 		try {
 			Connection c = getDBConnection();
 			Statement stmt = c.createStatement();
@@ -556,7 +556,7 @@ public class SQLiteConnection {
 	}
 	
 	
-	public static ResultSet getShifts(int employeeId, String unixtime) throws SQLException { /* TODO */
+public static ResultSet getShifts(int employeeId, String unixtime) throws SQLException { /* TODO */
 		
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -569,7 +569,37 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
+
+public static ResultSet getService(String servicename, String businessname) throws SQLException { /* TODO */
 	
+	Connection c = getDBConnection();
+	// Search for rows with matching usernames
+	String query = "SELECT * FROM ServicesTable WHERE businessname = ? AND servicename = ?";
+	PreparedStatement pst = c.prepareStatement(query);
+	pst.setString(1, businessname);
+	pst.setString(2, servicename);
+	ResultSet rs = pst.executeQuery();
+
+	if (rs.next()) {
+		return rs;
+	}
+	else return null;
+}
+
+public static ResultSet getAllBookings(String businessname) throws SQLException {
+	Connection c = getDBConnection();
+	// Search for rows with matching usernames
+	String query = "SELECT * FROM BookingsTable WHERE businessname = ?";
+	PreparedStatement pst = c.prepareStatement(query);
+	pst.setString(1, businessname);
+	ResultSet rs = pst.executeQuery();
+
+	if (rs.next()) {
+		return rs;
+	}
+	else return null;
+}
+
 	public static int getNextAvailableId(ResultSet rs, String idString) throws SQLException {
 		int i = 0;
 		do {

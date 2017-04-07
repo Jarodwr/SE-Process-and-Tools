@@ -1,22 +1,37 @@
 package model.period;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import model.database.SQLiteConnection;
 import model.service.Service;
 import model.users.Customer;
 
-public class Booking {
+public class Booking extends Period {
 	
 	private String bookingId;
-	private Period timeSlot;
 	private String customerUsername;
 	private ArrayList<Service> services;
 	
-	public Booking(String bookingId, String customerUsername, Period timeslot) 
+	public Booking(String start, String end, boolean formatted, String customerUsername, ArrayList<Service> services, boolean createDatabaseEntry) 
 	{
-		this.bookingId = bookingId;
+		super(start, end, formatted);
 		this.customerUsername = customerUsername;
-		this.timeSlot = timeslot;
+		this.services = services;
+		try {
+			ResultSet rs = SQLiteConnection.getAllBookings("SARJ's Milk Business"); /* TODO remove hardcode */
+			SQLiteConnection.createBooking(SQLiteConnection.getNextAvailableId(rs, "bookingId"), "SARJ's Milk Business", customerUsername, start, end, Service.arrayOfServicesToString(services, false));
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public Booking(String start, String end, boolean formatted, String customerUsername, ArrayList<Service> services) 
+	{
+		super(start, end, formatted);
+		this.customerUsername = customerUsername;
+		this.services = services;
 	}
 	
     /**
@@ -29,10 +44,5 @@ public class Booking {
 	public String getBookingId() {
 		return this.bookingId;
 	}
-	public String[] toStringArray() 
-	{
-		String[] ts = timeSlot.toStringArray();
-		
-		return new String[]{customerUsername, ts[0], ts[1]};
-	}
+	
 }

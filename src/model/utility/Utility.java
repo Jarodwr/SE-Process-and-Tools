@@ -1,4 +1,4 @@
-package controller.utility;
+package model.utility;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +10,7 @@ import model.database.SQLiteConnection;
 import model.employee.Employee;
 import model.period.Booking;
 import model.period.Period;
+import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;
 import model.users.Owner;
@@ -130,7 +131,7 @@ public class Utility {
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		try {
 			do {
-				bookings.add(new Booking(rs.getString(1),rs.getString(3) , new Period(sdf.parse(rs.getString(4)), sdf.parse(rs.getString(5)))));
+				bookings.add(new Booking(rs.getString(4), rs.getString(5), false, rs.getString(3), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
 				
 			} while (rs.next());
 		} catch (Exception e) {

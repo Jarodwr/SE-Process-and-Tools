@@ -15,12 +15,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import controller.utility.Utility;
 import model.database.SQLiteConnection;
 import model.period.Booking;
 import model.period.Period;
 import model.timetable.Timetable;
 import model.users.User;
+import model.utility.Utility;
 import view.console.Console;
 
 public class Controller {
