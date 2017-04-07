@@ -529,6 +529,19 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
+	
+	public static ResultSet getAllAvailabilities() throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Timetableinfo";
+		PreparedStatement pst = c.prepareStatement(query);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
 	public static ResultSet getAllEmployees() throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
