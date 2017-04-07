@@ -301,19 +301,12 @@ public class Console {
 	 */
 	
 	public String formatDate(String date) {
-	
-		try {
-		
-			SimpleDateFormat formatedDate = new SimpleDateFormat("yyyyMMddHHmmss");
-			Date newDate = formatedDate.parse(date);
-			formatedDate.applyPattern("dd/MM/yyyy HH:mm:ss");
-			return formatedDate.format(newDate);
-			} catch (ParseException e) {
-				e.printStackTrace();
-				}
-	
-		return "";
-		}
+
+			Date time = new Date(date);
+			SimpleDateFormat viewing = new SimpleDateFormat("h:mm a d:M:yy");
+			
+			return viewing.format(date);
+	}
 	
 	
 	/**
