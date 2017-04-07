@@ -39,7 +39,7 @@ public class Console {
 	public int displayOptions(boolean[] permissions) {
 		int userSelection;
 		int optionNum = 0;
-		String [] option = {"Log In", "Register", "View Current Bookings", 
+		String [] option = {"Register", "Log In", "View Current Bookings", 
 		                     "View Available Times", "Add New Booking", "View Summary of Bookings", 
 		                     "Add working time/date", "Show all worker availability", "Add an Employee", "Edit Employee Availabilities", "Log out"};
 		
@@ -53,7 +53,7 @@ public class Console {
 				if(permissions[i])
 				{
 					optionNum++;
-					System.out.println((i+1) + ".\t" + option[i]);
+					System.out.println((i + 1) + ".\t" + option[i]);
 				}
 			}
 			optionNum = 0;
@@ -69,9 +69,9 @@ public class Console {
 				boolean match = false;
 				for(int i = 0; i < permissions.length; i++) //check which option they have selected
 				{
+					optionval++;
 					if(permissions[i])
 					{
-						optionval++;
 						if(optionval == selectedOption)
 						{
 							match = true;

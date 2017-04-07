@@ -72,17 +72,20 @@ public class Controller {
 			int option = view.displayOptions(currentPerms);
 			switch(option) {
 			
-			case 0: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGIN");
-			activeUser = login(view.login());
-					if (activeUser != null) {
-						currentPerms = activeUser.getPermissions();
-						if (activeUser.isOwner()) {
-							LOGGER.log(Level.FINE, "User is owner");
-						}
-					}	
-				break;
-			case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
+			
+			case 0: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
+				System.out.println("Register new user:");
 				activeUser = register(view.register());
+				break;
+			case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGIN");
+				System.out.println("Login:");
+				activeUser = login(view.login());
+				if (activeUser != null) {
+					currentPerms = activeUser.getPermissions();
+					if (activeUser.isOwner()) {
+						LOGGER.log(Level.FINE, "User is owner");
+					}
+				}	
 				break;
 			case 2: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW CURRENT BOOKINGS");
 				viewCurrentBookings();
