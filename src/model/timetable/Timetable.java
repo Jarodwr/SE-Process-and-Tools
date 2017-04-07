@@ -84,7 +84,7 @@ public class Timetable {
 		StringTokenizer st = new StringTokenizer(timetable, "|");
 		while (st.hasMoreTokens()) {
 			StringTokenizer p = new StringTokenizer(st.nextToken(), ",");
-			addPeriod(new Period(p.nextToken(), p.nextToken(), true));
+			addPeriod(new Period(p.nextToken() + "000", p.nextToken() + "000", false));
 		}
 	}
 	

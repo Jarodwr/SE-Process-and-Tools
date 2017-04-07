@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class Period {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	SimpleDateFormat viewing = new SimpleDateFormat("h:mm a d:M:yy");
 	private Date start;
 	private Date end;
 
@@ -129,13 +130,11 @@ public class Period {
 	}
 	
     /**
-     * date format: yyyyMMddHHmmss
-     * format: "startDate,endDate"
      */
 	public String[] toStringArray() 
 	{
-		String first = sdf.format(start);
-		String second = sdf.format(end);
+		String first = Long.toString(start.getTime()/1000);
+		String second = Long.toString(end.getTime()/1000);
 		return new String[] {first, second};
 	}
 	
