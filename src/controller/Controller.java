@@ -153,7 +153,7 @@ public class Controller {
 			view.failure("Register", "Name is not Valid");
 			return null;
 		}
-		if(!services.validate(userDetails[3], "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+"))
+		if(!services.validate(userDetails[3], "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Address does not match regex");
 			view.failure("Register", "Address is not Valid");

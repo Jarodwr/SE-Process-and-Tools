@@ -47,16 +47,16 @@ public class Console {
 		while (true) {
 			System.out.println("--------------------------\nAppointment Booking System\n--------------------------");
 			System.out.println("Please enter the identification number of your choice from the options below: ");
-			
+			optionNum = 0;
 			for(int i = 0; i < permissions.length; i++) //go through permissions and print each of the available options
 			{
 				if(permissions[i])
 				{
 					optionNum++;
-					System.out.println((i+1) + ".\t" + option[i]);
+					System.out.println(optionNum + ".\t" + option[i]);
 				}
 			}
-			optionNum = 0;
+
 			if(permissions[10] == false) //if you can't log out as you are not logged in, there is a break
 			{
 				System.out.println("11.\tExit"); // added by Spencer - exit case
