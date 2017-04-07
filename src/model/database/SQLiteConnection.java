@@ -417,12 +417,12 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	public static ResultSet getBookingsByPeriodStart(String periodstartunixstamp) throws SQLException {
+	public static ResultSet getBookingsByPeriodStart(long l) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER) ORDER BY CAST(starttimeunix AS INTEGER)";
 		PreparedStatement pst = c.prepareStatement(query);
-		pst.setString(1, periodstartunixstamp);
+		pst.setLong(1, l);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {

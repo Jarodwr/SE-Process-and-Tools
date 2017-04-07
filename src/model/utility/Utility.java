@@ -119,7 +119,7 @@ public class Utility {
 	}
 	public Booking[] getBookingsAfter(Date date) {
 		try {
-			return bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart(sdf.format(date)));
+			return bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart(date.getTime() / 1000));
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;

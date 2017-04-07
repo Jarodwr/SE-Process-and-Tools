@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -209,7 +210,7 @@ public class Controller {
 	
 	private void viewSummaryOfBookings() {
 		try {
-			Booking[] bookings = services.getBookingsAfter(Calendar.getInstance().getTime());
+			Booking[] bookings = services.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
 
 			if (bookings.length == 0) {
 				LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
