@@ -9,7 +9,7 @@ public class Period {
 	private Date start;
 	private Date end;
 
-	private static final String[] weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	private static final String[] weekdays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	private static final int secondsInDay = 86400;
 	
 	public Period(Date start, Date end) {
@@ -54,6 +54,11 @@ public class Period {
 				}
 		}
 		return 0; // should be unreachable generally unless the day var is not valid
+	}
+	
+	public static String convertSecondsToDay(int seconds) {
+		int division = seconds/86400;
+		return weekdays[division];
 	}
 	
 	public static Calendar unixToCalendar(long unixTime){

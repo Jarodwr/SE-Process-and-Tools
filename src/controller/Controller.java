@@ -78,9 +78,12 @@ public class Controller {
 			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
 				addEmployee(view.addEmployee());
 				break;
-			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
+			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
+				editAvailability();
+				break;
+			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
 				logout(view.logout());
-			case 10: breakLoop = true;
+			case 11: breakLoop = true;
 				break;
 			default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
 				view.failure("Sorry you have provided an invalid option! Please try again", "");
@@ -90,6 +93,11 @@ public class Controller {
 		}
 	}
 	
+	private void editAvailability() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	protected User login(String[] loginDetails) {
 		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
 		//Search for the user in the arrayList and make sure the password is correct

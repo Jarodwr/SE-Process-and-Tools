@@ -3,13 +3,14 @@ package view.console;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
 public class Console {
 	private static Scanner scanner = new Scanner(System.in);
-	
+	public static final String[] Weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
 	public Console() {
 
@@ -39,7 +40,7 @@ public class Console {
 		int optionNum = 0;
 		String [] option = {"Log In", "Register", "View Current Bookings", 
 		                     "View Available Times", "Add New Booking", "View Summary of Bookings", 
-		                     "Add working time/date", "Show all worker availability", "Add an Employee", "Log out"};
+		                     "Add working time/date", "Show all worker availability", "Add an Employee", "Edit Employee Availabilities", "Log out"};
 		
 		
 		while (true) {
@@ -57,7 +58,7 @@ public class Console {
 			optionNum = 0;
 			if(permissions[9] == false) //if you can't log out as you are not logged in, there is a break
 			{
-				System.out.println("10.\tExit"); // added by Spencer - exit case
+				System.out.println("11.\tExit"); // added by Spencer - exit case
 			}
 			System.out.print("Enter your option: ");
 			
@@ -660,13 +661,33 @@ public class Console {
 		
 		System.out.println("\nPlease enter The period of the employee's working times");
 		
-		System.out.println("\nStart time for the working period: ");
+		System.out.println("\nStart time for the working period in the form <Date> <Time>: ");
 		workingTimes[0][0] = scanner.nextLine(); //Get user (owner) input for the start of the working period
 		
-		System.out.println("End time for the working period: ");
+		System.out.println("End time for the working period in the form <Time>: ");
 		workingTimes[0][1] = scanner.nextLine(); //Get user (owner) input for the start of the working period
 		
 		return workingTimes;
+	}
+	
+public ArrayList<String> addAvailableTimes() {
+		
+		ArrayList<String> availableTimes = new ArrayList<String>(); //We will use this to store the input of working times
+		do {
+		System.out.println("\nPlease enter The period of the employee's working times");
+		
+		System.out.println("\nStart time for the working period in the form <Weekday> <Time>: ");
+		availableTimes.add(scanner.nextLine()); //Get user (owner) input for the start of the working period
+		
+		System.out.println("End time for the working period in the form <Time>: ");
+		availableTimes.add(scanner.nextLine()); //Get user (owner) input for the start of the working period
+
+		System.out.println("Continue adding more working periods or return to menu? (type N to return)");
+		}while(!(scanner.nextLine().toLowerCase().equals("n")));
+		
+		
+		
+		return availableTimes;
 	}
 	
 	
@@ -742,6 +763,7 @@ public class Console {
 
 		
 		/*Table header*/
+		
 		
 		String tableTitles = "     Start Period"; //Start Period table header
 		for (int k = 0; k < (longeststartTimeLength - "Start Period".length()); k++)

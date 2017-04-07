@@ -556,4 +556,15 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
+	
+	public static int getNextAvailableId(ResultSet rs, String idString) throws SQLException {
+		int i = 0;
+		do {
+			if (rs.getInt(idString) > i) {
+				i = rs.getInt(idString) + 1;
+			}
+		} while(rs.next());
+		return 0;
+		
+	}
 }
