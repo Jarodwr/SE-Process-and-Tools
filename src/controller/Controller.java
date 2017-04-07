@@ -233,7 +233,7 @@ public class Controller {
 		Timetable t = new Timetable();
 		try {
 			employeeId = view.showEmployeeList(services.getEmployeeList());
-			if(employeeId != null && !employeeId.equals("")) {
+			if(employeeId == null || employeeId.equals("")) {
 				LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
 				return;
 			}

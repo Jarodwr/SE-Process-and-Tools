@@ -718,9 +718,10 @@ public ArrayList<String> addAvailableTimes() {
 			System.out.println(); //create a new row
 			}
 		
-		System.out.println("Select an employee of interest as identified above (Employee's ID): ");
+		System.out.print("Select an employee of interest as identified above (Employee's ID): ");
 		//int selectedOption = Integer.parseInt(scanner.nextLine());
 		String selectedID = scanner.nextLine();
+		
 		return selectedID;
 	}
 	
