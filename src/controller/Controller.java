@@ -1,14 +1,22 @@
 package controller;
 
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
-
-import com.sun.istack.internal.logging.Logger;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import model.booking.Booking;
+import model.database.SQLiteConnection;
 import model.period.Period;
 import model.services.Services;
 import model.timetable.Timetable;
@@ -16,7 +24,7 @@ import model.users.User;
 import view.console.Console;
 
 public class Controller {
-	private Logger LOGGER = Logger.getLogger(Controller.class.getName(), Controller.class);
+	private Logger LOGGER = Logger.getLogger(Controller.class.getName());
 	
 	private Console view = new Console();
 	private Services services = new Services();
@@ -25,10 +33,22 @@ public class Controller {
 	
 	//private boolean debugMode = false;
 	
-	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
+	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false, false};
 	
 	public Controller() {
-		
+		Handler handler;
+		try {
+			handler = new FileHandler("logs\\" + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".txt");
+			LOGGER.setLevel(Level.FINEST);
+			handler.setLevel(Level.FINEST);
+		} catch(IOException e) {
+			handler = new ConsoleHandler();
+			LOGGER.setLevel(Level.WARNING);
+			handler.setLevel(Level.WARNING);
+			LOGGER.warning("Cannot create logging file, using console logger");
+		}
+		handler.setFormatter(new SimpleFormatter());
+		LOGGER.addHandler(handler);
 	}
 	
 	public void run()
@@ -209,7 +229,7 @@ public class Controller {
 	
 	
 	private void editAvailability() {
-		String employeeId;
+		String employeeId = "";
 		Timetable t = new Timetable();
 		try {
 			employeeId = view.showEmployeeList(services.getEmployeeList());
@@ -242,6 +262,20 @@ public class Controller {
 			String starttime = Integer.toString(Period.convertDayToSeconds(weekday) + Period.convert24HrTimeToDaySeconds(start[1]));
 			String endtime = Integer.toString(Period.convertDayToSeconds(weekday) + Period.convert24HrTimeToDaySeconds(end));
 			t.addPeriod(new Period(starttime, endtime, false));
+		}
+		if (employeeId.equals("")) {
+
+			LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
+			return;
+		}
+		try {
+			ResultSet rs = SQLiteConnection.getAllAvailabilities();
+			int id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
+			SQLiteConnection.createAvailability(id, "SARJ's Milk Business", t.toString()); /* TODO Part B: Remove hardcode */
+			SQLiteConnection.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
 		}
 		 
 	}
