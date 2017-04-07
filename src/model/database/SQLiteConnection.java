@@ -383,7 +383,6 @@ public class SQLiteConnection {
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setInt(1, employeeId);
 		ResultSet rs = pst.executeQuery();
-
 		if (rs.next()) {
 			return rs;
 		}
@@ -397,7 +396,6 @@ public class SQLiteConnection {
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setInt(1, bookingId);
 		ResultSet rs = pst.executeQuery();
-
 		if (rs.next()) {
 			return rs;
 		}

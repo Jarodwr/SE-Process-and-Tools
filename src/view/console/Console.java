@@ -53,11 +53,11 @@ public class Console {
 				if(permissions[i])
 				{
 					optionNum++;
-					System.out.println(optionNum + ".\t" + option[i]);
+					System.out.println((i+1) + ".\t" + option[i]);
 				}
 			}
 			optionNum = 0;
-			if(permissions[10] == false) //if you can't log out as you are not logged in, there is a break
+			if(permissions[11] == false) //if you can't log out as you are not logged in, there is a break
 			{
 				System.out.println("11.\tExit"); // added by Spencer - exit case
 			}
@@ -82,9 +82,9 @@ public class Console {
 				}
 				if(!match) //if there is no match, and you can't log out and they haven't selected logout continue through loop
 				{
-					if(!permissions[9] && selectedOption != 10)
+					if(!permissions[11] && selectedOption != 12)
 					{
-						selectedOption = 11;
+						selectedOption = 12;
 					}
 					
 				}
@@ -93,7 +93,7 @@ public class Console {
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
 				continue;
 			}
-			if (userSelection > -1 && userSelection < 11) // changed to 11 by Spencer - I'll include invalid option checking in my contrller main aswell
+			if (userSelection > -1 && userSelection < 12) // changed to 11 by Spencer - I'll include invalid option checking in my contrller main aswell
 				break;
 			else
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
