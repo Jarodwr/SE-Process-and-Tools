@@ -7,8 +7,8 @@ import java.util.Date;
 public class Period {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	SimpleDateFormat viewing = new SimpleDateFormat("h:mm a d:M:yy");
-	private Date start;
-	private Date end;
+	protected Date start;
+	protected Date end;
 
 	private static final String[] weekdays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	private static final int secondsInDay = 86400;
@@ -133,8 +133,8 @@ public class Period {
      */
 	public String[] toStringArray() 
 	{
-		String first = Long.toString(start.getTime()/1000);
-		String second = Long.toString(end.getTime()/1000);
+		String first = Long.toString(start.getTime());
+		String second = Long.toString(end.getTime());
 		return new String[] {first, second};
 	}
 	

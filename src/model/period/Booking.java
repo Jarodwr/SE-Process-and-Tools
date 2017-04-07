@@ -45,4 +45,12 @@ public class Booking extends Period {
 		return this.bookingId;
 	}
 	
+	public String[] toStringArray() 
+	{
+		String first = Long.toString(this.start.getTime());
+		String second = Long.toString(this.end.getTime());
+		String name = this.customerUsername;
+		return new String[] {first, second, name};
+	}
+	
 }
