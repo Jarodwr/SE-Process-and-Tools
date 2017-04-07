@@ -33,7 +33,7 @@ public class Controller {
 	
 	//private boolean debugMode = false;
 	
-	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false};
+	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false, false};
 	
 	public Controller() {
 		Handler handler;
