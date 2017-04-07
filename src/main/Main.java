@@ -32,10 +32,8 @@ public class Main {
 	}
 	
 	public static void debugCreateEmptyAvailability() {
-		SQLiteConnection.createAvailability(0, "SARJ's Milk Business", "20181011123000,20181011173000|20181012123000,20181012173000");
-		SQLiteConnection.createAvailability(1, "SARJ's Milk Business", "20181011123000,20181011173000|20181012123000,20181012173000");
-		SQLiteConnection.createAvailability(2, "SARJ's Milk Business", "20181011123000,20181011173000|20181012123000,20181012173000");
-		SQLiteConnection.createAvailability(3, "SARJ's Milk Business", "20181011123000,20181011173000|20181012123000,20181012173000");
+		SQLiteConnection.createAvailability(0, "SARJ's Milk Business", "1491580800,1491584400|1491670800,1491674400");
+		SQLiteConnection.createAvailability(1, "SARJ's Milk Business", "1491757200,1491760800|1491764400,1491768000");
 	}
 	
 	public static void debugCreateEmployees() {
