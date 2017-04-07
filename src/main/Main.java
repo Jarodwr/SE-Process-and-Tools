@@ -6,6 +6,7 @@ import controller.Controller;
 import model.database.SQLiteConnection;
 import model.period.Booking;
 import model.period.Period;
+import model.service.Service;
 
 public class Main {
 
@@ -15,6 +16,7 @@ public class Main {
 		debugCreateBookingsTable();
 		debugCreateEmptyAvailability();
 		debugCreateEmployees();
+		debugCreateService();
 		Controller bookingSystem = new Controller();
 		bookingSystem.run();
 	}
@@ -24,6 +26,14 @@ public class Main {
 		SQLiteConnection.createOwner("SARJ's Milk Business", "Ownertest", "1234", "Name", "Address", "MobileNo");
 	}
 	
+	public static void debugCreateService() {
+		try {
+			Service s = new Service("test", 20000, 15*60, true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void debugCreateBookingsTable() {
 		SQLiteConnection.createBooking(1, "SARJ's Milk Business", "Gary", "1491580800", "1491584400", "test");
 		SQLiteConnection.createBooking(2, "SARJ's Milk Business", "Joe", "1491670800", "1491674400", "test");
