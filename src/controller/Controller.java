@@ -31,62 +31,63 @@ public class Controller {
 	public void run()
 	{
 		//initialize view
-				Console view = new Console();
+		Console view = new Console();
 
-				boolean breakLoop = false; // exit program case
-				//debugMode = true; // remove this line while demoing
-				boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
-				activeUser = null;
-				while(!breakLoop) {
+		boolean breakLoop = false; // exit program case
+		//debugMode = true; // remove this line while demoing
+		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
+		activeUser = null;
+		while(!breakLoop) {
+			if (activeUser != null) 
+			{
+				LOGGER.log(Level.FINE, "Active user permissions : " + Arrays.toString(activeUser.getPermissions()));
+			}
+			int option = view.displayOptions(currentPerms);
+			switch(option) {
+			
+			case 0: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGIN");
+			activeUser = login(view.login());
 					if (activeUser != null) {
-						LOGGER.log(Level.FINE, "Active user permissions : " + Arrays.toString(activeUser.getPermissions()));
-					}
-					int option = view.displayOptions(currentPerms);
-					switch(option) {
-					
-					case 0: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGIN");
-					activeUser = login(view.login());
-							if (activeUser != null) {
-								currentPerms = activeUser.getPermissions();
-								if (activeUser.isOwner()) {
-									LOGGER.log(Level.FINE, "User is owner");
-								}
-							}	
-						break;
-					case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
-						activeUser = register(view.register());
-						break;
-					case 2: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW CURRENT BOOKINGS");
-						viewCurrentBookings();
-						break;
-					case 3: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW AVAILABLE TIMES");
-						viewAvailableTimes();
-						break;
-					case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
-						addNewBooking(view.addNewBooking());
-						break;
-					case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
-						viewSummaryOfBookings();
-						break;
-					case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
-						addWorkingTimes(view.addWorkingTimes());
-						break;
-					case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
-						showWorkerAvailability();
-						break;
-					case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
-						addEmployee(view.addEmployee());
-						break;
-					case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
-						logout(view.logout());
-					case 10: breakLoop = true;
-						break;
-					default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
-						view.failure("Sorry you have provided an invalid option! Please try again", "");
-						break;
-					}
-					
-				}
+						currentPerms = activeUser.getPermissions();
+						if (activeUser.isOwner()) {
+							LOGGER.log(Level.FINE, "User is owner");
+						}
+					}	
+				break;
+			case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
+				activeUser = register(view.register());
+				break;
+			case 2: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW CURRENT BOOKINGS");
+				viewCurrentBookings();
+				break;
+			case 3: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW AVAILABLE TIMES");
+				viewAvailableTimes();
+				break;
+			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
+				addNewBooking(view.addNewBooking());
+				break;
+			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
+				viewSummaryOfBookings();
+				break;
+			case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
+				addWorkingTimes(view.addWorkingTimes());
+				break;
+			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
+				showWorkerAvailability();
+				break;
+			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
+				addEmployee(view.addEmployee());
+				break;
+			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
+				logout(view.logout());
+			case 10: breakLoop = true;
+				break;
+			default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
+				view.failure("Sorry you have provided an invalid option! Please try again", "");
+				break;
+			}
+			
+		}
 	}
 	
 	protected User login(String[] loginDetails) {
@@ -105,8 +106,34 @@ public class Controller {
 		return user;
 	}
 	
-	protected User register(String[] userDetails){
+	protected User register(String[] userDetails)
+	{
 		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
+		if(!services.validate(userDetails[0], "[A-Za-z0-9]+"))
+  		{
+			LOGGER.log(Level.FINE, "REGISTER: Failure, username does not match regex");
+			view.failure("Register", "Username is not Valid");
+			return null;
+		}
+		if(!services.validate(userDetails[2], "[A-Za-z]+"))
+		{
+			LOGGER.log(Level.FINE, "REGISTER: Failure, Name does not match regex");
+			view.failure("Register", "Name is not Valid");
+			return null;
+		}
+		if(!services.validate(userDetails[3], "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+"))
+		{
+			LOGGER.log(Level.FINE, "REGISTER: Failure, Address does not match regex");
+			view.failure("Register", "Address is not Valid");
+			return null;
+		}
+		if(!services.validate(userDetails[4], "\\d{4}[-\\.\\s]\\d{3}[-\\.\\s]\\d{3}"))
+		{
+			LOGGER.log(Level.FINE, "REGISTER: Failure, phone number does not match regex");
+			view.failure("Register", "Phone Number is not Valid");
+			return null;
+		}
+		
 //		if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
 		if (services.addCustomerToDatabase(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
 			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");

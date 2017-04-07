@@ -122,8 +122,8 @@ public class Console {
 		 * 
 		 */
 
-		while (true) {
-			
+//		while (true) {
+//			
 			System.out.print("Enter your Username: ");
 			username = scanner.nextLine();
 			
@@ -136,7 +136,7 @@ public class Console {
 			System.out.print("Enter your Address: ");
 			address = scanner.nextLine();
 			
-			System.out.print("Enter your Phone Number: ");
+			System.out.print("Enter your Moblie Phone Number: ");
 			phoneNo = scanner.nextLine();
 			
 			
@@ -147,11 +147,11 @@ public class Console {
 			 * errors like the character ":" from being passed along to the database code.
 			 */
 			
-			if (validatedDetails)
-				break;
-			else
-				System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
-		}
+//			if (validatedDetails)
+//				break;
+//			else
+//				System.out.println("/n Sorry your username and password needs to be character from A-z and numbers 1-9 only");
+//		}
 			
 		return new String[] {username, password, name, address, phoneNo};
 	}
