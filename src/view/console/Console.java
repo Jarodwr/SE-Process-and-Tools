@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
+import model.period.Period;
+
 public class Console {
 	private static Scanner scanner = new Scanner(System.in);
 	public static final String[] Weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -262,20 +264,15 @@ public class Console {
 	public boolean checkBookingWithinWeek(String bookingTime) {
 		
 		/* Current Date and Time */
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
-		
-		try {
-		
 		/* Given Date and Time */
-		SimpleDateFormat formatedDate = new SimpleDateFormat("yyyyMMddHHmmss");
-		Date newDate = formatedDate.parse(bookingTime);
+		Calendar c1 = Period.unixToCalendar(Long.parseLong(bookingTime));
 		
 		/*Compare between the dates*/
-		  Calendar c=Calendar.getInstance();
-		  c.setTime(date);
-		  c.add(Calendar.DATE,7); //Add 7 days to the current date
-		  if(c.getTime().compareTo(newDate)<0){
+		  Calendar c2=Calendar.getInstance();
+		  c2.setTime(date);
+		  c2.add(Calendar.DATE,7); //Add 7 days to the current date
+		  if(c2.getTime().compareTo(c1.getTime())<0){
 			  return false; //It's more than seven days.
 			  
 		  }
@@ -283,12 +280,6 @@ public class Console {
 		  {
 			  return true; //It's less than 7 days.
 		  }
-		} catch (ParseException e) {
-	        e.printStackTrace();
-	    }
-		
-		// Something clearly went wrong if we get here
-		return false;
 		
 		
 		
@@ -314,7 +305,7 @@ public class Console {
 	 */
 	public void printTable(String[][] contents,String[] headerTitles,String title, Boolean checkSevenDayLimit,String noContentsMessage) {
 		
-		int[] longestElements = null; //Storage to determine column length
+		int[] longestElements = new int[contents.length];; //Storage to determine column length
 		
 		for (int i = 0; i < contents.length; i++)
 			longestElements[i] = 0; // Set the minimum length to compare later
@@ -355,19 +346,21 @@ public class Console {
 			
 			
 		for (int i = 0; i < headerTitles.length;i++) {
-			
+			System.out.println(1);
 			if (i == 0)
 				tableTitles += "     "+headerTitles[i]; // First table header title
 			else
 				tableTitles += "   | "+headerTitles[i]; // Second or more element of the table header title
 				
-		for (int k = 0; k < (longestElements[i] - headerTitles[i].length()); k++)
+		for (int k = 0; k < (longestElements[i]); k++)
 			tableTitles += " "; //Add Spaces to balance the table column length
 		
 		}
 		
 		
 		System.out.println(tableTitles); // Print out the table header titles
+		
+		Boolean continuePrinting = false;
 		
 		for (int k = 0; k < (tableTitles.length()); k++)
 			System.out.print("-"); //Add dashes "-" under the table header
@@ -377,11 +370,18 @@ public class Console {
 		
 				for (int i=0;i < contents.length; i++) { //Go through all the bookings rows
 					
+					if (checkSevenDayLimit) {
+					if (checkBookingWithinWeek(contents[i][0])) { //Check if this is within 7 days
+						continuePrinting = true;
+					}
+					} else {
+						continuePrinting = true;
+					}
 					
-					if (checkBookingWithinWeek(contents[i][1]) && checkSevenDayLimit) { //Check if this is within 7 days
+					if (continuePrinting) {
 					for (int j = 0; j < contents[i].length; j++) { //Go through all the bookings columns
 						
-						if (j == 1 || j == 2)
+						if (j == 0 || j == 1)
 								System.out.print("     "+formatDate(contents[i][j])); //Print out dates in correct format
 						else
 							System.out.print("     "+contents[i][j]); //Print out customer name
@@ -421,121 +421,11 @@ public class Console {
 	 * @param [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod, 3 - services]
 	 */
 	public void viewBookings(String[][] bookings) {
+String[] headerTitles = {"Start Period","End Period","Services","Customer Name"};
 		
-		/*Variables to be used to determine each column length*/
-		int longestNameLength = 0; //Store the longest customer name (in length of the string)
-		int longeststartTimeLength = 0; //Store the longest booking start period (in length of the string)
-		int longestendTimeLength = 0; //Store the longest booking end period (in length of the string)
-		int longestServicesLength = 0; //Store the longest booking end period (in length of the string)
-		Boolean canPrintSomething = false; // Check if there is something within 7 days
-		/*
-		 * In order to make sure the table is printed properly,
-		 * we need need to make sure that the cells are balanced in length
-		 * So we need to first fine the longest Strings for each column.
-		 */
-		for (int i=0;i < bookings.length; i++) {
-			for (int j = 0; j < bookings[i].length; j++) {
-				
-				//Check if the length of the customer name is currently the longest
-				if (j == 0 && bookings[i][j].length() > longestNameLength)
-					longestNameLength = bookings[i][j].length();
-				
-				//Check if the length of the customer start time is currently the longest
-				if (j == 1 && bookings[i][j].length() > longeststartTimeLength)
-					longeststartTimeLength = formatDate(bookings[i][j]).length();
-				
-				//Check if atleast this date is within seven days
-				if (j ==1) {
-					if (checkBookingWithinWeek(bookings[i][j])) //Check if we need to bother print the table
-						canPrintSomething = true; //Yes we can print the table
-				}
-				
-				//Check if the length of the customer end time is currently the longest
-				if (j == 2 && bookings[i][j].length() > longestendTimeLength)
-					longestendTimeLength = formatDate(bookings[i][j]).length();
-				
-				//Check if the length of the customer services is currently the longest
-				if (j == 3 && bookings[i][j].length() > longestServicesLength)
-					longestServicesLength = formatDate(bookings[i][j]).length();
-			}
-		}
-		
-					
-		//Menu Title			
-		System.out.println("\n--------------------\nBookings\n--------------------\n");
-
-		if (canPrintSomething) { // If there is any bookings within the next 7 days
-		/*Table Header*/
-		
-		String tableTitles = "     Customer Name"; //Customer table header
-		for (int k = 0; k < (longestNameLength - "Customer Name".length()); k++)
-			tableTitles += " "; //Add Spaces to balance the table column length
-		
-		tableTitles += "   | Start Period"; //Start Period table header
-		for (int k = 0; k < (longeststartTimeLength - "Start Period".length()); k++)
-			tableTitles += " "; //Add Spaces to balance the table column length
-		
-
-		tableTitles += "   | End Period"; //End Period table header
-		for (int k = 0; k < (longestendTimeLength - "End Period".length()); k++)
-			tableTitles += " "; //Add Spaces to balance the table column length
-		
-		tableTitles += "   | Services"; //Services table header
-		for (int k = 0; k < (longestServicesLength - "Services".length()); k++)
-			tableTitles += " "; //Add Spaces to balance the table column length
-		
-		System.out.println(tableTitles); //Print out the table header titles
-		
-		for (int k = 0; k < (tableTitles.length()); k++)
-			System.out.print("-"); //Add dashes "-" under the table header
-		
-		System.out.println(); //Create a new line for the rest of the table contents
+		printTable(bookings,headerTitles,"Bookings", true,"There are no bookings within the next seven days.");
 		
 		
-				for (int i=0;i < bookings.length; i++) { //Go through all the bookings rows
-					
-					
-					if (checkBookingWithinWeek(bookings[i][1])) { //Check if this is within 7 days
-					for (int j = 0; j < bookings[i].length; j++) { //Go through all the bookings columns
-						
-						if (j == 1 || j == 2)
-								System.out.print("     "+formatDate(bookings[i][j])); //Print out dates in correct format
-						else
-							System.out.print("     "+bookings[i][j]); //Print out customer name
-						
-						/*Add enough spaces to keep table column length balanced*/
-						
-						if (j == 0) //Add spaces after Customer name
-							for (int k = 0; k < ("Customer Name".length() - longestNameLength); k++)
-								System.out.print(" ");
-						
-						if (j == 1) //Add spaces after Booking Start Time
-							for (int k = 0; k < (bookings[i][j].length() - longeststartTimeLength); k++)
-								System.out.print(" ");
-						
-						if (j == 2) //Add spaces after Booking End Time
-							for (int k = 0; k < ("End Period".length() - longestendTimeLength); k++)
-								System.out.print(" ");
-						
-						if (j == 3) //Add spaces after Servies
-							for (int k = 0; k < ("Services".length() - longestServicesLength); k++)
-								System.out.print(" ");
-							
-						
-					}
-					System.out.println(); //create a new row
-					}
-				}
-				
-				for (int k = 0; k < (tableTitles.length()); k++)
-					System.out.print("-"); //Add dashes "-" under the table
-		} else {
-			System.out.println("There are no bookings within the next seven days.");
-		}
-				
-				System.out.println("\n\n Press any key to go back to Menu...");
-				
-				scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
 	/**
@@ -543,82 +433,11 @@ public class Console {
 	 * @param [period][0 - start, 1 - end]
 	 */
 	public void viewBookingAvailability(String[][] availability) {
-		/*Variables to be used to determine each column length*/
-		int longeststartTimeLength = 0; //Store the longest booking start period (in length of the string)
-		int longestendTimeLength = 0; //Store the longest booking end period (in length of the string)
 		
-		/*
-		 * In order to make sure the table is printed properly,
-		 * we need need to make sure that the cells are balanced in length
-		 * So we need to first fine the longest Strings for each column.
-		 */
-		for (int i=0;i < availability.length; i++) {
-			for (int j = 0; j < availability[i].length; j++) {
-				
+		String[] headerTitles = {"Start Period","End Period"};
+		
+		printTable(availability,headerTitles,"Bookings", false,"No bookings available.");
 
-				
-				//Check if the length of the customer start time is currently the longest
-				if (j == 0 && availability[i][j].length() > longeststartTimeLength)
-					longeststartTimeLength = availability[i][j].length();
-				
-				//Check if the length of the customer end time is currently the longest
-				if (j == 1 && availability[i][j].length() > longestendTimeLength)
-					longestendTimeLength = availability[i][j].length();
-			}
-		}
-		
-		
-					
-		//Menu Title			
-		System.out.println("\n--------------------\nAvailable Bookings\n--------------------\n");
-
-		
-		/*Table header*/
-		
-		String tableTitles = "     Start Period"; //Start Period table header
-		for (int k = 0; k < (longeststartTimeLength - "Start Period".length()); k++)
-			tableTitles += " "; //Add Spaces to balance the table column length
-		
-
-		tableTitles += "   | End Period"; //End Period table header
-		for (int k = 0; k < (longestendTimeLength - "End Period".length()); k++)
-			tableTitles += " "; //Add Spaces to balance the table column length
-		
-		System.out.println(tableTitles); //Print out the table header titles
-		
-		for (int k = 0; k < (tableTitles.length()); k++)
-			System.out.print("-"); //Add dashes "-" under the table header
-		
-		System.out.println(); //Create a new line for the rest of the table contents
-		
-		
-				for (int i=0;i < availability.length; i++) { //Go through all the availability rows
-					for (int j = 0; j < availability[i].length; j++) { //Go through all the availability columns
-						
-						
-						System.out.print("     "+availability[i][j]); //Print out the current booking detail
-						
-						/*Add enough spaces to keep table column length balanced*/
-
-						if (j == 0) //Add spaces after Booking Start Time
-							for (int k = 0; k < (longeststartTimeLength - availability[i][j].length()); k++)
-								System.out.print(" ");
-						
-						if (j == 1) //Add spaces after Booking End Time
-							for (int k = 0; k < (longestendTimeLength - availability[i][j].length()); k++)
-								System.out.print(" ");
-							
-						System.out.print("     "); //Create a gap between columns
-					}
-					System.out.println(); //create a new row
-				}
-				
-				for (int k = 0; k < (tableTitles.length()); k++)
-					System.out.print("-"); //Add dashes "-" under the table
-				
-				System.out.println("\n\n Press any key to go back to Menu...");
-				
-				scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
 	/**
