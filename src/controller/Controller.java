@@ -41,6 +41,10 @@ public class Controller {
 			handler = new FileHandler("logs\\" + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".txt");
 			LOGGER.setLevel(Level.FINEST);
 			handler.setLevel(Level.FINEST);
+			Handler cHandler = new ConsoleHandler();
+			cHandler.setLevel(Level.OFF);
+			LOGGER.addHandler(cHandler);
+			
 		} catch(IOException e) {
 			handler = new ConsoleHandler();
 			LOGGER.setLevel(Level.WARNING);
