@@ -301,7 +301,7 @@ public class Console {
 	 */
 	
 	public static String formatDate(String unixdate) {
-			Long date = Long.parseLong(unixdate) / 1000;
+			Long date = Long.parseLong(unixdate) * 1000;
 			SimpleDateFormat viewing = new SimpleDateFormat("h:mm a d:M:yy");
 			
 			return viewing.format(date);
