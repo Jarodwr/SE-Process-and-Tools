@@ -224,8 +224,8 @@ public class Console {
 		
 		/*Print out the prompts in the console*/
 		System.out.println("Are you sure you want to logout?");
-		System.out.println("1 - Yes");
-		System.out.println("2- Cancel");
+		System.out.println("1.\tYes");
+		System.out.println("2.\tCancel");
 		
 		while (true) { //Do not leave this Menu until a valid option is selected
 		try {
