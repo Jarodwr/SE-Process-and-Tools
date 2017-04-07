@@ -1,16 +1,42 @@
 package main;
 
-import java.util.Date;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import controller.Controller;
 import model.database.SQLiteConnection;
-import model.period.Booking;
-import model.period.Period;
 import model.service.Service;
 
 public class Main {
-
+	
+	
 	public static void main(String[] args) {
+		Logger LOGGER = Logger.getLogger("main");
+		
+		Handler handler;
+		try {
+			handler = new FileHandler("logs\\" + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".txt");
+			LOGGER.setLevel(Level.FINEST);
+			handler.setLevel(Level.FINEST);
+			
+		}catch(IOException e) {
+			handler = new ConsoleHandler();
+			LOGGER.setLevel(Level.WARNING);
+			handler.setLevel(Level.WARNING);
+			LOGGER.warning("Cannot create logging file, using console logger");
+		}
+		handler.setFormatter(new SimpleFormatter());
+		LOGGER.addHandler(handler);
+		LOGGER.setUseParentHandlers(false);
+		LOGGER.warning("test");
+		
 		SQLiteConnection.createTables(); // Create table if it doesn't exist for all info
 		debugCreateOwnerBusiness();
 		debugCreateBookingsTable();

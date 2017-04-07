@@ -1,7 +1,7 @@
 package model.users;
 
 /**
-* Defines the basic User
+* Defines the basic operable user.
 */
 public abstract class User {
 

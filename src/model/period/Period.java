@@ -135,6 +135,7 @@ public class Period {
 	{
 		String first = Long.toString(start.getTime());
 		String second = Long.toString(end.getTime());
+		
 		return new String[] {first, second};
 	}
 	

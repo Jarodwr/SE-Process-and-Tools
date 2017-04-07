@@ -10,6 +10,7 @@ public class Employee {
 
 	
 	public Employee(String employeeId, String username, Timetable availability) {
+		this.employeeId = employeeId;
 		this.username = username;
 		this.availability = availability;
 	}

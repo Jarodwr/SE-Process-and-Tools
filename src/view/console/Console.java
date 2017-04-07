@@ -346,7 +346,6 @@ public class Console {
 			
 			
 		for (int i = 0; i < headerTitles.length;i++) {
-			System.out.println(1);
 			if (i == 0)
 				tableTitles += "     "+headerTitles[i]; // First table header title
 			else

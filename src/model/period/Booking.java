@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.sun.istack.internal.logging.Logger;
+
 import model.database.SQLiteConnection;
 import model.service.Service;
 import model.users.Customer;
@@ -24,7 +26,7 @@ public class Booking extends Period {
 			SQLiteConnection.createBooking(SQLiteConnection.getNextAvailableId(rs, "bookingId"), "SARJ's Milk Business", customerUsername, start, end, Service.arrayOfServicesToString(services, false));
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
+			
 		}
 	}
 	public Booking(String start, String end, boolean formatted, String customerUsername, ArrayList<Service> services) 

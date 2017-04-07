@@ -65,14 +65,13 @@ public class Timetable {
 		 		string += "|";
 		 	}
 		 }
-		 System.out.println(string);
 		 return string;
 	}
 	
 	public String[][] toStringArray() 
 	{
 		String[][] timetable = new String[periods.size()][2];
-		 		
+		
 		for(int i = 0; i < periods.size(); i++)
 		{
 			timetable[i] = periods.get(i).toStringArray();

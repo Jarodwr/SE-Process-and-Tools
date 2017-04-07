@@ -1,20 +1,14 @@
 package controller;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import model.database.SQLiteConnection;
 import model.period.Booking;
@@ -25,34 +19,17 @@ import model.utility.Utility;
 import view.console.Console;
 
 public class Controller {
-	private Logger LOGGER = Logger.getLogger(Controller.class.getName());
+	private Logger LOGGER = Logger.getLogger("main");
 	
 	private Console view = new Console();
 	private Utility services = new Utility();
 
 	private User activeUser;
 	
-	//private boolean debugMode = false;
-	
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false, false};
 	
 	public Controller() {
-		//Handler handler;
-			//handler = new FileHandler("logs\\" + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".txt");
-			LOGGER.setLevel(Level.FINEST);
-			//handler.setLevel(Level.FINEST);
-			//Handler cHandler = new ConsoleHandler();
-			//cHandler.setLevel(Level.OFF);
-			//LOGGER.addHandler(cHandler);
-			
-		 /*catch(IOException e) {
-			//handler = new ConsoleHandler();
-			LOGGER.setLevel(Level.WARNING);
-			//handler.setLevel(Level.WARNING);
-			LOGGER.warning("Cannot create logging file, using console logger");
-		}*/
-		//handler.setFormatter(new SimpleFormatter());
-		//LOGGER.addHandler(handler);
+		
 	}
 	
 	public void run()
@@ -195,11 +172,11 @@ public class Controller {
 	
 	private void viewAvailableTimes() {
 		Timetable ConcatenatedTimetable = services.getAvailableTimes();
-		if (ConcatenatedTimetable.equals(null)) {
-			LOGGER.log(Level.WARNING, "No employees registered in the system");
+		if (ConcatenatedTimetable == null) {
+			LOGGER.warning("No employees registered in the system");
 			view.failure("View Available Times", "No Employees registered in the system with available times");
+			return;
 		}
-		System.out.println(ConcatenatedTimetable.toString());
 		String[][] s = ConcatenatedTimetable.toStringArray();
 		view.viewBookingAvailability(s);
 	}
@@ -209,24 +186,20 @@ public class Controller {
 	}
 	
 	private void viewSummaryOfBookings() {
-		try {
-			Booking[] bookings = services.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
 
-			if (bookings.length == 0) {
-				LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
-				view.failure("View Booking Summaries", "No future bookings");
-			} else {
-				String[][] bookingsStringArray = new String[bookings.length][];
-				
-				for (int i = 0; i < bookings.length; i++) {
-					bookingsStringArray[i] = bookings[i].toStringArray();
-					System.out.println(bookingsStringArray[i]);
-				}
-				LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
-				view.viewBookings(bookingsStringArray);
-			}
-		} catch (Exception e) {
+		Booking[] bookings = services.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
+
+		if (bookings.length == 0) {
+			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
+			view.failure("View Booking Summaries", "No future bookings");
+		} else {
+			String[][] bookingsStringArray = new String[bookings.length][];
 			
+			for (int i = 0; i < bookings.length; i++) {
+				bookingsStringArray[i] = bookings[i].toStringArray();
+			}
+			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
+			view.viewBookings(bookingsStringArray);
 		}
 	}
 	
@@ -246,8 +219,7 @@ public class Controller {
 			}
 			
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 		}
 		ArrayList<String> availabilities = view.addAvailableTimes();
 		Iterator<String> iter = availabilities.iterator();
@@ -282,7 +254,7 @@ public class Controller {
 			SQLiteConnection.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 		}
 		 
 	}
@@ -302,8 +274,7 @@ public class Controller {
 			}
 			
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 		}
 
 	}

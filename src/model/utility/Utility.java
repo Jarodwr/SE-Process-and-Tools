@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import model.database.SQLiteConnection;
 import model.employee.Employee;
@@ -19,6 +20,8 @@ import model.users.User;
 public class Utility {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	private Logger LOGGER = Logger.getLogger("main");
+	
 	
 	/**
 	 * @param username username being searched
@@ -46,12 +49,19 @@ public class Utility {
 				return customer;
 			}
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			LOGGER.warning(e.getMessage());
 			return null;
 		}
 		
 	}
 	
+	/**
+	 * 
+	 * @param string
+	 * @param regex
+	 * @return
+	 */
 	public boolean validate(String string, String regex)
 	{
 		if(string.matches(regex))
@@ -64,6 +74,11 @@ public class Utility {
 		}
 	}
 	
+	/**
+	 * @param username Requested user
+	 * @param password Attempted password
+	 * @return if the user exists with the entered password, return the user. Else return null.
+	 */
 	public User authenticate(String username, String password) {
 		User found = searchUser(username);
 		if (found != null && found.checkPassword(password)) {
@@ -72,12 +87,16 @@ public class Utility {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public String[][] getEmployeeList() {
 		ResultSet rs;
 		try {
 			rs = SQLiteConnection.getAllEmployees();
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.warning(e.getMessage());
 			return null;
 		}
 
@@ -87,7 +106,7 @@ public class Utility {
 				employees.add(new String[] {rs.getString(1), rs.getString(3)});
 			} while (rs.next());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 		}
 		if (!employees.isEmpty()) {
 			String[][] b = new String[employees.size()][];
@@ -98,34 +117,51 @@ public class Utility {
 		}
 	}
 	
+	/**
+	 * Compiles all available times for all employees
+	 * @return Merged timetable
+	 */
 	public Timetable getAvailableTimes() {
 		
 		Timetable t = new Timetable();
 		try {
 			ResultSet rsEmployees = SQLiteConnection.getAllEmployees();
-			if (!rsEmployees.next()) {
-				return null;
-			}
-			while(rsEmployees.next()) {
+			do {
 				ResultSet rsTimetables = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
-
+				if (rsTimetables == null) {
+					continue;
+				}
 				t.mergeTimetable(rsTimetables.getString("availability"));
-			}
+			} while(rsEmployees.next());
+			
 			return t;
 		}
-		catch(Exception e) {
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
 			return null;
 		}
 	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public Booking[] getBookingsAfter(Date date) {
 		try {
 			return bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart(date.getTime() / 1000));
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.warning(e.getMessage());
 			return null;
 		}
 
 	}
+	
+	/**
+	 * 
+	 * @param rs
+	 * @return
+	 */
 	public Booking[] bookingResultsetToArray(ResultSet rs) {
 
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
@@ -134,8 +170,8 @@ public class Utility {
 				bookings.add(new Booking(rs.getString(4), rs.getString(5), false, rs.getString(3), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
 				
 			} while (rs.next());
-		} catch (Exception e) {
-			
+		} catch (SQLException e) {
+			LOGGER.warning(e.getMessage());
 		}
 		if (!bookings.isEmpty()) {
 			Booking[] b = new Booking[bookings.size()];
@@ -146,26 +182,75 @@ public class Utility {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 * @param name
+	 * @param address
+	 * @param mobileno
+	 * @return
+	 */
 	public boolean addCustomerToDatabase(String username, String password, String name, String address, String mobileno) {
 		return SQLiteConnection.createCustomer(username, password, name, address, mobileno);
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param businessName
+	 * @param name
+	 * @param address
+	 * @param phonenumber
+	 * @param timetableID
+	 * @return
+	 */
 	public boolean addEmployeeToDatabase(String id, String businessName, String name, String address, String phonenumber, int timetableID) {
 		return SQLiteConnection.createEmployee(Integer.parseInt(id), "", name, address, phonenumber, 0);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Employee[] getAllEmployees() {
-		return new Employee[0];
+		ArrayList<Employee> employees = new ArrayList<Employee>();
+		try {
+			ResultSet rs = SQLiteConnection.getAllEmployees();
+			
+			do {
+				employees.add(new Employee(rs.getString(1), rs.getString(2), null));
+			} while (rs.next());
+			
+		} catch (SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+		
+		if (!employees.isEmpty()) {
+			Employee[] b = new Employee[employees.size()];
+			employees.toArray(b);
+			return b;
+		} else {
+			return new Employee[0];
+		}
 	}
 	
+	/**
+	 * 
+	 * @param employeeId
+	 * @return
+	 */
 	public Timetable getEmployeeAvailability(String employeeId) {
 		try {
 			ResultSet rs = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(employeeId));
+			if (rs == null) {
+				return new Timetable();
+			}
 			Timetable t = new Timetable();
 			t.mergeTimetable(rs.getString("availability"));
 			return t;
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			LOGGER.warning(e.getMessage());
 			return null;
 		}
 	}
