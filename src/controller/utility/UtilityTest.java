@@ -1,10 +1,10 @@
-package model.services;
+package controller.utility;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class ServicesTest {
+public class UtilityTest {
 
 	@Test
 	public void test() {

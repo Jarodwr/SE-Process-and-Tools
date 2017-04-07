@@ -1,12 +1,10 @@
-package model.booking;
+package model.period;
 
 import static org.junit.Assert.*;
 
 import java.util.Date;
 
 import org.junit.Test;
-
-import model.period.Period;
 
 public class BookingsTestCases 
 {

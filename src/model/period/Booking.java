@@ -1,6 +1,8 @@
-package model.booking;
+package model.period;
 
-import model.period.Period;
+import java.util.ArrayList;
+
+import model.service.Service;
 import model.users.Customer;
 
 public class Booking {
@@ -8,6 +10,7 @@ public class Booking {
 	private String bookingId;
 	private Period timeSlot;
 	private String customerUsername;
+	private ArrayList<Service> services;
 	
 	public Booking(String bookingId, String customerUsername, Period timeslot) 
 	{

@@ -3,8 +3,8 @@ package main;
 import java.util.Date;
 
 import controller.Controller;
-import model.booking.Booking;
 import model.database.SQLiteConnection;
+import model.period.Booking;
 import model.period.Period;
 
 public class Main {

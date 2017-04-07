@@ -10,8 +10,8 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.booking.Booking;
 import model.database.SQLiteConnection;
+import model.period.Booking;
 
 @SuppressWarnings("unused")
 public class ControllerTest {

@@ -15,10 +15,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import model.booking.Booking;
+import controller.utility.Utility;
 import model.database.SQLiteConnection;
+import model.period.Booking;
 import model.period.Period;
-import model.services.Services;
 import model.timetable.Timetable;
 import model.users.User;
 import view.console.Console;
@@ -27,7 +27,7 @@ public class Controller {
 	private Logger LOGGER = Logger.getLogger(Controller.class.getName());
 	
 	private Console view = new Console();
-	private Services services = new Services();
+	private Utility services = new Utility();
 
 	private User activeUser;
 	

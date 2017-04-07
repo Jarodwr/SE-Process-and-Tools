@@ -1,4 +1,4 @@
-package model.services;
+package controller.utility;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,16 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import model.booking.Booking;
 import model.database.SQLiteConnection;
 import model.employee.Employee;
+import model.period.Booking;
 import model.period.Period;
 import model.timetable.Timetable;
 import model.users.Customer;
 import model.users.Owner;
 import model.users.User;
 
-public class Services {
+public class Utility {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	
