@@ -300,9 +300,8 @@ public class Console {
 	 * @return farmatedDate
 	 */
 	
-	public String formatDate(String date) {
-
-			Date time = new Date(date);
+	public static String formatDate(String unixdate) {
+			Long date = Long.parseLong(unixdate) / 1000;
 			SimpleDateFormat viewing = new SimpleDateFormat("h:mm a d:M:yy");
 			
 			return viewing.format(date);
