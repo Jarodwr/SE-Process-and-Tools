@@ -1,0 +1,14 @@
+Apr 08, 2017 6:53:32 PM main.Main main
+WARNING: test
+Apr 08, 2017 6:53:35 PM model.database.SQLiteConnection deleteAvailabilities
+WARNING: [SQLITE_BUSY]  The database file is locked (database is locked)
+Apr 08, 2017 6:53:35 PM model.database.SQLiteConnection createAvailability
+WARNING: [SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed (UNIQUE constraint failed: Timetableinfo.timetableId)
+Apr 08, 2017 6:53:38 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: REGISTER
+Apr 08, 2017 6:53:52 PM controller.Controller register
+FINE: REGISTER: Registration details: [asdfghdfghjklsdfghjk, asdfghjasdfghj, jksdfghjk, 12 asdfghjkerftghj, 0412345678]
+Apr 08, 2017 6:53:55 PM model.database.SQLiteConnection createCustomer
+WARNING: [SQLITE_BUSY]  The database file is locked (database is locked)
+Apr 08, 2017 6:53:55 PM controller.Controller register
+FINE: REGISTER: Failure, username already taken

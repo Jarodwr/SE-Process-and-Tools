@@ -21,30 +21,30 @@ public class ConsoleTest {
 		
 	}
 	
-	@Test
-	public void loginValidTest() {
-		
-		/*This check is also done during user registration*/
-		
-		Boolean loginCheck = view.validatelogin("username","password");
-		
-		if (!loginCheck) {
-			fail("Login invalid character check failed.");
-		}
-	}
-	
-	@Test
-	public void loginInvalidTest() {
-		
-		/*This check is also done during user registration*/
-		
-		Boolean loginCheck = view.validatelogin("username","!password");
-		
-		if (!loginCheck) {
-			fail("Login invalid character found.");
-		}
-	}
-	
+//	@Test
+//	public void loginValidTest() {
+//		
+//		/*This check is also done during user registration*/
+//		
+//		Boolean loginCheck = view.validatelogin("username","password");
+//		
+//		if (!loginCheck) {
+//			fail("Login invalid character check failed.");
+//		}
+//	}
+//	
+//	@Test
+//	public void loginInvalidTest() {
+//		
+//		/*This check is also done during user registration*/
+//		
+//		Boolean loginCheck = view.validatelogin("username","!password");
+//		
+//		if (!loginCheck) {
+//			fail("Login invalid character found.");
+//		}
+//	}
+//	
 	@Test
 	public void UserLoginTest1()
 	{

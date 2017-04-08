@@ -1,0 +1,16 @@
+Apr 08, 2017 6:58:32 PM main.Main main
+WARNING: test
+Apr 08, 2017 6:58:35 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: REGISTER
+Apr 08, 2017 6:58:51 PM controller.Controller register
+FINE: REGISTER: Registration details: [unknown, pass, Russ, 12 test, 0412345678]
+Apr 08, 2017 6:58:51 PM controller.Controller register
+FINE: REGISTER: Success, user added to system
+Apr 08, 2017 6:58:59 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: LOGIN
+Apr 08, 2017 6:59:05 PM controller.Controller login
+FINE: LOGIN: Login details: [unknown, pass]
+Apr 08, 2017 6:59:05 PM controller.Controller login
+FINE: LOGIN: Success
+Apr 08, 2017 6:59:05 PM controller.Controller run
+FINE: Active user permissions : [false, false, true, true, true, false, false, false, false, true]

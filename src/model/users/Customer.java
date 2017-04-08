@@ -25,7 +25,8 @@ public class Customer extends User {
 				false, 	//Add working time/date
 				false, 	//Show all worker availability for next 7 days
 				false, 	//Add Employee
-				true	//Log out
+				false,	//Edit employee Availabilities
+				true,	//Log out
 				};
 	}
 	
