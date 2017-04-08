@@ -10,13 +10,15 @@ import java.util.logging.Logger;
 import model.database.SQLiteConnection;
 import model.employee.Employee;
 import model.period.Booking;
-import model.period.Period;
 import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;
 import model.users.Owner;
 import model.users.User;
 
+/**
+ * A services class, used for interfacing between the controller and the database.
+ */
 public class Utility {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -88,8 +90,9 @@ public class Utility {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets a list of employees and returns their details as an array of strings
+	 * TODO: Change this to return a list<Employee> instead
+	 * @return String[Employee][Details]
 	 */
 	public String[][] getEmployeeList() {
 		ResultSet rs;
@@ -143,9 +146,9 @@ public class Utility {
 	}
 	
 	/**
-	 * 
-	 * @param date
-	 * @return
+	 * Gets an array of bookings that start after the date specified
+	 * @param date Searching all bookings after this date
+	 * @return Booking[]
 	 */
 	public Booking[] getBookingsAfter(Date date) {
 		try {
@@ -154,13 +157,12 @@ public class Utility {
 			LOGGER.warning(e.getMessage());
 			return null;
 		}
-
 	}
 	
 	/**
-	 * 
-	 * @param rs
-	 * @return
+	 * Gets a booking query and returns it as an array of bookings
+	 * @param rs ResultSet of query
+	 * @return Booking[]
 	 */
 	public Booking[] bookingResultsetToArray(ResultSet rs) {
 
@@ -183,35 +185,34 @@ public class Utility {
 	}
 	
 	/**
-	 * 
+	 * Gets the details of the customer and creates a user from it.
 	 * @param username
 	 * @param password
 	 * @param name
 	 * @param address
 	 * @param mobileno
-	 * @return
+	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addCustomerToDatabase(String username, String password, String name, String address, String mobileno) {
 		return SQLiteConnection.createCustomer(username, password, name, address, mobileno);
 	}
 	
 	/**
-	 * 
+	 * Creates an employee based off the information given by the owner.
 	 * @param id
 	 * @param businessName
 	 * @param name
 	 * @param address
 	 * @param phonenumber
 	 * @param timetableID
-	 * @return
+	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addEmployeeToDatabase(String id, String businessName, String name, String address, String phonenumber, int timetableID) {
 		return SQLiteConnection.createEmployee(Integer.parseInt(id), "", name, address, phonenumber, 0);
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * @return Array of all employees in the system.
 	 */
 	public Employee[] getAllEmployees() {
 		ArrayList<Employee> employees = new ArrayList<Employee>();
@@ -236,9 +237,9 @@ public class Utility {
 	}
 	
 	/**
-	 * 
-	 * @param employeeId
-	 * @return
+	 * Get the availability timetable of the searched employee
+	 * @param employeeId Of the requested employee
+	 * @return null if there is no availability for the requested employee or the employee doesn't exist.
 	 */
 	public Timetable getEmployeeAvailability(String employeeId) {
 		try {
