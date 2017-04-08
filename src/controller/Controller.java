@@ -119,7 +119,7 @@ public class Controller {
 			// if the user selects the logout option
 			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
 				//run the logout view function and break the loop terminating the program
-				logout(view.logout());
+				view.logout();
 			case 11: breakLoop = true;
 				break;
 			//if the user selects an invalid option the print an error message to the view and go through the loop again
