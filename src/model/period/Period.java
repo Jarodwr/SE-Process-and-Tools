@@ -59,7 +59,7 @@ public class Period {
 	
 	public static String convertSecondsToDay(int seconds) {
 		int division = seconds/86400;
-		return weekdays[division];
+		return weekdays[Math.max(6,division)];
 	}
 	
 	public static Calendar unixToCalendar(long unixTime){

@@ -612,11 +612,8 @@ public ArrayList<String> addAvailableTimes() {
 		
 		System.out.print("Address: ");
 		address = scanner.nextLine();
-		
-		System.out.print("Employee ID: ");
-		id = scanner.nextLine();
 			
-		return new String[] {name, phoneNo, address, id};
+		return new String[] {name, phoneNo, address};
 	}
 	
 	/**

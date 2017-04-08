@@ -328,7 +328,18 @@ public class Controller {
 		String name = newEmployee[0];
 		String phonenumber = newEmployee[1];
 		String address = newEmployee[2];
-		String id = newEmployee[3];
+		String id = "";
+		try {
+			ResultSet rs = SQLiteConnection.getAllEmployees();
+			int i = SQLiteConnection.getNextAvailableId(rs, "employeeId");
+			rs.close();
+			id = Integer.toString(i);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+
 		
 		if(!services.validate(name, "[A-Za-z]+"))
   		{
