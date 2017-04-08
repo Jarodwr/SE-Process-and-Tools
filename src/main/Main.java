@@ -61,10 +61,10 @@ public class Main {
 		}
 	}
 	public static void debugCreateBookingsTable() {
-		SQLiteConnection.createBooking(1, "SARJ's Milk Business", "Gary", "1491580800", "1491584400", "test");
-		SQLiteConnection.createBooking(2, "SARJ's Milk Business", "Joe", "1491670800", "1491674400", "test");
-		SQLiteConnection.createBooking(3, "SARJ's Milk Business", "Bob", "1491757200", "1491760800", "test");
-		SQLiteConnection.createBooking(4, "SARJ's Milk Business", "Bill", "1491764400", "1491768000", "test");
+		SQLiteConnection.createBooking(1, "SARJ's Milk Business", "Gary", "0", "1491580800", "1491584400", "test");
+		SQLiteConnection.createBooking(2, "SARJ's Milk Business", "Joe", "1", "1491670800", "1491674400", "test");
+		SQLiteConnection.createBooking(3, "SARJ's Milk Business", "Bob", "0", "1491757200", "1491760800", "test");
+		SQLiteConnection.createBooking(4, "SARJ's Milk Business", "Bill", "1", "1491764400", "1491768000", "test");
 	}
 	
 	public static void debugCreateEmptyAvailability() {

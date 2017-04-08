@@ -85,7 +85,7 @@ public class Utility {
 	
 	/**
 	 * Gets a list of employees and returns their details as an array of strings
-	 * TODO: Change this to return a list\<Employee\> instead
+	 * TODO: Change this to return a list&lt;Employee&gt; instead
 	 * @return String[Employee][Details]
 	 */
 	public String[][] getEmployeeList() {
@@ -163,7 +163,8 @@ public class Utility {
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		try {
 			do {
-				bookings.add(new Booking(rs.getString(4), rs.getString(5), false, rs.getString(3), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
+				System.out.println(rs.getString("starttimeunix") + " | " + rs.getString("endtimeunix") + " | " + rs.getString("username") + " | " + rs.getString("employeeId") + " | " + rs.getString("bookingData"));
+				bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
 				
 			} while (rs.next());
 		} catch (SQLException e) {
