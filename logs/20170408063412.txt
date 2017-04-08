@@ -1,0 +1,14 @@
+Apr 08, 2017 6:34:12 PM main.Main main
+WARNING: test
+Apr 08, 2017 6:34:16 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: REGISTER
+Apr 08, 2017 6:34:40 PM controller.Controller register
+FINE: REGISTER: Registration details: [sdfgh, sadfgh, adsfgh, 12 asfg, 04123456789]
+Apr 08, 2017 6:34:40 PM controller.Controller register
+FINE: REGISTER: Failure, phone number does not match regex
+Apr 08, 2017 6:34:44 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: REGISTER
+Apr 08, 2017 6:34:57 PM controller.Controller register
+FINE: REGISTER: Registration details: [sadfgh, sadfgs, asdfg, 12 asdf, 0412345678]
+Apr 08, 2017 6:34:57 PM controller.Controller register
+FINE: REGISTER: Failure, phone number does not match regex

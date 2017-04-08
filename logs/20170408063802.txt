@@ -1,0 +1,18 @@
+Apr 08, 2017 6:38:02 PM main.Main main
+WARNING: test
+Apr 08, 2017 6:38:05 PM model.database.SQLiteConnection deleteAvailabilities
+WARNING: [SQLITE_BUSY]  The database file is locked (database is locked)
+Apr 08, 2017 6:38:05 PM model.database.SQLiteConnection createAvailability
+WARNING: [SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed (UNIQUE constraint failed: Timetableinfo.timetableId)
+Apr 08, 2017 6:38:08 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: REGISTER
+Apr 08, 2017 6:38:24 PM controller.Controller register
+FINE: REGISTER: Registration details: [asdfgh, asdfg, asdfg, 12 aasdfg, 0412345678]
+Apr 08, 2017 6:38:24 PM controller.Controller register
+FINE: REGISTER: Failure, Address does not match regex
+Apr 08, 2017 6:38:35 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: REGISTER
+Apr 08, 2017 6:38:44 PM controller.Controller register
+FINE: REGISTER: Registration details: [asdfghja, asdfgh, sadfgh, 12 asdfghj, 0412345678]
+Apr 08, 2017 6:38:44 PM controller.Controller register
+FINE: REGISTER: Failure, Address does not match regex

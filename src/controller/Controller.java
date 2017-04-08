@@ -185,7 +185,7 @@ public class Controller {
 			view.failure("Register", "Address is not Valid");
 			return null;
 		}
-		if(!services.validate(userDetails[4], "\\d{4}[-\\.\\s]\\d{3}[-\\.\\s]\\d{3}"))
+		if(!services.validate(userDetails[4], "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, phone number does not match regex");
 			view.failure("Register", "Phone Number is not Valid");
