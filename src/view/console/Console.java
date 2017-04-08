@@ -357,14 +357,7 @@ public class Console {
 							for (int k = 0; k < (longestElements[j] - currentElement.length()); k++)
 								System.out.print(" ");
 						}
-						
-						
-						/*if (j == 1) //Add spaces after Booking Start Time
-							for (int k = 0; k < (contents[i][j].length() - longestElements[j]); k++)
-								System.out.print(" ");*/
-						
-							
-						
+
 					}
 					System.out.println(); //create a new row
 					}
@@ -388,9 +381,9 @@ public class Console {
 	 * @param [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod, 3 - services]
 	 */
 	public void viewBookings(String[][] bookings) {
-String[] headerTitles = {"Start Period","End Period","Services","Customer Name"};
+		String[] headerTitles = {"Start Period","End Period","Services","Customer Name"}; //Set the headers of the table to print
 		
-		printTable(bookings,headerTitles,"Bookings", true,false,"There are no bookings within the next seven days.");
+		printTable(bookings,headerTitles,"Bookings", true,false,"There are no bookings within the next seven days."); // Print Table
 		
 		
 	}
@@ -401,9 +394,9 @@ String[] headerTitles = {"Start Period","End Period","Services","Customer Name"}
 	 */
 	public void viewBookingAvailability(String[][] availability) {
 		
-		String[] headerTitles = {"Start Period","End Period"};
+		String[] headerTitles = {"Start Period","End Period"}; //Set the headers of the table to print
 		
-		printTable(availability,headerTitles,"Bookings", false,false,"No bookings available.");
+		printTable(availability,headerTitles,"Bookings", false,false,"No bookings available."); // Print table
 
 	}
 	
@@ -469,17 +462,7 @@ public ArrayList<String> addAvailableTimes() {
 		return availableTimes;
 	}
 	
-	
-	/**
-//	 * prints employee timetables
-//	 * @param employeeTimetables employee1Username:timetable*employee2Username:timetable*employee3Username*timetable
-//	 * @param [employee][0 - details, 1 - timetable][]
-//	 */
-//	public void showEmployeeAvailability(String[][][] employeeTimetables) {
-//		
-//	}
-	
-	//REPLACEMENT FOR showEmployeeAvailability(String[][][] employeeTimetables)
+
 	
 	/**
 	 * @param employees [employee][1 - ID, 2 - name]
@@ -497,12 +480,15 @@ public ArrayList<String> addAvailableTimes() {
 			}
 		
 		System.out.print("Select an employee of interest as identified above (Employee's ID): ");
-		//int selectedOption = Integer.parseInt(scanner.nextLine());
 		String selectedID = scanner.nextLine();
 		
 		return selectedID;
 	}
 	
+	/**
+	 * @param unixTime
+	 * @return  formattedDate
+	 */
 	
 	public String unixTimeTo24Hour (String unixTime) {
 		
@@ -513,7 +499,7 @@ public ArrayList<String> addAvailableTimes() {
 		return formattedDate;
 	}
 	
-	/* 
+	/** 
 	 * @param timetable [timetable][period][start, end]
 	 */
 	
@@ -522,32 +508,33 @@ public ArrayList<String> addAvailableTimes() {
 		int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
 		
 		for (int i=0;i < DayPeriodCounts.length; i++) {
-			DayPeriodCounts[i] = 0;
+			DayPeriodCounts[i] = 0; //initialize all the days to 0 count of working periods
 		}
 		
-		String ConvertedDay;
+		String ConvertedDay; //Used to store a day name converted from Unix Seconds
 		int dayWithMostWorkingHours = 0;
 		
-		for (int i=0;i < timetable.length; i++) {
+		for (int i=0;i < timetable.length; i++) { //Find out the maximum number of working hours/period per day
 			
-					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(timetable[i][0]) /1000));
-					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1;
+					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(timetable[i][0]) /1000)); //Convert to day from milliseconds to seconds then day
+					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
 					
-						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours)
-							dayWithMostWorkingHours = DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)];
+						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
+							dayWithMostWorkingHours = DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)]; //make this maximum number of rows
 				
 			
 		}
 		
 		
 		
-		String[][] convertedDates = new String[dayWithMostWorkingHours][Weekdays.length];
+		String[][] convertedDates = new String[dayWithMostWorkingHours][Weekdays.length]; //Array that will be used to print out the table of the weekly view
 		
 		for (int i=0;i < timetable.length; i++) {
 			
 			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(timetable[i][0]) /1000));
 			
-			for (int j = 0; j < timetable[i].length; j++) {
+			/* Add it to the table under the specific day column with start - end time 24 hr format*/
+			for (int j = 0; j < timetable[i].length; j++) { 
 				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
 					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = unixTimeTo24Hour(timetable[i][0])+" - "+unixTimeTo24Hour(timetable[i][1]);
 					break;
@@ -560,7 +547,7 @@ public ArrayList<String> addAvailableTimes() {
 		for (int i=0;i < convertedDates.length; i++) {
 			for (int j = 0; j < convertedDates[i].length; j++) {
 				if (convertedDates[i][j] == null)
-					convertedDates[i][j] = "";
+					convertedDates[i][j] = ""; //Make null table cells empty
 			
 		}
 		}
@@ -570,8 +557,6 @@ public ArrayList<String> addAvailableTimes() {
 
 		
 		/*Table header*/
-		
-		
 		String tableTitles = "";
 		
 		for (int i = 0; i < Weekdays.length;i++) {
@@ -583,12 +568,12 @@ public ArrayList<String> addAvailableTimes() {
 			
 		
 		}
-		System.out.print(tableTitles);
+		System.out.print(tableTitles); //Print all the header titles
 		
 		//Close header
 		System.out.println(); 
 		for (int k = 0; k < (tableTitles.length()); k++)
-			System.out.print("-");
+			System.out.print("-"); //Line below the headers
 		
 		
 		System.out.println(); //Create a new line for the rest of the table contents
@@ -629,10 +614,9 @@ public ArrayList<String> addAvailableTimes() {
 	{
 		System.out.println("--------------------------\nAdd Employee\n--------------------------");
 		
-		String name;
-		String phoneNo;
-		String address;
-		String id;
+		String name; //Employee name
+		String phoneNo; //Employee phone number
+		String address; //Employee address
 
 		System.out.print("Name: ");
 		name = scanner.nextLine();
