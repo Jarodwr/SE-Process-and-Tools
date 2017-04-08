@@ -519,7 +519,7 @@ public ArrayList<String> addAvailableTimes() {
 	
 	public void showTimetable(String[][] timetable) {
 		
-		int[] DayPeriodCounts = new int[Weekdays.length];
+		int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
 		
 		for (int i=0;i < DayPeriodCounts.length; i++) {
 			DayPeriodCounts[i] = 0;
