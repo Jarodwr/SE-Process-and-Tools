@@ -37,11 +37,12 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * Userinfo (
-	 * 1 - username Varchar(255) Primary Key, 
-	 * 2 - password Varchar(255), 
-	 * 3 - name Varchar(255), 
-	 * 4 - address Varchar(255))
+	 * Userinfo (<br>
+	 * 1 - username Varchar(255) Primary Key,<br>
+	 * 2 - password Varchar(255),<br>
+	 * 3 - name Varchar(255),<br>
+	 * 4 - address Varchar(255)<br>
+	 * )
 	 */
 	public static void createUsersTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Userinfo (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
@@ -56,10 +57,10 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * Businessinfo (
-	 * 1 - businessname Varchar(255) Primary Key, 
-	 * 2 - address Varchar(255), 
-	 * 3 - phonenumber Varchar(255)
+	 * Businessinfo (<br>
+	 * 1 - businessname Varchar(255) Primary Key,<br>
+	 * 2 - address Varchar(255),<br>
+	 * 3 - phonenumber Varchar(255)<br>
 	 * )
 	 */
 	public static void createBusinessTable() {
@@ -75,9 +76,9 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * Ownerinfo (
-	 * 1 - businessname Varchar(255) references Businessinfo(businessname), 
-	 * 2 - username Varchar(255) references Userinfo(username)
+	 * Ownerinfo (<br>
+	 * 1 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * 2 - username Varchar(255) references Userinfo(username)<br>
 	 * )
 	 */
 	public static void createOwnerTable() {
@@ -93,13 +94,13 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * Employeeinfo (
-	 * 1 - employeeId integer primary key, 
-	 * 2 - businessname Varchar(255) references Businessinfo(businessname),  
-	 * 3 - name Varchar(255), 
-	 * 4 - address Varchar(255), 
-	 * 5 - mobileno Varchar(255), 
-	 * 6 - timetableId integer references Timetableinfo(timetableId)
+	 * Employeeinfo (<br>
+	 * 1 - employeeId integer primary key,<br> 
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname),<br> 
+	 * 3 - name Varchar(255),<br>
+	 * 4 - address Varchar(255),<br>
+	 * 5 - mobileno Varchar(255),<br>
+	 * 6 - timetableId integer references Timetableinfo(timetableId)<br>
 	 * )
 	 */
 	public static void createEmployeeTable() {
@@ -115,10 +116,10 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * Timetableinfo (
-	 * 1 - timetableId integer primary key, 
-	 * 2 - businessname Varchar(255) references Businessinfo(businessname), 
-	 * 3 - availability Varchar(255)
+	 * Timetableinfo (<br>
+	 * 1 - timetableId integer primary key,<br>
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * 3 - availability Varchar(255)<br>
 	 * )
 	 */
 	public static void createAvailabilitiesTable()  {
@@ -134,10 +135,10 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * EmployeeWorkingTimes (
-	 * 1 - businessname Varchar(255) references Businessinfo(businessname),
-	 * 2 - name Varchar(255), 
-	 * 3 - shift Varchar(255), 
+	 * EmployeeWorkingTimes (<br>
+	 * 1 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * 2 - name Varchar(255),<br>
+	 * 3 - shift Varchar(255),<br>
 	 * )
 	 */
 	public static void createEmployeeWorkingTimesTable()  {
@@ -154,12 +155,12 @@ public class SQLiteConnection {
 	
 	/**
 	 * BookingsTable ( 
-	 * 1 - bookingId integer Primary Key, 
-	 * 2 - businessname Varchar(255) references Businessinfo(businessname), 
-	 * 3 - username Varchar(255), 
-	 * 4 - starttimeunix Varchar(255), 
-	 * 5 - endtimeunix Varchar(255), 
-	 * 6 - bookingData Varchar(255)
+	 * 1 - bookingId integer Primary Key,<br>
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * 3 - username Varchar(255),<br>
+	 * 4 - starttimeunix Varchar(255),<br>
+	 * 5 - endtimeunix Varchar(255),<br>
+	 * 6 - bookingData Varchar(255)<br>
 	 * )
 	 */
 	public static void createBookingsTable()  {
@@ -176,10 +177,10 @@ public class SQLiteConnection {
 	
 	/**
 	 * ServicesTable (
-	 * 1 - servicename Varchar(255) Primary Key, 
-	 * 2 - serviceprice integer, 
-	 * 3 - serviceminutes integer, 
-	 * 4 - businessname Varchar(255) references Businessinfo(businessname),  
+	 * 1 - servicename Varchar(255) Primary Key,<br>
+	 * 2 - serviceprice integer,<br>
+	 * 3 - serviceminutes integer,<br>
+	 * 4 - businessname Varchar(255) references Businessinfo(businessname),<br>
 	 * )
 	 */
 	public static void createServicesTable() {
@@ -244,11 +245,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param username
-	 * @param password
-	 * @param name
-	 * @param address
-	 * @param mobileno
 	 * @return True if creation is successful, else false.
 	 */
 	public static boolean createCustomer(String username, String password, String name, String address, String mobileno) {
@@ -277,7 +273,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param username
 	 * @return True if deletion is successful, false if user cannot be found.
 	 */
 	public static boolean deleteCustomer(String username) {
@@ -302,12 +297,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param businessname
-	 * @param username
-	 * @param password
-	 * @param name
-	 * @param address
-	 * @param mobileno
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public static boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
@@ -350,9 +339,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param businessname
-	 * @param address
-	 * @param phonenumber
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public static boolean createBusiness(String businessname, String address, String phonenumber) {
@@ -379,12 +365,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param bookingId
-	 * @param businessname
-	 * @param customername
-	 * @param unixstamp1
-	 * @param unixstamp2
-	 * @param data
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public static boolean createBooking(int bookingId, String businessname, String customername, String unixstamp1, String unixstamp2, String data) {
@@ -414,8 +394,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param bookingId
-	 * @param businessname
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public static boolean deleteBooking(int bookingId, String businessname) {
@@ -440,12 +418,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param employeeId
-	 * @param businessname
-	 * @param name
-	 * @param address
-	 * @param mobileno
-	 * @param timetableId
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno, int timetableId) {
@@ -475,7 +447,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param employeeId
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public static boolean deleteEmployee(int employeeId) {
@@ -561,9 +532,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param timetableId
-	 * @param businessname
-	 * @param availabilities
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public static boolean createAvailability(int timetableId, String businessname, String availabilities) {
@@ -590,8 +558,6 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @param timetableId
-	 * @param businessname
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public static boolean deleteAvailabilities(int timetableId, String businessname) {
@@ -631,8 +597,6 @@ public class SQLiteConnection {
 	
 	/**
 	 * Sets an employee's availability to point to a new availability timetable
-	 * @param employeeId
-	 * @param timetableId
 	 * @return True if updating the employee's availability is successful, false if unsuccessful.
 	 */
 	public static boolean updateAvailabilityforEmployee(int employeeId, int timetableId) {
