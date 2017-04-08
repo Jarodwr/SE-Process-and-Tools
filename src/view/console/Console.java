@@ -305,7 +305,7 @@ public class Console {
 	 */
 	public void printTable(String[][] contents,String[] headerTitles,String title, Boolean checkSevenDayLimit,String noContentsMessage) {
 		
-		int[] longestElements = new int[contents.length];; //Storage to determine column length
+		int[] longestElements = new int[contents.length+1];; //Storage to determine column length
 		
 		for (int i = 0; i < contents.length; i++)
 			longestElements[i] = 0; // Set the minimum length to compare later
@@ -325,11 +325,11 @@ public class Console {
 			for (int j = 0; j < contents[i].length; j++) {
 				
 				//Check if the length of the contents within this column is currently the longest
-				if (j == 0 && contents[i][j].length() > longestElements[j])
-					longestElements[j] = contents[i][j].length();
+				if ((j == 0 || j == 1) && formatDate(contents[i][j]).length() > longestElements[j])
+					longestElements[j] = formatDate(contents[i][j]).length();
 				
 				//Check if atleast this date is within seven days
-				if (j ==1 && checkSevenDayLimit) {
+				if (j == 0 && checkSevenDayLimit) {
 					if (checkBookingWithinWeek(contents[i][j])) //Check if we need to bother print the table
 						canPrintSomething = true; //Yes we can print the table
 				}
@@ -350,9 +350,15 @@ public class Console {
 				tableTitles += "     "+headerTitles[i]; // First table header title
 			else
 				tableTitles += "   | "+headerTitles[i]; // Second or more element of the table header title
-				
-		for (int k = 0; k < (longestElements[i]); k++)
+			
+			if (headerTitles[i].length() > longestElements[i]) {
+				longestElements[i] = headerTitles[i].length();
+		for (int k = 0; k < (headerTitles[i].length() - longestElements[i]); k++)
 			tableTitles += " "; //Add Spaces to balance the table column length
+			} else {
+				for (int k = 0; k < (longestElements[i] - headerTitles[i].length()); k++)
+					tableTitles += " "; //Add Spaces to balance the table column length
+			}
 		
 		}
 		
@@ -360,6 +366,7 @@ public class Console {
 		System.out.println(tableTitles); // Print out the table header titles
 		
 		Boolean continuePrinting = false;
+		String currentElement;
 		
 		for (int k = 0; k < (tableTitles.length()); k++)
 			System.out.print("-"); //Add dashes "-" under the table header
@@ -380,20 +387,30 @@ public class Console {
 					if (continuePrinting) {
 					for (int j = 0; j < contents[i].length; j++) { //Go through all the bookings columns
 						
-						if (j == 0 || j == 1)
+						if (j == 0 || j == 1) {
+							currentElement = formatDate(contents[i][j]);
 								System.out.print("     "+formatDate(contents[i][j])); //Print out dates in correct format
-						else
+						} else {
+							currentElement = contents[i][j];
 							System.out.print("     "+contents[i][j]); //Print out customer name
+						}
 						
-						/*Add enough spaces to keep table column length balanced*/
 						
-						if (j == 0) //Add spaces after Customer name
-							for (int k = 0; k < (headerTitles[j].length() - longestElements[j]); k++)
+						if (currentElement.length() == 0)
+							for (int k = 0; k < (longestElements[j]); k++)
+								System.out.print("M");
+						
+						
+						if (currentElement.length() != longestElements[j]) {
+							
+							for (int k = 0; k < (longestElements[j] - currentElement.length()); k++)
 								System.out.print(" ");
+						}
 						
-						if (j == 1) //Add spaces after Booking Start Time
+						
+						/*if (j == 1) //Add spaces after Booking Start Time
 							for (int k = 0; k < (contents[i][j].length() - longestElements[j]); k++)
-								System.out.print(" ");
+								System.out.print(" ");*/
 						
 							
 						
