@@ -1,5 +1,8 @@
 package model.users;
 
+/**
+ * Basic user class with personal details.
+ */
 public class Customer extends User {
 
 	private String name;

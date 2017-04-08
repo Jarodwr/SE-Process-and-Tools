@@ -2,6 +2,9 @@ package model.database;
 
 import java.sql.*;
 
+/**
+ * SQLite wrapper class
+ */
 public class SQLiteConnection {
 	private static Connection conn = null;
 	
@@ -16,6 +19,10 @@ public class SQLiteConnection {
 		createServicesTable();
 	}
 	
+	/**
+	 * Initialize database connection
+	 * @return
+	 */
 	public static Connection getDBConnection() { // connects to a database only once, stays open after that
 		if (conn == null) {
 			try {
@@ -29,6 +36,13 @@ public class SQLiteConnection {
 		return conn;
 	}
 	
+	/**
+	 * Userinfo (
+	 * 1 - username Varchar(255) Primary Key, 
+	 * 2 - password Varchar(255), 
+	 * 3 - name Varchar(255), 
+	 * 4 - address Varchar(255))
+	 */
 	public static void createUsersTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Userinfo (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
 				try {
@@ -41,6 +55,13 @@ public class SQLiteConnection {
 				}
 	}
 	
+	/**
+	 * Businessinfo (
+	 * 1 - businessname Varchar(255) Primary Key, 
+	 * 2 - address Varchar(255), 
+	 * 3 - phonenumber Varchar(255)
+	 * )
+	 */
 	public static void createBusinessTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Businessinfo (businessname Varchar(255) Primary Key, address Varchar(255), phonenumber Varchar(255))";
 				try {
@@ -53,6 +74,12 @@ public class SQLiteConnection {
 				}
 	}
 	
+	/**
+	 * Ownerinfo (
+	 * 1 - businessname Varchar(255) references Businessinfo(businessname), 
+	 * 2 - username Varchar(255) references Userinfo(username)
+	 * )
+	 */
 	public static void createOwnerTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Ownerinfo (businessname Varchar(255), username Varchar(255), Foreign Key(businessname) references Businessinfo(businessname), Foreign Key(username) references Userinfo(username))";
 				try {
@@ -65,6 +92,16 @@ public class SQLiteConnection {
 				}
 	}
 	
+	/**
+	 * Employeeinfo (
+	 * 1 - employeeId integer primary key, 
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname),  
+	 * 3 - name Varchar(255), 
+	 * 4 - address Varchar(255), 
+	 * 5 - mobileno Varchar(255), 
+	 * 6 - timetableId integer references Timetableinfo(timetableId)
+	 * )
+	 */
 	public static void createEmployeeTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Employeeinfo (employeeId integer primary key, businessname Varchar(255),  name Varchar(255), address Varchar(255), mobileno Varchar(255), timetableId integer, Foreign Key(timetableId) references Timetableinfo(timetableId), Foreign Key(businessname) references Businessinfo(businessname))";
 				try {
@@ -77,6 +114,13 @@ public class SQLiteConnection {
 				}
 	}
 	
+	/**
+	 * Timetableinfo (
+	 * 1 - timetableId integer primary key, 
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname), 
+	 * 3 - availability Varchar(255)
+	 * )
+	 */
 	public static void createAvailabilitiesTable()  {
 		String sql = "CREATE TABLE IF NOT EXISTS Timetableinfo (timetableId integer primary key, businessname Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
 		try {
@@ -89,6 +133,13 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * EmployeeWorkingTimes (
+	 * 1 - businessname Varchar(255) references Businessinfo(businessname),
+	 * 2 - name Varchar(255), 
+	 * 3 - shift Varchar(255), 
+	 * )
+	 */
 	public static void createEmployeeWorkingTimesTable()  {
 		String sql = "CREATE TABLE IF NOT EXISTS EmployeeWorkingTimes (businessname Varchar(255), name Varchar(255), shift Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
 		try {
@@ -101,6 +152,16 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * BookingsTable ( 
+	 * 1 - bookingId integer Primary Key, 
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname), 
+	 * 3 - username Varchar(255), 
+	 * 4 - starttimeunix Varchar(255), 
+	 * 5 - endtimeunix Varchar(255), 
+	 * 6 - bookingData Varchar(255)
+	 * )
+	 */
 	public static void createBookingsTable()  {
 		String sql = "CREATE TABLE IF NOT EXISTS BookingsTable ( bookingId integer Primary Key, businessname Varchar(255), username Varchar(255), starttimeunix Varchar(255), endtimeunix Varchar(255), bookingData Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname))";
 		try {
@@ -113,6 +174,14 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * ServicesTable (
+	 * 1 - servicename Varchar(255) Primary Key, 
+	 * 2 - serviceprice integer, 
+	 * 3 - serviceminutes integer, 
+	 * 4 - businessname Varchar(255) references Businessinfo(businessname),  
+	 * )
+	 */
 	public static void createServicesTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS ServicesTable (servicename Varchar(255) Primary Key, serviceprice integer, serviceminutes integer, businessname Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
 		try {
@@ -125,7 +194,6 @@ public class SQLiteConnection {
 		}
 	}
 		
-	
 	public static ResultSet getUserRow(String username) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -152,7 +220,7 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
-	
+
 	public static ResultSet getBusinessRow(String businessname) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -166,6 +234,7 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
+	
 	public static void deleteUser(String username) throws SQLException {
 		Connection c = getDBConnection();
 		String query = "DELETE FROM Userinfo WHERE username = ?";
@@ -174,6 +243,14 @@ public class SQLiteConnection {
 		pst.executeUpdate();
 	}
 	
+	/**
+	 * @param username
+	 * @param password
+	 * @param name
+	 * @param address
+	 * @param mobileno
+	 * @return True if creation is successful, else false.
+	 */
 	public static boolean createCustomer(String username, String password, String name, String address, String mobileno) {
 		Connection c = getDBConnection();
 		try {
@@ -199,6 +276,10 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * @param username
+	 * @return True if deletion is successful, false if user cannot be found.
+	 */
 	public static boolean deleteCustomer(String username) {
 		Connection c = getDBConnection();
 		try {
@@ -220,6 +301,15 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * @param businessname
+	 * @param username
+	 * @param password
+	 * @param name
+	 * @param address
+	 * @param mobileno
+	 * @return True if deletion is successful, false if unsuccessful.
+	 */
 	public static boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
 		Connection c = getDBConnection();
 		Boolean needToAddUser = true;
@@ -259,6 +349,12 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * @param businessname
+	 * @param address
+	 * @param phonenumber
+	 * @return True if creation is successful, false if unsuccessful.
+	 */
 	public static boolean createBusiness(String businessname, String address, String phonenumber) {
 		Connection c = getDBConnection();
 		try {
@@ -282,6 +378,15 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * @param bookingId
+	 * @param businessname
+	 * @param customername
+	 * @param unixstamp1
+	 * @param unixstamp2
+	 * @param data
+	 * @return True if creation is successful, false if unsuccessful.
+	 */
 	public static boolean createBooking(int bookingId, String businessname, String customername, String unixstamp1, String unixstamp2, String data) {
 		Connection c = getDBConnection();
 		try {
@@ -308,6 +413,11 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * @param bookingId
+	 * @param businessname
+	 * @return True if deletion is successful, false if unsuccessful.
+	 */
 	public static boolean deleteBooking(int bookingId, String businessname) {
 		Connection c = getDBConnection();
 		try {
@@ -329,6 +439,15 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * @param employeeId
+	 * @param businessname
+	 * @param name
+	 * @param address
+	 * @param mobileno
+	 * @param timetableId
+	 * @return True if creation is successful, false if unsuccessful.
+	 */
 	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno, int timetableId) {
 		Connection c = getDBConnection();
 		try {
@@ -355,6 +474,10 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * @param employeeId
+	 * @return True if deletion is successful, false if unsuccessful.
+	 */
 	public static boolean deleteEmployee(int employeeId) {
 		Connection c = getDBConnection();
 		try {
@@ -376,7 +499,6 @@ public class SQLiteConnection {
 		}
 	}
 
-	
 	public static ResultSet getEmployeeRow(int employeeId) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -403,6 +525,7 @@ public class SQLiteConnection {
 		else return null;
 		
 	}
+	
 	public static ResultSet getBookingsByUsername(String username) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -417,6 +540,12 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
+	/**
+	 * Gets all bookings after a certain date
+	 * @param l unixtimestamp format date
+	 * @return	table
+	 * @throws SQLException
+	 */
 	public static ResultSet getBookingsByPeriodStart(long l) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -431,6 +560,12 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
+	/**
+	 * @param timetableId
+	 * @param businessname
+	 * @param availabilities
+	 * @return True if creation is successful, false if unsuccessful.
+	 */
 	public static boolean createAvailability(int timetableId, String businessname, String availabilities) {
 		Connection c = getDBConnection();
 		try {
@@ -454,6 +589,11 @@ public class SQLiteConnection {
 		}
 	}
 	
+	/**
+	 * @param timetableId
+	 * @param businessname
+	 * @return True if deletion is successful, false if unsuccessful.
+	 */
 	public static boolean deleteAvailabilities(int timetableId, String businessname) {
 		Connection c = getDBConnection();
 		try {
@@ -489,6 +629,12 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
+	/**
+	 * Sets an employee's availability to point to a new availability timetable
+	 * @param employeeId
+	 * @param timetableId
+	 * @return True if updating the employee's availability is successful, false if unsuccessful.
+	 */
 	public static boolean updateAvailabilityforEmployee(int employeeId, int timetableId) {
 		Connection c = getDBConnection();
 		try {
@@ -515,6 +661,7 @@ public class SQLiteConnection {
 			return false;
 		}
 	}
+	
 	public static ResultSet getEmployeeAvailability(int employeeId) throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -541,6 +688,7 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
+	
 	public static ResultSet getAllEmployees() throws SQLException {
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -554,8 +702,7 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	
-public static ResultSet getShifts(int employeeId, String unixtime) throws SQLException { /* TODO */
+	public static ResultSet getShifts(int employeeId, String unixtime) throws SQLException { /* TODO */
 		
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -569,35 +716,35 @@ public static ResultSet getShifts(int employeeId, String unixtime) throws SQLExc
 		else return null;
 	}
 
-public static ResultSet getService(String servicename, String businessname) throws SQLException { /* TODO */
+	public static ResultSet getService(String servicename, String businessname) throws SQLException { /* TODO */
 	
-	Connection c = getDBConnection();
-	// Search for rows with matching usernames
-	String query = "SELECT * FROM ServicesTable WHERE businessname = ? AND servicename = ?";
-	PreparedStatement pst = c.prepareStatement(query);
-	pst.setString(1, businessname);
-	pst.setString(2, servicename);
-	ResultSet rs = pst.executeQuery();
-
-	if (rs.next()) {
-		return rs;
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM ServicesTable WHERE businessname = ? AND servicename = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessname);
+		pst.setString(2, servicename);
+		ResultSet rs = pst.executeQuery();
+	
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
 	}
-	else return null;
-}
 
-public static ResultSet getAllBookings(String businessname) throws SQLException {
-	Connection c = getDBConnection();
-	// Search for rows with matching usernames
-	String query = "SELECT * FROM BookingsTable WHERE businessname = ?";
-	PreparedStatement pst = c.prepareStatement(query);
-	pst.setString(1, businessname);
-	ResultSet rs = pst.executeQuery();
-
-	if (rs.next()) {
-		return rs;
+	public static ResultSet getAllBookings(String businessname) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BookingsTable WHERE businessname = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessname);
+		ResultSet rs = pst.executeQuery();
+	
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
 	}
-	else return null;
-}
 
 	public static int getNextAvailableId(ResultSet rs, String idString) throws SQLException {
 		int i = 0;

@@ -1,5 +1,8 @@
 package model.users;
 
+/**
+ * Very few differences to basic User, has heightened permissions and some business oriented information
+ */
 public class Owner extends User {
 
 	private String businessName;

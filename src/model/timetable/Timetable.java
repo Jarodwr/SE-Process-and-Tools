@@ -5,6 +5,9 @@ import java.util.StringTokenizer;
 
 import model.period.Period;
 
+/**
+ * An extended collection of periods which allows for adding and removing periods in a specific way
+ */
 public class Timetable {
 	
 	private ArrayList<Period> periods = new ArrayList<Period>();
@@ -35,7 +38,7 @@ public class Timetable {
 	}
 	
 	/**
-	 * Finds a period and deletes it
+	 * Finds a period and deletes it, however it needs to leave all connected periods intact
 	 * @param start This parameter is used to locate the period in question
 	 * @return If successfully removed, will return true
 	 */
@@ -43,6 +46,10 @@ public class Timetable {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Period[] getAllPeriods() {
 		Period[] p = new Period[periods.size()];
 		periods.toArray(p);
@@ -50,7 +57,7 @@ public class Timetable {
 	}
 
 	/**
-	 * @return period1|period2|period3|period4
+	 * @return "period1details|period2details|period3details|period4details"
 	 */
 	public String toString() 
 	{
@@ -68,6 +75,10 @@ public class Timetable {
 		 return string;
 	}
 	
+	/**
+	 * 
+	 * @return String[Period][Details]
+	 */
 	public String[][] toStringArray() 
 	{
 		String[][] timetable = new String[periods.size()][2];
@@ -79,6 +90,10 @@ public class Timetable {
 		return timetable;
 	}
 	
+	/**
+	 * Parses a timetable from a string and merges it with the current timetable
+	 * @param timetable
+	 */
 	public void mergeTimetable(String timetable) {
 		StringTokenizer st = new StringTokenizer(timetable, "|");
 		while (st.hasMoreTokens()) {
@@ -87,6 +102,10 @@ public class Timetable {
 		}
 	}
 	
+	/**
+	 * Iterates through the timetable and adds all periods to the current timetable
+	 * @param timetable
+	 */
 	public void mergeTimetable(Timetable timetable) {
 		Period[] periods = timetable.getAllPeriods();
 		for (Period p : periods) {
