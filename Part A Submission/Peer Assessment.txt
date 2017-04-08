@@ -1,0 +1,8 @@
+Spencer Porteous, s3539519 -- 25%
+SQLiteConnection class and database schema, several controller functions, Service class, Period helper functions
+Anesu Chiodze, s3542943 -- 25%
+Console class (Java console), JUnit testing, several controller functions
+Russell Menezes, s3600950 -- 25%
+Controller loop, Main class, Booking class, JUnit testing
+Jarod Wright, s3601928 -- 25%
+Skeleton code, high level code structure, Timetable class, User class (and subclasses)
