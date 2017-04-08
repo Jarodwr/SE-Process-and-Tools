@@ -39,17 +39,12 @@ public class Timetable {
 	
 	/**
 	 * Finds a period and deletes it, however it needs to leave all connected periods intact
-	 * @param start This parameter is used to locate the period in question
 	 * @return If successfully removed, will return true
 	 */
 	public boolean removePeriod(Period period) {
 		return false;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public Period[] getAllPeriods() {
 		Period[] p = new Period[periods.size()];
 		periods.toArray(p);
@@ -76,7 +71,6 @@ public class Timetable {
 	}
 	
 	/**
-	 * 
 	 * @return String[Period][Details]
 	 */
 	public String[][] toStringArray() 

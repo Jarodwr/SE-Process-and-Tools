@@ -57,13 +57,7 @@ public class Utility {
 		}
 		
 	}
-	
-	/**
-	 * 
-	 * @param string
-	 * @param regex
-	 * @return
-	 */
+
 	public boolean validate(String string, String regex)
 	{
 		if(string.matches(regex))
@@ -186,11 +180,6 @@ public class Utility {
 	
 	/**
 	 * Gets the details of the customer and creates a user from it.
-	 * @param username
-	 * @param password
-	 * @param name
-	 * @param address
-	 * @param mobileno
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addCustomerToDatabase(String username, String password, String name, String address, String mobileno) {
@@ -199,12 +188,6 @@ public class Utility {
 	
 	/**
 	 * Creates an employee based off the information given by the owner.
-	 * @param id
-	 * @param businessName
-	 * @param name
-	 * @param address
-	 * @param phonenumber
-	 * @param timetableID
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addEmployeeToDatabase(String id, String businessName, String name, String address, String phonenumber, int timetableID) {

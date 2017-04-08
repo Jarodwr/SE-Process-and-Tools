@@ -1,12 +1,16 @@
 package model.database;
 
 import java.sql.*;
+import java.util.logging.Logger;
+
 
 /**
  * SQLite wrapper class
  */
 public class SQLiteConnection {
 	private static Connection conn = null;
+	private static Logger LOGGER = Logger.getLogger("main");
+	
 	
 	public static void createTables() {
 		createUsersTable();
@@ -52,7 +56,7 @@ public class SQLiteConnection {
 			            stmt.execute(sql);
 				}
 				catch(Exception e){
-					System.out.println(e.getMessage());
+					LOGGER.warning(e.getMessage());
 				}
 	}
 	
@@ -71,7 +75,7 @@ public class SQLiteConnection {
 			            stmt.execute(sql);
 				}
 				catch(Exception e){
-					System.out.println(e.getMessage());
+					LOGGER.warning(e.getMessage());
 				}
 	}
 	
@@ -89,7 +93,7 @@ public class SQLiteConnection {
 			            stmt.execute(sql);
 				}
 				catch(Exception e){
-					System.out.println(e.getMessage());
+					LOGGER.warning(e.getMessage());
 				}
 	}
 	
@@ -111,7 +115,7 @@ public class SQLiteConnection {
 			            stmt.execute(sql);
 				}
 				catch(Exception e){
-					System.out.println(e.getMessage());
+					LOGGER.warning(e.getMessage());
 				}
 	}
 	
@@ -130,7 +134,7 @@ public class SQLiteConnection {
 	            stmt.execute(sql);
 		}
 		catch(Exception e){
-			System.out.println(e.getMessage());
+			LOGGER.warning(e.getMessage());
 		}
 	}
 	
@@ -149,7 +153,7 @@ public class SQLiteConnection {
 	            stmt.execute(sql);
 		}
 		catch(Exception e){
-			System.out.println(e.getMessage());
+			LOGGER.warning(e.getMessage());
 		}
 	}
 	
@@ -171,7 +175,7 @@ public class SQLiteConnection {
 	            stmt.execute(sql);
 		}
 		catch(Exception e){
-			System.out.println(e.getMessage());
+			LOGGER.warning(e.getMessage());
 		}
 	}
 	
@@ -191,7 +195,7 @@ public class SQLiteConnection {
 	            stmt.execute(sql);
 		}
 		catch(Exception e){
-			System.out.println(e.getMessage());
+			LOGGER.warning(e.getMessage());
 		}
 	}
 		
@@ -267,7 +271,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -291,7 +295,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -333,7 +337,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -359,7 +363,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -388,7 +392,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -412,7 +416,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -441,7 +445,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -465,7 +469,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -552,7 +556,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -576,7 +580,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
@@ -621,7 +625,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return false;
 		}
 	}
