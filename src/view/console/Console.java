@@ -111,8 +111,9 @@ public class Console {
 	public String[] register() 
 	{
 		
-		System.out.println();
+		System.out.println("--------------------------\nRegister\n--------------------------");
 		
+		//create variables to store user inputed values for
 		String username;
 		String password;
 		String name;
@@ -124,6 +125,7 @@ public class Console {
 		 * 
 		 */
 		
+		//prompt user for each value and store their input as separate variables
 		System.out.print("Enter your Username: ");
 		username = scanner.nextLine();
 		
@@ -139,48 +141,31 @@ public class Console {
 		System.out.print("Enter your Moblie Phone Number: ");
 		phoneNo = scanner.nextLine();
 			
+		//return the user inputed strings to the controller class
 		return new String[] {username, password, name, address, phoneNo};
 	}
-	
-	/**
-	 * Validate that the login details do not contain invalid characters
-	 * @param username
-	 * @param password
-	 * @return success
-	 */
-	
-	public Boolean validatelogin(String username,String password) {
-		
-		/**In order to avoid wring characters from being inserted, we have implemented a limit of allowable characters
-		 * with the help from source: http://stackoverflow.com/questions/29761008/java-character-input-validation
-		 * 
-		 */
-		
-		if (username.matches("[A-Za-z0-9]+") && password.matches("[A-Za-z0-9]+")){
-			return true;
-		} else {
-			return false;
-		}
-		
 
-	}
 	
 	/**
 	 * Displays login screen where user enters their username and password
 	 * @return [0] username, [1] password
 	 */
-	public String[] login() {
+	public String[] login() 
+	{
+		//create variable to store user input
 		String username;
 		String password;
 
+		System.out.println("--------------------------\nLogin\n--------------------------");
 		
+		//prompt, get user input and store user input for each variable
 		System.out.print("Enter your username: ");
 		username = scanner.nextLine();
 		
 		System.out.print("Enter your password: ");
 		password = scanner.nextLine();
 	
-		
+		//return the inputed username and password to the controller class for validation
 		return new String[] {username, password};
 	}
 	
@@ -190,6 +175,7 @@ public class Console {
 	public boolean logout() {
 		int userSelection; //Will be used to store the option selected by the user
 		
+		System.out.println("--------------------------\nLogout\n--------------------------");
 		/*Print out the prompts in the console*/
 		System.out.println("Are you sure you want to logout?");
 		System.out.println("1.\tYes");
@@ -245,8 +231,6 @@ public class Console {
 		  {
 			  return true; //It's less than 7 days.
 		  }
-		
-		
 		
 	}
 	

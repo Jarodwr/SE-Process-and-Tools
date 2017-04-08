@@ -18,6 +18,11 @@ import model.users.User;
 import model.utility.Utility;
 import view.console.Console;
 
+/*
+ * The controller class is the core functionality of our code
+ * It is responsible for validation checking as well as running the the menu loop
+ * and calling the view to get user input and to send updates to the view.
+ */
 public class Controller {
 	private Logger LOGGER = Logger.getLogger("main");
 	
@@ -28,10 +33,12 @@ public class Controller {
 	
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false, false};
 	
-	public Controller() {
-		
-	}
-	
+	public Controller() {}
+	/*
+	 * the run function starts the the menu loop and gets the user input,
+	 * shows the user the menu loop and call the respective functions from the 
+	 * controller class
+	 */
 	public void run()
 	{
 		//initialize view
@@ -39,59 +46,83 @@ public class Controller {
 
 		boolean breakLoop = false; // exit program case
 		//debugMode = true; // remove this line while demoing
+		
+		//when the menu is started set to the default permissions so that the user can only log in 
+		//and register till they log in
 		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
+		
+		//set the active user as there is no one logged in whene the program starts
 		activeUser = null;
-		while(!breakLoop) {
+		
+		//start the menu loop
+		while(!breakLoop) 
+		{
+			//if the user set then log their permissions
 			if (activeUser != null) 
 			{
 				LOGGER.log(Level.FINE, "Active user permissions : " + Arrays.toString(activeUser.getPermissions()));
+				//change their permissions if their logged in
+				currentPerms = activeUser.getPermissions();
 			}
+			
+			// get the option number from the options specified from their permissions
 			int option = view.displayOptions(currentPerms);
+			//run the option that is returned from the user
 			switch(option) {
 			
-			
+			// if the user selects the register option then run the register function
 			case 1: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: REGISTER");
-				System.out.println("Register new user:");
-				activeUser = register(view.register());
+				register(view.register());
 				break;
+			// if the user selects the login option then run the login function
 			case 0: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGIN");
-				System.out.println("Login:");
 				activeUser = login(view.login());
 				if (activeUser != null) {
-					currentPerms = activeUser.getPermissions();
+					//if they are the owner then log it
 					if (activeUser.isOwner()) {
 						LOGGER.log(Level.FINE, "User is owner");
 					}
 				}	
 				break;
+			// if the user selects the view current bookings option then run the view current bookings function
 			case 2: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW CURRENT BOOKINGS");
 				viewCurrentBookings();
 				break;
+			// if the user selects the view available times option then run the view available times function
 			case 3: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW AVAILABLE TIMES");
 				viewAvailableTimes();
 				break;
+			// if the user selects the add new booking option then run the add new booking function
 			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
 				addNewBooking(view.addNewBooking());
 				break;
+			// if the user selects the view summary of bookings option then run the view summary of bookings function
 			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
 				viewSummaryOfBookings();
 				break;
+			// if the user selects the add working times option then run the add working times function
 			case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
 				addWorkingTimes(view.addWorkingTimes());
 				break;
+			// if the user selects the show worker availability option then run the show worker availability function
 			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
 				showWorkerAvailability();
 				break;
+			// if the user selects the add employee option then run the add employee function
 			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
 				addEmployee(view.addEmployee());
 				break;
+			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
 				editAvailability();
 				break;
+			// if the user selects the logout option
 			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
+				//run the logout view function and break the loop terminating the program
 				logout(view.logout());
 			case 11: breakLoop = true;
 				break;
+			//if the user selects an invalid option the print an error message to the view and go through the loop again
 			default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
 				view.failure("Sorry you have provided an invalid option! Please try again", "");
 				break;
@@ -101,25 +132,40 @@ public class Controller {
 	}
 	
 
-
+	/**
+	 * The login function receives an array of strings and then authenticates the username and password
+	 * returns null if the user authenticates or the user if they exist
+	 * @param [0] username, [1] password
+	 * @return the user if the authentication passes
+	 */
 	protected User login(String[] loginDetails) {
 		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
 		//Search for the user in the arrayList and make sure the password is correct
 		User user = services.authenticate(loginDetails[0], loginDetails[1]);
-
+		
+		//check if the user is authenticated or not
 		if (user == null) {
+			//if it fails then alert the user
 			LOGGER.log(Level.FINE, "LOGIN: Failed");
 			view.failure("Login", "Incorrect Username/Password");
 		} else {
+			//if it succeeds then inform the user
 			LOGGER.log(Level.FINE, "LOGIN: Success");
 			view.success("Login", "Welcome back, " + user.getUsername());
 		}
-		
+		//return the user value
 		return user;
 	}
 	
+	/**
+	 * This method validates the user input and then if it passes creates a new user
+	 * providing that there is no other user with the same username
+	 * @param userDetails [0] username, [1] password, [2] name, [3] address, [4] mobile number
+	 * @return returns the user created or null it it fails validation
+	 */
 	protected User register(String[] userDetails)
 	{
+		//validate all the user input to match the regular expression
 		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
 		if(!services.validate(userDetails[0], "[A-Za-z0-9]+"))
   		{
@@ -145,31 +191,28 @@ public class Controller {
 			view.failure("Register", "Phone Number is not Valid");
 			return null;
 		}
-		
-//		if (SQLiteConnection.createCustomer(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
+		// if they all pass then try to create a new user and return the created user
 		if (services.addCustomerToDatabase(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
 			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");
 			return services.searchUser(userDetails[0]);
 		}
-		else
+		else //if not then inform the user that there is a user with that name and return null
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, username already taken");
 			view.failure("Register", "The entered username is already in the database");
 			return null;
 		}
-		
-		//Search for the user in the arrayList and make sure the password is correct
 				
 	}
 	
-	private void logout(boolean success) {
-		
-	}
 	
 	private void viewCurrentBookings() {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	private void viewAvailableTimes() {
 		Timetable ConcatenatedTimetable = services.getAvailableTimes();
 		if (ConcatenatedTimetable == null) {
