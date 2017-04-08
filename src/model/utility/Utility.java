@@ -85,7 +85,7 @@ public class Utility {
 	
 	/**
 	 * Gets a list of employees and returns their details as an array of strings
-	 * TODO: Change this to return a list<Employee> instead
+	 * TODO: Change this to return a list\<Employee\> instead
 	 * @return String[Employee][Details]
 	 */
 	public String[][] getEmployeeList() {

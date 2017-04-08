@@ -135,7 +135,7 @@ public class Controller {
 	/**
 	 * The login function receives an array of strings and then authenticates the username and password
 	 * returns null if the user authenticates or the user if they exist
-	 * @param [0] username, [1] password
+	 * @param loginDetails [0] username, [1] password
 	 * @return the user if the authentication passes
 	 */
 	protected User login(String[] loginDetails) {

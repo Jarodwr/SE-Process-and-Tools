@@ -17,25 +17,23 @@ public class Console {
 
 	}
 	
-	/**
-	 * Current format of permissions is as follows:
-	 * 0 - Register
-	 * 1 - Login
-	 * 2 - View current bookings
-	 * 3 - View available times
-	 * 4 - Add new booking
-	 * 5 - View summary of bookings
-	 * 6 - Add working time/date
-	 * 7 - Show all worker availability for next 7 days
-	 * 8 - Add an employee
-	 * 9 - Edit Availabilities
-	 * 10 - Log out
-	 */
-	
     /**
      * Displays all options based on the active user in userManager.
      * If there is no active user then default to only displaying 
      * 'Register' and 'Login'.
+     * @param permissions Current format of permissions is as follows: <br>
+	 * 0 - Register<br>
+	 * 1 - Login<br>
+	 * 2 - View current bookings<br>
+	 * 3 - View available times<br>
+	 * 4 - Add new booking<br>
+	 * 5 - View summary of bookings<br>
+	 * 6 - Add working time/date<br>
+	 * 7 - Show all worker availability for next 7 days<br>
+	 * 8 - Add an employee<br>
+	 * 9 - Edit Availabilities<br>
+	 * 10 - Log out<br>
+	 * @return option number
      */
 	public int displayOptions(boolean[] permissions) {
 		int userSelection;
@@ -170,6 +168,7 @@ public class Console {
 	
 	/**
 	 * Confirmation screen for logging out
+	 * @return success
 	 */
 	public boolean logout() {
 		int userSelection; //Will be used to store the option selected by the user
@@ -207,7 +206,7 @@ public class Console {
 	
 	/**
 	 * Check if the given booking is within 7 days
-	 * @param bookingTime
+	 * @param bookingTime String formatted unixtime
 	 * @return success
 	 */
 	
@@ -235,8 +234,8 @@ public class Console {
 	
 	/**
 	 * Converts date to a readable format
-	 * @param date
-	 * @return farmatedDate
+	 * @param unixdate In string format
+	 * @return formattedDate
 	 */
 	
 	public static String formatDate(String unixdate) {
@@ -248,8 +247,13 @@ public class Console {
 	
 	
 	/**
-	 * Prints a table
-	 * @param [contents], [headerTitles], title, checkSevenDayLimit, noContentsMessage
+	 * prints a table
+	 * @param contents	Table content
+	 * @param headerTitles	Titles of each table column
+	 * @param title	Title of table
+	 * @param checkSevenDayLimit	Limit to 7 days
+	 * @param disableTimeConversion	Convert to weektime
+	 * @param noContentsMessage	?
 	 */
 	public void printTable(String[][] contents,String[] headerTitles,String title, Boolean checkSevenDayLimit,Boolean disableTimeConversion,String noContentsMessage) {
 		
@@ -375,7 +379,7 @@ public class Console {
 	
 	/**
 	 * Prints all bookings to screen
-	 * @param [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod, 3 - services]
+	 * @param bookings [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod, 3 - services]
 	 */
 	public void viewBookings(String[][] bookings) {
 		String[] headerTitles = {"Start Period","End Period","Services","Customer Name"}; //Set the headers of the table to print
@@ -387,7 +391,7 @@ public class Console {
 	
 	/**
 	 * Prints availability timetable to screen
-	 * @param [period][0 - start, 1 - end]
+	 * @param availability [period][0 - start, 1 - end]
 	 */
 	public void viewBookingAvailability(String[][] availability) {
 		
@@ -439,7 +443,7 @@ public class Console {
 		return workingTimes;
 	}
 	
-public ArrayList<String> addAvailableTimes() {
+	public ArrayList<String> addAvailableTimes() {
 		
 		ArrayList<String> availableTimes = new ArrayList<String>(); //We will use this to store the input of working times
 		do {
@@ -483,7 +487,7 @@ public ArrayList<String> addAvailableTimes() {
 	}
 	
 	/**
-	 * @param unixTime
+	 * @param unixTime String formatted unixtime
 	 * @return  formattedDate
 	 */
 	
@@ -497,7 +501,7 @@ public ArrayList<String> addAvailableTimes() {
 	}
 	
 	/** 
-	 * @param timetable [timetable][period][start, end]
+	 * @param timetable [period][start, end]
 	 */
 	
 	public void showTimetable(String[][] timetable) {
@@ -630,20 +634,21 @@ public ArrayList<String> addAvailableTimes() {
 	/**
 	 * Format: "Success: [Subject],[Details]"
 	 * Example: "Success: Login, username1 logged in" 
-	 * @param subject
-	 * @param details
+	 * @param subject Current operation
+	 * @param details Message
 	 */
 	public void success(String subject, String details) {
-		System.out.println(subject + ": " + details);
+		System.out.println("Success: " + subject + ": " + details);
 	}
+	
 	/**
 	 * Format: "Failure: [Subject],[Details]"
-	 * Example: "Failure: Login, password for username1 incorrect" 
-	 * @param subject
-	 * @param details
+	 * Example: "Failure: Login, password for username1 incorrect"
+	 * @param subject Current operation
+	 * @param details reason
 	 */
 	public void failure(String subject, String details) {
-		System.out.println(subject + ": " + details);
+		System.out.println("Failure: " + subject + ": " + details);
 	}
 
 	public String getWorkingTimesMenu(String[][] employeeList) {

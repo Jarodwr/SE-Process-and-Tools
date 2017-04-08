@@ -19,8 +19,6 @@ public class Timetable {
 	/**
 	 * Checks if the period being added clashes with any periods currently
 	 * on the timetable and adds it to 'periods'
-	 * @param start start time of the period
-	 * @param end end time of the period
 	 * @return Returns true if there is no clash and the period is 
 	 * successfully added
 	 */
@@ -46,9 +44,9 @@ public class Timetable {
 		for (int i = 0; i < periods.size(); i++) {
 			
 			Period p = periods.get(i);
-			
 			int compareStarts = period.getStart().compareTo(p.getStart());
 			int compareEnds = period.getEnd().compareTo(p.getEnd());
+			
 			//Exact match, period directly removed
 			if (compareStarts == 0 && compareEnds == 0) {
 				periods.remove(i);
