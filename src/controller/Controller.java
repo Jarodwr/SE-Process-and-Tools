@@ -211,36 +211,53 @@ public class Controller {
 	}
 	
 	/**
-	 * 
+	 * This method gets all employees timetables and merges them all together to form the business hours
+	 * and outputs it to the view
 	 */
 	private void viewAvailableTimes() {
+		//get the available timetable
 		Timetable ConcatenatedTimetable = services.getAvailableTimes();
+		//if there is no timetable then alert the user and end the function
 		if (ConcatenatedTimetable == null) {
 			LOGGER.warning("No employees registered in the system");
 			view.failure("View Available Times", "No Employees registered in the system with available times");
 			return;
 		}
+		//if it isnt null then create a 2d array of the timetable and send it to the view to show to the user
 		String[][] s = ConcatenatedTimetable.toStringArray();
 		view.viewBookingAvailability(s);
 	}
 	
+	/**
+	 * Adds a new booking to the system, yet to be implemented till part B
+	 * @param booking
+	 */
 	private void addNewBooking(String[] booking) {
 		
 	}
 	
+	/**
+	 * This method shows the list of all future bookings in the system
+	 */
 	private void viewSummaryOfBookings() {
 
+		//gets the bookings list of all the booking from the time the method is called
 		Booking[] bookings = services.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
-
+		
+		//if there are no bookings in the future then alert the user and exit function
 		if (bookings.length == 0) {
 			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
 			view.failure("View Booking Summaries", "No future bookings");
 		} else {
+			//create a 2d array to copy the booking details from the list of bookings
 			String[][] bookingsStringArray = new String[bookings.length][];
 			
+			//copy all details from the list of bookings
 			for (int i = 0; i < bookings.length; i++) {
 				bookingsStringArray[i] = bookings[i].toStringArray();
 			}
+			
+			//send the list of all future bookings to the view to display
 			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 			view.viewBookings(bookingsStringArray);
 		}
@@ -250,12 +267,16 @@ public class Controller {
 		
 	}
 	
-	
+	/**
+	 * This method allows the user to edit an employees availability
+	 */
 	private void editAvailability() {
 		String employeeId = "";
 		Timetable t = new Timetable();
+		//get the employee ID from the user when shown a list of employees
 		try {
 			employeeId = view.showEmployeeList(services.getEmployeeList());
+			//if the employee selected doesn't exist alert the user and exit the function
 			if(employeeId == null || employeeId.equals("")) {
 				LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
 				return;
@@ -264,32 +285,45 @@ public class Controller {
 		} catch(Exception e) {
 			LOGGER.warning(e.getMessage());
 		}
+		//get an array list of the new availabilities for the employee
 		ArrayList<String> availabilities = view.addAvailableTimes();
+		//use an iterator to go through the availabilities
 		Iterator<String> iter = availabilities.iterator();
+		//go through the the iterator to split the availabilities
 		while(iter.hasNext()) {
+			//split the string to an array
 			String[] start = iter.next().split(" ");
 			
 			if (!iter.hasNext()) {
 				break; // weird issue with console where we're missing an end period, just cancel here
 			}
 			
+			//splits and outputs the end time into an array
 			String end = iter.next();
+			//if there is more than one start time then go to the next iteration
 			if (start.length != 2) {
 				continue;
 			}
+			
+			//start creating the new timetable
 			String weekday = start[0];
+			//check if the time is a valid day of the week
 			if (!Period.checkIsValidWeekday(weekday)) {
 				continue;
 			}
+			//create the start and end times for the period of availability
 			String starttime = Integer.toString(Period.convertDayToSeconds(weekday) + Period.convert24HrTimeToDaySeconds(start[1]));
 			String endtime = Integer.toString(Period.convertDayToSeconds(weekday) + Period.convert24HrTimeToDaySeconds(end));
+			//add it to the timetable
 			t.addPeriod(new Period(starttime, endtime, false));
 		}
+		//if the employee doesn't exit then alert the user and exit the function
 		if (employeeId.equals("")) {
 
 			LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
 			return;
 		}
+		//add the availabilities to the timetable
 		try {
 			ResultSet rs = SQLiteConnection.getAllAvailabilities();
 			int id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
@@ -302,33 +336,48 @@ public class Controller {
 		 
 	}
 	
-	
+	/**
+	 * This method shows the availability for a particular employee
+	 */
 	private void showWorkerAvailability() {
 		try {
+			//get the employee ID of the selected employee to view their availability
 			String employeeId = view.showEmployeeList(services.getEmployeeList());
+			//go through a loop till the user chooses to exit to the menu
 			while (employeeId != null && !employeeId.equals("")) {
+				//get the employees timetable
 				Timetable t = services.getEmployeeAvailability(employeeId);
+				//if the employee doesn't have a timetable then alert the user and exit
 				if (t.equals(null) || t.getAllPeriods().length == 0) {
 					view.failure("View worker availability", "This worker has no available times");
 				} else {
+					//else show the timetable to the user
 					view.showTimetable(t.toStringArray());
 				}
+				//halt till the user exits or chooses another employee
 				employeeId = view.showEmployeeList(services.getEmployeeList());
 			}
 			
 		} catch(Exception e) {
+			//log any exceptions created
 			LOGGER.warning(e.getMessage());
 		}
 
 	}
 
-	//Need to add logging for this once it is completed
+	/**
+	 * This method adds an employee to the database
+	 * @param newEmployee [0] name, [1] phone number, [2] address
+	 * @return true if it succeeds or false if it fails
+	 */
 	boolean addEmployee(String[] newEmployee) 
 	{
+		//set variables that are used for checking and creating the new employee
 		String name = newEmployee[0];
 		String phonenumber = newEmployee[1];
 		String address = newEmployee[2];
 		String id = "";
+		//create a unique ID for the new employee
 		try {
 			ResultSet rs = SQLiteConnection.getAllEmployees();
 			int i = SQLiteConnection.getNextAvailableId(rs, "employeeId");
@@ -340,32 +389,35 @@ public class Controller {
 		}
 		
 
-		
+		//validate all the user inputs
 		if(!services.validate(name, "[A-Za-z]+"))
   		{
 			view.failure("Add Employee", "Name is not Valid");
 			return false;
 		}
 		
-		if(!services.validate(phonenumber, "[0-9]+"))
+		if(!services.validate(phonenumber, "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
 		{
 			view.failure("Add Employee", "Phone number is not Valid");
 			return false;
 		}
 		
-		if(!services.validate(address, "[A-Za-z0-9' ]+"))
+		if(!services.validate(address, "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
 		{
 			view.failure("Add Employee", "Address is not Valid");
 			return false;
 		}
 		
+		//try to ad the new employee to the database
 		if (services.addEmployeeToDatabase(id, "", name, address, phonenumber, 0))
 		{ /* TODO add cases for staff and owners */
+			//if it works then add tell the user and return true
 			view.success("Add Employee", name + " was successfully added to the database");
 			return true;
 		}
 		else
 		{
+			//if it fails then alert the user and return false
 			view.failure("Add Employee", "The entered username is already in the database");
 			return false;
 		}
