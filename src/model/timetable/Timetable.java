@@ -39,10 +39,49 @@ public class Timetable {
 	
 	/**
 	 * Finds a period and deletes it, however it needs to leave all connected periods intact
-	 * @return If successfully removed, will return true
+	 * @return If successfully removed, will return true. If no periods are removed return false.
 	 */
 	public boolean removePeriod(Period period) {
-		return false;
+		boolean remove = false;
+		for (int i = 0; i < periods.size(); i++) {
+			
+			Period p = periods.get(i);
+			
+			int compareStarts = period.getStart().compareTo(p.getStart());
+			int compareEnds = period.getEnd().compareTo(p.getEnd());
+			//Exact match, period directly removed
+			if (compareStarts == 0 && compareEnds == 0) {
+				periods.remove(i);
+				remove = true;
+			} 
+			//Subset match, removal period is subset of current period, removal period is removed.
+			else if (compareStarts > 0 && compareEnds < 0) {
+				periods.add(new Period(p.getStart(), period.getStart()));
+				periods.add(new Period(period.getEnd(), p.getEnd()));
+				periods.remove(i);
+				remove = true;
+				break;
+			}
+			//Superset match, current period is a subset of removal period
+			else if (compareStarts < 0 && compareEnds > 0) {
+				periods.remove(i);
+				remove = true;
+			}
+
+			//End match, start of current period to end of removal period is removed.
+			else if (compareStarts <= 0 && compareEnds < 0) {
+				periods.add(new Period(period.getEnd(), p.getEnd()));
+				periods.remove(i);
+				remove = true;
+			} 
+			//Start match, start of removal period to end of current period is removed.
+			else if (compareStarts > 0 && compareEnds >= 0) {
+				periods.add(new Period(p.getStart(), period.getStart()));
+				periods.remove(i);
+				remove = true;
+			}
+		}
+		return remove;
 	}
 	
 	public Period[] getAllPeriods() {
