@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.Arrays;
+import java.util.List;
 
 import model.period.Period;
 
@@ -252,9 +254,9 @@ public class Console {
 	 * Prints a table
 	 * @param [contents], [headerTitles], title, checkSevenDayLimit, noContentsMessage
 	 */
-	public void printTable(String[][] contents,String[] headerTitles,String title, Boolean checkSevenDayLimit,String noContentsMessage) {
+	public void printTable(String[][] contents,String[] headerTitles,String title, Boolean checkSevenDayLimit,Boolean disableTimeConversion,String noContentsMessage) {
 		
-		int[] longestElements = new int[contents.length+1];; //Storage to determine column length
+		int[] longestElements = new int[contents.length+1]; //Storage to determine column length
 		
 		for (int i = 0; i < contents.length; i++)
 			longestElements[i] = 0; // Set the minimum length to compare later
@@ -274,7 +276,7 @@ public class Console {
 			for (int j = 0; j < contents[i].length; j++) {
 				
 				//Check if the length of the contents within this column is currently the longest
-				if ((j == 0 || j == 1) && formatDate(contents[i][j]).length() > longestElements[j])
+				if ((j == 0 || j == 1) && !disableTimeConversion && formatDate(contents[i][j]).length() > longestElements[j])
 					longestElements[j] = formatDate(contents[i][j]).length();
 				
 				//Check if atleast this date is within seven days
@@ -336,7 +338,7 @@ public class Console {
 					if (continuePrinting) {
 					for (int j = 0; j < contents[i].length; j++) { //Go through all the bookings columns
 						
-						if (j == 0 || j == 1) {
+						if ((j == 0 || j == 1) && !disableTimeConversion) {
 							currentElement = formatDate(contents[i][j]);
 								System.out.print("     "+formatDate(contents[i][j])); //Print out dates in correct format
 						} else {
@@ -347,7 +349,7 @@ public class Console {
 						
 						if (currentElement.length() == 0)
 							for (int k = 0; k < (longestElements[j]); k++)
-								System.out.print("M");
+								System.out.print("");
 						
 						
 						if (currentElement.length() != longestElements[j]) {
@@ -388,7 +390,7 @@ public class Console {
 	public void viewBookings(String[][] bookings) {
 String[] headerTitles = {"Start Period","End Period","Services","Customer Name"};
 		
-		printTable(bookings,headerTitles,"Bookings", true,"There are no bookings within the next seven days.");
+		printTable(bookings,headerTitles,"Bookings", true,false,"There are no bookings within the next seven days.");
 		
 		
 	}
@@ -401,7 +403,7 @@ String[] headerTitles = {"Start Period","End Period","Services","Customer Name"}
 		
 		String[] headerTitles = {"Start Period","End Period"};
 		
-		printTable(availability,headerTitles,"Bookings", false,"No bookings available.");
+		printTable(availability,headerTitles,"Bookings", false,false,"No bookings available.");
 
 	}
 	
@@ -501,41 +503,68 @@ public ArrayList<String> addAvailableTimes() {
 		return selectedID;
 	}
 	
+	
+	public String unixTimeTo24Hour (String unixTime) {
+		
+		Date date = new Date((Integer.parseInt(unixTime))*1000L); // convert seconds to milliseconds
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm"); 
+		String formattedDate = sdf.format(date);
+		
+		return formattedDate;
+	}
+	
 	/* 
 	 * @param timetable [timetable][period][start, end]
 	 */
 	
 	public void showTimetable(String[][] timetable) {
-		/*Note this code will be replaced by simply calling printTable()
-		 * once thats fully working. 
-		 */
 		
-		/*Variables to be used to determine each column length*/
-		int longeststartTimeLength = 0; //Store the longest start period (in length of the string)
-		int longestendTimeLength = 0; //Store the longest end period (in length of the string)
+		int[] DayPeriodCounts = new int[Weekdays.length];
 		
-		/*
-		 * In order to make sure the table is printed properly,
-		 * we need need to make sure that the cells are balanced in length
-		 * So we need to first fine the longest Strings for each column.
-		 */
+		for (int i=0;i < DayPeriodCounts.length; i++) {
+			DayPeriodCounts[i] = 0;
+		}
+		
+		String ConvertedDay;
+		int dayWithMostWorkingHours = 0;
+		
 		for (int i=0;i < timetable.length; i++) {
-			for (int j = 0; j < timetable[i].length; j++) {
+			
+					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(timetable[i][0]) /1000));
+					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1;
+					
+						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours)
+							dayWithMostWorkingHours = DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)];
 				
-
-				
-				//Check if the length of the start time is currently the longest
-				if (j == 0 && timetable[i][j].length() > longeststartTimeLength)
-					longeststartTimeLength = timetable[i][j].length();
-				
-				//Check if the length of the end time is currently the longest
-				if (j == 1 && timetable[i][j].length() > longestendTimeLength)
-					longestendTimeLength = timetable[i][j].length();
-			}
+			
 		}
 		
 		
-					
+		
+		String[][] convertedDates = new String[dayWithMostWorkingHours][Weekdays.length];
+		
+		for (int i=0;i < timetable.length; i++) {
+			
+			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(timetable[i][0]) /1000));
+			
+			for (int j = 0; j < timetable[i].length; j++) {
+				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
+					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = unixTimeTo24Hour(timetable[i][0])+" - "+unixTimeTo24Hour(timetable[i][1]);
+					break;
+				}
+				
+
+			}
+		}
+		
+		for (int i=0;i < convertedDates.length; i++) {
+			for (int j = 0; j < convertedDates[i].length; j++) {
+				if (convertedDates[i][j] == null)
+					convertedDates[i][j] = "";
+			
+		}
+		}
+		
 		//Menu Title			
 		System.out.println("\n--------------------\nEmployee Availability\n--------------------\n");
 
@@ -543,40 +572,41 @@ public ArrayList<String> addAvailableTimes() {
 		/*Table header*/
 		
 		
-		String tableTitles = "     Start Period"; //Start Period table header
-		for (int k = 0; k < (longeststartTimeLength - "Start Period".length()); k++)
-			tableTitles += " "; //Add Spaces to balance the table column length
+		String tableTitles = "";
 		
-
-		tableTitles += "   | End Period"; //End Period table header
-		for (int k = 0; k < (longestendTimeLength - "End Period".length()); k++)
-			tableTitles += " "; //Add Spaces to balance the table column length
+		for (int i = 0; i < Weekdays.length;i++) {
+			if (i == 0)
+				tableTitles += "     "+Weekdays[i]; // First table header title
+			else
+				tableTitles += "   | "+Weekdays[i]; // Second or more element of the table header title
+			tableTitles += "      ";
+			
 		
-		System.out.println(tableTitles); //Print out the table header titles
+		}
+		System.out.print(tableTitles);
 		
+		//Close header
+		System.out.println(); 
 		for (int k = 0; k < (tableTitles.length()); k++)
-			System.out.print("-"); //Add dashes "-" under the table header
+			System.out.print("-");
+		
 		
 		System.out.println(); //Create a new line for the rest of the table contents
 		
 		
-				for (int i=0;i < timetable.length; i++) { //Go through all the rows
-					for (int j = 0; j < timetable[i].length; j++) { //Go through all the columns
+				for (int i=0;i < convertedDates.length; i++) { //Go through all the rows
+					for (int j = 0; j < convertedDates[i].length; j++) { //Go through all the columns
 						
+						if (j ==0)
+							System.out.print("   ");
 						
-						System.out.print("     "+timetable[i][j]); //Print out the current detail
+						System.out.print("  "+convertedDates[i][j]); //Print out the current detail
 						
 						/*Add enough spaces to keep table column length balanced*/
-
-						if (j == 0) //Add spaces after Start Time
-							for (int k = 0; k < (longeststartTimeLength - timetable[i][j].length()); k++)
-								System.out.print(" ");
 						
-						if (j == 1) //Add spaces after End Time
-							for (int k = 0; k < (longestendTimeLength - timetable[i][j].length()); k++)
-								System.out.print(" ");
-							
-						System.out.print("     "); //Create a gap between columns
+						if ( convertedDates[i][j] == "")
+							for (int k = 0; k < 15; k++)
+								System.out.print(" "); //Create a gap between columns
 					}
 					System.out.println(); //create a new row
 				}
