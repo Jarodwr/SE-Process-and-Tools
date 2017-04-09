@@ -163,7 +163,6 @@ public class Utility {
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		try {
 			do {
-				System.out.println(rs.getString("starttimeunix") + " | " + rs.getString("endtimeunix") + " | " + rs.getString("username") + " | " + rs.getString("employeeId") + " | " + rs.getString("bookingData"));
 				bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
 				
 			} while (rs.next());
