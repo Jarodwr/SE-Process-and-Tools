@@ -34,7 +34,7 @@ public class Controller {
 
 	private User activeUser;
 	
-	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false, false ,false, false, false};
+	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false, false ,false, false, false, false};
 	
 	public Controller() {}
 	/*
@@ -120,15 +120,19 @@ public class Controller {
 				addEmployee(view.addEmployee(), (Owner)activeUser);
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
-			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
+			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD BOOKING");
+				addNewBooking(view.addNewBooking());
+				break;
+			// if the user selects the edit availabilities option then run the edit availabilities function
+			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
 				//gets the employee id from the user
 				editAvailability(view.showEmployeeList(services.getEmployeeList()), (Owner)activeUser);
 				break;
-			// if the user selects the logout option
-			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
+		// if the user selects the logout option
+			case 12: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
 				//run the logout view function and break the loop terminating the program
 				view.logout();
-			case 12: breakLoop = true;
+			case 13: breakLoop = true;
 				break;
 			//if the user selects an invalid option the print an error message to the view and go through the loop again
 			default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");

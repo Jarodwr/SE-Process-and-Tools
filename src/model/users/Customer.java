@@ -16,17 +16,19 @@ public class Customer extends User {
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.permissions = new boolean[] {
-				false, 	//Register
-				false, 	//Login
-				true, 	//View current bookings
-				true, 	//View available times
-				true, 	//Add new booking
+				true, 	//Register
+				true, 	//Login
+				false, 	//View current bookings
+				false, 	//View available times
+				false, 	//Add new booking
 				false, 	//View summary of bookings
 				false, 	//Add working time/date
+				false,	//view working time/date
 				false, 	//Show all worker availability for next 7 days
 				false, 	//Add Employee
-				false,	//Edit employee Availabilities
-				true,	//Log out
+				false,  //Add Booking Ownerwise
+				false,	//Edit Availabilities
+				true	//Log out
 				};
 	}
 	

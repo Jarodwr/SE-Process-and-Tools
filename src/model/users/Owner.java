@@ -17,16 +17,17 @@ public class Owner extends User {
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.permissions = new boolean[] {
-				false, 	//Register
-				false, 	//Login
-				true, 	//View current bookings
-				true, 	//View available times
+				true, 	//Register
+				true, 	//Login
+				false, 	//View current bookings
+				false, 	//View available times
 				false, 	//Add new booking
 				true, 	//View summary of bookings
 				true, 	//Add working time/date
 				true,	//view working time/date
 				true, 	//Show all worker availability for next 7 days
 				true, 	//Add Employee
+				true,  //Add Booking Ownerwise
 				true,	//Edit Availabilities
 				true	//Log out
 				};
