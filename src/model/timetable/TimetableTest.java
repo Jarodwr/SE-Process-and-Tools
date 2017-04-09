@@ -25,9 +25,9 @@ public class TimetableTest {
 		Timetable t = new Timetable();
 		t.mergeTimetable("90000,93600|97200,100600|21600,43200");
 		String[][] sa = t.toStringArray();
-		
-		for (int i = 0; i < sa.length; i++) {
-			System.out.println(i + " | " + sa[i][0] + " : " + sa[i][1]);
-		}
+
+		assert(sa[0][0].equals("90000") && sa[0][1].equals("93600"));
+		assert(sa[1][0].equals("97200") && sa[1][1].equals("100600"));
+		assert(sa[2][0].equals("21600") && sa[2][1].equals("43200"));
 	}
 }
