@@ -311,8 +311,8 @@ public class Controller {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			Date date = sdf.parse(workingTimes[0]);
-			Long starttime = date.getTime() + Period.convert24HrTimeToDaySeconds(workingTimes[1]);
-			Long endtime = date.getTime() + Period.convert24HrTimeToDaySeconds(workingTimes[2]);
+			Long starttime = date.getTime() + (Period.convert24HrTimeToDaySeconds(workingTimes[1]) * 1000);
+			Long endtime = date.getTime() + (Period.convert24HrTimeToDaySeconds(workingTimes[2]) * 1000);
 			if (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime), Long.toString(endtime))) {
 				view.success("Add Working Times", "Shift successfully added");
 			} else {
@@ -330,19 +330,36 @@ public class Controller {
 	//change to private once implemented
 	private void viewWorkingTimes()
 	{
-		//get the array of all working times
-		String [][] workingTimes = services.getWorkingTimes();
 		
-		//check to see if there are working times
-		if(workingTimes.length == 0)
-		{
-			//if there are not then inform the user and end the function
-			view.failure("View Working Times", "There are no working times available");
-			return;
+		String employeeId = view.showEmployeeList(services.getEmployeeList());
+		Timetable t = services.getShift(employeeId);
+		if (t != null) {
+			String[][] sa = t.toStringArray();
+			
+			for (int i = 0; i < sa.length; i++) {
+				sa[i][0] = Long.toString(Long.parseLong(sa[i][0])/1000);
+				sa[i][1] = Long.toString(Long.parseLong(sa[i][1])/1000);
+			}
+			
+			view.printTable(sa,new String[]{"Start Period", "End Period"},"Working Times", false,false,"There are no shifts to display.");
+		} else {
+			view.failure("View Working Times", "No shifts available");
 		}
 		
-		//else then show the working times
-		view.viewWorkingTimes(workingTimes);	
+//		//get the array of all working times
+//		
+//		String [][] workingTimes = services.getWorkingTimes();
+//		
+//		//check to see if there are working times
+//		if(workingTimes.length == 0)
+//		{
+//			//if there are not then inform the user and end the function
+//			view.failure("View Working Times", "There are no working times available");
+//			return;
+//		}
+//		
+//		//else then show the working times
+//		view.viewWorkingTimes(workingTimes);	
 	}
 	
 	/**

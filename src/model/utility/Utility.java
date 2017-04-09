@@ -227,7 +227,9 @@ public class Utility {
 		Timetable t = new Timetable();
 		try {
 			ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(employeeId), Long.toString(System.currentTimeMillis()/1000));
-			
+			if (shifts == null) {
+				return null;
+			}
 			do {
 				t.addPeriod(new Shift(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false, employeeId));
 			} while (shifts.next());

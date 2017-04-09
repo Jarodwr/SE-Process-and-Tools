@@ -483,7 +483,7 @@ public class Console {
 		
 		System.out.println("\nPlease enter The period of the employee's working times");
 		
-		System.out.println("\nDate of the working period in the form <dd/mm/yy>: ");
+		System.out.println("\nDate of the working period in the form <dd/mm/yyyy>: ");
 		workingTimes[0] = scanner.nextLine(); //Get user (owner) input for the date of the working period
 		
 		System.out.println("Start time for the working period in the form <HH:MM>: ");
