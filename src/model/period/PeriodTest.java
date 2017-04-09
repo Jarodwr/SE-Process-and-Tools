@@ -54,5 +54,26 @@ public class PeriodTest {
 		assert(Period.checkIsValidWeekday("MON") == false);
 		assert(Period.checkIsValidWeekday("Saturnday") == false);
 	}
+	
+	@Test
+	public void testGet24HrTimeFromWeekTime() {
+		assert(Period.get24HrTimeFromWeekTime(60).equals("0:01"));
+		assert(Period.get24HrTimeFromWeekTime(3600).equals("1:00"));
+		assert(Period.get24HrTimeFromWeekTime(86399).equals("23:59"));
+		assert(Period.get24HrTimeFromWeekTime(86340).equals("23:59"));
+	}
+	
+	public void testCombineWith1() {
+		Period p1 = new Period(Integer.toString(Period.convert24HrTimeToDaySeconds("5:00")), Integer.toString(Period.convert24HrTimeToDaySeconds("6:00")), false);
+		Period p2 = new Period(Integer.toString(Period.convert24HrTimeToDaySeconds("6:00")), Integer.toString(Period.convert24HrTimeToDaySeconds("7:00")), false);
+		Period p3 = new Period(Integer.toString(Period.convert24HrTimeToDaySeconds("5:00")), Integer.toString(Period.convert24HrTimeToDaySeconds("7:00")), false);
+		assert(p1.combineWith(p2) == p3);
+		
+	}public void testCombineWith2() {
+		Period p1 = new Period(Integer.toString(Period.convert24HrTimeToDaySeconds("3:45")), Integer.toString(Period.convert24HrTimeToDaySeconds("6:00")), false);
+		Period p2 = new Period(Integer.toString(Period.convert24HrTimeToDaySeconds("5:00")), Integer.toString(Period.convert24HrTimeToDaySeconds("11:00")), false);
+		Period p3 = new Period(Integer.toString(Period.convert24HrTimeToDaySeconds("3:45")), Integer.toString(Period.convert24HrTimeToDaySeconds("11:00")), false);
+		assert(p1.combineWith(p2) == p3);
+	}
 
 }

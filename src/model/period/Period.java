@@ -118,8 +118,11 @@ public class Period {
 		if (minutes < 9) {
 			s = Integer.toString(hours) + ":0" + minutes;
 		}
+		else if(minutes == 0){
+			s = Integer.toString(hours) + ":00";
+		}	
 		else {
-				s = Integer.toString(hours) + ":" + minutes;
+			s = Integer.toString(hours) + ":" + minutes;
 		}	
 		return s;
 	}
