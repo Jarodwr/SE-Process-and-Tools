@@ -328,8 +328,18 @@ public class Controller {
 	//change to private once implemented
 	private void viewWorkingTimes()
 	{
+		//get the array of all working times
 		String [][] workingTimes = services.getWorkingTimes();
 		
+		//check to see if there are working times
+		if(workingTimes.length == 0)
+		{
+			//if there are not then inform the user and end the function
+			view.failure("View Working Times", "There are no working times available");
+			return;
+		}
+		
+		//else then show the working times
 		view.viewWorkingTimes(workingTimes);	
 	}
 	

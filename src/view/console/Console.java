@@ -406,13 +406,19 @@ public class Console {
 
 	}
 	
-	
+	/**
+	 * This method outputs all working times to the user when given a list of all working times
+	 * @param workingTimes is an array of arrays of shifts which can be printed to the user
+	 */
 	public void viewWorkingTimes(String [][] workingTimes)
 	{
-		String[] headerTitles = {"Start Period","End Period","Employee ID","Employee Name"}; //Set the headers of the table to print
+		//set all the titles of the table headings
+		String[] headerTitles = {"Start Period","End Period","Employee ID"}; //Set the headers of the table to print
 		
+		//print the table
 		printTable(workingTimes ,headerTitles ,"Working Times/Dates", false,false,"There are no Working Times."); // Print Table
 		
+		//wait for an input to exit the function
 		System.out.println("\n\n Press any key to go back to Menu...");
 		
 		scanner.nextLine(); //Wait for any user input from the scanner
