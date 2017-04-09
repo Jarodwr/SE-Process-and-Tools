@@ -167,6 +167,7 @@ public class Utility {
 				} catch(SQLException exception) {
 						LOGGER.warning(exception.getMessage());
 				}
+
 			}
 			if (available.getAllPeriods().length == 0) {
 				return null;
@@ -215,6 +216,21 @@ public class Utility {
 			rs.close();
 			return new Booking[0];
 		}
+	}
+	
+	public Timetable getShift(String employeeId) {
+		Timetable t = new Timetable();
+		try {
+			ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(employeeId), Long.toString(System.currentTimeMillis()/1000));
+			
+			do {
+				t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
+			} while (shifts.next());
+			
+		} catch (SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+		return t;
 	}
 	
 	/**

@@ -709,6 +709,22 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
+	
+	public static ResultSet getShifts(String start, String end) throws SQLException{
+		Connection c = getDBConnection();
+		String query = "SELECT * "
+				+ "FROM EmployeeWorkingTimes "
+				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND CAST(unixendtime AS INTEGER) <= CAST(? AS INTEGER)";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, start);
+		pst.setString(2, end);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
 
 	public static boolean addShift(int employeeId, String businessname, String start, String end) {
 		Connection c = getDBConnection();
