@@ -343,22 +343,39 @@ public class Controller {
 				
 	}
 	
-	//change to private once implemented
+	/**
+	 * this method gets the working times of an employee and outputs it to the user if it exists
+	 */
 	private void viewWorkingTimes()
 	{
-		
+		//get the employee id of the employee selected
 		String employeeId = view.showEmployeeList(services.getEmployeeList());
+		//get the list of shifts for the employee
 		Timetable t = services.getShift(employeeId);
+		
+		//if there are working times
 		if (t != null) {
+			//convert it to a 2d string array and create a second list skeleton minus the employee ID
 			String[][] sa = t.toStringArray();
+			String[][] shifts = new String [sa.length][2];
 			
+			//loop through the array convert all the start and end times to Unix time stamps
 			for (int i = 0; i < sa.length; i++) {
 				sa[i][0] = Long.toString(Long.parseLong(sa[i][0])/1000);
 				sa[i][1] = Long.toString(Long.parseLong(sa[i][1])/1000);
 			}
 			
-			view.printTable(sa,new String[]{"Start Period", "End Period"},"Working Times", false,false,"There are no shifts to display.");
+			//copy the details to the second array minus the id for each shift
+			for(int i = 0; i < shifts.length; i++)
+			{
+				shifts[i][0] = sa[i][0];
+				shifts[i][1] = sa[i][1];
+			}
+			
+			//show the working times to the user
+			view.printTable(shifts,new String[]{"Start Period", "End Period"},"Working Times", false,false,"There are no shifts to display.");
 		} else {
+			//if the working times don't exist then alert the user and return to the menu.
 			view.failure("View Working Times", "No shifts available");
 		}
 		
