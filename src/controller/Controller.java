@@ -246,16 +246,28 @@ public class Controller {
 	 */
 	private void viewAvailableTimes() {
 		//get the available timetable
-		Timetable ConcatenatedTimetable = services.getAvailableTimes();
-		//if there is no timetable then alert the user and end the function
-		if (ConcatenatedTimetable == null) {
-			LOGGER.warning("No employees registered in the system");
-			view.failure("View Available Times", "No Employees registered in the system with available times");
-			return;
+		Timetable t = services.getAvailableBookingTimes();
+		if (t != null && t.getAllPeriods().length != 0) {
+			String[][] sa = t.toStringArray();
+			
+			for (int i = 0; i < sa.length; i++) {
+				sa[i][0] = Long.toString(Long.parseLong(sa[i][0])/1000);
+				sa[i][1] = Long.toString(Long.parseLong(sa[i][1])/1000);
+			}
+			
+			view.printTable(sa,new String[]{"Start Period", "End Period"},"Available Booking Times", false,false,"There are no available times to display.");
+		} else {
+			view.failure("View Available Times", "No available times");
 		}
-		//if it isnt null then create a 2d array of the timetable and send it to the view to show to the user
-		String[][] s = ConcatenatedTimetable.toStringArray();
-		view.viewBookingAvailability(s);
+//		//if there is no timetable then alert the user and end the function
+//		if (ConcatenatedTimetable == null) {
+//			LOGGER.warning("No employees registered in the system");
+//			view.failure("View Available Times", "No Employees registered in the system with available times");
+//			return;
+//		}
+//		//if it isnt null then create a 2d array of the timetable and send it to the view to show to the user
+//		String[][] s = ConcatenatedTimetable.toStringArray();
+//		view.viewBookingAvailability(s);
 	}
 	
 	/**

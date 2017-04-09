@@ -169,11 +169,12 @@ public class Utility {
 						continue;
 					}
 					do {
-						t.removePeriod(new Period(bookings.getString("starttime"), bookings.getString("endtime"), false));
+						t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
 					} while (bookings.next());
 					bookings.close();
 					available.mergeTimetable(t);
 				} catch(SQLException exception) {
+					exception.printStackTrace();
 					LOGGER.warning(exception.getMessage());
 				}
 
