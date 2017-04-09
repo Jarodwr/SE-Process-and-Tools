@@ -97,7 +97,12 @@ public class Controller {
 				break;
 			// if the user selects the add new booking option then run the add new booking function
 			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
-				addNewBooking(view.addNewBooking());
+				String[][] slots = services.getAvailableBookingTimes().toStringArray();
+				if (slots.length == 0) {
+					view.failure("Add New Booking", "No available times");
+					break;
+				}
+				addNewBooking(view.addNewBooking(slots));
 				break;
 			// if the user selects the view summary of bookings option then run the view summary of bookings function
 			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");

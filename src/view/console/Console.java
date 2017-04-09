@@ -59,7 +59,7 @@ public class Console {
 				}
 			}
 
-			if(permissions[11] == false) //if you can't log out as you are not logged in, there is a break
+			if(permissions[10] == false) //if you can't log out as you are not logged in, there is a break
 			{
 				System.out.println("12.\tExit"); // added by Spencer - exit case
 			}
