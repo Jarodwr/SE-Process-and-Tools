@@ -477,21 +477,20 @@ public class Console {
 		return bookingDetails;
 	}
 	
-	/**
-	 * Add working times until the owner decides to stop
-	 * @return [period][0 - start, 1 - end]
-	 */
-	public String[][] addWorkingTimes() {
+	public String[] addWorkingTimes() {
 		
-		String[][] workingTimes = new String[1][2]; //We will use this to store the input of working times
+		String[] workingTimes = new String[3]; //We will use this to store the input of working times
 		
 		System.out.println("\nPlease enter The period of the employee's working times");
 		
-		System.out.println("\nStart time for the working period in the form <Date> <Time>: ");
-		workingTimes[0][0] = scanner.nextLine(); //Get user (owner) input for the start of the working period
+		System.out.println("\nDate of the working period in the form <dd/mm/yy>: ");
+		workingTimes[0] = scanner.nextLine(); //Get user (owner) input for the date of the working period
 		
-		System.out.println("End time for the working period in the form <Time>: ");
-		workingTimes[0][1] = scanner.nextLine(); //Get user (owner) input for the start of the working period
+		System.out.println("Start time for the working period in the form <HH:MM>: ");
+		workingTimes[1] = scanner.nextLine(); //Get user (owner) input for the start of the working period
+		
+		System.out.println("End time for the working period in the form <HH:MM>: ");
+		workingTimes[2] = scanner.nextLine(); //Get user (owner) input for the end of the working period
 		
 		return workingTimes;
 	}
