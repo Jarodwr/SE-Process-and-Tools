@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Arrays;
 
@@ -372,9 +373,7 @@ public class Console {
 			System.out.println(noContentsMessage); // Print Message when nothing can be shown from the table
 		}
 				
-				System.out.println("\n\n Press any key to go back to Menu...");
 				
-				scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
 	
@@ -388,7 +387,9 @@ public class Console {
 		
 		printTable(bookings,headerTitles,"Bookings", true,false,"There are no bookings within the next seven days."); // Print Table
 		
+		System.out.println("\n\n Press any key to go back to Menu...");
 		
+		scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
 	/**
@@ -398,8 +399,6 @@ public class Console {
 	public void viewBookingAvailability(String[][] availability) {
 		
 		printWeeklyView(availability,"Available Times");
-		
-		addNewBookingX(availability);
 
 	}
 	
@@ -409,41 +408,29 @@ public class Console {
 		String[] headerTitles = {"Start Period","End Period","Employee ID","Employee Name"}; //Set the headers of the table to print
 		
 		printTable(workingTimes ,headerTitles ,"Working Times/Dates", false,false,"There are no Working Times."); // Print Table
+		
+		System.out.println("\n\n Press any key to go back to Menu...");
+		
+		scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
 	
 	
-public String[] addNewBooking() {
-String[] bookingDetails = new String[3]; //We will use this to store the input of the booking details
-		
-		System.out.println("\nPlease enter the customer booking details below");
-		
-		System.out.println("\nCustomer username: ");
-		bookingDetails[0] = scanner.nextLine(); //Get user input for the customer's username
-		
-		System.out.println("Booking start time and date: ");
-		bookingDetails[1] = scanner.nextLine(); //Get user input for the booking start period
-		
-		System.out.println("Booking end time and date: ");
-		bookingDetails[2] = scanner.nextLine(); //Get user input for the booking end period
-		
-		
-		return bookingDetails;
-	}
-	
+
 	/**
 	 * Views screen where user can enter new booking information
-	 * @return [0] customerUsername, [1] startDate, [2] endDate
+	 * @param availableTimes Times available to book
+	 * @return [0] startDate, [1] endDate
 	 */
-	public String[] addNewBookingX(String[][] availableTImes) {
+	public String[] addNewBooking(String[][] availableTimes) {
 		
-		String[] bookingDetails = new String[3];
-		String[][] tableToDisplay = new String[availableTImes.length][availableTImes[0].length+1];
+		String[] bookingDetails = new String[2];
+		String[][] tableToDisplay = new String[availableTimes.length][availableTimes[0].length+1];
 		
 		for (int i = 0; i < tableToDisplay.length; i++) {
 			for (int j = 0; j < tableToDisplay[i].length; j++) {
 				if (j < (tableToDisplay[i].length-1))
-					tableToDisplay[i][j] = availableTImes[i][j];
+					tableToDisplay[i][j] = availableTimes[i][j];
 				else
 					tableToDisplay[i][j] = Integer.toString(i+1);
 			}
@@ -451,25 +438,32 @@ String[] bookingDetails = new String[3]; //We will use this to store the input o
 		
 		
 		
+		String[] headerTitles = {"Start Period","End Period","#"}; //Set the headers of the table to print
 		
-String[] headerTitles = {"Start Period","End Period","#"}; //Set the headers of the table to print
-		
+		System.out.println("\n\n Enter the # of your booking from the list above: ");
+
 		printTable(tableToDisplay,headerTitles,"Add a new booking", true,false,"There are no bookings available."); // Print Table
 		
-		/*String[] bookingDetails = new String[3]; //We will use this to store the input of the booking details
+		int selected = 0;
 		
-		System.out.println("\nPlease enter the customer booking details below");
+		while (true) {
+			try {
+			
+			System.out.println("\n\n Enter the # of your booking from the list above: ");
+			selected = scanner.nextInt();
+			if (selected <= availableTimes.length && selected > 0) {
+				bookingDetails[0] = availableTimes[selected-1][0]; //Set the booking start period
+				bookingDetails[1] = availableTimes[selected-1][1]; //Set the booking end period
+				break;
+			} else {
+				System.out.println("\n\n You did not select a valid option. Please try again.");
+			}
+			} catch (InputMismatchException exception) {
+				System.out.println("\n\n You did not select a valid option. Please try again.");
+			}
 		
-		System.out.println("\nCustomer username: ");
-		bookingDetails[0] = scanner.nextLine(); //Get user input for the customer's username
+		}
 		
-		System.out.println("Booking start time and date: ");
-		bookingDetails[1] = scanner.nextLine(); //Get user input for the booking start period
-		
-		System.out.println("Booking end time and date: ");
-		bookingDetails[2] = scanner.nextLine(); //Get user input for the booking end period
-		
-		*/
 		return bookingDetails;
 	}
 	
