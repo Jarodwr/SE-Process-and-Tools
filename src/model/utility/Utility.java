@@ -147,16 +147,20 @@ public class Utility {
 			try {
 				Timetable t = new Timetable();
 				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()/1000));
-				
+				if (shifts == null) {
+					continue;
+				}
 				do {
 					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
 				} while (shifts.next());
 				
 				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
 				
-				do {
-					t.removePeriod(new Period(bookings.getString("starttime"), bookings.getString("endtime"), false));
-				} while (bookings.next());
+				if (bookings != null) {
+					do {
+						t.removePeriod(new Period(bookings.getString("starttime"), bookings.getString("endtime"), false));
+					} while (bookings.next());
+				}
 				
 				available.mergeTimetable(t);
 			} catch(SQLException exception) {
