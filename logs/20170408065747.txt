@@ -1,8 +1,0 @@
-Apr 08, 2017 6:57:48 PM main.Main main
-WARNING: test
-Apr 08, 2017 6:57:57 PM controller.Controller run
-FINE: MENU OPTION CHOSEN: REGISTER
-Apr 08, 2017 6:58:07 PM controller.Controller register
-FINE: REGISTER: Registration details: [asdfghj, sadfghj, adsfgh, 12 asdfghj, 0412345678]
-Apr 08, 2017 6:58:07 PM controller.Controller register
-FINE: REGISTER: Failure, username already taken

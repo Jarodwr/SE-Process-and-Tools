@@ -1,4 +1,0 @@
-Apr 07, 2017 5:41:47 PM controller.Controller run
-FINE: MENU OPTION CHOSEN: REGISTER
-Apr 07, 2017 5:41:57 PM controller.Controller register
-FINE: REGISTER: Registration details: [sert, 1234, sdfgh, a, a]

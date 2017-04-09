@@ -1,6 +1,0 @@
-Apr 07, 2017 5:13:30 PM controller.Controller run
-FINE: MENU OPTION CHOSEN: LOGIN
-Apr 07, 2017 5:13:32 PM controller.Controller login
-FINE: LOGIN: Login details: [Ownertest, 1234]
-Apr 07, 2017 5:13:32 PM controller.Controller login
-FINE: LOGIN: Failed

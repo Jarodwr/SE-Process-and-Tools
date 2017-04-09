@@ -149,7 +149,7 @@ public class SQLiteConnection {
 	public static void createEmployeeWorkingTimesTable()  {
 		String sql = "CREATE TABLE IF NOT EXISTS EmployeeWorkingTimes (businessname Varchar(255), employeeId integer, unixstarttime Varchar(255), unixendtime Varchar(255), "
 				+ "Foreign Key(businessname) references Businessinfo(businessname),"
-				+ "Foreign Key(employeeId) references Employeeinfo(employeeId)";
+				+ "Foreign Key(employeeId) references Employeeinfo(employeeId))";
 		try {
 			Connection c = getDBConnection();
 			Statement stmt = c.createStatement();
