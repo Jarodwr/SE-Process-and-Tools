@@ -121,7 +121,7 @@ public class Controller {
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
-				//gets tbe employee id from the user
+				//gets the employee id from the user
 				editAvailability(view.showEmployeeList(services.getEmployeeList()), (Owner)activeUser);
 				break;
 			// if the user selects the logout option

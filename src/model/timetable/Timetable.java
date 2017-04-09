@@ -22,17 +22,42 @@ public class Timetable {
 	 * @return Returns true if there is no clash and the period is 
 	 * successfully added
 	 */
-	public boolean addPeriod(Period newPeriod) {
+	public boolean addPeriod(Period period) {
 		for (int i = 0; i < periods.size(); i++) {
-			Period combined = periods.get(i).combineWith(newPeriod);
-			if (combined != null) {
-				newPeriod = combined;
-				periods.remove(periods.get(i));
-				i = 0;
+			
+			Period p = periods.get(i);
+			int compareStarts = period.getStart().compareTo(p.getStart());
+			int compareEnds = period.getEnd().compareTo(p.getEnd());
+			
+			//Exact match, period directly removed
+			if (compareStarts == 0 && compareEnds == 0) {
+				return true;
+			} 
+			//Subset match, removal period is subset of current period, removal period is removed.
+			else if (compareStarts > 0 && compareEnds < 0) {
+				return true;
 			}
+			//Superset match, current period is a subset of removal period
+			else if (compareStarts < 0 && compareEnds > 0) {
+				periods.remove(i);
+			}
+
+			//End match, start of current period to end of removal period is removed.
+			else if (compareStarts <= 0 && compareEnds < 0 && period.getEnd().compareTo(p.getStart()) > 0) {
+				period = new Period(period.getStart(), periods.get(i).getEnd());
+				periods.remove(i);
+			} 
+			//Start match, start of removal period to end of current period is removed.
+			else if (compareStarts > 0 && compareEnds >= 0 && period.getStart().compareTo(p.getEnd()) < 0) {
+				period = new Period(periods.get(i).getStart(), period.getEnd());
+				periods.remove(i);
+			} else {
+				continue;
+			}
+			i = -1;
 		}
-		periods.add(newPeriod);
-		return false;
+		periods.add(period);
+		return true;
 	}
 	
 	/**
@@ -129,7 +154,7 @@ public class Timetable {
 		StringTokenizer st = new StringTokenizer(timetable, "|");
 		while (st.hasMoreTokens()) {
 			StringTokenizer p = new StringTokenizer(st.nextToken(), ",");
-			addPeriod(new Period(p.nextToken() + "000", p.nextToken() + "000", false));
+			addPeriod(new Period(p.nextToken(), p.nextToken(), false));
 		}
 	}
 	
