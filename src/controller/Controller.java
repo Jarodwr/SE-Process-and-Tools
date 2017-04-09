@@ -211,6 +211,7 @@ public class Controller {
 		// if they all pass then try to create a new user and return the created user
 		if (services.addCustomerToDatabase(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
 			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");
+			view.success("Register", userDetails[0] + " added to system");
 			return services.searchUser(userDetails[0]);
 		}
 		else //if not then inform the user that there is a user with that name and return null
