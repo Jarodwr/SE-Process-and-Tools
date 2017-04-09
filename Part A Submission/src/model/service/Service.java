@@ -56,6 +56,16 @@ public class Service {
 		return s;
 	}
 	
+	public static int getTotalArrayDuration(ArrayList<Service> services) {
+		int i = 0;
+		Iterator<Service> iter = services.iterator();
+		while(iter.hasNext()) {
+			Service serv = iter.next();
+			i = serv.secondsOfService;
+		}
+		return i;
+	}
+	
 	public static ArrayList<Service> stringOfServicesToArrayList(String services) {
 		String[] servicesSplit = services.split(" ");
 		ArrayList<Service> servs = new ArrayList<Service>();

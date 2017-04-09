@@ -57,6 +57,10 @@ public class Period {
 		return 0; // should be unreachable generally unless the day var is not valid
 	}
 	
+	public long duration() {
+		return start.getTime() - end.getTime();
+	}
+	
 	public static String convertSecondsToDay(int seconds) {
 		int division = seconds/86400;
 		return weekdays[Math.min(6,division)];
@@ -175,6 +179,14 @@ public class Period {
 	
 	public String toString() {
 		return toStringArray()[0] + "," + toStringArray()[1];
+	}
+
+	public String[] toStringArraySeconds() {
+
+		String first = Long.toString(start.getTime()/1000);
+		String second = Long.toString(end.getTime()/1000);
+		
+		return new String[] {first, second};
 	}
 
 

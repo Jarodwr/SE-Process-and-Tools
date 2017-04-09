@@ -1,5 +1,6 @@
 package view.console;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,7 +9,10 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Arrays;
 
+import model.database.SQLiteConnection;
 import model.period.Period;
+import model.service.Service;
+import model.service.ServiceExistsException;
 
 public class Console {
 	private static Scanner scanner = new Scanner(System.in);
@@ -436,50 +440,7 @@ public class Console {
 	 * @param availableTimes Times available to book
 	 * @return [0] startDate, [1] endDate
 	 */
-	public String[] addNewBooking(String[][] availableTimes) {
-		
-		String[] bookingDetails = new String[2];
-		String[][] tableToDisplay = new String[availableTimes.length][availableTimes[0].length+1];
-		
-		for (int i = 0; i < tableToDisplay.length; i++) {
-			for (int j = 0; j < tableToDisplay[i].length; j++) {
-				if (j < (tableToDisplay[i].length-1))
-					tableToDisplay[i][j] = availableTimes[i][j];
-				else
-					tableToDisplay[i][j] = Integer.toString(i+1);
-			}
-		}
-		
-		
-		
-		String[] headerTitles = {"Start Period","End Period","#"}; //Set the headers of the table to print
-		
-		System.out.println("\n\n Enter the # of your booking from the list above: ");
-
-		printTable(tableToDisplay,headerTitles,"Add a new booking", true,false,"There are no bookings available."); // Print Table
-		
-		int selected = 0;
-		
-		while (true) {
-			try {
-			
-			System.out.println("\n\n Enter the # of your booking from the list above: ");
-			selected = scanner.nextInt();
-			if (selected <= availableTimes.length && selected > 0) {
-				bookingDetails[0] = availableTimes[selected-1][0]; //Set the booking start period
-				bookingDetails[1] = availableTimes[selected-1][1]; //Set the booking end period
-				break;
-			} else {
-				System.out.println("\n\n You did not select a valid option. Please try again.");
-			}
-			} catch (InputMismatchException exception) {
-				System.out.println("\n\n You did not select a valid option. Please try again.");
-			}
-		
-		}
-		
-		return bookingDetails;
-	}
+	
 	
 	public String[] addWorkingTimes() {
 		
@@ -540,6 +501,59 @@ public class Console {
 		String selectedID = scanner.nextLine();
 		
 		return selectedID;
+	}
+	
+	public String getStartTime(String[][] availableTimes) {
+		try  {
+			if (availableTimes == null || availableTimes.length == 0) {
+				return null;
+				}
+			}
+			catch (Exception e) {
+				return null;
+			}
+			String[][] tableToDisplay = new String[availableTimes.length][availableTimes[0].length+1];
+			
+			for (int i = 0; i < tableToDisplay.length; i++) {
+				for (int j = 0; j < tableToDisplay[i].length; j++) {
+					if (j < (tableToDisplay[i].length-1)) {
+						System.out.println(availableTimes[i][j]);
+						tableToDisplay[i][j] = availableTimes[i][j];
+					} else {
+						tableToDisplay[i][j] = Integer.toString(i+1);
+					}
+						
+					
+						
+				}
+			}
+			
+			
+			
+			String[] headerTitles = {"Start Period","End Period","#"}; //Set the headers of the table to print
+			
+			System.out.println("\n\n Enter the # of your booking start time from the list above: ");
+
+			printTable(tableToDisplay,headerTitles,"Add a new booking", true,false,"There are no bookings available."); // Print Table
+			
+			int selected = 0;
+			
+			while (true) {
+				try {
+				
+				System.out.println("\n\n Enter the # of your booking from the list above: ");
+				selected = scanner.nextInt();
+				if (selected <= availableTimes.length && selected > 0) {
+					return availableTimes[selected-1][0]; //Set the booking start period
+				} else {
+					System.out.println("\n\n You did not select a valid option. Please try again.");
+				}
+				} catch (InputMismatchException exception) {
+					System.out.println("\n\n You did not select a valid option. Please try again.");
+				}
+			
+			}
+			
 	}
 	
 	/**
@@ -702,6 +716,10 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 				scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
+	public String getUser() {
+		System.out.println("Enter the username of the user wishing to make this booking: ");
+		return scanner.nextLine();
+	}
 	
 	/**
 	 * Format: "Success: [Subject],[Details]"
@@ -737,4 +755,17 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public ArrayList<Service> getServices() throws Exception {
+		ArrayList<Service> a = new ArrayList<Service>();
+		Service s;
+		try {
+			s = new Service( "Haircut", 20000, 1800, true);
+		} catch (Exception e) {
+			s = new Service( "Haircut", 20000, 1800, false);
+		}
+		a.add(s);
+		return null;
+	}
+
 }

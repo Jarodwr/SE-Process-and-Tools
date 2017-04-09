@@ -107,6 +107,16 @@ public class Timetable {
 		return remove;
 	}
 	
+	public Timetable applicablePeriods(long duration) {
+		Timetable t = new Timetable();
+		for (Period p : periods) {
+			if (p.duration() > duration) {
+				t.addPeriod(new Period(Long.toString(p.getStart().getTime()), Long.toString(p.getEnd().getTime() - duration), false));
+			}
+		}
+		return t;
+	}
+	
 	public Period[] getAllPeriods() {
 		Period[] p = new Period[periods.size()];
 		periods.toArray(p);
@@ -142,6 +152,26 @@ public class Timetable {
 		for(int i = 0; i < periods.size(); i++)
 		{
 			timetable[i] = periods.get(i).toStringArray();
+		}
+		return timetable;
+	}
+	
+	public boolean isStartTimeIn(long startTime) {
+		for (Period p : periods) {
+			if (startTime > p.getStart().getTime() && startTime < p.getEnd().getTime()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public String[][] toStringArraySeconds() 
+	{
+		String[][] timetable = new String[periods.size()][];
+		
+		for(int i = 0; i < periods.size(); i++)
+		{
+			timetable[i] = periods.get(i).toStringArraySeconds();
 		}
 		return timetable;
 	}

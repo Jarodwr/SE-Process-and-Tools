@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import model.database.SQLiteConnection;
 import model.period.Booking;
 import model.period.Period;
+import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Owner;
 import model.users.User;
@@ -97,7 +98,7 @@ public class Controller {
 				break;
 			// if the user selects the add new booking option then run the add new booking function
 			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
-				addNewBooking(view.addNewBooking(services.getAvailableTimes().toStringArray()));
+				addNewBooking(services.getAvailableBookingTimes().toStringArray());
 				break;
 			// if the user selects the view summary of bookings option then run the view summary of bookings function
 			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
@@ -121,7 +122,7 @@ public class Controller {
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD BOOKING");
-				addNewBooking(view.addNewBooking());
+				addNewBooking(services.getAvailableBookingTimes().toStringArray());
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
@@ -250,6 +251,25 @@ public class Controller {
 		}
 	}
 	
+	public void addNewBooking(String[][] availableTimes) {
+		try {
+			//String username = view.getUser();
+			String username = "Ownertest";
+			String startTime = view.getStartTime(availableTimes);
+			ArrayList<Service> servs;
+			
+				servs = view.getServices();
+			
+			//int employeeId = view.showEmployeeList((services.getApplicableEmployees(Service.getTotalArrayDuration(servs), Long.parseLong(startTime));
+			int employeeId = 5;
+			
+			Booking b = new Booking(startTime, (startTime+Service.getTotalArrayDuration(servs)), false, username, Integer.toString(employeeId), servs, true);
+		}
+		catch (Exception e) {
+			
+		}
+	}
+	
 	/**
 	 * This method gets all employees timetables and merges them all together to form the business hours
 	 * and outputs it to the view
@@ -261,8 +281,9 @@ public class Controller {
 			String[][] sa = t.toStringArray();
 			
 			for (int i = 0; i < sa.length; i++) {
-				sa[i][0] = Long.toString(Long.parseLong(sa[i][0])/1000);
-				sa[i][1] = Long.toString(Long.parseLong(sa[i][1])/1000);
+				sa[i][0] = Long.toString(Long.parseLong(sa[i][0]));
+				sa[i][1] = Long.toString(Long.parseLong(sa[i][1]));
+				System.out.println(sa[i][0] + " : " + sa[i][1]);
 			}
 			
 			view.printTable(sa,new String[]{"Start Period", "End Period"},"Available Booking Times", false,false,"There are no available times to display.");
@@ -335,7 +356,7 @@ public class Controller {
 			Date date = sdf.parse(workingTimes[0]);
 			Long starttime = date.getTime() + (Period.convert24HrTimeToDaySeconds(workingTimes[1]) * 1000);
 			Long endtime = date.getTime() + (Period.convert24HrTimeToDaySeconds(workingTimes[2]) * 1000);
-			if (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime), Long.toString(endtime))) {
+			if (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime/1000), Long.toString(endtime/1000))) {
 				view.success("Add Working Times", "Shift successfully added");
 			} else {
 				view.failure("Add Working Times", "Error, shift could not be added");
