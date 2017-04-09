@@ -309,10 +309,18 @@ public class Controller {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
+			String employeeId = view.showEmployeeList(services.getEmployeeList());
+			//go through a loop till the user chooses to exit to the menu
+			if (employeeId == null || employeeId.equals("")) {
+				view.failure("Add Working Times", "Not a valid employee!");
+				return;
+			}
 			Date date = sdf.parse(dateAndStart[0]);
 			Long starttime = date.getTime() + Period.convert24HrTimeToDaySeconds(dateAndStart[1]);
 			Long endtime = date.getTime() + Period.convert24HrTimeToDaySeconds(workingTimes[0][1]);
-			SQLiteConnection.addShift(Integer.parseInt(workingTimes[0][0]), "SARJ's Milk Business", Long.toString(starttime), Long.toString(endtime));
+			SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime/1000), Long.toString(endtime/1000));
+
+			view.success("Add Working Times", "Employee id:" + employeeId + "is now rostered on " + dateAndStart[0] + " between " + dateAndStart[1] + " and " + workingTimes[0][1] );
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
