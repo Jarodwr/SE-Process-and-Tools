@@ -12,6 +12,7 @@ import model.period.Period;
 
 public class Console {
 	private static Scanner scanner = new Scanner(System.in);
+	private static java.io.Console console = System.console();
 	public static final String[] Weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
 	public Console() {
@@ -164,6 +165,9 @@ public class Console {
 		
 		System.out.print("Enter your password: ");
 		password = scanner.nextLine();
+		//char[] passString = console.readPassword();
+	    //password = new String(passString );
+
 	
 		//return the inputed username and password to the controller class for validation
 		return new String[] {username, password};
