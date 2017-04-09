@@ -437,16 +437,28 @@ public class Console {
 	 * @return [0] startDate, [1] endDate
 	 */
 	public String[] addNewBooking(String[][] availableTimes) {
-		
+		try  {
+		if (availableTimes == null || availableTimes.length == 0) {
+			return null;
+			}
+		}
+		catch (Exception e) {
+			return null;
+		}
 		String[] bookingDetails = new String[2];
 		String[][] tableToDisplay = new String[availableTimes.length][availableTimes[0].length+1];
 		
 		for (int i = 0; i < tableToDisplay.length; i++) {
 			for (int j = 0; j < tableToDisplay[i].length; j++) {
-				if (j < (tableToDisplay[i].length-1))
+				if (j < (tableToDisplay[i].length-1)) {
+					System.out.println(availableTimes[i][j]);
 					tableToDisplay[i][j] = availableTimes[i][j];
-				else
+				} else {
 					tableToDisplay[i][j] = Integer.toString(i+1);
+				}
+					
+				
+					
 			}
 		}
 		

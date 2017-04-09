@@ -121,7 +121,7 @@ public class Controller {
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD BOOKING");
-				addNewBooking(view.addNewBooking(services.getAvailableBookingTimes().toStringArraySeconds()));
+				addNewBooking(view.addNewBooking(services.getAvailableBookingTimes().toStringArray()));
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
@@ -335,7 +335,7 @@ public class Controller {
 			Date date = sdf.parse(workingTimes[0]);
 			Long starttime = date.getTime() + (Period.convert24HrTimeToDaySeconds(workingTimes[1]) * 1000);
 			Long endtime = date.getTime() + (Period.convert24HrTimeToDaySeconds(workingTimes[2]) * 1000);
-			if (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime), Long.toString(endtime))) {
+			if (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime/1000), Long.toString(endtime/1000))) {
 				view.success("Add Working Times", "Shift successfully added");
 			} else {
 				view.failure("Add Working Times", "Error, shift could not be added");
