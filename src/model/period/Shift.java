@@ -13,9 +13,22 @@ public class Shift extends Period
 		this.employeeId = employeeId;
 	}
 	
+	public Shift(String start, String end, boolean formatted, String employeeId) 
+	{
+		super(start, end, formatted);
+		this.employeeId = employeeId;
+	}
+	
 	public String getEmployeeId()
 	{
 		return employeeId;
 	}
 
+	public String[] toStringArray() 
+	{
+		String first = Long.toString(start.getTime());
+		String second = Long.toString(end.getTime());
+		
+		return new String[] {first, second, employeeId};
+	}
 }

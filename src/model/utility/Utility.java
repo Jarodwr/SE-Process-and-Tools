@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -11,6 +13,7 @@ import model.database.SQLiteConnection;
 import model.employee.Employee;
 import model.period.Booking;
 import model.period.Period;
+import model.period.Shift;
 import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;
@@ -227,7 +230,7 @@ public class Utility {
 			ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(employeeId), Long.toString(System.currentTimeMillis()/1000));
 			
 			do {
-				t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
+				t.addPeriod(new Shift(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false, employeeId));
 			} while (shifts.next());
 			
 		} catch (SQLException e) {
@@ -294,8 +297,21 @@ public class Utility {
 		}
 	}
 
-	public String[][] getWorkingTimes() {
-		// TODO Auto-generated method stub
-		return null;
+	public String[][] getWorkingTimes() 
+	{
+		String [][] employeelist = getEmployeeList();
+		Timetable t = new Timetable();
+		ArrayList<String[]> allShifts = new ArrayList<String[]>();
+		
+		for(int i = 0; i > employeelist.length; i++)
+		{
+			t = getShift(employeelist[i][0]);
+			String[][] table = t.toStringArray();
+			allShifts.addAll(Arrays.asList(table));
+		}
+
+		String[][] ftable = Arrays.copyOf(allShifts.toArray(), allShifts.toArray().length, String[][].class);
+		
+		return ftable;
 	}
 }
