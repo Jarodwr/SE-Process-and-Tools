@@ -110,7 +110,7 @@ public class Controller {
 				break;
 			// if the user selects the add working times option then run the add working times function
 			case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
-				addWorkingTimes(view.addWorkingTimes());
+				addWorkingTimes();
 				break;
 			// if the user selects the show view working times option then run the view working times function
 			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW WORKING TIMES");
@@ -298,21 +298,25 @@ public class Controller {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param workingTimes [0][0] employee ID  [0][1] Name [0][2] start [0][3] end
-	 */
-	private void addWorkingTimes(String[][] workingTimes) {
+	private void addWorkingTimes() {
+		String employeeId = view.showEmployeeList(services.getEmployeeList());
+		String[][] a = services.getEmployeeAvailability(employeeId).toStringArray();
+		if (a.length != 0) {
+			view.showTimetable(a);
+		} else {
+			view.failure("Add Working Times: ", "Employee has no available working times");
+		}
+		
+		String[][] workingTimes = view.addWorkingTimes();
 		String[] dateAndStart = workingTimes[0][0].split(" ");
 		if (dateAndStart.length != 2) {
 			return;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
-			String employeeId = view.showEmployeeList(services.getEmployeeList());
 			//go through a loop till the user chooses to exit to the menu
 			if (employeeId == null || employeeId.equals("")) {
-				view.failure("Add Working Times", "Not a valid employee!");
+				view.failure("Add Working Times: ", "Not a valid employee!");
 				return;
 			}
 			Date date = sdf.parse(dateAndStart[0]);
