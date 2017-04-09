@@ -302,7 +302,9 @@ public class Controller {
 	//change to private once implemented
 	private void viewWorkingTimes()
 	{
+		String [][] workingTimes = services.getWorkingTimes();
 		
+		view.viewWorkingTimes(workingTimes);	
 	}
 	
 	/**

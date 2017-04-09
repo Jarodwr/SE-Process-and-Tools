@@ -401,7 +401,7 @@ public class Console {
 		
 		//printTable(availability,headerTitles,"Bookings", false,false,"No bookings available."); // Print table
 		
-int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
+		int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
 		
 		for (int i=0;i < DayPeriodCounts.length; i++) {
 			DayPeriodCounts[i] = 0; //initialize all the days to 0 count of working periods
@@ -542,6 +542,13 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 		workingTimes[0][1] = scanner.nextLine(); //Get user (owner) input for the start of the working period
 		
 		return workingTimes;
+	}
+	
+	public void viewWorkingTimes(String [][] workingTimes)
+	{
+		String[] headerTitles = {"Start Period","End Period","Employee ID","Employee Name"}; //Set the headers of the table to print
+		
+		printTable(workingTimes ,headerTitles ,"Working Times/Dates", false,false,"There are no Working Times."); // Print Table
 	}
 	
 	public ArrayList<String> addAvailableTimes() {
