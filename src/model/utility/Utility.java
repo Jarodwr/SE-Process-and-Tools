@@ -145,7 +145,7 @@ public class Utility {
 			return null;
 		}
 	}
-	public Employee[] getAvailableEmployeesByDuration(long duration) {
+	public Employee[] getApplicableEmployees(long duration, long startTime) {
 		ArrayList<Employee> applicable = new ArrayList<Employee>();
 		try {
 			Employee[] employees = getAllEmployees();
@@ -162,17 +162,14 @@ public class Utility {
 				shifts.close();
 				
 				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
-				if (bookings == null) {
-					if (t.applicablePeriods(duration).getAllPeriods().length > 0) {
-						applicable.add(e);
-					}
-					continue;
+				if (bookings != null) {
+					do {
+						t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
+					} while (bookings.next());
+					bookings.close();
 				}
-				do {
-					t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
-				} while (bookings.next());
-				bookings.close();
-				if (t.applicablePeriods(duration).getAllPeriods().length > 0) {
+				Timetable ap = t.applicablePeriods(duration);
+				if (ap.getAllPeriods().length > 0 && ap.isStartTimeIn(startTime)) {
 					applicable.add(e);
 				}
 			}

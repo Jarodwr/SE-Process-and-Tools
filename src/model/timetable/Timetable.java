@@ -156,6 +156,15 @@ public class Timetable {
 		return timetable;
 	}
 	
+	public boolean isStartTimeIn(long startTime) {
+		for (Period p : periods) {
+			if (startTime > p.getStart().getTime() && startTime < p.getEnd().getTime()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String[][] toStringArraySeconds() 
 	{
 		String[][] timetable = new String[periods.size()][];
