@@ -2,6 +2,8 @@ package controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -296,7 +298,23 @@ public class Controller {
 	 * @param workingTimes [0][0] employee ID  [0][1] Name [0][2] start [0][3] end
 	 */
 	private void addWorkingTimes(String[][] workingTimes) {
-		
+		String[] dateAndStart = workingTimes[0][0].split(" ");
+		if (dateAndStart.length != 2) {
+			return;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			Date date = sdf.parse(dateAndStart[0]);
+			Long starttime = date.getTime() + Period.convert24HrTimeToDaySeconds(dateAndStart[1]);
+			Long endtime = date.getTime() + Period.convert24HrTimeToDaySeconds(workingTimes[0][1]);
+			SQLiteConnection.addShift();
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			LOGGER.log(Level.WARNING, e.getMessage());
+			return;
+		}
+				
 	}
 	
 	//change to private once implemented
