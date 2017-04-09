@@ -609,6 +609,8 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 		for (int i=0;i < contents.length; i++) { //Find out the maximum number of working hours/period per day
 			
 					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]) /1000)); //Convert to day from milliseconds to seconds then day
+					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]))); //Convert to day from milliseconds to seconds then day
+					System.out.println(ConvertedDay);
 					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
 					
 						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
@@ -623,12 +625,12 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 		
 		for (int i=0;i < contents.length; i++) {
 			
-			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]) /1000));
+			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0])));
 			
 			/* Add it to the table under the specific day column with start - end time 24 hr format*/
 			for (int j = 0; j < contents[i].length; j++) { 
 				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
-					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = unixTimeTo24Hour(contents[i][0])+" - "+unixTimeTo24Hour(contents[i][1]);
+					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = Period.get24HrTimeFromWeekTime(contents[i][0])+" - "+Period.get24HrTimeFromWeekTime(contents[i][1]);
 					break;
 				}
 				

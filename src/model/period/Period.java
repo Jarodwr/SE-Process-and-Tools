@@ -94,6 +94,35 @@ public class Period {
 		}
 		return false;
 	}
+	
+	public static String get24HrTimeFromWeekTime(int seconds) {
+		String s = "";
+		int secondsRemainder = seconds%86400;
+		int hours = secondsRemainder/3600;
+		int minutes = (secondsRemainder%3600)/60;
+		if (minutes < 9) {
+			s = Integer.toString(hours) + ":0" + minutes;
+		}
+		else {
+				s = Integer.toString(hours) + ":" + minutes;
+		}	
+		return s;
+	}
+	
+	public static String get24HrTimeFromWeekTime(String secondsString) {
+		int seconds = Integer.parseInt(secondsString);
+		String s = "";
+		int secondsRemainder = seconds%86400;
+		int hours = secondsRemainder/3600;
+		int minutes = (secondsRemainder%3600)/60;
+		if (minutes < 9) {
+			s = Integer.toString(hours) + ":0" + minutes;
+		}
+		else {
+				s = Integer.toString(hours) + ":" + minutes;
+		}	
+		return s;
+	}
     /**
      * Verifies that the current period isn't overlapping with another period
      * @param otherPeriod The other period currently being tested against
@@ -129,6 +158,8 @@ public class Period {
 		return this.end;
 	}
 	
+	
+	
     /**
      */
 	public String[] toStringArray() 
@@ -142,4 +173,6 @@ public class Period {
 	public String toString() {
 		return toStringArray()[0] + "," + toStringArray()[1];
 	}
+
+
 }
