@@ -388,6 +388,7 @@ public class Controller {
 			int id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
 			SQLiteConnection.createAvailability(id, user.getBusinessName(), t.toString());
 			SQLiteConnection.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
+			rs.close();
 		}
 		catch(SQLException e) {
 			LOGGER.warning(e.getMessage());

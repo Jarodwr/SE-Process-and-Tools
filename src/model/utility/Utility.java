@@ -94,7 +94,7 @@ public class Utility {
 		try {
 			rs = SQLiteConnection.getAllEmployees();
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+				LOGGER.warning(e.getMessage());
 			return null;
 		}
 
@@ -103,6 +103,7 @@ public class Utility {
 			do {
 				employees.add(new String[] {rs.getString(1), rs.getString(3)});
 			} while (rs.next());
+			rs.close();
 		} catch (Exception e) {
 			LOGGER.warning(e.getMessage());
 		}
@@ -130,7 +131,9 @@ public class Utility {
 					continue;
 				}
 				t.mergeTimetable(rsTimetables.getString("availability"));
+				rsTimetables.close();
 			} while(rsEmployees.next());
+			rsEmployees.close();
 			
 			return t;
 		}
@@ -141,33 +144,40 @@ public class Utility {
 	}
 	
 	public Timetable getAvailableTimesCustomer() {
-		Employee[] employees = getAllEmployees();
-		Timetable available = new Timetable();
-		for (Employee e : employees) {
-			try {
-				Timetable t = new Timetable();
-				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()/1000));
-				
-				do {
-					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
-				} while (shifts.next());
-				
-				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
-				
-				do {
-					t.removePeriod(new Period(bookings.getString("starttime"), bookings.getString("endtime"), false));
-				} while (bookings.next());
-				
-				available.mergeTimetable(t);
-			} catch(SQLException exception) {
-					LOGGER.warning(exception.getMessage());
+		Employee[] employees;
+		try {
+			employees = getAllEmployees();
+			Timetable available = new Timetable();
+			for (Employee e : employees) {
+				try {
+					Timetable t = new Timetable();
+					ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()/1000));
+					
+					do {
+						t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
+					} while (shifts.next());
+					shifts.close();
+					ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+					
+					do {
+						t.removePeriod(new Period(bookings.getString("starttime"), bookings.getString("endtime"), false));
+					} while (bookings.next());
+					bookings.close();
+					available.mergeTimetable(t);
+				} catch(SQLException exception) {
+						LOGGER.warning(exception.getMessage());
+				}
 			}
-		}
-		if (available.getAllPeriods().length == 0) {
+			if (available.getAllPeriods().length == 0) {
+				return null;
+			} else {
+				return available;
+			}
+		} catch (SQLException e1) {
+			LOGGER.warning(e1.getMessage());
 			return null;
-		} else {
-			return available;
 		}
+		
 	}
 	
 	/**
@@ -188,23 +198,21 @@ public class Utility {
 	 * Gets a booking query and returns it as an array of bookings
 	 * @param rs ResultSet of query
 	 * @return Booking[]
+	 * @throws SQLException 
 	 */
-	public Booking[] bookingResultsetToArray(ResultSet rs) {
+	public Booking[] bookingResultsetToArray(ResultSet rs) throws SQLException {
 
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
-		try {
-			do {
-				bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
-				
-			} while (rs.next());
-		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+		do {
+			bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
+		} while (rs.next());
 		if (!bookings.isEmpty()) {
 			Booking[] b = new Booking[bookings.size()];
 			bookings.toArray(b);
+			rs.close();
 			return b;
 		} else {
+			rs.close();
 			return new Booking[0];
 		}
 	}
@@ -227,25 +235,21 @@ public class Utility {
 	
 	/**
 	 * @return Array of all employees in the system.
+	 * @throws SQLException 
 	 */
-	public Employee[] getAllEmployees() {
+	public Employee[] getAllEmployees() throws SQLException {
 		ArrayList<Employee> employees = new ArrayList<Employee>();
-		try {
-			ResultSet rs = SQLiteConnection.getAllEmployees();
-			
-			do {
-				employees.add(new Employee(rs.getString(1), rs.getString(2), null));
-			} while (rs.next());
-			
-		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
-		
+		ResultSet rs = SQLiteConnection.getAllEmployees();
+		do {
+			employees.add(new Employee(rs.getString(1), rs.getString(2), null));
+		} while (rs.next());
 		if (!employees.isEmpty()) {
 			Employee[] b = new Employee[employees.size()];
 			employees.toArray(b);
+			rs.close();
 			return b;
 		} else {
+			rs.close();
 			return new Employee[0];
 		}
 	}
@@ -263,10 +267,16 @@ public class Utility {
 			}
 			Timetable t = new Timetable();
 			t.mergeTimetable(rs.getString("availability"));
+			rs.close();
 			return t;
 		} catch (SQLException e) {
 			LOGGER.warning(e.getMessage());
 			return null;
 		}
+	}
+
+	public String[][] getWorkingTimes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
