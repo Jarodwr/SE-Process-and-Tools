@@ -177,5 +177,13 @@ public class Period {
 		return toStringArray()[0] + "," + toStringArray()[1];
 	}
 
+	public String[] toStringArraySeconds() {
+
+		String first = Long.toString(start.getTime()/1000);
+		String second = Long.toString(end.getTime()/1000);
+		
+		return new String[] {first, second};
+	}
+
 
 }

@@ -121,7 +121,7 @@ public class Controller {
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD BOOKING");
-				addNewBooking(view.addNewBooking());
+				addNewBooking(view.addNewBooking(services.getAvailableBookingTimes().toStringArraySeconds()));
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");

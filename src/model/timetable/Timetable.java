@@ -146,6 +146,17 @@ public class Timetable {
 		return timetable;
 	}
 	
+	public String[][] toStringArraySeconds() 
+	{
+		String[][] timetable = new String[periods.size()][];
+		
+		for(int i = 0; i < periods.size(); i++)
+		{
+			timetable[i] = periods.get(i).toStringArraySeconds();
+		}
+		return timetable;
+	}
+	
 	/**
 	 * Parses a timetable from a string and merges it with the current timetable
 	 * @param timetable
