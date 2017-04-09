@@ -52,8 +52,8 @@ public class Utility {
 				return customer;
 			}
 
-		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+		} catch (Exception e) {
+			//LOGGER.warning(e.getMessage()); Exceptions are intended behaviour here, no need to log
 			return null;
 		}
 		
