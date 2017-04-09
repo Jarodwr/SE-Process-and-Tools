@@ -73,9 +73,9 @@ public class Main {
 	
 	public static void debugCreateEmployees() {
 		SQLiteConnection.createEmployee(0, "SARJ's Milk Business", "Bob", "32 does not exists st", "0412345678", 0);
-		SQLiteConnection.createEmployee(1, "SARJ's Milk Business", "John", "32 does not exists st", "0412345678", 1);
-		SQLiteConnection.createEmployee(2, "SARJ's Milk Business", "Alex", "32 does not exists st", "0412345678", 2);
-		SQLiteConnection.createEmployee(3, "SARJ's Milk Business", "Jack", "32 does not exists st", "0412345678", 3);
+		SQLiteConnection.createEmployee(1, "SARJ's Milk Business", "John", "32 does not exists st", "0412345678", 0);
+		SQLiteConnection.createEmployee(2, "SARJ's Milk Business", "Alex", "32 does not exists st", "0412345678", 0);
+		SQLiteConnection.createEmployee(3, "SARJ's Milk Business", "Jack", "32 does not exists st", "0412345678", 0);
 	}
 
 }
