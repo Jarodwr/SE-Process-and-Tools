@@ -98,7 +98,7 @@ public class Controller {
 				break;
 			// if the user selects the add new booking option then run the add new booking function
 			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
-				addNewBooking(view.addNewBooking(services.getAvailableTimes().toStringArray()));
+				addNewBooking(services.getAvailableTimes().toStringArray());
 				break;
 			// if the user selects the view summary of bookings option then run the view summary of bookings function
 			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
@@ -252,13 +252,22 @@ public class Controller {
 	}
 	
 	public void addNewBooking(String[][] availableTimes) {
-		
-		String username = view.getUser();
-		String startTime = view.getStartTime(availableTimes);
-		ArrayList<Service> servs = view.getServices();
-		int employeeId = view.showEmployeeList((services.getApplicableEmployees(Service.getTotalArrayDuration(servs), Long.parseLong(startTime));
-		
-		Booking b = new Booking(startTime, (startTime+Service.getTotalArrayDuration(servs)), false, customerUsername, Integer.toString(employeeId), servs, true);
+		try {
+			//String username = view.getUser();
+			String username = "Ownertest";
+			String startTime = view.getStartTime(availableTimes);
+			ArrayList<Service> servs;
+			
+				servs = view.getServices();
+			
+			//int employeeId = view.showEmployeeList((services.getApplicableEmployees(Service.getTotalArrayDuration(servs), Long.parseLong(startTime));
+			int employeeId = 5;
+			
+			Booking b = new Booking(startTime, (startTime+Service.getTotalArrayDuration(servs)), false, username, Integer.toString(employeeId), servs, true);
+		}
+		catch (Exception e) {
+			
+		}
 	}
 	
 	/**
