@@ -107,6 +107,16 @@ public class Timetable {
 		return remove;
 	}
 	
+	public Timetable applicablePeriods(long duration) {
+		Timetable t = new Timetable();
+		for (Period p : periods) {
+			if (p.duration() > duration) {
+				t.addPeriod(p);
+			}
+		}
+		return t;
+	}
+	
 	public Period[] getAllPeriods() {
 		Period[] p = new Period[periods.size()];
 		periods.toArray(p);

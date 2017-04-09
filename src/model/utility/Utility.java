@@ -144,6 +144,78 @@ public class Utility {
 			return null;
 		}
 	}
+	public Employee[] getAvailableEmployeesByDuration(long duration) {
+		ArrayList<Employee> applicable = new ArrayList<Employee>();
+		try {
+			Employee[] employees = getAllEmployees();
+			for (Employee e : employees) {
+				Timetable t = new Timetable();
+				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
+				
+				if (shifts == null) {
+					continue;
+				}
+				do {
+					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
+				} while (shifts.next());
+				shifts.close();
+				
+				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+				if (bookings == null) {
+					if (t.applicablePeriods(duration).getAllPeriods().length > 0) {
+						applicable.add(e);
+					}
+					continue;
+				}
+				do {
+					t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
+				} while (bookings.next());
+				bookings.close();
+				if (t.applicablePeriods(duration).getAllPeriods().length > 0) {
+					applicable.add(e);
+				}
+			}
+		} catch (SQLException exception) {
+			LOGGER.warning(exception.getMessage());
+		}
+		
+		Employee[] filtered = new Employee[applicable.size()];
+		applicable.toArray(filtered);
+		return filtered;
+	}
+	
+	public Timetable getAvailableBookingTimesByDuration(long duration) {
+		Timetable appPeriods = new Timetable();
+		try {
+			Employee[] employees = getAllEmployees();
+			for (Employee e : employees) {
+				Timetable t = new Timetable();
+				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
+				
+				if (shifts == null) {
+					continue;
+				}
+				do {
+					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
+				} while (shifts.next());
+				shifts.close();
+				
+				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+				if (bookings == null) {
+					appPeriods.mergeTimetable(t.applicablePeriods(duration));
+					continue;
+				}
+				do {
+					t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
+				} while (bookings.next());
+				bookings.close();
+				appPeriods.mergeTimetable(t.applicablePeriods(duration));
+			}
+		} catch (SQLException exception) {
+			LOGGER.warning(exception.getMessage());
+		}
+		return appPeriods;
+	}
 	
 	public Timetable getAvailableBookingTimes() {
 		Employee[] employees;
