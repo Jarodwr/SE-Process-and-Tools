@@ -1,0 +1,22 @@
+Apr 09, 2017 3:11:29 PM main.Main main
+WARNING: test
+Apr 09, 2017 3:11:30 PM model.database.SQLiteConnection createEmployeeWorkingTimesTable
+WARNING: [SQLITE_ERROR] SQL error or missing database (near ")": syntax error)
+Apr 09, 2017 3:11:30 PM model.database.SQLiteConnection createOwner
+WARNING: Values not bound to statement
+Apr 09, 2017 3:11:31 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: LOGIN
+Apr 09, 2017 3:11:34 PM controller.Controller login
+FINE: LOGIN: Login details: [Ownertest, 1234]
+Apr 09, 2017 3:11:34 PM model.utility.Utility searchUser
+WARNING: Values not bound to statement
+Apr 09, 2017 3:11:34 PM controller.Controller login
+FINE: LOGIN: Failed
+Apr 09, 2017 3:11:39 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: LOGIN
+Apr 09, 2017 3:11:41 PM controller.Controller login
+FINE: LOGIN: Login details: [ownertest, 1234]
+Apr 09, 2017 3:11:41 PM model.utility.Utility searchUser
+WARNING: Values not bound to statement
+Apr 09, 2017 3:11:41 PM controller.Controller login
+FINE: LOGIN: Failed

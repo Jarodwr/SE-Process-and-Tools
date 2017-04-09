@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import model.database.SQLiteConnection;
 import model.employee.Employee;
 import model.period.Booking;
+import model.period.Period;
 import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;
@@ -136,6 +137,36 @@ public class Utility {
 		catch(SQLException e) {
 			LOGGER.warning(e.getMessage());
 			return null;
+		}
+	}
+	
+	public Timetable getAvailableTimesCustomer() {
+		Employee[] employees = getAllEmployees();
+		Timetable available = new Timetable();
+		for (Employee e : employees) {
+			try {
+				Timetable t = new Timetable();
+				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()/1000));
+				
+				do {
+					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
+				} while (shifts.next());
+				
+				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+				
+				do {
+					t.removePeriod(new Period(bookings.getString("starttime"), bookings.getString("endtime"), false));
+				} while (bookings.next());
+				
+				available.mergeTimetable(t);
+			} catch(SQLException exception) {
+					LOGGER.warning(exception.getMessage());
+			}
+		}
+		if (available.getAllPeriods().length == 0) {
+			return null;
+		} else {
+			return available;
 		}
 	}
 	
