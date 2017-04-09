@@ -137,7 +137,7 @@ public class Timetable {
 	 */
 	public String[][] toStringArray() 
 	{
-		String[][] timetable = new String[periods.size()][2];
+		String[][] timetable = new String[periods.size()][];
 		
 		for(int i = 0; i < periods.size(); i++)
 		{
