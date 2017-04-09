@@ -765,7 +765,7 @@ public class SQLiteConnection {
 		Connection c = getDBConnection();
 		try {
 			ResultSet rs = getService(serviceName, businessName);
-			if (!rs.next()) {
+			if (rs == null) {
 				return false;
 			}
 			PreparedStatement ps = c.prepareStatement("INSERT INTO ServicesTable VALUES (?, ?, ?, ?);"); // this creates a new user
