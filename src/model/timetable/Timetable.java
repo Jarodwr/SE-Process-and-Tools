@@ -92,13 +92,13 @@ public class Timetable {
 			}
 
 			//End match, start of current period to end of removal period is removed.
-			else if (compareStarts <= 0 && compareEnds < 0) {
+			else if (compareStarts <= 0 && compareEnds < 0 && period.getEnd().compareTo(p.getStart()) > 0) {
 				periods.add(new Period(period.getEnd(), p.getEnd()));
 				periods.remove(i);
 				remove = true;
 			} 
 			//Start match, start of removal period to end of current period is removed.
-			else if (compareStarts > 0 && compareEnds >= 0) {
+			else if (compareStarts > 0 && compareEnds >= 0 && period.getStart().compareTo(p.getEnd()) < 0) {
 				periods.add(new Period(p.getStart(), period.getStart()));
 				periods.remove(i);
 				remove = true;
