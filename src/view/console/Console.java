@@ -426,8 +426,7 @@ public class Console {
 	 * @param availableTimes Times available to book
 	 * @return [0] startDate, [1] endDate
 	 */
-	public String[] addNewBooking() {
-		String[][] availableTimes;
+	public String[] addNewBooking(String[][] availableTimes) {
 		
 		String[] bookingDetails = new String[2];
 		String[][] tableToDisplay = new String[availableTimes.length][availableTimes[0].length+1];
