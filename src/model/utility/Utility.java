@@ -223,7 +223,7 @@ public class Utility {
 			for (Employee e : employees) {
 				try {
 					Timetable t = new Timetable();
-					ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
+					ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), "0");
 					
 					if (shifts == null) {
 						continue;

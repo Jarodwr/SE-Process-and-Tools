@@ -98,7 +98,7 @@ public class Controller {
 				break;
 			// if the user selects the add new booking option then run the add new booking function
 			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
-				addNewBooking(services.getAvailableTimes().toStringArray());
+				addNewBooking(services.getAvailableBookingTimes().toStringArray());
 				break;
 			// if the user selects the view summary of bookings option then run the view summary of bookings function
 			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
@@ -281,8 +281,9 @@ public class Controller {
 			String[][] sa = t.toStringArray();
 			
 			for (int i = 0; i < sa.length; i++) {
-				sa[i][0] = Long.toString(Long.parseLong(sa[i][0])/1000);
-				sa[i][1] = Long.toString(Long.parseLong(sa[i][1])/1000);
+				sa[i][0] = Long.toString(Long.parseLong(sa[i][0]));
+				sa[i][1] = Long.toString(Long.parseLong(sa[i][1]));
+				System.out.println(sa[i][0] + " : " + sa[i][1]);
 			}
 			
 			view.printTable(sa,new String[]{"Start Period", "End Period"},"Available Booking Times", false,false,"There are no available times to display.");
