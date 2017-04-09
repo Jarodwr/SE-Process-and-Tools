@@ -306,19 +306,21 @@ public class Controller {
 		 	view.failure("Add Working Times: ", "Employee has no available working times");
 		}
 		 		
-		String[][] workingTimes = view.addWorkingTimes();
-		String[] dateAndStart = workingTimes[0][0].split(" ");
-		if (dateAndStart.length != 2) {
-			return;
-		}
+		String[] workingTimes = view.addWorkingTimes();
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
-			Date date = sdf.parse(dateAndStart[0]);
-			Long starttime = date.getTime() + Period.convert24HrTimeToDaySeconds(dateAndStart[1]);
-			Long endtime = date.getTime() + Period.convert24HrTimeToDaySeconds(workingTimes[0][1]);
-			SQLiteConnection.addShift(Integer.parseInt(workingTimes[0][0]), "SARJ's Milk Business", Long.toString(starttime), Long.toString(endtime));
+			Date date = sdf.parse(workingTimes[0]);
+			Long starttime = date.getTime() + Period.convert24HrTimeToDaySeconds(workingTimes[1]);
+			Long endtime = date.getTime() + Period.convert24HrTimeToDaySeconds(workingTimes[2]);
+			if (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime), Long.toString(endtime))) {
+				view.success("Add Working Times", "Shift successfully added");
+			} else {
+				view.failure("Add Working Times", "Error, shift could not be added");
+			}
 			
 		} catch (ParseException e) {
+			view.failure("Add Working Times", "incompatible date/time format");
 			LOGGER.log(Level.WARNING, e.getMessage());
 			return;
 		}
