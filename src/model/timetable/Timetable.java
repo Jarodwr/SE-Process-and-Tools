@@ -111,7 +111,7 @@ public class Timetable {
 		Timetable t = new Timetable();
 		for (Period p : periods) {
 			if (p.duration() > duration) {
-				t.addPeriod(p);
+				t.addPeriod(new Period(Long.toString(p.getStart().getTime()), Long.toString(p.getEnd().getTime() - duration), false));
 			}
 		}
 		return t;
