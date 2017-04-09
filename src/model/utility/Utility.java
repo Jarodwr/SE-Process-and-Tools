@@ -209,6 +209,21 @@ public class Utility {
 		}
 	}
 	
+	public Timetable getShift(String employeeId) {
+		Timetable t = new Timetable();
+		try {
+			ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(employeeId), Long.toString(System.currentTimeMillis()/1000));
+			
+			do {
+				t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
+			} while (shifts.next());
+			
+		} catch (SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+		return t;
+	}
+	
 	/**
 	 * Gets the details of the customer and creates a user from it.
 	 * @return If creation is a success, return true. Else return false.
