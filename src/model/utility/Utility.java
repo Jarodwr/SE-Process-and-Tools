@@ -132,6 +132,7 @@ public class Utility {
 				if (rsTimetables == null) {
 					continue;
 				}
+				System.out.println("test");
 				t.mergeTimetable(rsTimetables.getString("availability"));
 				rsTimetables.close();
 			} while(rsEmployees.next());

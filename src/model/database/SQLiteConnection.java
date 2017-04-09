@@ -563,6 +563,7 @@ public class SQLiteConnection {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {
+				rs.close();
 				deleteAvailabilities(timetableId, businessname);
 			}
 
@@ -763,6 +764,10 @@ public class SQLiteConnection {
 	public static boolean addService(String serviceName, int servicePrice, int serviceMinutes, String businessName) {
 		Connection c = getDBConnection();
 		try {
+			ResultSet rs = getService(serviceName, businessName);
+			if (!rs.next()) {
+				return false;
+			}
 			PreparedStatement ps = c.prepareStatement("INSERT INTO ServicesTable VALUES (?, ?, ?, ?);"); // this creates a new user
 			ps.setString(1, serviceName);
 			ps.setInt(2, servicePrice);
