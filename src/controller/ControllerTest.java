@@ -101,13 +101,14 @@ public class ControllerTest {
 		testData13[3] = "12 Melbourne";
 		testData13[4] = "abcd";
 		
+		
 		testData14[0] = "Fred1234";
 		testData14[1] = "03123456789";
 		testData14[2] = "12 Melbourne";
 		testData14[3] = "s234567";
 		
 		testData15[0] = "Fred";
-		testData15[1] = "03123456789asdf";
+		testData15[1] = "asdf";
 		testData15[2] = "12 Melbourne";
 		testData15[3] = "s234567";
 		
