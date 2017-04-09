@@ -265,7 +265,17 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param workingTimes [0][0] employee ID  [0][1] Name [0][2] start [0][3] end
+	 */
 	private void addWorkingTimes(String[][] workingTimes) {
+		
+	}
+	
+	//change to private once implemented
+	public void viewWorkingTimes()
+	{
 		
 	}
 	

@@ -12,11 +12,13 @@ import org.junit.Test;
 
 import model.database.SQLiteConnection;
 import model.period.Booking;
+import model.users.Owner;
 
 @SuppressWarnings("unused")
 public class ControllerTest {
 
 	static Controller c = new Controller();
+	static Owner user = new Owner("name", "pass", "SARJ's Milk Business", "Admin", "124 Address", "0412345678");
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	//customer login test data
 	static String[] testData1 = new String[2];
@@ -205,25 +207,25 @@ public class ControllerTest {
 	@Test
 	public void addemployeetest01() 
 	{
-		assert(!c.addEmployee(testData14));
+		assert(!c.addEmployee(testData14, user));
 	}
 	
 	@Test
 	public void addemployeetest02() 
 	{
-		assert(!c.addEmployee(testData15));
+		assert(!c.addEmployee(testData15, user));
 	}
 	
 	@Test
 	public void addemployeetest03() 
 	{
-		assert(!c.addEmployee(testData16));
+		assert(!c.addEmployee(testData16, user));
 	}
 	
 	@Test
 	public void addemployeetest04() 
 	{
-		assert(c.addEmployee(testData17));
+		assert(c.addEmployee(testData17, user));
 	}
 	
 //	@Test
