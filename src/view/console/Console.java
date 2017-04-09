@@ -397,122 +397,24 @@ public class Console {
 	 */
 	public void viewBookingAvailability(String[][] availability) {
 		
-<<<<<<< HEAD
-		//String[] headerTitles = {"Start Period","End Period"}; //Set the headers of the table to print
-		
-		//printTable(availability,headerTitles,"Bookings", false,false,"No bookings available."); // Print table
-		
-		int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
-		
-		for (int i=0;i < DayPeriodCounts.length; i++) {
-			DayPeriodCounts[i] = 0; //initialize all the days to 0 count of working periods
-		}
-		
-		String ConvertedDay; //Used to store a day name converted from Unix Seconds
-		int dayWithMostWorkingHours = 0;
-		
-		for (int i=0;i < availability.length; i++) { //Find out the maximum number of working hours/period per day
-			
-					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(availability[i][0]) /1000)); //Convert to day from milliseconds to seconds then day
-					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
-					
-						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
-							dayWithMostWorkingHours = DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)]; //make this maximum number of rows
-				
-			
-		}
-		
-		
-		
-		String[][] convertedDates = new String[dayWithMostWorkingHours][Weekdays.length]; //Array that will be used to print out the table of the weekly view
-		
-		for (int i=0;i < availability.length; i++) {
-			
-			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(availability[i][0]) /1000));
-			
-			/* Add it to the table under the specific day column with start - end time 24 hr format*/
-			for (int j = 0; j < availability[i].length; j++) { 
-				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
-					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = unixTimeTo24Hour(availability[i][0])+" - "+unixTimeTo24Hour(availability[i][1]);
-					break;
-				}
-				
-
-			}
-		}
-		
-		for (int i=0;i < convertedDates.length; i++) {
-			for (int j = 0; j < convertedDates[i].length; j++) {
-				if (convertedDates[i][j] == null)
-					convertedDates[i][j] = ""; //Make null table cells empty
-			
-		}
-		}
-		
-		//Menu Title			
-		System.out.println("\n--------------------\nAvailable Times\n--------------------\n");
-
-		
-		/*Table header*/
-		String tableTitles = "";
-		
-		for (int i = 0; i < Weekdays.length;i++) {
-			if (i == 0)
-				tableTitles += "     "+Weekdays[i]; // First table header title
-			else
-				tableTitles += "   | "+Weekdays[i]; // Second or more element of the table header title
-			
-			for (int k = 0; k < (12-Weekdays[i].length()); k++)
-				tableTitles += " ";
-		}
-		System.out.print(tableTitles); //Print all the header titles
-		
-		//Close header
-		System.out.println(); 
-		for (int k = 0; k < (tableTitles.length()); k++)
-			System.out.print("-"); //Line below the headers
-		
-		
-		System.out.println(); //Create a new line for the rest of the table contents
-		
-		
-				for (int i=0;i < convertedDates.length; i++) { //Go through all the rows
-					for (int j = 0; j < convertedDates[i].length; j++) { //Go through all the columns
-						
-						if (j ==0)
-							System.out.print("   ");
-						
-						System.out.print("  "+convertedDates[i][j]); //Print out the current detail
-						
-						/*Add enough spaces to keep table column length balanced*/
-						
-						if ( convertedDates[i][j] == "")
-							for (int k = 0; k < 15; k++)
-								System.out.print(" "); //Create a gap between columns
-						
-					}
-					System.out.println(); //create a new row
-				}
-				
-				for (int k = 0; k < (tableTitles.length()); k++)
-					System.out.print("-"); //Add dashes "-" under the table
-				
-				System.out.println("\n\n Press any key to go back to Menu...");
-				
-				scanner.nextLine(); //Wait for any user input from the scanner
-=======
 		printWeeklyView(availability,"Available Times");
->>>>>>> origin/master
+		
+		addNewBookingX(availability);
 
 	}
 	
-	/**
-	 * Views screen where user can enter new booking information
-	 * @return [0] customerUsername, [1] startDate, [2] endDate
-	 */
-	public String[] addNewBooking() {
+	
+	public void viewWorkingTimes(String [][] workingTimes)
+	{
+		String[] headerTitles = {"Start Period","End Period","Employee ID","Employee Name"}; //Set the headers of the table to print
 		
-		String[] bookingDetails = new String[3]; //We will use this to store the input of the booking details
+		printTable(workingTimes ,headerTitles ,"Working Times/Dates", false,false,"There are no Working Times."); // Print Table
+	}
+	
+	
+	
+public String[] addNewBooking() {
+String[] bookingDetails = new String[3]; //We will use this to store the input of the booking details
 		
 		System.out.println("\nPlease enter the customer booking details below");
 		
@@ -530,6 +432,48 @@ public class Console {
 	}
 	
 	/**
+	 * Views screen where user can enter new booking information
+	 * @return [0] customerUsername, [1] startDate, [2] endDate
+	 */
+	public String[] addNewBookingX(String[][] availableTImes) {
+		
+		String[] bookingDetails = new String[3];
+		String[][] tableToDisplay = new String[availableTImes.length][availableTImes[0].length+1];
+		
+		for (int i = 0; i < tableToDisplay.length; i++) {
+			for (int j = 0; j < tableToDisplay[i].length; j++) {
+				if (j < (tableToDisplay[i].length-1))
+					tableToDisplay[i][j] = availableTImes[i][j];
+				else
+					tableToDisplay[i][j] = Integer.toString(i+1);
+			}
+		}
+		
+		
+		
+		
+String[] headerTitles = {"Start Period","End Period","#"}; //Set the headers of the table to print
+		
+		printTable(tableToDisplay,headerTitles,"Add a new booking", true,false,"There are no bookings available."); // Print Table
+		
+		/*String[] bookingDetails = new String[3]; //We will use this to store the input of the booking details
+		
+		System.out.println("\nPlease enter the customer booking details below");
+		
+		System.out.println("\nCustomer username: ");
+		bookingDetails[0] = scanner.nextLine(); //Get user input for the customer's username
+		
+		System.out.println("Booking start time and date: ");
+		bookingDetails[1] = scanner.nextLine(); //Get user input for the booking start period
+		
+		System.out.println("Booking end time and date: ");
+		bookingDetails[2] = scanner.nextLine(); //Get user input for the booking end period
+		
+		*/
+		return bookingDetails;
+	}
+	
+	/**
 	 * Add working times until the owner decides to stop
 	 * @return [period][0 - start, 1 - end]
 	 */
@@ -539,20 +483,13 @@ public class Console {
 		
 		System.out.println("\nPlease enter The period of the employee's working times");
 		
-		System.out.println("\nStart time for the working period in the form <Date> <Time> where date is in the form dd/mm/yyyy: ");
+		System.out.println("\nStart time for the working period in the form <Date> <Time>: ");
 		workingTimes[0][0] = scanner.nextLine(); //Get user (owner) input for the start of the working period
 		
 		System.out.println("End time for the working period in the form <Time>: ");
 		workingTimes[0][1] = scanner.nextLine(); //Get user (owner) input for the start of the working period
 		
 		return workingTimes;
-	}
-	
-	public void viewWorkingTimes(String [][] workingTimes)
-	{
-		String[] headerTitles = {"Start Period","End Period","Employee ID","Employee Name"}; //Set the headers of the table to print
-		
-		printTable(workingTimes ,headerTitles ,"Working Times/Dates", false,false,"There are no Working Times."); // Print Table
 	}
 	
 	public ArrayList<String> addAvailableTimes() {
