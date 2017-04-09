@@ -12,6 +12,7 @@ import model.period.Period;
 
 public class Console {
 	private static Scanner scanner = new Scanner(System.in);
+	private static java.io.Console console = System.console();
 	public static final String[] Weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
 	public Console() {
@@ -164,6 +165,9 @@ public class Console {
 		
 		System.out.print("Enter your password: ");
 		password = scanner.nextLine();
+		//char[] passString = console.readPassword();
+	    //password = new String(passString );
+
 	
 		//return the inputed username and password to the controller class for validation
 		return new String[] {username, password};
@@ -422,7 +426,8 @@ public class Console {
 	 * @param availableTimes Times available to book
 	 * @return [0] startDate, [1] endDate
 	 */
-	public String[] addNewBooking(String[][] availableTimes) {
+	public String[] addNewBooking() {
+		String[][] availableTimes;
 		
 		String[] bookingDetails = new String[2];
 		String[][] tableToDisplay = new String[availableTimes.length][availableTimes[0].length+1];
