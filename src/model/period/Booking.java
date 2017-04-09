@@ -53,7 +53,8 @@ public class Booking extends Period {
 		String first = Long.toString(this.start.getTime());
 		String second = Long.toString(this.end.getTime());
 		String name = this.customerUsername;
-		return new String[] {first, second, name};
+		String servs = Service.arrayOfServicesToString(services, false);
+		return new String[] {first, second, name, servs};
 	}
 	
 }
