@@ -387,7 +387,7 @@ public class Console {
 	 * @param bookings [booking][0 - customerUsername, 1 - startPeriod, 2 - endPeriod, 3 - services]
 	 */
 	public void viewBookings(String[][] bookings) {
-		String[] headerTitles = {"Start Period","End Period","Services","Customer Name"}; //Set the headers of the table to print
+		String[] headerTitles = {"Start Period","End Period","Customer Name","Services"}; //Set the headers of the table to print
 		
 		printTable(bookings,headerTitles,"Bookings", true,false,"There are no bookings within the next seven days."); // Print Table
 		
