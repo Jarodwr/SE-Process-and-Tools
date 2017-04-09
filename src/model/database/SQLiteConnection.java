@@ -698,7 +698,7 @@ public class SQLiteConnection {
 		// Search for rows with matching usernames
 		String query = "SELECT * "
 				+ "FROM EmployeeWorkingTimes "
-				+ "WHERE employeeId = ? AND (unixstarttime AS integer) >= (? AS integer))";
+				+ "WHERE employeeId = ? AND CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER)";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setInt(1, employeeId);
 		pst.setString(2, unixtime);

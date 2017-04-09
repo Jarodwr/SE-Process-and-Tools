@@ -12,6 +12,7 @@ import model.period.Period;
 
 public class Console {
 	private static Scanner scanner = new Scanner(System.in);
+	private static java.io.Console console = System.console();
 	public static final String[] Weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
 	public Console() {
@@ -59,7 +60,7 @@ public class Console {
 				}
 			}
 
-			if(permissions[11] == false) //if you can't log out as you are not logged in, there is a break
+			if(permissions[10] == false) //if you can't log out as you are not logged in, there is a break
 			{
 				System.out.println("12.\tExit"); // added by Spencer - exit case
 			}
@@ -164,6 +165,9 @@ public class Console {
 		
 		System.out.print("Enter your password: ");
 		password = scanner.nextLine();
+		//char[] passString = console.readPassword();
+	    //password = new String(passString );
+
 	
 		//return the inputed username and password to the controller class for validation
 		return new String[] {username, password};

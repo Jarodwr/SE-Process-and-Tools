@@ -175,7 +175,7 @@ public class Utility {
 					bookings.close();
 					available.mergeTimetable(t);
 				} catch(SQLException exception) {
-						LOGGER.warning(exception.getMessage());
+					LOGGER.warning(exception.getMessage());
 				}
 
 			}

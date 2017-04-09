@@ -1,0 +1,4 @@
+Apr 09, 2017 7:34:07 PM main.Main main
+WARNING: test
+Apr 09, 2017 7:34:09 PM controller.Controller run
+FINE: MENU OPTION CHOSEN: LOGIN
