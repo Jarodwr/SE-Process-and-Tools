@@ -32,7 +32,7 @@ public class Controller {
 
 	private User activeUser;
 	
-	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false ,false, false, false};
+	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false, false ,false, false, false};
 	
 	public Controller() {}
 	/*
@@ -211,9 +211,31 @@ public class Controller {
 				
 	}
 	
-	
-	private void viewCurrentBookings() {
+	/**
+	 * This method shows the list of all future bookings in the system
+	 */
+	private void viewCurrentBookings() 
+	{
+		//gets the bookings list of all the booking from the time the method is called
+		Booking[] bookings = services.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
 		
+		//if there are no bookings in the future then alert the user and exit function
+		if (bookings.length == 0) {
+			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
+			view.failure("View Booking Summaries", "No future bookings");
+		} else {
+			//create a 2d array to copy the booking details from the list of bookings
+			String[][] bookingsStringArray = new String[bookings.length][];
+			
+			//copy all details from the list of bookings
+			for (int i = 0; i < bookings.length; i++) {
+				bookingsStringArray[i] = bookings[i].toStringArray();
+			}
+			
+			//send the list of all future bookings to the view to display
+			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
+			view.viewBookings(bookingsStringArray);
+		}
 	}
 	
 	/**
@@ -248,7 +270,7 @@ public class Controller {
 	private void viewSummaryOfBookings() {
 
 		//gets the bookings list of all the booking from the time the method is called
-		Booking[] bookings = services.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
+		Booking[] bookings = services.getBookingsAfter(new Date(0));
 		
 		//if there are no bookings in the future then alert the user and exit function
 		if (bookings.length == 0) {
