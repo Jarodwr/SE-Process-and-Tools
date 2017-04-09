@@ -68,14 +68,14 @@ public class Main {
 	}
 	
 	public static void debugCreateEmptyAvailability() {
-		SQLiteConnection.createAvailability(0, "SARJ's Milk Business", "90000,93600|97200,100600");
+		SQLiteConnection.createAvailability(1, "SARJ's Milk Business", "90000,93600|97200,100600|21600,43200");
 	}
 	
 	public static void debugCreateEmployees() {
 		SQLiteConnection.createEmployee(0, "SARJ's Milk Business", "Bob", "32 does not exists st", "0412345678", 0);
 		SQLiteConnection.createEmployee(1, "SARJ's Milk Business", "John", "32 does not exists st", "0412345678", 0);
 		SQLiteConnection.createEmployee(2, "SARJ's Milk Business", "Alex", "32 does not exists st", "0412345678", 0);
-		SQLiteConnection.createEmployee(3, "SARJ's Milk Business", "Jack", "32 does not exists st", "0412345678", 0);
+		SQLiteConnection.createEmployee(5, "SARJ's Milk Business", "Greg", "32 does not exists st", "0412345678", 1);
 	}
 
 }
