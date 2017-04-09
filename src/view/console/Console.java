@@ -397,9 +397,108 @@ public class Console {
 	 */
 	public void viewBookingAvailability(String[][] availability) {
 		
-		String[] headerTitles = {"Start Period","End Period"}; //Set the headers of the table to print
+		//String[] headerTitles = {"Start Period","End Period"}; //Set the headers of the table to print
 		
-		printTable(availability,headerTitles,"Bookings", false,false,"No bookings available."); // Print table
+		//printTable(availability,headerTitles,"Bookings", false,false,"No bookings available."); // Print table
+		
+int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
+		
+		for (int i=0;i < DayPeriodCounts.length; i++) {
+			DayPeriodCounts[i] = 0; //initialize all the days to 0 count of working periods
+		}
+		
+		String ConvertedDay; //Used to store a day name converted from Unix Seconds
+		int dayWithMostWorkingHours = 0;
+		
+		for (int i=0;i < availability.length; i++) { //Find out the maximum number of working hours/period per day
+			
+					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(availability[i][0]) /1000)); //Convert to day from milliseconds to seconds then day
+					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
+					
+						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
+							dayWithMostWorkingHours = DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)]; //make this maximum number of rows
+				
+			
+		}
+		
+		
+		
+		String[][] convertedDates = new String[dayWithMostWorkingHours][Weekdays.length]; //Array that will be used to print out the table of the weekly view
+		
+		for (int i=0;i < availability.length; i++) {
+			
+			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(availability[i][0]) /1000));
+			
+			/* Add it to the table under the specific day column with start - end time 24 hr format*/
+			for (int j = 0; j < availability[i].length; j++) { 
+				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
+					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = unixTimeTo24Hour(availability[i][0])+" - "+unixTimeTo24Hour(availability[i][1]);
+					break;
+				}
+				
+
+			}
+		}
+		
+		for (int i=0;i < convertedDates.length; i++) {
+			for (int j = 0; j < convertedDates[i].length; j++) {
+				if (convertedDates[i][j] == null)
+					convertedDates[i][j] = ""; //Make null table cells empty
+			
+		}
+		}
+		
+		//Menu Title			
+		System.out.println("\n--------------------\nAvailable Times\n--------------------\n");
+
+		
+		/*Table header*/
+		String tableTitles = "";
+		
+		for (int i = 0; i < Weekdays.length;i++) {
+			if (i == 0)
+				tableTitles += "     "+Weekdays[i]; // First table header title
+			else
+				tableTitles += "   | "+Weekdays[i]; // Second or more element of the table header title
+			
+			for (int k = 0; k < (12-Weekdays[i].length()); k++)
+				tableTitles += " ";
+		}
+		System.out.print(tableTitles); //Print all the header titles
+		
+		//Close header
+		System.out.println(); 
+		for (int k = 0; k < (tableTitles.length()); k++)
+			System.out.print("-"); //Line below the headers
+		
+		
+		System.out.println(); //Create a new line for the rest of the table contents
+		
+		
+				for (int i=0;i < convertedDates.length; i++) { //Go through all the rows
+					for (int j = 0; j < convertedDates[i].length; j++) { //Go through all the columns
+						
+						if (j ==0)
+							System.out.print("   ");
+						
+						System.out.print("  "+convertedDates[i][j]); //Print out the current detail
+						
+						/*Add enough spaces to keep table column length balanced*/
+						
+						if ( convertedDates[i][j] == "")
+							for (int k = 0; k < 15; k++)
+								System.out.print(" "); //Create a gap between columns
+						
+					}
+					System.out.println(); //create a new row
+				}
+				
+				for (int k = 0; k < (tableTitles.length()); k++)
+					System.out.print("-"); //Add dashes "-" under the table
+				
+				System.out.println("\n\n Press any key to go back to Menu...");
+				
+				scanner.nextLine(); //Wait for any user input from the scanner
 
 	}
 	
@@ -567,7 +666,9 @@ public class Console {
 				tableTitles += "     "+Weekdays[i]; // First table header title
 			else
 				tableTitles += "   | "+Weekdays[i]; // Second or more element of the table header title
-			tableTitles += "      ";
+			
+			for (int k = 0; k < (12-Weekdays[i].length()); k++)
+				tableTitles += " ";
 			
 		
 		}
