@@ -556,7 +556,7 @@ public class Controller {
 		else
 		{
 			//if it fails then alert the user and return false
-			view.failure("Add Employee", "The entered username is already in the database");
+			view.failure("Add Employee", "SQL Error");
 			return false;
 		}
 	}

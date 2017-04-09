@@ -799,7 +799,7 @@ public class SQLiteConnection {
 				i = rs.getInt(idString) + 1;
 			}
 		} while(rs.next());
-		return 0;
+		return i;
 		
 	}
 }
