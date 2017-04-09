@@ -259,9 +259,9 @@ public class Console {
 	 */
 	public void printTable(String[][] contents,String[] headerTitles,String title, Boolean checkSevenDayLimit,Boolean disableTimeConversion,String noContentsMessage) {
 		
-		int[] longestElements = new int[contents.length+1]; //Storage to determine column length
+		int[] longestElements = new int[headerTitles.length+1]; //Storage to determine column length
 		
-		for (int i = 0; i < contents.length; i++)
+		for (int i = 0; i < longestElements.length; i++)
 			longestElements[i] = 0; // Set the minimum length to compare later
 		
 		Boolean canPrintSomething = false;
