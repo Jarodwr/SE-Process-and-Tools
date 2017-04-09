@@ -143,7 +143,7 @@ public class Utility {
 		}
 	}
 	
-	public Timetable getAvailableTimesCustomer() {
+	public Timetable getAvailableBookingTimes() {
 		Employee[] employees;
 		try {
 			employees = getAllEmployees();
@@ -151,14 +151,21 @@ public class Utility {
 			for (Employee e : employees) {
 				try {
 					Timetable t = new Timetable();
-					ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()/1000));
+					ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
 					
+					if (shifts == null) {
+						continue;
+					}
 					do {
 						t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
 					} while (shifts.next());
 					shifts.close();
-					ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
 					
+					ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+					if (bookings == null) {
+						available.mergeTimetable(t);
+						continue;
+					}
 					do {
 						t.removePeriod(new Period(bookings.getString("starttime"), bookings.getString("endtime"), false));
 					} while (bookings.next());
@@ -169,11 +176,7 @@ public class Utility {
 				}
 
 			}
-			if (available.getAllPeriods().length == 0) {
-				return null;
-			} else {
-				return available;
-			}
+			return available;
 		} catch (SQLException e1) {
 			LOGGER.warning(e1.getMessage());
 			return null;
