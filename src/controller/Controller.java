@@ -307,7 +307,7 @@ public class Controller {
 			Date date = sdf.parse(dateAndStart[0]);
 			Long starttime = date.getTime() + Period.convert24HrTimeToDaySeconds(dateAndStart[1]);
 			Long endtime = date.getTime() + Period.convert24HrTimeToDaySeconds(workingTimes[0][1]);
-			SQLiteConnection.addShift();
+			SQLiteConnection.addShift(Integer.parseInt(workingTimes[0][0]), "SARJ's Milk Business", Long.toString(starttime), Long.toString(endtime));
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
