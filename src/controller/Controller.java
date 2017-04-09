@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import model.database.SQLiteConnection;
 import model.period.Booking;
 import model.period.Period;
+import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Owner;
 import model.users.User;
@@ -121,7 +122,7 @@ public class Controller {
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD BOOKING");
-				addNewBooking(view.addNewBooking(services.getAvailableBookingTimes().toStringArray()));
+				addNewBooking(services.getAvailableBookingTimes().toStringArray());
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
@@ -248,6 +249,16 @@ public class Controller {
 			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 			view.viewBookings(bookingsStringArray);
 		}
+	}
+	
+	public void addNewBooking(String[][] availableTimes) {
+		
+		String username = view.getUser();
+		String startTime = view.getStartTime(availableTimes);
+		ArrayList<Service> servs = view.getServices();
+		int employeeId = view.showEmployeeList((services.getApplicableEmployees(Service.getTotalArrayDuration(servs), Long.parseLong(startTime));
+		
+		Booking b = new Booking(startTime, (startTime+Service.getTotalArrayDuration(servs)), false, customerUsername, Integer.toString(employeeId), servs, true);
 	}
 	
 	/**
