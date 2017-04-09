@@ -56,7 +56,10 @@ public class Console {
 				if(permissions[i])
 				{
 					optionNum++;
-					System.out.println(optionNum + ".\t" + option[i]);
+					if (!option[i].equals("Edit Employee Availabilities")) { // suppressing this menu option, it is still accessible via typing 8 just not visible as it is not a requirement -Spencer
+
+						System.out.println(optionNum + ".\t" + option[i]);
+					}
 				}
 			}
 
