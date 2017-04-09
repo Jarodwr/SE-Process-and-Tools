@@ -14,6 +14,7 @@ import model.database.SQLiteConnection;
 import model.period.Booking;
 import model.period.Period;
 import model.timetable.Timetable;
+import model.users.Owner;
 import model.users.User;
 import model.utility.Utility;
 import view.console.Console;
@@ -110,11 +111,12 @@ public class Controller {
 				break;
 			// if the user selects the add employee option then run the add employee function
 			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
-				addEmployee(view.addEmployee());
+				addEmployee(view.addEmployee(), (Owner)activeUser);
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
-				editAvailability();
+				//gets tbe employee id from the user
+				editAvailability(view.showEmployeeList(services.getEmployeeList()), (Owner)activeUser);
 				break;
 			// if the user selects the logout option
 			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
@@ -269,13 +271,14 @@ public class Controller {
 	
 	/**
 	 * This method allows the user to edit an employees availability
+	 * @param employeeId a employee id taken from the users input
+	 * @param user the business owner passed to the function
 	 */
-	private void editAvailability() {
-		String employeeId = "";
+	private void editAvailability(String employeeId, Owner user) {
+
 		Timetable t = new Timetable();
-		//get the employee ID from the user when shown a list of employees
+
 		try {
-			employeeId = view.showEmployeeList(services.getEmployeeList());
 			//if the employee selected doesn't exist alert the user and exit the function
 			if(employeeId == null || employeeId.equals("")) {
 				LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
@@ -327,7 +330,7 @@ public class Controller {
 		try {
 			ResultSet rs = SQLiteConnection.getAllAvailabilities();
 			int id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
-			SQLiteConnection.createAvailability(id, "SARJ's Milk Business", t.toString()); /* TODO Part B: Remove hardcode */
+			SQLiteConnection.createAvailability(id, user.getBusinessName(), t.toString());
 			SQLiteConnection.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
 		}
 		catch(SQLException e) {
@@ -367,15 +370,17 @@ public class Controller {
 
 	/**
 	 * This method adds an employee to the database
-	 * @param newEmployee [0] name, [1] phone number, [2] address
+	 * @param newEmployee [0] name, [1] phone number, [2] address. 
+	 * @param user the active user which is an owner
 	 * @return true if it succeeds or false if it fails
 	 */
-	boolean addEmployee(String[] newEmployee) 
+	boolean addEmployee(String[] newEmployee, Owner user) 
 	{
 		//set variables that are used for checking and creating the new employee
 		String name = newEmployee[0];
 		String phonenumber = newEmployee[1];
 		String address = newEmployee[2];
+		String business = user.getBusinessName();
 		String id = "";
 		//create a unique ID for the new employee
 		try {
@@ -409,7 +414,7 @@ public class Controller {
 		}
 		
 		//try to ad the new employee to the database
-		if (services.addEmployeeToDatabase(id, "", name, address, phonenumber, 0))
+		if (services.addEmployeeToDatabase(id, business, name, address, phonenumber, 0))
 		{ /* TODO add cases for staff and owners */
 			//if it works then add tell the user and return true
 			view.success("Add Employee", name + " was successfully added to the database");
