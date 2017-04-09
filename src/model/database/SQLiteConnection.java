@@ -743,6 +743,7 @@ public class SQLiteConnection {
 			return false;
 		}
 	}
+	
 	public static ResultSet getService(String servicename, String businessname) throws SQLException { /* TODO */
 	
 		Connection c = getDBConnection();
@@ -757,6 +758,24 @@ public class SQLiteConnection {
 			return rs;
 		}
 		else return null;
+	}
+	
+	public static boolean addService(String serviceName, int servicePrice, int serviceMinutes, String businessName) {
+		Connection c = getDBConnection();
+		try {
+			PreparedStatement ps = c.prepareStatement("INSERT INTO ServicesTable VALUES (?, ?, ?, ?);"); // this creates a new user
+			ps.setString(1, serviceName);
+			ps.setInt(2, servicePrice);
+			ps.setInt(3, serviceMinutes);
+			ps.setString(4, businessName);
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException e) {
+			LOGGER.warning(e.getMessage());
+			return false;
+		}
 	}
 
 	public static ResultSet getAllBookings(String businessname) throws SQLException {

@@ -53,12 +53,13 @@ public class Main {
 	}
 	
 	public static void debugCreateService() {
-		try {
-			Service s = new Service("test", 20000, 15*60, true);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		SQLiteConnection.addService("test", 20000, 15*60, "SARJ's Milk Business");
+//		try {
+//			Service s = new Service("test", 20000, 15*60, true);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	public static void debugCreateBookingsTable() {
 		SQLiteConnection.createBooking(1, "SARJ's Milk Business", "Gary", "0", "1491580800", "1491584400", "test");
