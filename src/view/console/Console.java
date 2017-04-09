@@ -680,12 +680,12 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 						if (j ==0)
 							System.out.print("   ");
 						
-						System.out.print("  "+convertedDates[i][j]); //Print out the current detail
+						System.out.print("  "+convertedDates[i][j]+"   "); //Print out the current detail
 						
 						/*Add enough spaces to keep table column length balanced*/
 						
 						if ( convertedDates[i][j] == "")
-							for (int k = 0; k < 15; k++)
+							for (int k = 0; k < 12; k++)
 								System.out.print(" "); //Create a gap between columns
 					}
 					System.out.println(); //create a new row
