@@ -141,12 +141,15 @@ public class SQLiteConnection {
 	/**
 	 * EmployeeWorkingTimes (<br>
 	 * 1 - businessname Varchar(255) references Businessinfo(businessname),<br>
-	 * 2 - name Varchar(255),<br>
-	 * 3 - shift Varchar(255),<br>
+	 * 2 - employeeId Varchar(255),<br>
+	 * 3 - unixstarttime Varchar(255),<br>
+	 * 4 - unixendtime Varchar(255),<br>
 	 * )
 	 */
 	public static void createEmployeeWorkingTimesTable()  {
-		String sql = "CREATE TABLE IF NOT EXISTS EmployeeWorkingTimes (businessname Varchar(255), name Varchar(255), shift Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
+		String sql = "CREATE TABLE IF NOT EXISTS EmployeeWorkingTimes (businessname Varchar(255), employeeId integer, unixstarttime Varchar(255), unixendtime Varchar(255), "
+				+ "Foreign Key(businessname) references Businessinfo(businessname),"
+				+ "Foreign Key(employeeId) references Employeeinfo(employeeId)";
 		try {
 			Connection c = getDBConnection();
 			Statement stmt = c.createStatement();
@@ -205,7 +208,6 @@ public class SQLiteConnection {
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Userinfo WHERE Username=?";
 		PreparedStatement pst = c.prepareStatement(query);
-		pst.setString(1, username);
 		ResultSet rs = pst.executeQuery();
 		if (rs.next()) {
 			return rs;
@@ -686,12 +688,19 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
+	/**
+	 * gets all shifts for given employee after specified time.
+	 */
 	public static ResultSet getShifts(int employeeId, String unixtime) throws SQLException { /* TODO */
 		
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM EmployeeWorkingTimes";
+		String query = "SELECT * "
+				+ "FROM EmployeeWorkingTimes "
+				+ "WHERE employeeId = ? AND (unixstarttime AS integer) >= (? AS integer)";
 		PreparedStatement pst = c.prepareStatement(query);
+		pst.setInt(1, employeeId);
+		pst.setString(2, unixtime);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
@@ -700,6 +709,23 @@ public class SQLiteConnection {
 		else return null;
 	}
 
+	public static boolean addShift(int employeeId, String businessname, String start, String end) {
+		Connection c = getDBConnection();
+		try {
+			PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?, ?);"); // this creates a new user
+			ps.setString(1, businessname);
+			ps.setInt(2, employeeId);
+			ps.setString(3, start);
+			ps.setString(4, end);
+			ps.executeUpdate();
+			ps.close();
+
+			return true;
+		} catch (SQLException e) {
+			LOGGER.warning(e.getMessage());
+			return false;
+		}
+	}
 	public static ResultSet getService(String servicename, String businessname) throws SQLException { /* TODO */
 	
 		Connection c = getDBConnection();
