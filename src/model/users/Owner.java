@@ -17,8 +17,8 @@ public class Owner extends User {
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.permissions = new boolean[] {
-				true, 	//Register
-				true, 	//Login
+				false, 	//Register
+				false, 	//Login
 				false, 	//View current bookings
 				false, 	//View available times
 				false, 	//Add new booking

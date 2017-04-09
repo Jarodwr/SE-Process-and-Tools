@@ -38,7 +38,7 @@ public class Period {
 	
 	public static int convert24HrTimeToDaySeconds(String time) {
 		int seconds = 0;
-		if (time.charAt(0) == ('0')) {
+		if (time.charAt(0) == ('0') && time.charAt(1) != (':')) {
 			time = time.substring(1);
 		}
 		String[] splithoursseconds= time.split(":");
@@ -87,8 +87,8 @@ public class Period {
 			
 	}
 	public static boolean checkIsValidWeekday(String weekdayToCheck) {
-		for(String s : weekdays) {
-			if (weekdayToCheck.toLowerCase().toCharArray().equals(s)) {
+		for(int i  = 0; i < weekdays.length; i++) {
+			if (weekdayToCheck.toLowerCase().equals(weekdays[i].toLowerCase())) {
 				return true;
 			}
 		}
