@@ -29,10 +29,11 @@ public class Console {
 	 * 4 - Add new booking<br>
 	 * 5 - View summary of bookings<br>
 	 * 6 - Add working time/date<br>
-	 * 7 - Show all worker availability for next 7 days<br>
-	 * 8 - Add an employee<br>
-	 * 9 - Edit Availabilities<br>
-	 * 10 - Log out<br>
+	 * 7 - View working time/date<br>
+	 * 8 - Show all worker availability for next 7 days<br>
+	 * 9 - Add an employee<br>
+	 * 10 - Edit Availabilities<br>
+	 * 11 - Log out<br>
 	 * @return option number
      */
 	public int displayOptions(boolean[] permissions) {
@@ -40,7 +41,8 @@ public class Console {
 		int optionNum = 0;
 		String [] option = {"Log In", "Register", "View Current Bookings", 
 		                     "View Available Times", "Add New Booking", "View Summary of Bookings", 
-		                     "Add working time/date", "Show all worker availability", "Add an Employee", "Edit Employee Availabilities", "Log out"};
+		                     "Add working time/date", "View working time/dates", "Show all worker availability", 
+		                     "Add an Employee", "Edit Employee Availabilities", "Log out"};
 		
 		
 		while (true) {
@@ -56,9 +58,9 @@ public class Console {
 				}
 			}
 
-			if(permissions[10] == false) //if you can't log out as you are not logged in, there is a break
+			if(permissions[11] == false) //if you can't log out as you are not logged in, there is a break
 			{
-				System.out.println("11.\tExit"); // added by Spencer - exit case
+				System.out.println("12.\tExit"); // added by Spencer - exit case
 			}
 			System.out.print("Enter your option: ");
 			
@@ -81,9 +83,9 @@ public class Console {
 				}
 				if(!match) //if there is no match, and you can't log out and they haven't selected logout continue through loop
 				{
-					if(!permissions[10] && selectedOption != 11)
+					if(!permissions[11] && selectedOption != 11)
 					{
-						selectedOption = 11;
+						selectedOption = 12;
 					}
 					
 				}
@@ -92,7 +94,7 @@ public class Console {
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
 				continue;
 			}
-			if (userSelection > -1 && userSelection < 12) // changed to 11 by Spencer - I'll include invalid option checking in my contrller main aswell
+			if (userSelection > -1 && userSelection < 13) // changed to 11 by Spencer - I'll include invalid option checking in my contrller main aswell
 				break;
 			else
 				System.out.println("Sorry you have provided an invalid option! Please try again:");

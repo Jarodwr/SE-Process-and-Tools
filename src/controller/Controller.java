@@ -105,24 +105,28 @@ public class Controller {
 			case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
 				addWorkingTimes(view.addWorkingTimes());
 				break;
+			// if the user selects the show view working times option then run the view working times function
+			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW WORKING TIMES");
+				viewWorkingTimes();
+				break;
 			// if the user selects the show worker availability option then run the show worker availability function
-			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
+			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
 				showWorkerAvailability();
 				break;
 			// if the user selects the add employee option then run the add employee function
-			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
+			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
 				addEmployee(view.addEmployee(), (Owner)activeUser);
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
-			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
+			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
 				//gets tbe employee id from the user
 				editAvailability(view.showEmployeeList(services.getEmployeeList()), (Owner)activeUser);
 				break;
 			// if the user selects the logout option
-			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
+			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
 				//run the logout view function and break the loop terminating the program
 				view.logout();
-			case 11: breakLoop = true;
+			case 12: breakLoop = true;
 				break;
 			//if the user selects an invalid option the print an error message to the view and go through the loop again
 			default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
@@ -274,7 +278,7 @@ public class Controller {
 	}
 	
 	//change to private once implemented
-	public void viewWorkingTimes()
+	private void viewWorkingTimes()
 	{
 		
 	}

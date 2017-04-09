@@ -24,6 +24,7 @@ public class Owner extends User {
 				false, 	//Add new booking
 				true, 	//View summary of bookings
 				true, 	//Add working time/date
+				true,	//view working time/date
 				true, 	//Show all worker availability for next 7 days
 				true, 	//Add Employee
 				true,	//Edit Availabilities
