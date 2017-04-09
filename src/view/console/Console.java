@@ -397,6 +397,7 @@ public class Console {
 	 */
 	public void viewBookingAvailability(String[][] availability) {
 		
+<<<<<<< HEAD
 		//String[] headerTitles = {"Start Period","End Period"}; //Set the headers of the table to print
 		
 		//printTable(availability,headerTitles,"Bookings", false,false,"No bookings available."); // Print table
@@ -499,6 +500,9 @@ public class Console {
 				System.out.println("\n\n Press any key to go back to Menu...");
 				
 				scanner.nextLine(); //Wait for any user input from the scanner
+=======
+		printWeeklyView(availability,"Available Times");
+>>>>>>> origin/master
 
 	}
 	
@@ -535,7 +539,7 @@ public class Console {
 		
 		System.out.println("\nPlease enter The period of the employee's working times");
 		
-		System.out.println("\nStart time for the working period in the form <Date> <Time>: ");
+		System.out.println("\nStart time for the working period in the form <Date> <Time> where date is in the form dd/mm/yyyy: ");
 		workingTimes[0][0] = scanner.nextLine(); //Get user (owner) input for the start of the working period
 		
 		System.out.println("End time for the working period in the form <Time>: ");
@@ -614,7 +618,45 @@ public class Console {
 	
 	public void showTimetable(String[][] timetable) {
 		
-		int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
+		printWeeklyView(timetable,"Employee Availability");
+ 		
+ 	}
+	
+	
+	/**
+	 * Views screen for adding new employees with working times
+	 * @return [employee][0 - details, 1 - timetable][]
+	 */
+	public String[] addEmployee() 
+	{
+		System.out.println("--------------------------\nAdd Employee\n--------------------------");
+		
+		String name; //Employee name
+		String phoneNo; //Employee phone number
+		String address; //Employee address
+
+		System.out.print("Name: ");
+		name = scanner.nextLine();
+		
+		System.out.print("Phone number: ");
+		phoneNo = scanner.nextLine();
+		
+		System.out.print("Address: ");
+		address = scanner.nextLine();
+			
+		return new String[] {name, phoneNo, address};
+	}
+	
+	/**
+	 * prints a weekly view of the table
+	 * @param contents	Table content
+	 * @param tableTitle	Title of table
+	 * @param noContentsMessage	Message to show when there is no contents i.e nothing during the week
+	 */
+	
+	public void printWeeklyView(String[][] contents,String tableTitle) {
+		
+int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
 		
 		for (int i=0;i < DayPeriodCounts.length; i++) {
 			DayPeriodCounts[i] = 0; //initialize all the days to 0 count of working periods
@@ -623,9 +665,9 @@ public class Console {
 		String ConvertedDay; //Used to store a day name converted from Unix Seconds
 		int dayWithMostWorkingHours = 0;
 		
-		for (int i=0;i < timetable.length; i++) { //Find out the maximum number of working hours/period per day
+		for (int i=0;i < contents.length; i++) { //Find out the maximum number of working hours/period per day
 			
-					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(timetable[i][0]) /1000)); //Convert to day from milliseconds to seconds then day
+					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]) /1000)); //Convert to day from milliseconds to seconds then day
 					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
 					
 						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
@@ -638,14 +680,14 @@ public class Console {
 		
 		String[][] convertedDates = new String[dayWithMostWorkingHours][Weekdays.length]; //Array that will be used to print out the table of the weekly view
 		
-		for (int i=0;i < timetable.length; i++) {
+		for (int i=0;i < contents.length; i++) {
 			
-			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(timetable[i][0]) /1000));
+			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]) /1000));
 			
 			/* Add it to the table under the specific day column with start - end time 24 hr format*/
-			for (int j = 0; j < timetable[i].length; j++) { 
+			for (int j = 0; j < contents[i].length; j++) { 
 				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
-					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = unixTimeTo24Hour(timetable[i][0])+" - "+unixTimeTo24Hour(timetable[i][1]);
+					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = unixTimeTo24Hour(contents[i][0])+" - "+unixTimeTo24Hour(contents[i][1]);
 					break;
 				}
 				
@@ -713,33 +755,8 @@ public class Console {
 				System.out.println("\n\n Press any key to go back to Menu...");
 				
 				scanner.nextLine(); //Wait for any user input from the scanner
- 		
- 	}
-	
-	
-	/**
-	 * Views screen for adding new employees with working times
-	 * @return [employee][0 - details, 1 - timetable][]
-	 */
-	public String[] addEmployee() 
-	{
-		System.out.println("--------------------------\nAdd Employee\n--------------------------");
-		
-		String name; //Employee name
-		String phoneNo; //Employee phone number
-		String address; //Employee address
-
-		System.out.print("Name: ");
-		name = scanner.nextLine();
-		
-		System.out.print("Phone number: ");
-		phoneNo = scanner.nextLine();
-		
-		System.out.print("Address: ");
-		address = scanner.nextLine();
-			
-		return new String[] {name, phoneNo, address};
 	}
+	
 	
 	/**
 	 * Format: "Success: [Subject],[Details]"
