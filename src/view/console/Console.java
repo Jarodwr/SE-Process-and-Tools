@@ -613,7 +613,6 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 			
 					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]) /1000)); //Convert to day from milliseconds to seconds then day
 					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]))); //Convert to day from milliseconds to seconds then day
-					System.out.println(ConvertedDay);
 					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
 					
 						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
