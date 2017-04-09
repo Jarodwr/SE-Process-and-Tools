@@ -716,6 +716,10 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 				scanner.nextLine(); //Wait for any user input from the scanner
 	}
 	
+	public String getUser() {
+		System.out.println("Enter the username of the user wishing to make this booking: ");
+		return scanner.nextLine();
+	}
 	
 	/**
 	 * Format: "Success: [Subject],[Details]"

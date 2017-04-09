@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.database.SQLiteConnection;
+import model.employee.Employee;
 import model.period.Booking;
 import model.period.Period;
 import model.service.Service;
@@ -255,10 +256,16 @@ public class Controller {
 		
 		String username = view.getUser();
 		String startTime = view.getStartTime(availableTimes);
-		ArrayList<Service> servs = view.getServices();
-		int employeeId = view.showEmployeeList((services.getApplicableEmployees(Service.getTotalArrayDuration(servs), Long.parseLong(startTime));
-		
-		Booking b = new Booking(startTime, (startTime+Service.getTotalArrayDuration(servs)), false, customerUsername, Integer.toString(employeeId), servs, true);
+		try {
+			ArrayList<Service> servs = view.getServices();
+			String[][] el = employeeListToStringArray(services.getApplicableEmployees(Service.getTotalArrayDuration(servs), Long.parseLong(startTime)));
+			String employeeId = view.showEmployeeList(el);
+			
+			Booking b = new Booking(startTime, (startTime+Service.getTotalArrayDuration(servs)), false, username, employeeId, servs, true);
+		} catch (Exception e) {
+			LOGGER.warning(e.getMessage());
+		}
+
 	}
 	
 	/**
@@ -570,5 +577,13 @@ public class Controller {
 			view.failure("Add Employee", "SQL Error");
 			return false;
 		}
+	}
+	
+	public String[][] employeeListToStringArray(Employee[] employees) {
+		String[][] p = new String[employees.length][];
+		for (int i = 0; i < employees.length; i++) {
+			p[i] = new String[]{employees[i].getEmployeeId(), employees[i].getUsername()};
+		}
+		return p;
 	}
 }
