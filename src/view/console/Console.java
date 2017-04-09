@@ -535,7 +535,7 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 		
 		System.out.println("\nPlease enter The period of the employee's working times");
 		
-		System.out.println("\nStart time for the working period in the form <Date> <Time>: ");
+		System.out.println("\nStart time for the working period in the form <Date> <Time> where date is in the form dd/mm/yyyy: ");
 		workingTimes[0][0] = scanner.nextLine(); //Get user (owner) input for the start of the working period
 		
 		System.out.println("End time for the working period in the form <Time>: ");
