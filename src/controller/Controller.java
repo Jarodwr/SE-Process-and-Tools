@@ -265,7 +265,7 @@ public class Controller {
 	}
 	
 	/**
-	 * This method shows the list of all future bookings in the system
+	 * This method shows the list of all bookings in the system
 	 */
 	private void viewSummaryOfBookings() {
 
