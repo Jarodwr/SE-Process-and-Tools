@@ -297,6 +297,9 @@ public class Utility {
 	public Timetable getShift(String employeeId) {
 		Timetable t = new Timetable();
 		try {
+			if (employeeId.equals("")) {
+				return null;
+			}
 			ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(employeeId), Long.toString(System.currentTimeMillis()/1000));
 			if (shifts == null) {
 				return null;

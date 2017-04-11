@@ -420,8 +420,8 @@ public class Controller {
 			
 			//loop through the array convert all the start and end times to Unix time stamps
 			for (int i = 0; i < sa.length; i++) {
-				sa[i][0] = Long.toString(Long.parseLong(sa[i][0])/1000);
-				sa[i][1] = Long.toString(Long.parseLong(sa[i][1])/1000);
+				sa[i][0] = Long.toString(Long.parseLong(sa[i][0]));
+				sa[i][1] = Long.toString(Long.parseLong(sa[i][1]));
 			}
 			
 			//copy the details to the second array minus the id for each shift
