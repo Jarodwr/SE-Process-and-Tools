@@ -388,7 +388,10 @@ public class Controller {
 			Date date = sdf.parse(workingTimes[0]);
 			Long starttime = date.getTime() + (Period.convert24HrTimeToDaySeconds(workingTimes[1]) * 1000);
 			Long endtime = date.getTime() + (Period.convert24HrTimeToDaySeconds(workingTimes[2]) * 1000);
-			if (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime/1000), Long.toString(endtime/1000))) {
+			if (starttime > endtime) {
+				view.failure("Add Working Times", "Error, shift could not be added");
+			}
+			else if (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", Long.toString(starttime/1000), Long.toString(endtime/1000))) {
 				view.success("Add Working Times", "Shift successfully added");
 			} else {
 				view.failure("Add Working Times", "Error, shift could not be added");
