@@ -1,6 +1,7 @@
 package model.service;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,15 +12,18 @@ public class Service {
 	public int priceOfService; // this is in cents
 	public int secondsOfService; // How long the service takes in seconds (time)
 	
-	public Service( String name, int price, int time, boolean createDBEntry) throws Exception {
+	public Service( String name, int price, int time, boolean createDBEntry){
 		this.priceOfService = price;
 		this.serviceName = name;
 		this.secondsOfService = time;
 		if (createDBEntry) {
-			if (SQLiteConnection.getService(serviceName, "SARJ's Milk Business") != null) {
-				ServiceExistsException e = new ServiceExistsException();
-				throw e;
+			try {
+				SQLiteConnection.getService(serviceName, "SARJ's Milk Business");
 			}
+			catch(SQLException e) {
+				
+			}
+			
 		}
 	}
 	
@@ -28,10 +32,13 @@ public class Service {
 		this.serviceName = name;
 		this.secondsOfService = Integer.parseInt(time);
 		if (createDBEntry) {
-			if (SQLiteConnection.getService(serviceName, "SARJ's Milk Business") != null) {
-				ServiceExistsException e = new ServiceExistsException();
-				throw e;
+			try {
+				SQLiteConnection.getService(serviceName, "SARJ's Milk Business");
 			}
+			catch(SQLException e) {
+				
+			}
+			
 		}
 	}
 	
@@ -43,8 +50,11 @@ public class Service {
 	
 	public static String arrayOfServicesToString(ArrayList<Service> services, boolean needBothNameAndPrice) {
 		String s = "";
+		if (services == null || services.size() == 0) {
+			return s;
+		}
 		Iterator<Service> iter = services.iterator();
-		while(iter.hasNext()) {
+		while(iter != null  && iter.hasNext()) {
 			Service serv = iter.next();
 			if (needBothNameAndPrice) {
 				s = s + " " + serv.toString();
@@ -73,7 +83,6 @@ public class Service {
 			for(int i = 0; i < servicesSplit.length; i++) {
 				ResultSet rs = SQLiteConnection.getService(servicesSplit[i], "SARJ's Milk Business");
 				if (rs == null) {
-					continue; // Missing from database, therefore must no longer exist as a valid service
 				}
 				else {
 					Service s = new Service(rs.getString("servicename"), rs.getString("serviceprice"), rs.getString("serviceminutes"), false);

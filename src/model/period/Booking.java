@@ -54,6 +54,7 @@ public class Booking extends Period {
 		String second = Long.toString(this.end.getTime());
 		String name = this.customerUsername;
 		String servs = Service.arrayOfServicesToString(services, false);
+		System.out.println(servs);
 		return new String[] {first, second, name, servs};
 	}
 	

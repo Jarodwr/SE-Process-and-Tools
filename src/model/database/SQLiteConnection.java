@@ -314,6 +314,7 @@ public class SQLiteConnection {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
 
 			if (rs != null) {
+				rs.close();
 				return false;
 			}
 			if (needToAddUser) {
@@ -330,6 +331,7 @@ public class SQLiteConnection {
 			ResultSet rs2 = getOwnerRow(username); // search through usernames to check if this user currently exists
 
 			if (rs2 != null) {
+				rs2.close();
 				return false;
 			}
 			
@@ -355,6 +357,7 @@ public class SQLiteConnection {
 			ResultSet rs = getBusinessRow(businessname); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {
+				rs.close();
 				return false;
 			}
 
@@ -381,6 +384,7 @@ public class SQLiteConnection {
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {
+				rs.close();
 				return false;
 			}
 
@@ -435,6 +439,7 @@ public class SQLiteConnection {
 			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {
+				rs.close();
 				return false;
 			}
 
@@ -564,7 +569,7 @@ public class SQLiteConnection {
 
 			if (rs != null) {
 				rs.close();
-				deleteAvailabilities(timetableId, businessname);
+				return false;
 			}
 
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Timetableinfo VALUES (?, ?, ?);"); // this creates a new user
@@ -592,11 +597,13 @@ public class SQLiteConnection {
 			if (rs == null) {
 				return false;
 			}
+			rs.close();
 			
 			String query = "DELETE FROM Timetableinfo WHERE timetableId = ?";
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setInt(1, timetableId);
 			pst.executeUpdate();
+			pst.close();
 
 			return true;
 		} catch (SQLException e) {
@@ -749,12 +756,11 @@ public class SQLiteConnection {
 	
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM ServicesTable WHERE businessname = ? AND servicename = ?";
+		String query = "SELECT * FROM ServicesTable WHERE servicename = ?";
 		PreparedStatement pst = c.prepareStatement(query);
-		pst.setString(1, businessname);
-		pst.setString(2, servicename);
+		pst.setString(1, servicename);
 		ResultSet rs = pst.executeQuery();
-	
+		
 		if (rs.next()) {
 			return rs;
 		}
@@ -765,9 +771,11 @@ public class SQLiteConnection {
 		Connection c = getDBConnection();
 		try {
 			ResultSet rs = getService(serviceName, businessName);
-			if (rs == null) {
+			if (rs != null) {
+				rs.close();
 				return false;
 			}
+			
 			PreparedStatement ps = c.prepareStatement("INSERT INTO ServicesTable VALUES (?, ?, ?, ?);"); // this creates a new user
 			ps.setString(1, serviceName);
 			ps.setInt(2, servicePrice);

@@ -517,7 +517,13 @@ public class Controller {
 		try {
 			ResultSet rs = SQLiteConnection.getAllAvailabilities();
 			int id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
-			SQLiteConnection.createAvailability(id, user.getBusinessName(), t.toString());
+			if (SQLiteConnection.createAvailability(id, user.getBusinessName(), t.toString())){
+				
+			}
+			else {
+				SQLiteConnection.deleteAvailabilities(id, user.getBusinessName());
+				SQLiteConnection.createAvailability(id, user.getBusinessName(), t.toString());
+			};
 			SQLiteConnection.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
 			rs.close();
 		}
