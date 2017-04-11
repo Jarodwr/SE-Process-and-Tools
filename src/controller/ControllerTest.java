@@ -16,8 +16,8 @@ import model.users.Owner;
 
 @SuppressWarnings("unused")
 public class ControllerTest {
-
-	static Controller c = new Controller();
+	static String[] tempArgs = new String[]{""};
+	static Controller c = new Controller(tempArgs);
 	static Owner user = new Owner("name", "pass", "SARJ's Milk Business", "Admin", "124 Address", "0412345678");
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	//customer login test data
