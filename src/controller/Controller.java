@@ -315,7 +315,6 @@ public class Controller {
 			for (int i = 0; i < sa.length; i++) {
 				sa[i][0] = Long.toString(Long.parseLong(sa[i][0]));
 				sa[i][1] = Long.toString(Long.parseLong(sa[i][1]));
-				System.out.println(sa[i][0] + " : " + sa[i][1]);
 			}
 			
 			view.printTable(sa,new String[]{"Start Period", "End Period"},"Available Booking Times", false,false,"There are no available times to display.");
