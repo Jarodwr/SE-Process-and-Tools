@@ -405,7 +405,7 @@ public class Console {
 		
 		/*System.out.println("\n\n Press any key to go back to Menu...");
 		
-		scanner.nextLine(); //Wait for any user input from the scanner
+		scanner.nextLine(); //Wait for any user input from the scanner*/
 	}
 	
 	/**
