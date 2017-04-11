@@ -815,4 +815,18 @@ public class SQLiteConnection {
 		return i;
 		
 	}
+	
+	public static ResultSet genericGetQuery(String query) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		PreparedStatement pst = c.prepareStatement(query);
+		ResultSet rs = pst.executeQuery();
+	
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+		
+		
+	}
 }
