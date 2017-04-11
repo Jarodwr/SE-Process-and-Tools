@@ -43,7 +43,7 @@ public class Main {
 		debugCreateEmptyAvailability();
 		debugCreateEmployees();
 		debugCreateService();
-		Controller bookingSystem = new Controller();
+		Controller bookingSystem = new Controller(args);
 		bookingSystem.run();
 	}
 	

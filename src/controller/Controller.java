@@ -36,8 +36,12 @@ public class Controller {
 	private User activeUser;
 	
 	private boolean[] defaultPerms = {true, true, false, false, false, false, false, false, false ,false, false, false, false};
+
+	private String[] args = {};
 	
-	public Controller() {}
+	public Controller(String[] args) {
+		this.args = args;
+	}
 	/*
 	 * the run function starts the the menu loop and gets the user input,
 	 * shows the user the menu loop and call the respective functions from the 
@@ -55,8 +59,29 @@ public class Controller {
 		//and register till they log in
 		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
 		
-		//set the active user as there is no one logged in whene the program starts
-		activeUser = null;
+		
+		int defaultOption = -1; // allows us to pick a default option to choose in the menu via launch config. Ignores permissions.
+		
+		//set the active user as there is no one logged in whene the program starts,
+		//unless someone parsed a username and password as launch parameters
+		if (args.length == 0) {
+			activeUser = null;
+		}
+		else if( args[0] != null && args[1] != null) {
+			activeUser = login(new String[] {args[0], args[1]});
+		}
+		else {
+			activeUser = null;
+		}
+		try {
+			if (args.length >= 3) {
+				 defaultOption = Integer.parseInt(args[2]);
+			}
+		}
+		catch (Exception e) {
+			LOGGER.warning("3rd argument from launch parameter was detected but isn't a number");
+		}
+				
 		
 		//start the menu loop
 		while(!breakLoop) 
@@ -70,7 +95,14 @@ public class Controller {
 			}
 			
 			// get the option number from the options specified from their permissions
-			int option = view.displayOptions(currentPerms);
+			int option;
+			if (defaultOption == -1) {
+				option = view.displayOptions(currentPerms);
+			}
+			else {
+				option = defaultOption;
+				defaultOption = -1;
+			}
 			//run the option that is returned from the user
 			switch(option) {
 			
