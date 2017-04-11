@@ -381,6 +381,10 @@ public class Console {
 				
 				for (int k = 0; k < (tableTitles.length()); k++)
 					System.out.print("-"); //Add dashes "-" under the table
+				
+				System.out.println("\n\n Press any key to go back to Menu...");
+				
+				scanner.nextLine();
 		} else {
 			System.out.println(noContentsMessage); // Print Message when nothing can be shown from the table
 		}
@@ -399,7 +403,7 @@ public class Console {
 		
 		printTable(bookings,headerTitles,"Bookings", true,false,"There are no bookings within the next seven days."); // Print Table
 		
-		System.out.println("\n\n Press any key to go back to Menu...");
+		/*System.out.println("\n\n Press any key to go back to Menu...");
 		
 		scanner.nextLine(); //Wait for any user input from the scanner
 	}
@@ -427,9 +431,9 @@ public class Console {
 		printTable(workingTimes ,headerTitles ,"Working Times/Dates", false,false,"There are no Working Times."); // Print Table
 		
 		//wait for an input to exit the function
-		System.out.println("\n\n Press any key to go back to Menu...");
+		/*System.out.println("\n\n Press any key to go back to Menu...");
 		
-		scanner.nextLine(); //Wait for any user input from the scanner
+		scanner.nextLine(); //Wait for any user input from the scanner*/
 	}
 	
 	
