@@ -13,6 +13,7 @@ import model.database.SQLiteConnection;
 import model.period.Period;
 import model.service.Service;
 import model.service.ServiceExistsException;
+import model.timetable.Timetable;
 
 public class Console {
 	private static Scanner scanner = new Scanner(System.in);
@@ -507,22 +508,23 @@ public class Console {
 		return selectedID;
 	}
 	
-	public String getStartTime(String[][] availableTimes) {
+	public String getStartTime(Timetable t) {
+		String[][] timetable = t.toStringArray();
 		try  {
-			if (availableTimes == null || availableTimes.length == 0) {
+			if (timetable == null || timetable.length == 0) {
 				return null;
 				}
 			}
 			catch (Exception e) {
 				return null;
 			}
-			String[][] tableToDisplay = new String[availableTimes.length][availableTimes[0].length+1];
+			String[][] tableToDisplay = new String[timetable.length][timetable[0].length+1];
 			
 			for (int i = 0; i < tableToDisplay.length; i++) {
 				for (int j = 0; j < tableToDisplay[i].length; j++) {
 					if (j < (tableToDisplay[i].length-1)) {
-						System.out.println(availableTimes[i][j]);
-						tableToDisplay[i][j] = availableTimes[i][j];
+						System.out.println(timetable[i][j]);
+						tableToDisplay[i][j] = timetable[i][j];
 					} else {
 						tableToDisplay[i][j] = Integer.toString(i+1);
 					}
@@ -547,8 +549,8 @@ public class Console {
 				
 				System.out.println("\n\n Enter the # of your booking from the list above: ");
 				selected = scanner.nextInt();
-				if (selected <= availableTimes.length && selected > 0) {
-					return availableTimes[selected-1][0]; //Set the booking start period
+				if (selected <= timetable.length && selected > 0) {
+					return timetable[selected-1][0]; //Set the booking start period
 				} else {
 					System.out.println("\n\n You did not select a valid option. Please try again.");
 				}
@@ -755,7 +757,7 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 		return null;
 	}
 
-	public String[] addNewBooking() {
+	public String[] addNewBooking(String string) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -769,6 +771,11 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 			s = new Service( "Haircut", 20000, 1800, false);
 		}
 		a.add(s);
+		return null;
+	}
+
+	public String[][] getAvailableTime() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
