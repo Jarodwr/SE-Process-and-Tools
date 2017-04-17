@@ -130,7 +130,7 @@ public class Controller {
 				break;
 			// if the user selects the add new booking option then run the add new booking function
 			case 4: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
-				addNewBooking(services.getAvailableBookingTimes().toStringArray());
+				addNewBookings(view.addNewBooking("user"));
 				break;
 			// if the user selects the view summary of bookings option then run the view summary of bookings function
 			case 5: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW SUMMARY OF BOOKINGS");
@@ -138,28 +138,28 @@ public class Controller {
 				break;
 			// if the user selects the add working times option then run the add working times function
 			case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
-				addWorkingTimes();
+				addWorkingTimes(view.showEmployeeList(services.getEmployeeList()), view.addWorkingTimes());
 				break;
 			// if the user selects the show view working times option then run the view working times function
 			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW WORKING TIMES");
-				viewWorkingTimes();
+				viewWorkingTimes(view.showEmployeeList(services.getEmployeeList()));
 				break;
 			// if the user selects the show worker availability option then run the show worker availability function
 			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
-				showWorkerAvailability();
+				showWorkerAvailability(view.showEmployeeList(services.getEmployeeList()));
 				break;
 			// if the user selects the add employee option then run the add employee function
 			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
 				addEmployee(view.addEmployee(), (Owner)activeUser);
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
-			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD BOOKING");
-				addNewBooking(services.getAvailableBookingTimes().toStringArray());
+			case 10: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD NEW BOOKING");
+				addNewBookings(view.addNewBooking("owner"));
 				break;
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
 				//gets the employee id from the user
-				editAvailability(view.showEmployeeList(services.getEmployeeList()), (Owner)activeUser);
+				editAvailability(view.showEmployeeList(services.getEmployeeList()), (Owner)activeUser, view.addAvailableTimes());
 				break;
 		// if the user selects the logout option
 			case 12: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
@@ -181,7 +181,20 @@ public class Controller {
 		}
 	}
 	
-
+	/*
+	 * Array Guide: 
+	 * 0 = list of services
+	 * 1 = start time
+	 * 2 = User name
+	 * 3 = employeeId
+	 * 
+	 */
+	private void addNewBookings(String[] bookingData) {
+		ArrayList<Service> servs;
+		servs = Service.stringOfServicesToArrayList(bookingData[0]);
+		services.addNewBooking(new String[]{bookingData[1], Integer.toString(Integer.parseInt(bookingData[1])+Service.getTotalArrayDuration(servs)), bookingData[2], bookingData[3], bookingData[0]});
+		
+	}
 	/**
 	 * The login function receives an array of strings and then authenticates the username and password
 	 * returns null if the user authenticates or the user if they exist
@@ -283,23 +296,11 @@ public class Controller {
 		}
 	}
 	
-	public void addNewBooking(String[][] availableTimes) {
-		try {
-			//String username = view.getUser();
-			String username = "Ownertest";
-			String startTime = view.getStartTime(availableTimes);
-			ArrayList<Service> servs;
-			
-				servs = view.getServices();
-			
-			//int employeeId = view.showEmployeeList((services.getApplicableEmployees(Service.getTotalArrayDuration(servs), Long.parseLong(startTime));
-			int employeeId = 5;
-			
-			Booking b = new Booking(startTime, (startTime+Service.getTotalArrayDuration(servs)), false, username, Integer.toString(employeeId), servs, true);
-		}
-		catch (Exception e) {
-			
-		}
+	/* TODO requires javadoc */
+	public void addNewBookings(String username, String startTime, String listOfServices, String employeeId) {
+		ArrayList<Service> servs;
+		servs = Service.stringOfServicesToArrayList(listOfServices);
+		services.addNewBooking(new String[]{startTime, (startTime+Service.getTotalArrayDuration(servs)), username, employeeId, listOfServices});
 	}
 	
 	/**
@@ -332,13 +333,7 @@ public class Controller {
 //		view.viewBookingAvailability(s);
 	}
 	
-	/**
-	 * Adds a new booking to the system, yet to be implemented till part B
-	 * @param booking
-	 */
-	private void addNewBooking(String[] booking) {
-		
-	}
+	
 	
 	/**
 	 * This method shows the list of all bookings in the system
@@ -371,16 +366,13 @@ public class Controller {
 	 * 
 	 * @param workingTimes [0][0] employee ID  [0][1] Name [0][2] start [0][3] end
 	 */
-	private void addWorkingTimes() {
-		String employeeId = view.showEmployeeList(services.getEmployeeList());
+	private void addWorkingTimes(String employeeId, String[] workingTimes) {
 		String[][] a = services.getEmployeeAvailability(employeeId).toStringArray();
 		if (a.length != 0) {
 			view.showTimetable(a);
 		} else {
 		 	view.failure("Add Working Times: ", "Employee has no available working times");
 		}
-		 		
-		String[] workingTimes = view.addWorkingTimes();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
@@ -407,10 +399,8 @@ public class Controller {
 	/**
 	 * this method gets the working times of an employee and outputs it to the user if it exists
 	 */
-	private void viewWorkingTimes()
+	private void viewWorkingTimes(String employeeId)
 	{
-		//get the employee id of the employee selected
-		String employeeId = view.showEmployeeList(services.getEmployeeList());
 		//get the list of shifts for the employee
 		Timetable t = services.getShift(employeeId);
 		
@@ -461,7 +451,7 @@ public class Controller {
 	 * @param employeeId a employee id taken from the users input
 	 * @param user the business owner passed to the function
 	 */
-	private void editAvailability(String employeeId, Owner user) {
+	private void editAvailability(String employeeId, Owner user, ArrayList<String> availabilities) {
 
 		Timetable t = new Timetable();
 
@@ -475,8 +465,6 @@ public class Controller {
 		} catch(Exception e) {
 			LOGGER.warning(e.getMessage());
 		}
-		//get an array list of the new availabilities for the employee
-		ArrayList<String> availabilities = view.addAvailableTimes();
 		//use an iterator to go through the availabilities
 		Iterator<String> iter = availabilities.iterator();
 		//go through the the iterator to split the availabilities
@@ -514,6 +502,7 @@ public class Controller {
 			return;
 		}
 		//add the availabilities to the timetable
+		/* TODO turn this try block below into a utility method */
 		try {
 			ResultSet rs = SQLiteConnection.getAllAvailabilities();
 			int id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
@@ -536,12 +525,11 @@ public class Controller {
 	/**
 	 * This method shows the availability for a particular employee
 	 */
-	private void showWorkerAvailability() {
+	private void showWorkerAvailability(String employeeId) {
 		try {
 			//get the employee ID of the selected employee to view their availability
-			String employeeId = view.showEmployeeList(services.getEmployeeList());
 			//go through a loop till the user chooses to exit to the menu
-			while (employeeId != null && !employeeId.equals("")) {
+			if (employeeId != null && !employeeId.equals("")) {
 				//get the employees timetable
 				Timetable t = services.getEmployeeAvailability(employeeId);
 				//if the employee doesn't have a timetable then alert the user and exit
@@ -552,7 +540,6 @@ public class Controller {
 					view.showTimetable(t.toStringArray());
 				}
 				//halt till the user exits or chooses another employee
-				employeeId = view.showEmployeeList(services.getEmployeeList());
 			}
 			
 		} catch(Exception e) {
@@ -577,6 +564,8 @@ public class Controller {
 		String business = user.getBusinessName();
 		String id = "";
 		//create a unique ID for the new employee
+		
+		/* TODO Turn try block into utility method */
 		try {
 			ResultSet rs = SQLiteConnection.getAllEmployees();
 			int i = SQLiteConnection.getNextAvailableId(rs, "employeeId");
@@ -589,6 +578,7 @@ public class Controller {
 		
 
 		//validate all the user inputs
+		/* These need to also be in gui */
 		if(!services.validate(name, "[A-Za-z]+"))
   		{
 			view.failure("Add Employee", "Name is not Valid");

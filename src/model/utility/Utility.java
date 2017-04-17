@@ -272,6 +272,14 @@ public class Utility {
 	}
 	
 	/**
+	 * Adds a new booking to the system, yet to be implemented till part B
+	 * @param booking
+	 */
+	public void addNewBooking(String[] booking) {
+		new Booking(booking[0], booking[1], false, booking[2], booking[3], Service.stringOfServicesToArrayList(booking[4]), true);
+	}
+	
+	/**
 	 * Gets a booking query and returns it as an array of bookings
 	 * @param rs ResultSet of query
 	 * @return Booking[]
