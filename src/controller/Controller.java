@@ -230,13 +230,13 @@ public class Controller {
 	{
 		//validate all the user input to match the regular expression
 		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
-		if(!services.validate(userDetails[0], "[A-Za-z0-9]+"))
+		if(!services.validate(userDetails[0], "[A-Za-z0-9]{8,}"))
   		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, username does not match regex");
 			view.failure("Register", "Username is not Valid");
 			return null;
 		}
-		if(!services.validate(userDetails[2], "[A-Za-z]+"))
+		if(!services.validate(userDetails[2], "[A-Za-z- ]+"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Name does not match regex");
 			view.failure("Register", "Name is not Valid");
