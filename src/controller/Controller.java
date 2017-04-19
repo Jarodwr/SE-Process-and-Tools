@@ -31,7 +31,7 @@ public class Controller {
 	private Logger LOGGER = Logger.getLogger("main");
 	
 	private Console view = new Console();
-	private Utility services = new Utility();
+	private Utility utilities = new Utility();
 
 	private User activeUser;
 	
@@ -138,15 +138,15 @@ public class Controller {
 				break;
 			// if the user selects the add working times option then run the add working times function
 			case 6: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD WORKING TIMES");
-				addWorkingTimes(view.showEmployeeList(services.getEmployeeList()), view.addWorkingTimes());
+				addWorkingTimes(view.showEmployeeList(utilities.getEmployeeList()), view.addWorkingTimes());
 				break;
 			// if the user selects the show view working times option then run the view working times function
 			case 7: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: VIEW WORKING TIMES");
-				viewWorkingTimes(view.showEmployeeList(services.getEmployeeList()));
+				viewWorkingTimes(view.showEmployeeList(utilities.getEmployeeList()));
 				break;
 			// if the user selects the show worker availability option then run the show worker availability function
 			case 8: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: SHOW WORKER AVAILABILITY");
-				showWorkerAvailability(view.showEmployeeList(services.getEmployeeList()));
+				showWorkerAvailability(view.showEmployeeList(utilities.getEmployeeList()));
 				break;
 			// if the user selects the add employee option then run the add employee function
 			case 9: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD EMPLOYEE");
@@ -159,10 +159,14 @@ public class Controller {
 			// if the user selects the edit availabilities option then run the edit availabilities function
 			case 11: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: EDIT AVAILABILITIES");
 				//gets the employee id from the user
-				editAvailability(view.showEmployeeList(services.getEmployeeList()), (Owner)activeUser, view.addAvailableTimes());
+				editAvailability(view.showEmployeeList(utilities.getEmployeeList()), (Owner)activeUser, view.addAvailableTimes());
+				break;
+			case 12: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: ADD SERVICES");
+				//gets the employee id from the user
+				addServices(view.getNewServices());
 				break;
 		// if the user selects the logout option
-			case 12: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
+			case 13: LOGGER.log(Level.FINE, "MENU OPTION CHOSEN: LOGOUT");
 				//run the logout view function and break the loop terminating the program
 				Boolean b = view.logout();
 				if (b) {
@@ -170,7 +174,7 @@ public class Controller {
 					currentPerms = defaultPerms;
 				}
 				break;
-			case 13: breakLoop = true;
+			case 14: breakLoop = true;
 				break;
 			//if the user selects an invalid option the print an error message to the view and go through the loop again
 			default: LOGGER.log(Level.FINE, "INVALID MENU OPTION CHOSEN");
@@ -181,9 +185,15 @@ public class Controller {
 		}
 	}
 	
+	private void addServices(String[][] services) {
+		for(String[] s : services) {
+				new Service(s[0], Integer.parseInt(s[1]), Integer.parseInt(s[2]), true);
+			
+		}
+	}
 	/*
 	 * Array Guide: 
-	 * 0 = list of services
+	 * 0 = list of utilities
 	 * 1 = start time
 	 * 2 = User name
 	 * 3 = employeeId
@@ -192,7 +202,7 @@ public class Controller {
 	private void addNewBookings(String[] bookingData) {
 		ArrayList<Service> servs;
 		servs = Service.stringOfServicesToArrayList(bookingData[0]);
-		services.addNewBooking(new String[]{bookingData[1], Integer.toString(Integer.parseInt(bookingData[1])+Service.getTotalArrayDuration(servs)), bookingData[2], bookingData[3], bookingData[0]});
+		utilities.addNewBooking(new String[]{bookingData[1], Integer.toString(Integer.parseInt(bookingData[1])+Service.getTotalArrayDuration(servs)), bookingData[2], bookingData[3], bookingData[0]});
 		
 	}
 	/**
@@ -204,7 +214,7 @@ public class Controller {
 	protected User login(String[] loginDetails) {
 		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
 		//Search for the user in the arrayList and make sure the password is correct
-		User user = services.authenticate(loginDetails[0], loginDetails[1]);
+		User user = utilities.authenticate(loginDetails[0], loginDetails[1]);
 		
 		//check if the user is authenticated or not
 		if (user == null) {
@@ -230,35 +240,35 @@ public class Controller {
 	{
 		//validate all the user input to match the regular expression
 		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
-		if(!services.validate(userDetails[0], "[A-Za-z0-9]+"))
+		if(!utilities.validate(userDetails[0], "[A-Za-z0-9]+"))
   		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, username does not match regex");
 			view.failure("Register", "Username is not Valid");
 			return null;
 		}
-		if(!services.validate(userDetails[2], "[A-Za-z]+"))
+		if(!utilities.validate(userDetails[2], "[A-Za-z]+"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Name does not match regex");
 			view.failure("Register", "Name is not Valid");
 			return null;
 		}
-		if(!services.validate(userDetails[3], "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
+		if(!utilities.validate(userDetails[3], "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Address does not match regex");
 			view.failure("Register", "Address is not Valid");
 			return null;
 		}
-		if(!services.validate(userDetails[4], "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
+		if(!utilities.validate(userDetails[4], "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, phone number does not match regex");
 			view.failure("Register", "Phone Number is not Valid");
 			return null;
 		}
 		// if they all pass then try to create a new user and return the created user
-		if (services.addCustomerToDatabase(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
+		if (utilities.addCustomerToDatabase(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
 			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");
 			view.success("Register", userDetails[0] + " added to system");
-			return services.searchUser(userDetails[0]);
+			return utilities.searchUser(userDetails[0]);
 		}
 		else //if not then inform the user that there is a user with that name and return null
 		{
@@ -275,7 +285,7 @@ public class Controller {
 	private void viewCurrentBookings() 
 	{
 		//gets the bookings list of all the booking from the time the method is called
-		Booking[] bookings = services.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
+		Booking[] bookings = utilities.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
 		
 		//if there are no bookings in the future then alert the user and exit function
 		if (bookings.length == 0) {
@@ -300,7 +310,7 @@ public class Controller {
 	public void addNewBookings(String username, String startTime, String listOfServices, String employeeId) {
 		ArrayList<Service> servs;
 		servs = Service.stringOfServicesToArrayList(listOfServices);
-		services.addNewBooking(new String[]{startTime, (startTime+Service.getTotalArrayDuration(servs)), username, employeeId, listOfServices});
+		utilities.addNewBooking(new String[]{startTime, (startTime+Service.getTotalArrayDuration(servs)), username, employeeId, listOfServices});
 	}
 	
 	/**
@@ -309,7 +319,7 @@ public class Controller {
 	 */
 	private void viewAvailableTimes() {
 		//get the available timetable
-		Timetable t = services.getAvailableBookingTimes();
+		Timetable t = utilities.getAvailableBookingTimes();
 		if (t != null && t.getAllPeriods().length != 0) {
 			String[][] sa = t.toStringArray();
 			
@@ -341,7 +351,7 @@ public class Controller {
 	private void viewSummaryOfBookings() {
 
 		//gets the bookings list of all the booking from the time the method is called
-		Booking[] bookings = services.getBookingsAfter(new Date(0));
+		Booking[] bookings = utilities.getBookingsAfter(new Date(0));
 		
 		//if there are no bookings in the future then alert the user and exit function
 		if (bookings.length == 0) {
@@ -367,7 +377,7 @@ public class Controller {
 	 * @param workingTimes [0][0] employee ID  [0][1] Name [0][2] start [0][3] end
 	 */
 	private void addWorkingTimes(String employeeId, String[] workingTimes) {
-		String[][] a = services.getEmployeeAvailability(employeeId).toStringArray();
+		String[][] a = utilities.getEmployeeAvailability(employeeId).toStringArray();
 		if (a.length != 0) {
 			view.showTimetable(a);
 		} else {
@@ -402,7 +412,7 @@ public class Controller {
 	private void viewWorkingTimes(String employeeId)
 	{
 		//get the list of shifts for the employee
-		Timetable t = services.getShift(employeeId);
+		Timetable t = utilities.getShift(employeeId);
 		
 		//if there are working times
 		if (t != null) {
@@ -432,7 +442,7 @@ public class Controller {
 		
 //		//get the array of all working times
 //		
-//		String [][] workingTimes = services.getWorkingTimes();
+//		String [][] workingTimes = utilities.getWorkingTimes();
 //		
 //		//check to see if there are working times
 //		if(workingTimes.length == 0)
@@ -531,7 +541,7 @@ public class Controller {
 			//go through a loop till the user chooses to exit to the menu
 			if (employeeId != null && !employeeId.equals("")) {
 				//get the employees timetable
-				Timetable t = services.getEmployeeAvailability(employeeId);
+				Timetable t = utilities.getEmployeeAvailability(employeeId);
 				//if the employee doesn't have a timetable then alert the user and exit
 				if (t.equals(null) || t.getAllPeriods().length == 0) {
 					view.failure("View worker availability", "This worker has no available times");
@@ -579,26 +589,26 @@ public class Controller {
 
 		//validate all the user inputs
 		/* These need to also be in gui */
-		if(!services.validate(name, "[A-Za-z]+"))
+		if(!utilities.validate(name, "[A-Za-z]+"))
   		{
 			view.failure("Add Employee", "Name is not Valid");
 			return false;
 		}
 		
-		if(!services.validate(phonenumber, "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
+		if(!utilities.validate(phonenumber, "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
 		{
 			view.failure("Add Employee", "Phone number is not Valid");
 			return false;
 		}
 		
-		if(!services.validate(address, "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
+		if(!utilities.validate(address, "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
 		{
 			view.failure("Add Employee", "Address is not Valid");
 			return false;
 		}
 		
 		//try to ad the new employee to the database
-		if (services.addEmployeeToDatabase(id, business, name, address, phonenumber, 0))
+		if (utilities.addEmployeeToDatabase(id, business, name, address, phonenumber, 0))
 		{ /* TODO add cases for staff and owners */
 			//if it works then add tell the user and return true
 			view.success("Add Employee", name + " was successfully added to the database");

@@ -50,7 +50,7 @@ public class Console {
 		String [] option = {"Log In", "Register", "View Current Bookings", 
 		                     "View Available Times", "Add New Booking", "View Summary of Bookings", 
 		                     "Add working time/date", "View working time/dates", "Show all worker availability", 
-		                     "Add an Employee", "Add Booking", "Edit Employee Availabilities", "Log out"};
+		                     "Add an Employee", "Add Booking", "Edit Employee Availabilities", "Add Service", "Log out"};
 		
 		
 		while (true) {
@@ -69,9 +69,9 @@ public class Console {
 				}
 			}
 
-			if(permissions[10] == false) //if you can't log out as you are not logged in, there is a break
+			if(permissions[11] == false) //if you can't log out as you are not logged in, there is a break
 			{
-				System.out.println("13.\tExit"); // added by Spencer - exit case
+				System.out.println("14.\tExit"); // added by Spencer - exit case
 			}
 			System.out.print("Enter your option: ");
 			
@@ -94,18 +94,15 @@ public class Console {
 				}
 				if(!match) //if there is no match, and you can't log out and they haven't selected logout continue through loop
 				{
-					if(!permissions[12] && selectedOption != 12)
-					{
-						selectedOption = 13;
-					}
-					
+					Exception e = new Exception();
+					throw e;
 				}
 				userSelection = selectedOption;
-			} catch (NumberFormatException e) {
+			} catch (Exception e) {
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
 				continue;
 			}
-			if (userSelection > -1 && userSelection < 14) // changed to 11 by Spencer - I'll include invalid option checking in my contrller main aswell
+			if (userSelection > -1 && userSelection < 15) // changed to 11 by Spencer - I'll include invalid option checking in my contrller main aswell
 				break;
 			else
 				System.out.println("Sorry you have provided an invalid option! Please try again:");
@@ -775,6 +772,11 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 	}
 
 	public String[][] getAvailableTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String[][] getNewServices() {
 		// TODO Auto-generated method stub
 		return null;
 	}
