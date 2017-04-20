@@ -2,6 +2,7 @@ package gui.login;
 
 import java.io.IOException;
 
+import controller.Controller;
 import gui.owner.OwnerViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,9 +13,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.users.User;
 
 public class LoginController 
 {
+	
+	private Controller c; // named c to avoid confusion with JavaFX 2's controller classes, they are different things
+
+	public void init(Controller c) {
+		this.c = c;
+	}
 	@FXML // fx:id="login_username"
     private TextField login_username; // Value injected by FXMLLoader
 
@@ -32,15 +40,22 @@ public class LoginController
     void loginClick(ActionEvent event) 
     {
     	try {
-	    	System.out.println(login_username.getText());
-	    	System.out.println(login_password.getText());
-	    	FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/owner/OwnerView.fxml"));
-	    	BorderPane root = loader.load();
-	    	Scene ownerview = new Scene(root, 900, 600);
-			main.setScene(ownerview);
-			OwnerViewController controller = loader.getController();
-	    	controller.initOwner(owner);
-	    	main.show();
+    		User u = this.c.login(new String[]{login_username.getText(), login_password.getText()});
+	    	if (u == null) { // fail
+	    		// display incorrect username or password screen
+	    	} else if (u.isOwner()) {
+	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/owner/OwnerView.fxml"));
+		    	BorderPane root = loader.load();
+		    	Scene ownerview = new Scene(root, 900, 600);
+				main.setScene(ownerview);
+				OwnerViewController controller = loader.getController();
+		    	controller.init(this.c, u);
+		    	main.show();
+	    	}
+	    	else { // display user screen, i dont know if Russell has done it yet so leaving it blank
+	    		
+	    	}
+	    	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

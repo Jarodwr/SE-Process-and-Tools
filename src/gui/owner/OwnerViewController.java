@@ -2,6 +2,8 @@ package gui.owner;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.users.User;
 
 public class OwnerViewController {
 	
@@ -133,6 +136,11 @@ public class OwnerViewController {
     	selectButton(viewWorkingTimesButton);
     }
     
+    public void init(Controller c, User u) {
+		String text = welcometxt.getText();
+    	text += " " + u.getUsername();
+	}
+    
 
     @FXML
     void initialize() {
@@ -145,13 +153,6 @@ public class OwnerViewController {
         assert addBookingButton != null : "fx:id=\"addBookingButton\" was not injected: check your FXML file 'OwnerView.fxml'.";
         assert logoutButton != null : "fx:id=\"logoutButton\" was not injected: check your FXML file 'OwnerView.fxml'.";
 
-    }
-    
-    public void initOwner(String Owner)
-    {
-    	String text = welcometxt.getText();
-    	text += " " + Owner;
-    	
     }
     
     @FXML
@@ -168,4 +169,6 @@ public class OwnerViewController {
     	selected.setStyle("-fx-background-color: #ff5930");
     	
     }
+
+	
 }

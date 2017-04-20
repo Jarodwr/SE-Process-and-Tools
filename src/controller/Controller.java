@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import application.GuiMain;
 import model.database.SQLiteConnection;
 import model.period.Booking;
 import model.period.Period;
@@ -50,20 +51,23 @@ public class Controller {
 	public void run()
 	{
 		//initialize view
-		Console view = new Console();
+		//Console view = new Console();
+		
+		// launch GFX for testing - remove this line to use console instead
 
-		boolean breakLoop = false; // exit program case
+		//boolean breakLoop = false; // exit program case
 		//debugMode = true; // remove this line while demoing
 		
 		//when the menu is started set to the default permissions so that the user can only log in 
 		//and register till they log in
-		boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
+		//boolean[] currentPerms = defaultPerms; // allows for permission changes while program is running
 		
 		
-		int defaultOption = -1; // allows us to pick a default option to choose in the menu via launch config. Ignores permissions.
+		//int defaultOption = -1; // allows us to pick a default option to choose in the menu via launch config. Ignores permissions.
 		
 		//set the active user as there is no one logged in whene the program starts,
 		//unless someone parsed a username and password as launch parameters
+		/*
 		if (args.length == 0) {
 			activeUser = null;
 		}
@@ -80,9 +84,9 @@ public class Controller {
 		}
 		catch (Exception e) {
 			LOGGER.warning("3rd argument from launch parameter was detected but isn't a number");
-		}
+		} */
 				
-		
+		/* commented out for now, no longer needed 
 		//start the menu loop
 		while(!breakLoop) 
 		{
@@ -182,7 +186,7 @@ public class Controller {
 				break;
 			}
 			
-		}
+		} */
 	}
 	
 	private void addServices(String[][] services) {
@@ -211,7 +215,7 @@ public class Controller {
 	 * @param loginDetails [0] username, [1] password
 	 * @return the user if the authentication passes
 	 */
-	protected User login(String[] loginDetails) {
+	public User login(String[] loginDetails) {
 		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
 		//Search for the user in the arrayList and make sure the password is correct
 		User user = utilities.authenticate(loginDetails[0], loginDetails[1]);
@@ -225,6 +229,9 @@ public class Controller {
 			//if it succeeds then inform the user
 			LOGGER.log(Level.FINE, "LOGIN: Success");
 			view.success("Login", "Welcome back, " + user.getUsername());
+
+			this.activeUser = user;
+			
 		}
 		//return the user value
 		return user;

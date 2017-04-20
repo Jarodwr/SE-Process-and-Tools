@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import application.GuiMain;
 import controller.Controller;
 import model.database.SQLiteConnection;
 import model.service.Service;
@@ -43,8 +44,8 @@ public class Main {
 		//debugCreateEmptyAvailability();
 		debugCreateEmployees();
 		debugCreateService();
-		Controller bookingSystem = new Controller(args);
-		bookingSystem.run();
+
+		GuiMain.main(args);
 	}
 	
 	public static void debugCreateOwnerBusiness() {

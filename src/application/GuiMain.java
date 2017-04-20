@@ -1,5 +1,6 @@
 package application;
 	
+import controller.Controller;
 import gui.login.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 
 
 
-public class Main extends Application {
+public class GuiMain extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -17,6 +18,7 @@ public class Main extends Application {
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
 	        LoginController controller = loader.getController();
+	        controller.init(new Controller(new String[]{}));
 	        controller.initStage(primaryStage);
 	        primaryStage.setScene(scene);
 	        primaryStage.show();
