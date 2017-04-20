@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import controller.Controller;
 import gui.owner.OwnerViewController;
+import gui.register.RegisterController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,8 +69,18 @@ public class LoginController
     @FXML
     void loginSignupClick(ActionEvent event) 
     {
-    	System.out.println("clicked the signup button");
-    	
+    	try 
+    	{
+	    	FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/register/Register.fxml"));
+	    	BorderPane root = loader.load();
+	    	Scene ownerview = new Scene(root, 900, 600);
+			main.setScene(ownerview);
+			RegisterController controller = loader.getController();
+	    	main.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public void initStage(Stage scene)
