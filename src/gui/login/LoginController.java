@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -33,6 +34,10 @@ public class LoginController
     @FXML
     private BorderPane mainPane;
     
+    @FXML
+    private Label loginErrorMessage;
+
+    
     private String owner = "Test Pass String";
     
     private Stage main;
@@ -40,6 +45,10 @@ public class LoginController
     @FXML
     void loginClick(ActionEvent event) 
     {
+    	//to change the error message
+    	loginErrorMessage.setStyle("-fx-text-fill: RED");
+    	loginErrorMessage.setText("Incorrect Username/Password");
+    	
     	try {
     		User u = this.c.login(new String[]{login_username.getText(), login_password.getText()});
 	    	if (u == null) { // fail
