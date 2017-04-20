@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
+<BorderPane fx:id="mainPane" maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.login.LoginController">
    <center>
       <Pane prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -25,12 +25,12 @@
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </PasswordField>
-                  <Button id="login" layoutX="41.0" layoutY="209.0" mnemonicParsing="false" onAction="#loginClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #007cc2;" text="Login" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="login" layoutX="41.0" layoutY="209.0" mnemonicParsing="false" onAction="#loginClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Login" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="13.0" />
                      </font>
                   </Button>
-                  <Button id="login-signup" layoutX="149.0" layoutY="209.0" mnemonicParsing="false" onAction="#loginSignupClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #007cc2;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="login-signup" layoutX="149.0" layoutY="209.0" mnemonicParsing="false" onAction="#loginSignupClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="13.0" />
                      </font>

@@ -1,4 +1,4 @@
-package view.gui;
+package gui.register;
 
 public class RegisterController {
 

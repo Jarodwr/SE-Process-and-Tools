@@ -25,7 +25,7 @@
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </PasswordField>
-                  <Button layoutX="93.0" layoutY="370.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #007cc2;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
+                  <Button layoutX="93.0" layoutY="370.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="13.0" />
                      </font>
