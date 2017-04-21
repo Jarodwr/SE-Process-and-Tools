@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import application.GuiMain;
 import model.database.SQLiteConnection;
+import model.exceptions.ValidationException;
 import model.period.Booking;
 import model.period.Period;
 import model.service.Service;
@@ -242,8 +243,9 @@ public class Controller {
 	 * providing that there is no other user with the same username
 	 * @param userDetails [0] username, [1] password, [2] name, [3] address, [4] mobile number
 	 * @return returns the user created or null it it fails validation
+	 * @throws ValidationException 
 	 */
-	protected User register(String[] userDetails)
+	public User register(String[] userDetails) throws ValidationException
 	{
 		//validate all the user input to match the regular expression
 		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
@@ -251,25 +253,31 @@ public class Controller {
   		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, username does not match regex");
 			view.failure("Register", "Username is not Valid");
-			return null;
+			throw new ValidationException("Username only contains letters and numbers!");
 		}
-		if(!utilities.validate(userDetails[2], "[A-Za-z]+"))
+		if(!userDetails[1].equals(userDetails[2]))
+		{
+			LOGGER.log(Level.FINE, "REGISTER: Failure, Passwords dont match");
+			view.failure("Register", "Passwords dont match");
+			throw new ValidationException("Passwords do not match!");
+		}
+		if(!utilities.validate(userDetails[3], "[A-Za-z]+"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Name does not match regex");
 			view.failure("Register", "Name is not Valid");
-			return null;
+			throw new ValidationException("Name must only contain letters!");
 		}
-		if(!utilities.validate(userDetails[3], "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
+		if(!utilities.validate(userDetails[4], "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Address does not match regex");
 			view.failure("Register", "Address is not Valid");
-			return null;
+			throw new ValidationException("Address is not valid!");
 		}
-		if(!utilities.validate(userDetails[4], "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
+		if(!utilities.validate(userDetails[5], "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, phone number does not match regex");
 			view.failure("Register", "Phone Number is not Valid");
-			return null;
+			throw new ValidationException("Mobile number is not valid!");
 		}
 		// if they all pass then try to create a new user and return the created user
 		if (utilities.addCustomerToDatabase(userDetails[0], userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
@@ -281,7 +289,7 @@ public class Controller {
 		{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, username already taken");
 			view.failure("Register", "The entered username is already in the database");
-			return null;
+			throw new ValidationException("Username already exists in the system!");
 		}
 				
 	}

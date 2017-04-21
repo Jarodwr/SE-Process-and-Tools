@@ -9,62 +9,68 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.register.RegisterController">
    <center>
       <Pane prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
             <Pane id="login-pane" layoutX="314.0" layoutY="90.0" prefHeight="420.0" prefWidth="273.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10 10 10 10;">
                <children>
-                  <TextField layoutX="40.0" layoutY="96.0" promptText="Username">
+                  <TextField fx:id="username" layoutX="40.0" layoutY="106.0" promptText="Username">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <PasswordField layoutX="39.0" layoutY="141.0" promptText="Password">
+                  <PasswordField fx:id="password" layoutX="39.0" layoutY="149.0" promptText="Password">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </PasswordField>
-                  <Button layoutX="93.0" layoutY="370.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="registerButton" layoutX="93.0" layoutY="370.0" mnemonicParsing="false" onAction="#onRegisterClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Register" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="13.0" />
                      </font>
                   </Button>
-                  <Label layoutX="86.0" layoutY="23.0" text="Register">
+                  <Label layoutX="86.0" layoutY="7.0" text="Register">
                      <font>
                         <Font name="Calibri" size="30.0" />
                      </font>
                   </Label>
-                  <Label layoutX="45.0" layoutY="67.0" text="Please Fill the details below">
+                  <Label layoutX="45.0" layoutY="51.0" text="Please Fill the details below">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </Label>
-                  <PasswordField layoutX="40.0" layoutY="186.0" promptText="Confirm Password">
+                  <PasswordField fx:id="passwordCon" layoutX="40.0" layoutY="192.0" promptText="Confirm Password">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </PasswordField>
-                  <TextField layoutX="40.0" layoutY="231.0" promptText="Name">
+                  <TextField fx:id="name" layoutX="40.0" layoutY="236.0" promptText="Name">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField layoutX="40.0" layoutY="275.0" promptText="Address">
+                  <TextField fx:id="address" layoutX="40.0" layoutY="279.0" promptText="Address">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField layoutX="40.0" layoutY="323.0" promptText="Phone Number">
+                  <TextField fx:id="number" layoutX="40.0" layoutY="323.0" promptText="Phone Number">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
+                  <Label fx:id="registerErrorMessage" layoutX="24.0" layoutY="78.0" text="Username must not only contain numbers!" textAlignment="CENTER" textFill="#dddddd" />
                </children>
                <effect>
                   <ColorAdjust />
                </effect>
             </Pane>
+            <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="27.0" prefWidth="105.0" style="-fx-background-color: #ff471a;" text="Return to menu" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Calibri" size="13.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </center>

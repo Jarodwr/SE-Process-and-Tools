@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import model.database.SQLiteConnection;
+import model.exceptions.ValidationException;
 import model.period.Booking;
 import model.users.Owner;
 
@@ -175,31 +176,31 @@ public class ControllerTest {
 	
 	//register a customer tests
 	@Test
-	public void customerregister01() 
+	public void customerregister01() throws ValidationException 
 	{
 		assert(c.register(testData9).equals(null));
 	}
 	
 	@Test
-	public void customerregister02() 
+	public void customerregister02() throws ValidationException 
 	{
 		assert(!c.register(testData10).equals(null));
 	}
 	
 	@Test
-	public void customerregister03() 
+	public void customerregister03() throws ValidationException 
 	{
 		assert(c.register(testData11).equals(null));
 	}
 	
 	@Test
-	public void customerregister04() 
+	public void customerregister04() throws ValidationException 
 	{
 		assert(c.register(testData12).equals(null));
 	}
 	
 	@Test
-	public void customerregister05() 
+	public void customerregister05() throws ValidationException 
 	{
 		assert(c.register(testData13).equals(null));
 	}

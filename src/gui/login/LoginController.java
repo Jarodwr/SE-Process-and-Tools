@@ -85,6 +85,7 @@ public class LoginController
 	    	Scene ownerview = new Scene(root, 900, 600);
 			main.setScene(ownerview);
 			RegisterController controller = loader.getController();
+			controller.initData(main, c);
 	    	main.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -95,6 +96,5 @@ public class LoginController
     public void initStage(Stage scene)
     {
     	main = scene;
-    	System.out.println("This was executed");
     }
 }
