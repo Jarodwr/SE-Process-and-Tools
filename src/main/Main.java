@@ -50,7 +50,7 @@ public class Main {
 	
 	public static void debugCreateOwnerBusiness() {
 		SQLiteConnection.createBusiness("SARJ's Milk Business", "Cherry Lane", "0123456789");
-		SQLiteConnection.createOwner("SARJ's Milk Business", "Ownertest", "1234", "Name", "Address", "MobileNo");
+		SQLiteConnection.createOwner("SARJ's Milk Business", "ownertest", "1234", "Name", "Address", "MobileNo");
 	}
 	
 	public static void debugCreateService() {

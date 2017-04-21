@@ -79,7 +79,7 @@ public class Utility {
 	 * @return if the user exists with the entered password, return the user. Else return null.
 	 */
 	public User authenticate(String username, String password) {
-		User found = searchUser(username);
+		User found = searchUser(username.toLowerCase());
 		if (found != null && found.checkPassword(password)) {
 			return found;
 		}

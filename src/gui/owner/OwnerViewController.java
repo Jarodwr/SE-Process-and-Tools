@@ -1,12 +1,15 @@
 package gui.owner;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import controller.Controller;
+import gui.login.LoginController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -52,6 +55,12 @@ public class OwnerViewController {
     
     @FXML
     private BorderPane mainScreen;
+
+	private Stage main;
+
+	private Controller c;
+
+	private model.users.User u;
 
     
     @FXML
@@ -110,7 +119,20 @@ public class OwnerViewController {
     @FXML
     void logout(ActionEvent event) 
     {
-    	
+    	try 
+    	{
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/login/Login.fxml")); /* TODO replace with page that says "are you sure you want to log out?" */
+			BorderPane root = loader.load();
+	        Scene scene = new Scene(root, 900, 600);
+	        LoginController controller = loader.getController();
+	        controller.init(c);
+	        controller.initStage(main);
+	        main.setScene(scene);
+	        main.show();
+	        
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
 
     @FXML
@@ -136,9 +158,12 @@ public class OwnerViewController {
     	selectButton(viewWorkingTimesButton);
     }
     
-    public void init(Controller c, User u) {
+    public void init(Stage main, Controller c, User u) {
 		String text = welcometxt.getText();
     	text += " " + u.getUsername();
+    	this.main = main;
+    	this.u = u;
+    	this.c = c;
 	}
     
 

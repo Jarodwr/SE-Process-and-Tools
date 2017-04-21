@@ -204,6 +204,7 @@ public class SQLiteConnection {
 	}
 		
 	public static ResultSet getUserRow(String username) throws SQLException {
+		username = username.toLowerCase();
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Userinfo WHERE Username=?";
@@ -284,6 +285,7 @@ public class SQLiteConnection {
 	 * @return True if deletion is successful, false if user cannot be found.
 	 */
 	public static boolean deleteCustomer(String username) {
+		username = username.toLowerCase();
 		Connection c = getDBConnection();
 		try {
 			ResultSet rs = getUserRow(username); // search through businessnames to check if this user currently exists
@@ -308,6 +310,7 @@ public class SQLiteConnection {
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public static boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
+		username = username.toLowerCase();
 		Connection c = getDBConnection();
 		Boolean needToAddUser = true;
 		try {
@@ -379,6 +382,7 @@ public class SQLiteConnection {
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public static boolean createBooking(int bookingId, String businessname, String customername, String employeeId, String unixstamp1, String unixstamp2, String data) {
+		customername = customername.toLowerCase();
 		Connection c = getDBConnection();
 		try {
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists

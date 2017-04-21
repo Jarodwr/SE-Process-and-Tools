@@ -59,7 +59,7 @@ public class LoginController
 		    	Scene ownerview = new Scene(root, 900, 600);
 				main.setScene(ownerview);
 				OwnerViewController controller = loader.getController();
-		    	controller.init(this.c, u);
+		    	controller.init(main, this.c, u);
 		    	main.show();
 	    	}
 	    	else { // display user screen, i dont know if Russell has done it yet so leaving it blank
