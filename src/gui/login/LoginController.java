@@ -3,6 +3,7 @@ package gui.login;
 import java.io.IOException;
 
 import controller.Controller;
+import gui.customer.CustomerViewController;
 import gui.owner.OwnerViewController;
 import gui.register.RegisterController;
 import javafx.event.ActionEvent;
@@ -63,7 +64,13 @@ public class LoginController
 		    	main.show();
 	    	}
 	    	else { // display user screen, i dont know if Russell has done it yet so leaving it blank
-	    		
+	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/customer/CustomerView.fxml"));
+		    	BorderPane root = loader.load();
+		    	Scene ownerview = new Scene(root, 900, 600);
+				main.setScene(ownerview);
+				CustomerViewController controller = loader.getController();
+		    	controller.init(main, this.c, u);
+		    	main.show();
 	    	}
 	    	
 		} catch (IOException e) {

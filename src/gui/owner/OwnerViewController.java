@@ -159,8 +159,6 @@ public class OwnerViewController {
     }
     
     public void init(Stage main, Controller c, User u) {
-		String text = welcometxt.getText();
-    	text += " " + u.getUsername();
     	this.main = main;
     	this.u = u;
     	this.c = c;
