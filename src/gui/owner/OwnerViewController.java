@@ -166,7 +166,9 @@ public class OwnerViewController {
     	this.c = c;
 	}
     
-
+    /*
+     * check that all the button elements definitely exist on the page
+     */
     @FXML
     void initialize() {
         assert addEmployeeButton != null : "fx:id=\"addEmployeeButton\" was not injected: check your FXML file 'OwnerView.fxml'.";
