@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddEmployeeWorkingTimesController">
+   <center>
+      <AnchorPane prefHeight="500.0" prefWidth="680.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane layoutX="13.0" layoutY="15.0" prefHeight="470.0" prefWidth="654.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="View Working Times">
+                     <font>
+                        <Font name="Calibri" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="55.0" text="Fill the form below to add employee availability to the online system">
+                     <font>
+                        <Font name="Calibri" size="18.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="employeeList" layoutX="14.0" layoutY="102.0" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="169.0" promptText="Select Employee" />
+                  <Button fx:id="generateTimetableButton" layoutX="506.0" layoutY="101.0" mnemonicParsing="false" onAction="#generateTimetable" prefHeight="27.0" prefWidth="134.0" style="-fx-background-color: #ff471a;" text="Generate Timetable" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="13.0" />
+                     </font>
+                  </Button>
+                  <ComboBox fx:id="week" layoutX="208.0" layoutY="102.0" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="114.0" promptText="Select Week" />
+                  <ScrollPane layoutX="14.0" layoutY="135.0" prefHeight="235.0" prefWidth="628.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="216.0" prefWidth="1050.0">
+                           <children>
+                              <TableView prefHeight="233.0" prefWidth="1050.0">
+                                <columns>
+                                  <TableColumn prefWidth="150.0" text="Monday" />
+                                  <TableColumn prefWidth="150.0" text="Tuesday" />
+                                    <TableColumn prefWidth="150.0" text="Wednesday" />
+                                    <TableColumn prefWidth="150.0" text="Thursday" />
+                                    <TableColumn prefWidth="150.0" text="Friday" />
+                                    <TableColumn prefWidth="150.0" text="Saturday" />
+                                    <TableColumn prefWidth="150.0" text="Sunday" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children>
+            </Pane>
+         </children></AnchorPane>
+   </center>
+</BorderPane>
