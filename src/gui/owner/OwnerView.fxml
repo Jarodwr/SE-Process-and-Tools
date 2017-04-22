@@ -20,7 +20,7 @@
                   <Font name="Calibri" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="veiwBookingsButton" mnemonicParsing="false" onAction="#viewBookings" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="View Booking Summery">
+            <Button fx:id="veiwBookingsButton" mnemonicParsing="false" onAction="#viewBookings" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="View Booking Summary">
                <font>
                   <Font name="Calibri" size="18.0" />
                </font>
