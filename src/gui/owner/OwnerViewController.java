@@ -156,6 +156,20 @@ public class OwnerViewController {
     @FXML
     void viewWorkingTimes(ActionEvent event) {
     	selectButton(viewWorkingTimesButton);
+    	try
+    	{
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewWorkingTimes.fxml"));
+			mainScreen.getChildren().clear();
+			mainScreen.getChildren().add(loader.load());
+			OwnerViewWorkingTimesController controller = loader.getController();
+			//controller.initData(c, /*employee array goes here*/);
+			
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	
     }
     
     public void init(Stage main, Controller c, User u) {
