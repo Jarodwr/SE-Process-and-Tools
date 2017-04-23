@@ -64,6 +64,16 @@ public class OwnerViewController {
     @FXML
     void addBooking(ActionEvent event) {
     	selectButton(addBookingButton);
+    	
+    	try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddBooking.fxml"));
+			mainScreen.getChildren().clear();
+			mainScreen.getChildren().add(loader.load());
+			OwnerAddBooking addBookingController = loader.getController();
+			addBookingController.init(c);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
     @FXML

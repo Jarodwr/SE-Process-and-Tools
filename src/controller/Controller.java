@@ -601,7 +601,7 @@ public class Controller {
 
 		//validate all the user inputs
 		/* These need to also be in gui */
-		if(!utilities.validate(name, "[A-Za-z]+"))
+		if(!utilities.validate(name, "[A-Za-z -']+"))
   		{
 			view.failure("Add Employee", "Name is not Valid");
 			return false;
