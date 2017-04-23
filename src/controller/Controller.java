@@ -14,11 +14,13 @@ import java.util.logging.Logger;
 
 import application.GuiMain;
 import model.database.SQLiteConnection;
+import model.employee.Employee;
 import model.exceptions.ValidationException;
 import model.period.Booking;
 import model.period.Period;
 import model.service.Service;
 import model.timetable.Timetable;
+import model.users.Customer;
 import model.users.Owner;
 import model.users.User;
 import model.utility.Utility;
@@ -636,5 +638,34 @@ public class Controller {
 	
 	public Owner getOwner() {
 		return (Owner) this.activeUser;
+	}
+	
+	public String[] getAllEmployees() {
+		try {
+			Employee[] eList = utilities.getAllEmployees();
+			String[] employees = new String[eList.length];
+			
+			for (int i = 0; i < eList.length; i++)
+				employees[i] = eList[i].getEmployeeId() + ":" + eList[i].getUsername();
+			
+			return employees;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public String[] getAllCustomers() {
+		try {
+			Customer[] eList = utilities.getAllCustomers();
+			String[] employees = new String[eList.length];
+			
+			for (int i = 0; i < eList.length; i++)
+				employees[i] = eList[i].getUsername() + ":" + eList[i].getName();
+			
+			return employees;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

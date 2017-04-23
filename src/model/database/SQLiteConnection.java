@@ -306,6 +306,19 @@ public class SQLiteConnection {
 		}
 	}
 	
+	public static ResultSet getAllCustomers() throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Userinfo";
+		PreparedStatement pst = c.prepareStatement(query);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	
 	/**
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */

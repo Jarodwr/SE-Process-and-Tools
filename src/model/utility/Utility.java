@@ -346,7 +346,7 @@ public class Utility {
 		ArrayList<Employee> employees = new ArrayList<Employee>();
 		ResultSet rs = SQLiteConnection.getAllEmployees();
 		do {
-			employees.add(new Employee(rs.getString(1), rs.getString(2), null));
+			employees.add(new Employee(rs.getString(1), rs.getString(3), null));
 		} while (rs.next());
 		if (!employees.isEmpty()) {
 			Employee[] b = new Employee[employees.size()];
@@ -380,6 +380,24 @@ public class Utility {
 		}
 	}
 
+	public Customer[] getAllCustomers() throws SQLException{
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		ResultSet rs = SQLiteConnection.getAllCustomers();
+		do {
+			customers.add(new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+
+		} while (rs.next());
+		if (!customers.isEmpty()) {
+			Customer[] b = new Customer[customers.size()];
+			customers.toArray(b);
+			rs.close();
+			return b;
+		} else {
+			rs.close();
+			return null;
+		}
+	}
+	
 	public String[][] getWorkingTimes() 
 	{
 		String [][] employeelist = getEmployeeList();

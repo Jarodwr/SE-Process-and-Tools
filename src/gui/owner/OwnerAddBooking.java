@@ -1,5 +1,7 @@
 package gui.owner;
 
+import java.time.LocalDate;
+
 import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,13 +13,13 @@ import javafx.scene.layout.GridPane;
 public class OwnerAddBooking {
 
     @FXML
-    private ComboBox<?> Employee;
+    private ComboBox<String> Employee;
 
     @FXML
     private DatePicker Date;
 
     @FXML
-    private ComboBox<?> Customer;
+    private ComboBox<String> Customer;
 
     @FXML
     private GridPane Times;
@@ -43,7 +45,11 @@ public class OwnerAddBooking {
     }
     
     private void updateTable() {
-    	
+    	String employee = Employee.getSelectionModel().getSelectedItem();
+    	String customer = Customer.getSelectionModel().getSelectedItem();
+    	LocalDate date = Date.getValue();
+    	if (employee != null && customer != null && date != null)
+    		System.out.println(Employee.getSelectionModel().getSelectedItem() + "|" + Customer.getSelectionModel().getSelectedItem() + "|" + Date.getValue());
     }
     
     @FXML
@@ -55,6 +61,8 @@ public class OwnerAddBooking {
     	this.controller = controller;
 //    	String[] employeeList = controller.getEmployeeList();
 //    	String[] customerList = controller.getCustomerList();
+    	Employee.getItems().addAll(controller.getAllEmployees());
+    	Customer.getItems().addAll(controller.getAllCustomers());
     }
 
 }
