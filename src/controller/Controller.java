@@ -580,12 +580,9 @@ public class Controller {
 	 * @param user the active user which is an owner
 	 * @return true if it succeeds or false if it fails
 	 */
-	boolean addEmployee(String[] newEmployee, Owner user) 
+	public boolean addEmployee(String name, String phone, String address, Owner user) 
 	{
 		//set variables that are used for checking and creating the new employee
-		String name = newEmployee[0];
-		String phonenumber = newEmployee[1];
-		String address = newEmployee[2];
 		String business = user.getBusinessName();
 		String id = "";
 		//create a unique ID for the new employee
@@ -610,7 +607,7 @@ public class Controller {
 			return false;
 		}
 		
-		if(!utilities.validate(phonenumber, "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
+		if(!utilities.validate(phone, "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
 		{
 			view.failure("Add Employee", "Phone number is not Valid");
 			return false;
@@ -623,7 +620,7 @@ public class Controller {
 		}
 		
 		//try to ad the new employee to the database
-		if (utilities.addEmployeeToDatabase(id, business, name, address, phonenumber, 0))
+		if (utilities.addEmployeeToDatabase(id, business, name, address, phone, 0))
 		{ /* TODO add cases for staff and owners */
 			//if it works then add tell the user and return true
 			view.success("Add Employee", name + " was successfully added to the database");
@@ -635,5 +632,9 @@ public class Controller {
 			view.failure("Add Employee", "SQL Error");
 			return false;
 		}
+	}
+	
+	public Owner getOwner() {
+		return (Owner) this.activeUser;
 	}
 }

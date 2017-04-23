@@ -1,6 +1,5 @@
 package gui.owner;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -12,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.users.User;
@@ -78,6 +76,8 @@ public class OwnerViewController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployee.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
+			OwnerAddEmployee addEmployeeController = loader.getController();
+			addEmployeeController.init(c);
 			
     	}
     	catch(Exception e)

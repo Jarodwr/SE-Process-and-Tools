@@ -206,29 +206,29 @@ public class ControllerTest {
 	}
 	
 	//add new employee tests
-	@Test
-	public void addemployeetest01() 
-	{
-		assert(!c.addEmployee(testData14, user));
-	}
-	
-	@Test
-	public void addemployeetest02() 
-	{
-		assert(!c.addEmployee(testData15, user));
-	}
-	
-	@Test
-	public void addemployeetest03() 
-	{
-		assert(!c.addEmployee(testData16, user));
-	}
-	
-	@Test
-	public void addemployeetest04() 
-	{
-		assert(c.addEmployee(testData17, user));
-	}
+//	@Test
+//	public void addemployeetest01() 
+//	{
+//		assert(!c.addEmployee(testData14, user));
+//	}
+//	
+//	@Test
+//	public void addemployeetest02() 
+//	{
+//		assert(!c.addEmployee(testData15, user));
+//	}
+//	
+//	@Test
+//	public void addemployeetest03() 
+//	{
+//		assert(!c.addEmployee(testData16, user));
+//	}
+//	
+//	@Test
+//	public void addemployeetest04() 
+//	{
+//		assert(c.addEmployee(testData17, user));
+//	}
 	
 //	@Test
 //	public void testGetBookingsAfter01() {
