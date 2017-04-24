@@ -65,7 +65,7 @@ public class RegisterController{
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
 	        LoginController controller = loader.getController();
-	        controller.init(new Controller(new String[]{}));
+	        controller.init(new Controller());
 	        controller.initStage(main);
 	        main.setScene(scene);
 	        main.show();

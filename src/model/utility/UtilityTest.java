@@ -13,7 +13,7 @@ import model.users.User;
 public class UtilityTest {
 	
 	static String[] tempArgs = new String[]{""};
-	static Controller c = new Controller(tempArgs);
+//	static Controller c = new Controller(tempArgs);
 	static User user = new Owner("name", "pass", "SARJ's Milk Business", "Admin", "124 Address", "0412345678");
 	static Utility u = new Utility();
 

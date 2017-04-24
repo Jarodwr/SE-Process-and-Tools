@@ -54,15 +54,14 @@ public class OwnerAddBooking {
     
     @FXML
     void addBooking(ActionEvent event) {
-
+//    	controller.makeBooking(startTime, startTime + services.duration, customerUsername, employeeId, services);
+    	this.updateTable();
     }
     
     public void init(Controller controller) {
     	this.controller = controller;
-//    	String[] employeeList = controller.getEmployeeList();
-//    	String[] customerList = controller.getCustomerList();
-    	Employee.getItems().addAll(controller.getAllEmployees());
-    	Customer.getItems().addAll(controller.getAllCustomers());
+    	Employee.getItems().addAll(controller.getEmployeeList());
+    	Customer.getItems().addAll(controller.getCustomerList());
     }
 
 }

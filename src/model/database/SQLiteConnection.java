@@ -394,10 +394,12 @@ public class SQLiteConnection {
 	/**
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
-	public static boolean createBooking(int bookingId, String businessname, String customername, String employeeId, String unixstamp1, String unixstamp2, String data) {
+	public static boolean createBooking(String businessname, String customername, String employeeId, String unixstamp1, String unixstamp2, String data) {
+		
 		customername = customername.toLowerCase();
 		Connection c = getDBConnection();
 		try {
+			int bookingId = getNextAvailableId(getAllBookings(businessname), "bookingId");
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {

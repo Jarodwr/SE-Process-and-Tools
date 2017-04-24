@@ -24,9 +24,9 @@ import model.users.User;
  */
 public class Utility {
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	private Logger LOGGER = Logger.getLogger("main");
-	
+	private User currentUser = null;
 	
 	/**
 	 * @param username username being searched
@@ -80,9 +80,8 @@ public class Utility {
 	 */
 	public User authenticate(String username, String password) {
 		User found = searchUser(username.toLowerCase());
-		if (found != null && found.checkPassword(password)) {
+		if (found != null && found.checkPassword(password))
 			return found;
-		}
 		return null;
 	}
 	
@@ -274,9 +273,12 @@ public class Utility {
 	/**
 	 * Adds a new booking to the system, yet to be implemented till part B
 	 * @param booking
+	 * @return 
 	 */
-	public void addNewBooking(String[] booking) {
-		new Booking(booking[0], booking[1], false, booking[2], booking[3], Service.stringOfServicesToArrayList(booking[4]), true);
+	public boolean addNewBooking(String customerUsername, String employeeId, String start, String end, String services) {
+		//TODO: validation code
+		return SQLiteConnection.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
+//		new Booking(booking[0], booking[1], false, booking[2], booking[3], Service.stringOfServicesToArrayList(booking[4]), true);
 	}
 	
 	/**
@@ -414,5 +416,14 @@ public class Utility {
 		String[][] ftable = Arrays.copyOf(allShifts.toArray(), allShifts.toArray().length, String[][].class);
 		
 		return ftable;
+	}
+
+	public Owner getBusinessOwner() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public User getCurrentUser() {
+		return this.currentUser;
 	}
 }
