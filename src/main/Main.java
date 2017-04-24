@@ -80,10 +80,10 @@ public class Main {
 	}
 	
 	public static void debugCreateEmployees() {
-		SQLiteConnection.createEmployee(0, "SARJ's Milk Business", "Bob", "32 does not exists st", "0412345678", 0);
-		SQLiteConnection.createEmployee(1, "SARJ's Milk Business", "John", "32 does not exists st", "0412345678", 0);
-		SQLiteConnection.createEmployee(2, "SARJ's Milk Business", "Alex", "32 does not exists st", "0412345678", 0);
-		SQLiteConnection.createEmployee(5, "SARJ's Milk Business", "Greg", "32 does not exists st", "0412345678", 1);
+		SQLiteConnection.createEmployee("SARJ's Milk Business", "Bob", "32 does not exists st", "0412345678", 0);
+		SQLiteConnection.createEmployee("SARJ's Milk Business", "John", "32 does not exists st", "0412345678", 0);
+		SQLiteConnection.createEmployee("SARJ's Milk Business", "Alex", "32 does not exists st", "0412345678", 0);
+		SQLiteConnection.createEmployee("SARJ's Milk Business", "Greg", "32 does not exists st", "0412345678", 1);
 	}
 
 }

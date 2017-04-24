@@ -2,7 +2,7 @@ package model.utility;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -24,9 +24,10 @@ import model.users.User;
  */
 public class Utility {
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+//	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	private Logger LOGGER = Logger.getLogger("main");
 	private User currentUser = null;
+	private String currentBusiness = null;
 	
 	/**
 	 * @param username username being searched
@@ -60,18 +61,6 @@ public class Utility {
 		}
 		
 	}
-
-	public boolean validate(String string, String regex)
-	{
-		if(string.matches(regex))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 	
 	/**
 	 * @param username Requested user
@@ -104,17 +93,20 @@ public class Utility {
 			do {
 				employees.add(new String[] {rs.getString(1), rs.getString(3)});
 			} while (rs.next());
+			
 			rs.close();
+			
 		} catch (Exception e) {
 			LOGGER.warning(e.getMessage());
 		}
+		
 		if (!employees.isEmpty()) {
 			String[][] b = new String[employees.size()][];
 			employees.toArray(b);
 			return b;
-		} else {
-			return null;
 		}
+		
+		return null;
 	}
 	
 	/**
@@ -135,8 +127,8 @@ public class Utility {
 				t.mergeTimetable(rsTimetables.getString("availability"));
 				rsTimetables.close();
 			} while(rsEmployees.next());
-			rsEmployees.close();
 			
+			rsEmployees.close();
 			return t;
 		}
 		catch(SQLException e) {
@@ -216,44 +208,40 @@ public class Utility {
 	
 	public Timetable getAvailableBookingTimes() {
 		Employee[] employees;
-		try {
-			employees = getAllEmployees();
-			Timetable available = new Timetable();
-			for (Employee e : employees) {
-				try {
-					Timetable t = new Timetable();
-					ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), "0");
-					
-					if (shifts == null) {
-						continue;
-					}
-					do {
-						t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
-					} while (shifts.next());
-					shifts.close();
-					
-					ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
-					if (bookings == null) {
-						available.mergeTimetable(t);
-						continue;
-					}
-					do {
-						t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
-					} while (bookings.next());
-					bookings.close();
-					available.mergeTimetable(t);
-				} catch(SQLException exception) {
-					exception.printStackTrace();
-					LOGGER.warning(exception.getMessage());
-				}
 
+		employees = getAllEmployees();
+		Timetable available = new Timetable();
+		for (Employee e : employees) {
+			try {
+				Timetable t = new Timetable();
+				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), "0");
+				
+				if (shifts == null) {
+					continue;
+				}
+				do {
+					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
+				} while (shifts.next());
+				shifts.close();
+				
+				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+				if (bookings == null) {
+					available.mergeTimetable(t);
+					continue;
+				}
+				do {
+					t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
+				} while (bookings.next());
+				bookings.close();
+				available.mergeTimetable(t);
+			} catch(SQLException exception) {
+				exception.printStackTrace();
+				LOGGER.warning(exception.getMessage());
 			}
-			return available;
-		} catch (SQLException e1) {
-			LOGGER.warning(e1.getMessage());
-			return null;
+
 		}
-		
+		return available;
+
 	}
 	
 	/**
@@ -287,21 +275,26 @@ public class Utility {
 	 * @return Booking[]
 	 * @throws SQLException 
 	 */
-	public Booking[] bookingResultsetToArray(ResultSet rs) throws SQLException {
+	public Booking[] bookingResultsetToArray(ResultSet rs){
 
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
-		do {
-			bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
-		} while (rs.next());
-		if (!bookings.isEmpty()) {
-			Booking[] b = new Booking[bookings.size()];
-			bookings.toArray(b);
-			rs.close();
-			return b;
-		} else {
-			rs.close();
-			return new Booking[0];
+		try {
+			do {
+				bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
+			} while (rs.next());
+			if (!bookings.isEmpty()) {
+				Booking[] b = new Booking[bookings.size()];
+				bookings.toArray(b);
+				rs.close();
+				return b;
+			} else {
+				rs.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		
+		return new Booking[0];
 	}
 	
 	public Timetable getShift(String employeeId) {
@@ -336,28 +329,34 @@ public class Utility {
 	 * Creates an employee based off the information given by the owner.
 	 * @return If creation is a success, return true. Else return false.
 	 */
-	public boolean addEmployeeToDatabase(String id, String businessName, String name, String address, String phonenumber, int timetableID) {
-		return SQLiteConnection.createEmployee(Integer.parseInt(id), "", name, address, phonenumber, 0);
+	public boolean addNewEmployee(String id, String businessName, String name, String address, String phonenumber, int timetableID) {
+		return SQLiteConnection.createEmployee("", name, address, phonenumber, 0);
 	}
 	
 	/**
 	 * @return Array of all employees in the system.
 	 * @throws SQLException 
 	 */
-	public Employee[] getAllEmployees() throws SQLException {
+	public Employee[] getAllEmployees() {
 		ArrayList<Employee> employees = new ArrayList<Employee>();
-		ResultSet rs = SQLiteConnection.getAllEmployees();
-		do {
-			employees.add(new Employee(rs.getString(1), rs.getString(3), null));
-		} while (rs.next());
-		if (!employees.isEmpty()) {
-			Employee[] b = new Employee[employees.size()];
-			employees.toArray(b);
-			rs.close();
-			return b;
-		} else {
-			rs.close();
-			return new Employee[0];
+		ResultSet rs;
+		try {
+			rs = SQLiteConnection.getAllEmployees();
+			do {
+				employees.add(new Employee(rs.getString(1), rs.getString(3), null));
+			} while (rs.next());
+			if (!employees.isEmpty()) {
+				Employee[] b = new Employee[employees.size()];
+				employees.toArray(b);
+				rs.close();
+				return b;
+			} else {
+				rs.close();
+				return new Employee[0];
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
@@ -382,22 +381,26 @@ public class Utility {
 		}
 	}
 
-	public Customer[] getAllCustomers() throws SQLException{
+	public Customer[] getAllCustomers(){
 		ArrayList<Customer> customers = new ArrayList<Customer>();
-		ResultSet rs = SQLiteConnection.getAllCustomers();
-		do {
-			customers.add(new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+		try {
+			ResultSet rs = SQLiteConnection.getAllCustomers();
+			do {
+				customers.add(new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+			} while (rs.next());
+			
+			if (!customers.isEmpty()) {
+				Customer[] b = new Customer[customers.size()];
+				customers.toArray(b);
+				rs.close();
+				return b;
+			}
+			rs.close();
 
-		} while (rs.next());
-		if (!customers.isEmpty()) {
-			Customer[] b = new Customer[customers.size()];
-			customers.toArray(b);
-			rs.close();
-			return b;
-		} else {
-			rs.close();
-			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public String[][] getWorkingTimes() 
@@ -425,5 +428,13 @@ public class Utility {
 	
 	public User getCurrentUser() {
 		return this.currentUser;
+	}
+	
+	public String getCurrentBusiness() {
+		return this.currentBusiness;
+	}
+	
+	public void setCurrentBusiness(String business) {
+		this.currentBusiness = business;
 	}
 }

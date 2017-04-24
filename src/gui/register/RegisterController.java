@@ -13,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.exceptions.ValidationException;
-import model.users.User;
 import controller.Controller;
 import gui.login.LoginController;
 
@@ -78,16 +77,13 @@ public class RegisterController{
     @FXML
     void onRegisterClick(ActionEvent event) 
     {
-    	String [] details = {username.getText(), password.getText(), passwordCon.getText(), 
-    			name.getText(), address.getText(), number.getText()};
-    	try 
-    	{
-    		c.register(details);
+    	try {
+    		c.register(username.getText(), password.getText(), passwordCon.getText(), 
+        			name.getText(), address.getText(), number.getText());
 			registerErrorMessage.setStyle("-fx-text-fill: GREEN");
 			registerErrorMessage.setText("User created!!");
 			
-		} catch (ValidationException e) 
-    	{
+		} catch (ValidationException e) {
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
 	    	registerErrorMessage.setText(e.getMessage());
 		}    	

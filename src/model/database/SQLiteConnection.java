@@ -452,18 +452,12 @@ public class SQLiteConnection {
 	/**
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
-	public static boolean createEmployee(int employeeId, String businessname, String name, String address, String mobileno, int timetableId) {
+	public static boolean createEmployee(String businessname, String name, String address, String mobileno, int timetableId) {
 		Connection c = getDBConnection();
+		
 		try {
-			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
-
-			if (rs != null) {
-				rs.close();
-				return false;
-			}
-
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
-			ps.setInt(1, employeeId);
+			ps.setInt(1, SQLiteConnection.getNextAvailableId(getAllEmployees(), "employeeId"));
 			ps.setString(2, businessname);
 			ps.setString(3, name);
 			ps.setString(4, address);
@@ -471,7 +465,6 @@ public class SQLiteConnection {
 			ps.setInt(6, timetableId);
 			ps.executeUpdate();
 			ps.close();
-
 			return true;
 		} catch (SQLException e) {
 			LOGGER.warning(e.getMessage());

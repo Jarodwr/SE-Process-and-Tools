@@ -174,35 +174,35 @@ public class ControllerTest {
 	}
 	
 	//register a customer tests
-	@Test
-	public void customerregister01() throws ValidationException 
-	{
-		assert(c.register(testData9).equals(null));
-	}
-	
-	@Test
-	public void customerregister02() throws ValidationException 
-	{
-		assert(!c.register(testData10).equals(null));
-	}
-	
-	@Test
-	public void customerregister03() throws ValidationException 
-	{
-		assert(c.register(testData11).equals(null));
-	}
-	
-	@Test
-	public void customerregister04() throws ValidationException 
-	{
-		assert(c.register(testData12).equals(null));
-	}
-	
-	@Test
-	public void customerregister05() throws ValidationException 
-	{
-		assert(c.register(testData13).equals(null));
-	}
+//	@Test
+//	public void customerregister01() throws ValidationException 
+//	{
+//		assert(c.register(testData9).equals(null));
+//	}
+//	
+//	@Test
+//	public void customerregister02() throws ValidationException 
+//	{
+//		assert(!c.register(testData10).equals(null));
+//	}
+//	
+//	@Test
+//	public void customerregister03() throws ValidationException 
+//	{
+//		assert(c.register(testData11).equals(null));
+//	}
+//	
+//	@Test
+//	public void customerregister04() throws ValidationException 
+//	{
+//		assert(c.register(testData12).equals(null));
+//	}
+//	
+//	@Test
+//	public void customerregister05() throws ValidationException 
+//	{
+//		assert(c.register(testData13).equals(null));
+//	}
 	
 	//add new employee tests
 //	@Test

@@ -67,50 +67,49 @@ public class Controller {
 	 * @return returns the user created or null it it fails validation
 	 * @throws ValidationException 
 	 */
-	public User register(String[] userDetails) throws ValidationException	//TODO: move some of this into the model
-	{
+	public User register(String username, String password, String passwordConfirmation, String name, String address, String phoneno) throws ValidationException {
+		
 		//validate all the user input to match the regular expression
-		LOGGER.log(Level.FINE, "REGISTER: Registration details: " + Arrays.toString(userDetails));
-		if(!utilities.validate(userDetails[0], "[A-Za-z0-9]+"))
-  		{
+		
+		LOGGER.log(Level.FINE, "REGISTER: Registration details: "
+				+ "Username - " + username + 
+				", Password - " + password + 
+				", Name - " + name + 
+				", Address - " + address + 
+				", Phone Number - " + phoneno);
+		
+		if(!username.matches("[A-Za-z0-9]+"))	{
 			LOGGER.log(Level.FINE, "REGISTER: Failure, username does not match regex");
-//			view.failure("Register", "Username is not Valid");
 			throw new ValidationException("Username only contains letters and numbers!");
 		}
-		if(!userDetails[1].equals(userDetails[2]))
-		{
+		
+		if(!password.equals(passwordConfirmation)) {
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Passwords dont match");
-//			view.failure("Register", "Passwords dont match");
 			throw new ValidationException("Passwords do not match!");
 		}
-		if(!utilities.validate(userDetails[3], "[A-Za-z]+"))
-		{
+		
+		if(!name.matches("[A-Za-z]+")) {
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Name does not match regex");
-//			view.failure("Register", "Name is not Valid");
 			throw new ValidationException("Name must only contain letters!");
 		}
-		if(!utilities.validate(userDetails[4], "\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
-		{
+		
+		if(!address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
 			LOGGER.log(Level.FINE, "REGISTER: Failure, Address does not match regex");
-//			view.failure("Register", "Address is not Valid");
 			throw new ValidationException("Address is not valid!");
 		}
-		if(!utilities.validate(userDetails[5], "\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}"))
-		{
+		
+		if(!phoneno.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
 			LOGGER.log(Level.FINE, "REGISTER: Failure, phone number does not match regex");
-//			view.failure("Register", "Phone Number is not Valid");
 			throw new ValidationException("Mobile number is not valid!");
 		}
+		
 		// if they all pass then try to create a new user and return the created user
-		if (utilities.addCustomerToDatabase(userDetails[0].toLowerCase(), userDetails[1], userDetails[2], userDetails[3], userDetails[4])) {
+		if (utilities.addCustomerToDatabase(username.toLowerCase(), password, name, address, phoneno)) {
 			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");
-//			view.success("Register", userDetails[0] + " added to system");
-			return utilities.searchUser(userDetails[0]);
-		}
-		else //if not then inform the user that there is a user with that name and return null
-		{
+			return utilities.searchUser(username);
+		} else {
+			//	inform the user that there is a user with that name and return null
 			LOGGER.log(Level.FINE, "REGISTER: Failure, username already taken");
-//			view.failure("Register", "The entered username is already in the database");
 			throw new ValidationException("Username already exists in the system!");
 		}
 				
@@ -127,7 +126,6 @@ public class Controller {
 		//if there are no bookings in the future then alert the user and exit function
 		if (bookings.length == 0) {
 			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
-//			view.failure("View Booking Summaries", "No future bookings");
 			return null;
 		} else {
 			//create a 2d array to copy the booking details from the list of bookings
@@ -370,48 +368,36 @@ public class Controller {
 		}
 		
 		//validate all the user inputs
-		/* These need to also be in gui */
+
 		if(name.matches("[A-Za-z -']+") &&
 				phone.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
-				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
-			//try to add the new employee to the database
-			return utilities.addEmployeeToDatabase(id, business, name, address, phone, 0);
-		}
+				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
+			return utilities.addNewEmployee(id, business, name, address, phone, 0); //try to add the new employee to the database
 		return false;
-
+		
 	}
 	
-//	TODO: Move to model
 	public Owner getOwner() {
 		return utilities.getBusinessOwner();
 	}
 	
 	public String[] getEmployeeList() {
-		try {
-			Employee[] eList = utilities.getAllEmployees();
-			String[] employees = new String[eList.length];
-			
-			for (int i = 0; i < eList.length; i++)
-				employees[i] = eList[i].getEmployeeId() + ":" + eList[i].getUsername();
-			
-			return employees;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+		Employee[] eList = utilities.getAllEmployees();
+		String[] employees = new String[eList.length];
+		
+		for (int i = 0; i < eList.length; i++)
+			employees[i] = eList[i].getEmployeeId() + ":" + eList[i].getUsername();
+		
+		return employees;
 	}
 	public String[] getCustomerList() {
-		try {
-			Customer[] eList = utilities.getAllCustomers();
-			String[] employees = new String[eList.length];
-			
-			for (int i = 0; i < eList.length; i++)
-				employees[i] = eList[i].getUsername() + ":" + eList[i].getName();
-			
-			return employees;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+		Customer[] eList = utilities.getAllCustomers();
+		String[] employees = new String[eList.length];
+		
+		for (int i = 0; i < eList.length; i++)
+			employees[i] = eList[i].getUsername() + ":" + eList[i].getName();
+		
+		return employees;
+
 	}
 }

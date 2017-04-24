@@ -1,9 +1,5 @@
 package model.period;
 
-import static org.junit.Assert.*;
-
-import java.util.Calendar;
-
 import org.junit.Test;
 
 public class PeriodTest {

@@ -28,23 +28,25 @@ public class OwnerAddBooking {
     private Button AddBookingBtn;
 
     private Controller controller;
+    
+    private String customerUsername, employeeId, startTime, services;
 
     @FXML
     void customerSelect(ActionEvent event) {
-    	this.updateTable();
+    	this.update();
     }
 
     @FXML
     void dateSelect(ActionEvent event) {
-    	this.updateTable();
+    	this.update();
     }
 
     @FXML
     void employeeSelect(ActionEvent event) {
-    	this.updateTable();
+    	this.update();
     }
     
-    private void updateTable() {
+    private void update() {
     	String employee = Employee.getSelectionModel().getSelectedItem();
     	String customer = Customer.getSelectionModel().getSelectedItem();
     	LocalDate date = Date.getValue();
@@ -54,8 +56,8 @@ public class OwnerAddBooking {
     
     @FXML
     void addBooking(ActionEvent event) {
-//    	controller.makeBooking(startTime, startTime + services.duration, customerUsername, employeeId, services);
-    	this.updateTable();
+//    	controller.addNewBooking();
+    	this.update();
     }
     
     public void init(Controller controller) {
