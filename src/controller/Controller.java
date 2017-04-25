@@ -31,6 +31,8 @@ import model.utility.Utility;
 public class Controller {
 	private Logger LOGGER = Logger.getLogger("main");
 	private Utility utilities = new Utility();
+	
+	public static final String[] Weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 	private boolean addService(String name, String description, String duration) {
 		//TODO: Directly to utilities
