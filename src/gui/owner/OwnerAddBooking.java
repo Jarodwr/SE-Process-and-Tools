@@ -3,7 +3,6 @@ package gui.owner;
 import java.time.LocalDate;
 
 import controller.Controller;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -84,6 +84,11 @@ public class OwnerAddBooking {
     		pm.setStyle(availableStyle[0]);
     		addPaneListener(pm, i+24);
     		timeGrid.add(pm, i, 2);
+    		
+    		if (i%2 == 0) {
+    			timeGrid.add(new Label(Integer.toString(i/2)), i, 1);
+    			timeGrid.add(new Label(Integer.toString((i + 24)/2)), i, 3);
+    		}
     	}
     }
     
@@ -94,12 +99,10 @@ public class OwnerAddBooking {
 				p.setStyle(availableStyle[2]);
 				
 				Pane newpane = getTimePane(selected);
-				System.out.println(newpane);
 				if (newpane != null)
 					newpane.setStyle(availableStyle[0]);
 				
 				selected = i;
-				System.out.println(i/2);
 			}
     	});
     	
@@ -131,11 +134,11 @@ public class OwnerAddBooking {
     	} else {
     		return null;
     	}
-    	for (Node node : timeGrid.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+
+    	for (Node node : timeGrid.getChildren())
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row)
                 return (Pane)node;
-            }
-        }
+
         return null;
     }
 }

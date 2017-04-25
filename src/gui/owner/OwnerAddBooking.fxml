@@ -54,32 +54,6 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
-               <children>
-                  <Label text="0" GridPane.rowIndex="1" />
-                  <Label text="1" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label text="2" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                  <Label text="3" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                  <Label text="4" GridPane.columnIndex="8" GridPane.rowIndex="1" />
-                  <Label text="5" GridPane.columnIndex="10" GridPane.rowIndex="1" />
-                  <Label text="6" GridPane.columnIndex="12" GridPane.rowIndex="1" />
-                  <Label text="7" GridPane.columnIndex="14" GridPane.rowIndex="1" />
-                  <Label text="8" GridPane.columnIndex="16" GridPane.rowIndex="1" />
-                  <Label text="9" GridPane.columnIndex="18" GridPane.rowIndex="1" />
-                  <Label text="10" GridPane.columnIndex="20" GridPane.rowIndex="1" />
-                  <Label text="11" GridPane.columnIndex="22" GridPane.rowIndex="1" />
-                  <Label text="12" GridPane.rowIndex="3" />
-                  <Label text="13" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <Label text="14" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                  <Label text="15" GridPane.columnIndex="6" GridPane.rowIndex="3" />
-                  <Label text="16" GridPane.columnIndex="8" GridPane.rowIndex="3" />
-                  <Label text="17" GridPane.columnIndex="10" GridPane.rowIndex="3" />
-                  <Label text="18" GridPane.columnIndex="12" GridPane.rowIndex="3" />
-                  <Label text="19" GridPane.columnIndex="14" GridPane.rowIndex="3" />
-                  <Label text="20" GridPane.columnIndex="16" GridPane.rowIndex="3" />
-                  <Label text="21" GridPane.columnIndex="18" GridPane.rowIndex="3" />
-                  <Label text="22" GridPane.columnIndex="20" GridPane.rowIndex="3" />
-                  <Label text="23" GridPane.columnIndex="22" GridPane.rowIndex="3" />
-               </children>
             </GridPane>
          </children>
       </AnchorPane>
