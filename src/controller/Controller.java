@@ -198,7 +198,7 @@ public class Controller {
 	 */
 	//TODO: Need to expand this string array out
 	//TODO: Fix millisecond conversion
-	private boolean addWorkingTime(String employeeId, String rawDate, String startTime, String endTime) {
+	public boolean addWorkingTime(String employeeId, String rawDate, String startTime, String endTime) {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
