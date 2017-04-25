@@ -222,7 +222,7 @@ public class Controller {
 	/**
 	 * this method gets the working times of an employee and outputs it to the user if it exists
 	 */
-	private String[][] getWorkingTimes(String employeeId)
+	public String[][] getWorkingTimes(String employeeId)
 	{
 		//get the list of shifts for the employee
 		Timetable t = utilities.getShift(employeeId);

@@ -41,7 +41,13 @@ public class OwnerViewWorkingTimesController {
 
     @FXML
     void generateTimetable(ActionEvent event) {
-    	setWeek(1); //Temporary, sets the week to this week
+    	int output = week.getSelectionModel().getSelectedIndex();
+    	
+    	if (output != -1) {
+    		setWeek(output); //Set columns dates of the selected week
+    		
+    		String[][] employeeWorkingTimes = this.c.getWorkingTimes("1");
+    	}
     }
 
     @FXML
