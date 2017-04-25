@@ -123,54 +123,54 @@ public class ControllerTest {
 		testData17[3] = "s234567";
 	}
 	
-	//customer logining in test cases
-	@Test
-	public void customerlogin01() 
-	{
-		assert(c.login(testData1) == null);
-	}
-
-	@Test
-	public void customerlogin02() 
-	{
-		assert(c.login(testData2) == null);
-	}
-	
-	@Test
-	public void customerlogin03() 
-	{
-		assert(c.login(testData3) == null);
-	}
-	
-	@Test
-	public void customerlogin04() 
-	{
-		assert(!c.login(testData4).isOwner());
-	}
-	
-	//owner logging in test cases
-	@Test
-	public void ownererlogin01() 
-	{
-		assert(c.login(testData5) == null);
-	}
-	
-	@Test
-	public void ownererlogin02() 
-	{
-		assert(c.login(testData6) == null);
-	}
-	
-	@Test
-	public void ownererlogin03() 
-	{
-		assert(c.login(testData7) == null);
-	}
-	
-	@Test
-	public void ownererlogin04() 
-	{
-		assert(c.login(testData8).isOwner());
+//	//customer logining in test cases
+//	@Test
+//	public void customerlogin01() 
+//	{
+//		assert(c.login(testData1) == null);
+//	}
+//
+//	@Test
+//	public void customerlogin02() 
+//	{
+//		assert(c.login(testData2) == null);
+//	}
+//	
+//	@Test
+//	public void customerlogin03() 
+//	{
+//		assert(c.login(testData3) == null);
+//	}
+//	
+//	@Test
+//	public void customerlogin04() 
+//	{
+//		assert(!c.login(testData4).isOwner());
+//	}
+//	
+//	//owner logging in test cases
+//	@Test
+//	public void ownererlogin01() 
+//	{
+//		assert(c.login(testData5) == null);
+//	}
+//	
+//	@Test
+//	public void ownererlogin02() 
+//	{
+//		assert(c.login(testData6) == null);
+//	}
+//	
+//	@Test
+//	public void ownererlogin03() 
+//	{
+//		assert(c.login(testData7) == null);
+//	}
+//	
+//	@Test
+//	public void ownererlogin04() 
+//	{
+//		assert(c.login(testData8).isOwner());
 	}
 	
 	//register a customer tests
@@ -308,4 +308,4 @@ public class ControllerTest {
 //		}
 //	}
 	
-}
+//}

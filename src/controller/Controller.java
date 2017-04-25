@@ -49,10 +49,10 @@ public class Controller {
 	 * @param loginDetails [0] username, [1] password
 	 * @return the user if the authentication passes
 	 */
-	public User login(String[] loginDetails) {	//TODO: login within the model
-		LOGGER.log(Level.FINE, "LOGIN: Login details: " + Arrays.toString(loginDetails));
+	public User login(String username, String password) {
+		LOGGER.log(Level.FINE, "LOGIN: Login details: Username - " + username + ", Password - " + password);
 		//Search for the user in the arrayList and make sure the password is correct
-		User user = utilities.authenticate(loginDetails[0], loginDetails[1]);
+		User user = utilities.authenticate(username, password);
 		
 		if (user == null)
 			LOGGER.log(Level.FINE, "LOGIN: Failed");

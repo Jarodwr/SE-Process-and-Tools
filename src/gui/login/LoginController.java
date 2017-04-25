@@ -51,7 +51,7 @@ public class LoginController
     	loginErrorMessage.setText("Incorrect Username/Password");
     	
     	try {
-    		User u = this.c.login(new String[]{login_username.getText(), login_password.getText()});
+    		User u = this.c.login(login_username.getText(), login_password.getText());
 	    	if (u == null) { // fail
 	    		// display incorrect username or password screen
 	    	} else if (u.isOwner()) {
