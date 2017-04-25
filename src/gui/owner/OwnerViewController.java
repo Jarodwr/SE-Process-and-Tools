@@ -172,7 +172,10 @@ public class OwnerViewController {
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
 			OwnerViewWorkingTimesController controller = loader.getController();
-			//controller.initData(c, /*employee array goes here*/);
+			
+			String[] allEmployees = this.c.getEmployeeList();
+			
+			controller.initData(c, allEmployees);
 			
     	}
     	catch(Exception e)

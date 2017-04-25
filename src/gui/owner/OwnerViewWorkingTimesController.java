@@ -21,13 +21,13 @@ public class OwnerViewWorkingTimesController {
     private URL location;
 
     @FXML
-    private ComboBox<?> employeeList;
+    private ComboBox employeeList;
 
     @FXML
     private Button generateTimetableButton;
 
     @FXML
-    private ComboBox<?> week;
+    private ComboBox week;
     
     
 
@@ -48,18 +48,33 @@ public class OwnerViewWorkingTimesController {
     
     private Controller c;
     private Employee [] employees;
+    
+    public void init(Controller c) {
+		this.c = c;
+	}
 
     @FXML
     void initialize() {
         assert employeeList != null : "fx:id=\"employeeList\" was not injected: check your FXML file 'OwnerViewWorkingTimes.fxml'.";
         assert generateTimetableButton != null : "fx:id=\"generateTimetableButton\" was not injected: check your FXML file 'OwnerViewWorkingTimes.fxml'.";
         assert week != null : "fx:id=\"week\" was not injected: check your FXML file 'OwnerViewWorkingTimes.fxml'.";
+        
 
     }
-    
-    void initData(Controller c, Employee [] e)
+    //Employee [] e
+    void initData(Controller c, String[] Employees)
     {
     	this.c = c;
-    	employees = e;
+    	//employees = e;
+    	
+    	if (Employees[0] != null) {
+    		for (int i = 0; i < Employees.length; i++)
+    			employeeList.getItems().addAll(Employees[i]);
+    	}
+    	
+    	week.getItems().addAll("Past Week");
+    	week.getItems().addAll("Current Week");
+    	week.getItems().addAll("Next Week");
+    	
     }
 }
