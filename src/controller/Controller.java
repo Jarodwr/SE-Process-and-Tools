@@ -423,12 +423,14 @@ public class Controller {
 		Timetable shiftsTimetable = utilities.getShift(employeeId);
 		Booking[] bookings = utilities.getBookingsAfter(date);
 		
-		if (bookings != null && bookings.length > 0)
-			for (Booking b : bookings)
-				shiftsTimetable.removePeriod(b);
-
-		if (shiftsTimetable != null)
+		if (shiftsTimetable != null) {
+			if (bookings != null && bookings.length > 0) {
+				for (Booking b : bookings) {
+					shiftsTimetable.removePeriod(b);
+				}
+			}
 			return shiftsTimetable.toStringArray();
+		}	
 		return null;
 	}
 }
