@@ -100,6 +100,18 @@ public class OwnerViewController {
     void addService(ActionEvent event) 
     {
     	selectButton(AddServiceButton);
+    	
+    	try
+    	{
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddService.fxml"));
+			mainScreen.getChildren().clear();
+			mainScreen.getChildren().add(loader.load());
+			
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
     }
 
     @FXML
