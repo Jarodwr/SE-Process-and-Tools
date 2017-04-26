@@ -779,6 +779,21 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
+	public static ResultSet getAllServices(String businessName) throws SQLException{
+		
+		Connection c = getDBConnection();
+		
+		String query = "SELECT * FROM ServicesTable WHERE businessname = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessName);
+		ResultSet rs = pst.executeQuery();
+		
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	
 	public static boolean addService(String serviceName, int servicePrice, int serviceMinutes, String businessName) {
 		Connection c = getDBConnection();
 		try {

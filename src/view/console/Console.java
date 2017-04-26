@@ -759,17 +759,17 @@ int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the numbe
 		return null;
 	}
 
-	public ArrayList<Service> getServices() throws Exception {
-		ArrayList<Service> a = new ArrayList<Service>();
-		Service s;
-		try {
-			s = new Service( "Haircut", 20000, 1800, true);
-		} catch (Exception e) {
-			s = new Service( "Haircut", 20000, 1800, false);
-		}
-		a.add(s);
-		return null;
-	}
+//	public ArrayList<Service> getServices() throws Exception {
+//		ArrayList<Service> a = new ArrayList<Service>();
+//		Service s;
+//		try {
+//			s = new Service( "Haircut", 20000, 1800, true);
+//		} catch (Exception e) {
+//			s = new Service( "Haircut", 20000, 1800, false);
+//		}
+//		a.add(s);
+//		return null;
+//	}
 
 	public String[][] getAvailableTime() {
 		// TODO Auto-generated method stub

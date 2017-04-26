@@ -27,7 +27,7 @@ public class Utility {
 //	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	private Logger LOGGER = Logger.getLogger("main");
 	private User currentUser = null;
-	private String currentBusiness = null;
+	private String currentBusiness = "SARJ's Milk Business"; //TODO
 	
 	/**
 	 * @param username username being searched
@@ -436,5 +436,28 @@ public class Utility {
 	
 	public void setCurrentBusiness(String business) {
 		this.currentBusiness = business;
+	}
+
+	public Service[] getAllServices() {
+		
+		ArrayList<Service> services = new ArrayList<Service>();
+		try {
+			ResultSet rs = SQLiteConnection.getAllServices(currentBusiness);
+			do {
+				services.add(new Service(rs.getString("servicename"), Integer.parseInt(rs.getString("serviceprice")), Integer.parseInt(rs.getString("serviceminutes"))));
+			} while (rs.next());
+			
+			if (!services.isEmpty()) {
+				Service[] b = new Service[services.size()];
+				services.toArray(b);
+				rs.close();
+				return b;
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

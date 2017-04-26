@@ -8,29 +8,20 @@ import java.util.Iterator;
 import model.database.SQLiteConnection;
 
 public class Service {
-	public String serviceName;
-	public int priceOfService; // this is in cents
-	public int secondsOfService; // How long the service takes in seconds (time)
+	private String serviceName;
+	private int priceOfService; // this is in cents
+	private int duration; // How long the service takes in 30 minute periods
 	
-	public Service( String name, int price, int time, boolean createDBEntry){
+	public Service( String name, int price, int time){
 		this.priceOfService = price;
 		this.serviceName = name;
-		this.secondsOfService = time;
-		if (createDBEntry) {
-			try {
-				SQLiteConnection.getService(serviceName, "SARJ's Milk Business");
-			}
-			catch(SQLException e) {
-				
-			}
-			
-		}
+		this.duration = time;
 	}
 	
 	public Service(String name, String price, String time, boolean createDBEntry) throws Exception {
 		this.priceOfService = Integer.parseInt(price);
 		this.serviceName = name;
-		this.secondsOfService = Integer.parseInt(time);
+		this.duration = Integer.parseInt(time);
 		if (createDBEntry) {
 			try {
 				SQLiteConnection.getService(serviceName, "SARJ's Milk Business");
@@ -38,14 +29,13 @@ public class Service {
 			catch(SQLException e) {
 				
 			}
-			
 		}
 	}
 	
 	public String toString() {
 		int priceDollars = this.priceOfService / 100;
 		int priceCents = this.priceOfService - priceDollars;
-		return this.serviceName + " $" + priceDollars + "." + priceCents;
+		return this.serviceName + ":" + this.duration + ":$" + priceDollars + "." + priceCents;
 	}
 	
 	public static String arrayOfServicesToString(ArrayList<Service> services, boolean needBothNameAndPrice) {
@@ -71,7 +61,7 @@ public class Service {
 		Iterator<Service> iter = services.iterator();
 		while(iter.hasNext()) {
 			Service serv = iter.next();
-			i = serv.secondsOfService;
+			i = serv.duration;
 		}
 		return i;
 	}

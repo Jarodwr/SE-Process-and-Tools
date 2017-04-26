@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -401,5 +400,15 @@ public class Controller {
 		
 		return employees;
 
+	}
+
+	public String[] getServicesList() {
+		Service[] sList = utilities.getAllServices();
+		String[] services = new String[sList.length];
+		
+		for (int i = 0; i < sList.length; i++)
+			services[i] = sList[i].toString();
+		
+		return services;
 	}
 }
