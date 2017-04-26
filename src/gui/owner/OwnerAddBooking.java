@@ -1,6 +1,7 @@
 package gui.owner;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import controller.Controller;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -25,7 +27,10 @@ public class OwnerAddBooking {
 
     @FXML
     private ComboBox<String> Customer;
-
+   
+    @FXML
+    private MenuButton Services;
+    
     @FXML
     private GridPane timeGrid;
 
@@ -39,7 +44,8 @@ public class OwnerAddBooking {
     private String[] availableStyle = new String[]{"-fx-background-color: #ffffff","-fx-background-color: #eeeeee", "-fx-background-color: #cccccc"};
     private String[] UnavailableStyle = new String[]{"-fx-background-color: #ff0000","-fx-background-color: #cc0000"};
     
-    private int selected = 49;
+    private ArrayList<Integer> selected = new ArrayList<Integer>();
+    private int duration = 3;	//hardcoded rn
 
     @FXML
     void customerSelect(ActionEvent event) {
@@ -54,6 +60,11 @@ public class OwnerAddBooking {
     @FXML
     void employeeSelect(ActionEvent event) {
     	this.update();
+    }
+    
+    @FXML
+    void servicesSelect(ActionEvent event) {
+
     }
     
     private void update() {
@@ -98,27 +109,32 @@ public class OwnerAddBooking {
 			public void handle(MouseEvent arg0) {
 				p.setStyle(availableStyle[2]);
 				
-				Pane newpane = getTimePane(selected);
-				if (newpane != null)
-					newpane.setStyle(availableStyle[0]);
-				
-				selected = i;
+				for (int j : selected)
+					getTimePane(j).setStyle(availableStyle[0]);
+
+				selected.removeAll(selected);
+				for (int j = i; j <= Math.min(i + duration, 47); j++) {
+					selected.add(j);
+					getTimePane(j).setStyle(availableStyle[2]);
+				}
 			}
     	});
     	
     	p.onMouseEnteredProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				if (i != selected)
-					p.setStyle(availableStyle[1]);
+				for (int j = i; j < Math.min(i + duration + 1, 48); j++)
+					if (!selected.contains(j))
+						getTimePane(j).setStyle(availableStyle[1]);
 			}
     	});
     	
     	p.onMouseExitedProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				if (i != selected)
-					p.setStyle(availableStyle[0]);
+				for (int j = i; j < Math.min(i + duration + 1, 48); j++)
+					if (!selected.contains(j))
+						getTimePane(j).setStyle(availableStyle[0]);
 			}
     	});
     }
