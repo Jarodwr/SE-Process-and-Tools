@@ -119,7 +119,7 @@ public class Controller {
 	/**
 	 * This method shows the list of all future bookings in the system
 	 */
-	private String[][] viewCurrentBookings()
+	private String[][] getCurrentBookings()
 	{
 		//gets the bookings list of all the booking from the time the method is called
 		Booking[] bookings = utilities.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
@@ -410,5 +410,25 @@ public class Controller {
 			services[i] = sList[i].toString();
 		
 		return services;
+	}
+	
+	/**
+	 * 
+	 * @param employeeId	employee in focus
+	 * @param date	day being observed
+	 * @return	Timetable in string[][] format
+	 */
+	public String[][] getEmployeeBookingAvailability(String employeeId, Date date) {
+		//gets the bookings list of all the booking from the time the method is called
+		Timetable shiftsTimetable = utilities.getShift(employeeId);
+		Booking[] bookings = utilities.getBookingsAfter(date);
+		
+		if (bookings != null && bookings.length > 0)
+			for (Booking b : bookings)
+				shiftsTimetable.removePeriod(b);
+
+		if (shiftsTimetable != null)
+			return shiftsTimetable.toStringArray();
+		return null;
 	}
 }

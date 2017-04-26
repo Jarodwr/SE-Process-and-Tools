@@ -251,11 +251,13 @@ public class Utility {
 	 */
 	public Booking[] getBookingsAfter(Date date) {
 		try {
-			return bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart(date.getTime() / 1000));
+			ResultSet rs = SQLiteConnection.getBookingsByPeriodStart(date.getTime() / 1000);
+			if (rs != null)
+				return bookingResultsetToArray(rs);
 		} catch (SQLException e) {
 			LOGGER.warning(e.getMessage());
-			return null;
 		}
+		return null;
 	}
 	
 	/**
