@@ -194,6 +194,9 @@ public class OwnerAddBooking {
     				if (a.isSelected())
         				services.add(name);
             	}
+            	if (duration == 0)
+            		duration = 1;
+
             	update();
             }
         });
