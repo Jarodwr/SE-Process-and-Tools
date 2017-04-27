@@ -104,8 +104,12 @@ public class OwnerViewController {
     	try
     	{
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddService.fxml"));
+			
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
+
+			OwnerAddService controller = loader.getController();
+			controller.init(this.c);
 			
     	}
     	catch(Exception e)
@@ -130,6 +134,7 @@ public class OwnerViewController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployeeWorkingTimes.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
+			
 			
     	}
     	catch(Exception e)
