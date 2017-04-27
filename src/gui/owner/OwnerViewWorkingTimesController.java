@@ -34,6 +34,8 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.util.Callback;
 
 public class OwnerViewWorkingTimesController {
+	
+	private String[] allEmployees;
 
     @FXML
     private ResourceBundle resources;
@@ -59,7 +61,7 @@ public class OwnerViewWorkingTimesController {
     void generateTimetable(ActionEvent event) {
     	int selectedWeek = week.getSelectionModel().getSelectedIndex(); // Get the index value of the selected week in the comboBox
     	int selectedEmployeeIndex = employeeList.getSelectionModel().getSelectedIndex(); // Get the index value of the selected week in the comboBox
-    	String selectedEmployee = (String) employeeList.getValue();
+    	String selectedEmployee = allEmployees[selectedEmployeeIndex];//(String) employeeList.getValue();
     	String employeeId = "";
     	
     	if (selectedEmployeeIndex != -1 && selectedWeek != -1) {
@@ -122,17 +124,28 @@ public class OwnerViewWorkingTimesController {
     }
     void initData(Controller c, String[] Employees)
     {
+    	
     	this.c = c;
+    	
+    	allEmployees = Employees;
     	
     	//Default table placeholder
     	tableView.setPlaceholder(new Label("Please select an employee and the week of interest."));
     	
-    	//ONLY do this once
+    	//FIXME Remove this before submission. Only for test purposes
     	this.c.addWorkingTime("0", "27/04/2017", "10:00", "11:00");
     	
+    	int idPos;
+    	
     	if (Employees[0] != null) {
-    		for (int i = 0; i < Employees.length; i++)
-    			employeeList.getItems().addAll(Employees[i]);
+    		for (int i = 0; i < Employees.length; i++) {
+    			idPos = Employees[i].indexOf(":"); //Check position of ID and remove it
+    			
+    			
+    			
+    			if (idPos != -1) //Make sure we found an id before continuing
+    				employeeList.getItems().addAll(Employees[i].substring(idPos+1 ,Employees[i].length())); //Add employee to the drop downlist
+    		}
     	}
     	
     	week.getItems().addAll("Past Week");
@@ -152,13 +165,12 @@ public class OwnerViewWorkingTimesController {
 
         String[][] employeeWorkingTimes = this.c.getWorkingTimes(employeeID);
         
-        System.out.println("Employee: "+employeeWorkingTimes);
-        
         if (employeeWorkingTimes == null) {
         	tableView.setPlaceholder(new Label(employeeName+" has no registered working times"));
         } else {
         
-        String [][] convertedWorkingTimes = getWeekDays(employeeWorkingTimes,this.c.Weekdays,weekNo);
+        
+        	String [][] convertedWorkingTimes = getWeekDays(employeeWorkingTimes,this.c.Weekdays,weekNo);
         
         ObservableList<String[]> data = FXCollections.observableArrayList();
         data.addAll(Arrays.asList(convertedWorkingTimes));
@@ -208,14 +220,23 @@ public class OwnerViewWorkingTimesController {
 		for (int i=0;i < DayPeriodCounts.length; i++) {
 			DayPeriodCounts[i] = 0; //initialize all the days to 0 count of working periods
 		}
-		
+		String dayTemp;
+		Long tempLong;
+		Long tempStartOfWeek;
 		String ConvertedDay; //Used to store a day name converted from Unix Seconds
 		int dayWithMostWorkingHours = 0;
 		
 		for (int i=0;i < contents.length; i++) { //Find out the maximum number of working hours/period per day
-			///1000
-					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0])  )); //Convert to day from milliseconds to seconds then day
-					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]))); //Convert to day from milliseconds to seconds then day
+			
+					//ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0])/1000  )); //Convert to day from milliseconds to seconds then day
+					//Convert to day from milliseconds to seconds then day
+					
+					dayTemp = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]))); 
+					tempLong = Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]);
+					tempStartOfWeek = Period.getCurrentWeekBeginning(contents[i][0]);
+					System.out.println("Subtraction LONG: "+tempLong+" Un-modified Seconds: "+contents[i][0]+" Start of Week: "+tempStartOfWeek+" CONVERTED To Day: "+dayTemp);
+					
+					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]))); 
 					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
 					
 						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
