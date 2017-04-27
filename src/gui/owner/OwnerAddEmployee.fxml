@@ -24,17 +24,17 @@
                         <Font name="Calibri" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="name" layoutX="232.0" layoutY="123.0" promptText="Name">
+                  <TextField fx:id="name" layoutX="232.0" layoutY="123.0" onKeyReleased="#nameChange" promptText="Name">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="phone" layoutX="232.0" layoutY="169.0" promptText="Phone Number">
+                  <TextField fx:id="phone" layoutX="232.0" layoutY="169.0" onKeyReleased="#phoneChange" promptText="Phone Number">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="address" layoutX="232.0" layoutY="214.0" promptText="Address">
+                  <TextField fx:id="address" layoutX="232.0" layoutY="214.0" onKeyReleased="#addressChange" promptText="Address">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
