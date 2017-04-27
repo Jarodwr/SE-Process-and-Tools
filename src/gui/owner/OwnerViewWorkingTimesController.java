@@ -61,10 +61,11 @@ public class OwnerViewWorkingTimesController {
     void generateTimetable(ActionEvent event) {
     	int selectedWeek = week.getSelectionModel().getSelectedIndex(); // Get the index value of the selected week in the comboBox
     	int selectedEmployeeIndex = employeeList.getSelectionModel().getSelectedIndex(); // Get the index value of the selected week in the comboBox
-    	String selectedEmployee = allEmployees[selectedEmployeeIndex];//(String) employeeList.getValue();
     	String employeeId = "";
     	
     	if (selectedEmployeeIndex != -1 && selectedWeek != -1) {
+    		String selectedEmployee = allEmployees[selectedEmployeeIndex];//(String) employeeList.getValue();
+        	
     	
     	int idSplit = selectedEmployee.indexOf(":");
 
