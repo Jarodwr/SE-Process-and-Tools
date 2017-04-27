@@ -47,9 +47,6 @@ public class OwnerViewWorkingTimesController {
     private ComboBox employeeList;
 
     @FXML
-    private Button generateTimetableButton;
-
-    @FXML
     private ComboBox week;
     
     @FXML
@@ -61,10 +58,11 @@ public class OwnerViewWorkingTimesController {
     void generateTimetable(ActionEvent event) {
     	int selectedWeek = week.getSelectionModel().getSelectedIndex(); // Get the index value of the selected week in the comboBox
     	int selectedEmployeeIndex = employeeList.getSelectionModel().getSelectedIndex(); // Get the index value of the selected week in the comboBox
-    	String selectedEmployee = allEmployees[selectedEmployeeIndex];//(String) employeeList.getValue();
     	String employeeId = "";
     	
     	if (selectedEmployeeIndex != -1 && selectedWeek != -1) {
+    		String selectedEmployee = allEmployees[selectedEmployeeIndex];
+        	
     	
     	int idSplit = selectedEmployee.indexOf(":");
 
@@ -96,6 +94,8 @@ public class OwnerViewWorkingTimesController {
     		
     	}
     }
+    
+    
 
     @FXML
     void updateAvailability(MouseDragEvent event) {
@@ -117,7 +117,6 @@ public class OwnerViewWorkingTimesController {
     @FXML
     void initialize() {
         assert employeeList != null : "fx:id=\"employeeList\" was not injected: check your FXML file 'OwnerViewWorkingTimes.fxml'.";
-        assert generateTimetableButton != null : "fx:id=\"generateTimetableButton\" was not injected: check your FXML file 'OwnerViewWorkingTimes.fxml'.";
         assert week != null : "fx:id=\"week\" was not injected: check your FXML file 'OwnerViewWorkingTimes.fxml'.";
         
 
