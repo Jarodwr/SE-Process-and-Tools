@@ -29,11 +29,11 @@ import model.utility.Utility;
  */
 public class Controller {
 	private Logger LOGGER = Logger.getLogger("main");
-	private Utility utilities = new Utility();
+	public Utility utilities = new Utility();
 	
 	public static final String[] Weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
-	private boolean addService(String name, String description, String duration) {
+	public boolean addService(String name, int priceInCents, String duration) {
 		//TODO: Directly to utilities
 //		for(String[] s : services) {
 //				new Service(s[0], Integer.parseInt(s[1]), Integer.parseInt(s[2]), true);

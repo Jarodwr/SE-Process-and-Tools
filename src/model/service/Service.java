@@ -8,7 +8,7 @@ import java.util.Iterator;
 import model.database.SQLiteConnection;
 
 public class Service {
-	private String serviceName;
+	public String serviceName;
 	private int priceOfService; // this is in cents
 	private int duration; // How long the service takes in 30 minute periods
 	
