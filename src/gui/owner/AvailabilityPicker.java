@@ -66,7 +66,7 @@ public class AvailabilityPicker extends TimePicker {
     	return timeperiods;
     }
     
-    public void setAvailability(String[][] times, String day) {
+    public void setDefaultAvailability(String[][] times, String day) {
     	int lowerBoundsDay = Period.convertDayToSeconds(day);
     	int upperBoundsDay = lowerBoundsDay + 86400;
     	

@@ -161,5 +161,20 @@ public class TimePicker {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void deselectAll() {
+		String[] style = getAppropriateStyle(0);
+    	for(int i :selected) {
+    		getTimePane(i).setStyle(style[1]);
+    	}
+    	selected.clear();
+    	
+		
+	}
+
+	public void setDefaultAvailability(String[][] availabilities, String currentDay) {
+		// TODO Auto-generated method stub
+		
+	}
     	
 }

@@ -94,7 +94,12 @@ public class OwnerAddEmployeeWorkingTimesController {
     }
 
     private void update() {
-    	//String[][] times
+    	time.deselectAll();
+    	if (employeeId != null) {
+       	 	String[][] availabilities = c.utilities.getEmployeeAvailability(employeeId).toStringArray();
+       	 	time.setDefaultAvailability(availabilities, currentDay);
+    	}
+    	
 	}
 
 	@FXML
