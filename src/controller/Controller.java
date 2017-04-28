@@ -317,7 +317,7 @@ public class Controller {
 	/**
 	 * This method shows the availability for a particular employee
 	 */
-	private String[][] getWorkerAvailability(String employeeId) {
+	public String[][] getWorkerAvailability(String employeeId) {
 		try {
 			//get the employee ID of the selected employee to view their availability
 			//go through a loop till the user chooses to exit to the menu

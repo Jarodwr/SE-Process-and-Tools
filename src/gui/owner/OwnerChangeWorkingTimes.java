@@ -1,6 +1,7 @@
 package gui.owner;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import controller.Controller;
 import javafx.event.ActionEvent;
@@ -25,7 +26,10 @@ public class OwnerChangeWorkingTimes {
     @FXML
     private Pane timeMenu;
     
-    private TimePicker time;
+    private AvailabilityPicker time;
+    
+    private String employeeId;
+    private LocalDate date;
     
     private Controller controller;
 
@@ -62,7 +66,17 @@ public class OwnerChangeWorkingTimes {
     }
     
     private void update() {
-    	
+    	if (date != null && employeeId != null) {
+    		long dayInMillis = 86400000;
+        	String[][] times = controller.getWorkerAvailability(employeeId);
+        	if (times != null && times.length > 0)
+        		time.setAvailability(times, date);
+        	submit.setDisable(false);
+
+
+    	} else {
+    		submit.setDisable(false);
+    	}
     }
 
 }
