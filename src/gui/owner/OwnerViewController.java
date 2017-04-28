@@ -122,6 +122,20 @@ public class OwnerViewController {
     void addWorkingTimes(ActionEvent event) 
     {
     	selectButton(addWorkingTimesButton);
+    	
+    	try
+    	{
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerChangeWorkingTimes.fxml"));
+			mainScreen.getChildren().clear();
+			mainScreen.getChildren().add(loader.load());
+			OwnerChangeWorkingTimes controller = loader.getController();
+		    controller.init(c);
+			
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
     }
 
     @FXML

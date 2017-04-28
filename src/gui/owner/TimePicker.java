@@ -66,7 +66,7 @@ public class TimePicker {
 			boolean success = false;
 			
     		for (String[] p : times) {
-    			if (Long.parseLong(p[0]) > startTime && Long.parseLong(p[1]) < endTime) {
+    			if (Long.parseLong(p[0]) >= startTime && Long.parseLong(p[1]) <= endTime) {
     				success = true;
     				break;
     			}
