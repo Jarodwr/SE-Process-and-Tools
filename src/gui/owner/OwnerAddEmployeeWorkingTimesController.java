@@ -2,6 +2,7 @@ package gui.owner;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import controller.Controller;
 import javafx.event.ActionEvent;
@@ -17,6 +18,8 @@ import javafx.scene.layout.Pane;
 public class OwnerAddEmployeeWorkingTimesController {
 	
 	private Controller c;
+	
+	private String currentDay = "Monday";
 
 	private ArrayList<String> mondayTimes = new ArrayList<String>();
 	private ArrayList<String> tuesdayTimes = new ArrayList<String>();
@@ -25,6 +28,11 @@ public class OwnerAddEmployeeWorkingTimesController {
 	private ArrayList<String> fridayTimes = new ArrayList<String>();
 	private ArrayList<String> saturdayTimes = new ArrayList<String>();
 	private ArrayList<String> sundayTimes = new ArrayList<String>();
+	
+	private ArrayList<ArrayList<String>> fullListOfDays = new ArrayList<ArrayList<String>>();
+	
+											
+	private final String[] listOfDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     @FXML
     private ComboBox<String> pickEmployee;
@@ -44,9 +52,20 @@ public class OwnerAddEmployeeWorkingTimesController {
     
 
     private TimePicker time;
+
+	private String employeeId;
     
     void init(Controller c) {
     	this.c = c;
+   
+    	
+    	fullListOfDays.add(mondayTimes);
+    	fullListOfDays.add(tuesdayTimes);
+    	fullListOfDays.add(wednesdayTimes);
+    	fullListOfDays.add(thursdayTimes);
+    	fullListOfDays.add(fridayTimes);
+    	fullListOfDays.add(saturdayTimes);
+    	fullListOfDays.add(sundayTimes);
     	
     	pickEmployee.getItems().addAll(c.getEmployeeList());
     	pickDay.getItems().addAll("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
@@ -65,17 +84,34 @@ public class OwnerAddEmployeeWorkingTimesController {
 
     @FXML
     void submit(ActionEvent event) {
-    	System.out.println(time.saveTimes().toString());
+    	System.out.println(time.saveTimes("Monday").toString());
     }
 
     @FXML
-    void updateAvailability(MouseDragEvent event) {
-
+    void updateAvailability(ActionEvent event) {
+    	employeeId = new StringTokenizer(pickEmployee.getSelectionModel().getSelectedItem(), ":").nextToken();
+    	this.update();
     }
 
-    @FXML
-    void updateCurrentAvailability(InputMethodEvent event) {
+    private void update() {
+    	//String[][] times
+	}
 
+	@FXML
+    void updateCurrentAvailability(ActionEvent event) {
+		fullListOfDays.get(whichDay(currentDay)).clear();
+		fullListOfDays.get(whichDay(currentDay)).addAll(time.saveTimes(currentDay));
+		currentDay = pickDay.getSelectionModel().getSelectedItem();
+    	this.update();
     }
+	
+	int whichDay(String day) {
+		for(int i = 0; i < 6; i++) {
+			if (listOfDays[i] == day) {
+				return i;
+			}
+		}
+		return 0;
+	}
 
 }

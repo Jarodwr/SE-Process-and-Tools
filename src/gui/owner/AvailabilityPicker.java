@@ -1,5 +1,6 @@
 package gui.owner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -7,8 +8,12 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import model.period.Period;
 
 public class AvailabilityPicker extends TimePicker {
+	
+
+	private final String[] listOfDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
 
     private String[] availableStyle = new String[]{"-fx-background-color: #27e833","-fx-background-color: #ff0000", "-fx-background-color: #27e833"};
@@ -35,28 +40,53 @@ public class AvailabilityPicker extends TimePicker {
     	}
     }
     
-    public ArrayList<String> saveTimes() {
+    public ArrayList<String> saveTimes(String day) {
+    	int howManySecondsInWeekSoFar = Period.convertDayToSeconds(day);
     	Collections.sort(selected);
     	ArrayList<String> timeperiods = new ArrayList<String>();
     	boolean oddAvailabilities = false;
     	if (selected.size() == 0) return null; // Not available at all 
-    	if (selected.size() % 2 != 0) oddAvailabilities = true;
-    	int j = 1;
+    	int k = 0;
     	for(int i : selected) {
-    		if (j%2 == 0){  // end of period 
-    			j++;
-    			continue;
+    		if (k > i) continue;
+    		k = i;
+    		while(selected.contains(++k)) {
     		}
-    		if (oddAvailabilities && j == selected.size()) {
-    			timeperiods.add(Integer.toString( selected.get(j - 1)*30*60 )  + "-" + Integer.toString( (selected.get(j - 1)*30*60 + 30*60) ) );
-    			break;
+    		if (k == 0) {
+    			timeperiods.add(Integer.toString(howManySecondsInWeekSoFar + i*30*60 ) ) ;
+    			timeperiods.add(Integer.toString(howManySecondsInWeekSoFar + i*30*60 + 30*60) ) ;
+    			
     		}
-    		timeperiods.add(Integer.toString( (selected.get(j)*30*60) ) + "-" + Integer.toString( (selected.get(j)*30*60) ) );
+    		else {
+        		timeperiods.add(Integer.toString(howManySecondsInWeekSoFar + i*30*60) ) ;
+        		timeperiods.add(Integer.toString(howManySecondsInWeekSoFar + k*30*60) );
+    		}
     		
-    		j++;
     	}
     	return timeperiods;
     }
+    
+    public void setAvailability(String[][] times, String day) {
+    	int lowerBoundsDay = Period.convertDayToSeconds(day);
+    	int upperBoundsDay = lowerBoundsDay + 86400;
+    	
+		String[] style = getAppropriateStyle(0);
+		
+    	selected.clear();
+    	for(int i = 0; i < times.length; i++) {
+    		int time1 = Integer.parseInt(times[i][0])/30; 
+    		int time2 = Integer.parseInt(times[i][1])/30;
+    		if (time1 < lowerBoundsDay || time1 > upperBoundsDay) {
+    			continue;
+    		}
+    		for(int j = time1; j <= time2; j++) {
+    			selected.add(j);
+    			getTimePane(j).setStyle(style[0]);
+    		}
+    	}
+
+    }
+    
     
     
     private void addPaneListener(Pane p, int i) {

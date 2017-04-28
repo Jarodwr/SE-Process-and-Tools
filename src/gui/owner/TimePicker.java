@@ -157,7 +157,7 @@ public class TimePicker {
     	return unavailableStyle;
     }
 
-	public ArrayList<String> saveTimes() {
+	public ArrayList<String> saveTimes(String string) {
 		// TODO Auto-generated method stub
 		return null;
 	}
