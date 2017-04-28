@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -27,13 +26,8 @@
                         <Font name="Calibri" size="18.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="employeeList" layoutX="14.0" layoutY="102.0" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="169.0" promptText="Select Employee" />
-                  <Button fx:id="generateTimetableButton" layoutX="506.0" layoutY="101.0" mnemonicParsing="false" onAction="#generateTimetable" prefHeight="27.0" prefWidth="134.0" style="-fx-background-color: #ff471a;" text="Generate Timetable" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font name="Calibri" size="13.0" />
-                     </font>
-                  </Button>
-                  <ComboBox fx:id="week" layoutX="208.0" layoutY="102.0" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="114.0" promptText="Select Week" />
+                  <ComboBox fx:id="employeeList" layoutX="141.0" layoutY="102.0" onAction="#generateTimetable" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="169.0" promptText="Select Employee" />
+                  <ComboBox fx:id="week" layoutX="333.0" layoutY="102.0" onAction="#generateTimetable" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="120.0" promptText="Select Week" />
                   <ScrollPane layoutX="14.0" layoutY="135.0" prefHeight="235.0" prefWidth="628.0">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="216.0" prefWidth="1050.0">
