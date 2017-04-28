@@ -34,13 +34,8 @@ public class Controller {
 	public static final String[] Weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 	public boolean addService(String name, int priceInCents, String duration) {
-		System.out.println(name + ", " + priceInCents + ", " + duration);
-		//TODO: Directly to utilities
-//		for(String[] s : services) {
-//				new Service(s[0], Integer.parseInt(s[1]), Integer.parseInt(s[2]), true);
-//			
-//		}
-		return false;
+		
+		return SQLiteConnection.addService(name, priceInCents, Integer.parseInt(duration), utilities.getCurrentBusiness());
 	}
 
 	/**
