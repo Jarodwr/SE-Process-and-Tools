@@ -14,7 +14,7 @@ public class AvailabilityPicker extends TimePicker {
 	
 
 	private final String[] listOfDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-	
+	private boolean enabled = true;
 
     private String[] availableStyle = new String[]{"-fx-background-color: #27e833","-fx-background-color: #ff0000", "-fx-background-color: #27e833"};
     
@@ -93,24 +93,26 @@ public class AvailabilityPicker extends TimePicker {
     	p.onMouseClickedProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				String[] style = getAppropriateStyle(i);
-				
-				for (int j = i; j < Math.min(i + 1, 48); j++) {
-					if (selected.contains(j)) {
-						for(int k = 0; k < selected.size(); k++) {
-							if (selected.get(k) == j) {
-								System.out.println(selected.toString());
-								selected.remove(k);
+				if (enabled) {
+					String[] style = getAppropriateStyle(i);
+					
+					for (int j = i; j < Math.min(i + 1, 48); j++) {
+						if (selected.contains(j)) {
+							for(int k = 0; k < selected.size(); k++) {
+								if (selected.get(k) == j) {
+									System.out.println(selected.toString());
+									selected.remove(k);
+								}
 							}
+							getTimePane(j).setStyle(style[1]);
 						}
-						getTimePane(j).setStyle(style[1]);
-					}
-					else {
-
-						selected.add(j);
-
-						System.out.println(selected.toString());
-						getTimePane(j).setStyle(style[0]);
+						else {
+	
+							selected.add(j);
+	
+							System.out.println(selected.toString());
+							getTimePane(j).setStyle(style[0]);
+						}
 					}
 				}
 			}
@@ -140,6 +142,10 @@ public class AvailabilityPicker extends TimePicker {
     
     String[] getAppropriateStyle(int i) {
     			return availableStyle;
+    }
+    
+    public void setEnabled(boolean enabled) {
+    	this.enabled = enabled;
     }
 }
     

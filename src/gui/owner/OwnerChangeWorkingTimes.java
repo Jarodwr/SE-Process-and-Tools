@@ -2,6 +2,7 @@ package gui.owner;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.StringTokenizer;
 
 import controller.Controller;
 import javafx.event.ActionEvent;
@@ -35,12 +36,14 @@ public class OwnerChangeWorkingTimes {
 
     @FXML
     void dateSelect(ActionEvent event) {
-
+    	this.date = dateMenu.getValue();
+    	update();
     }
 
     @FXML
     void employeeSelect(ActionEvent event) {
-
+    	this.employeeId = new StringTokenizer(employeeMenu.getValue()).nextToken(":");
+    	update();
     }
 
     @FXML
@@ -60,6 +63,7 @@ public class OwnerChangeWorkingTimes {
 			
 			time = loader.getController();
 			time.init(timeMenu);
+    		time.setEnabled(false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -67,6 +71,7 @@ public class OwnerChangeWorkingTimes {
     
     private void update() {
     	if (date != null && employeeId != null) {
+    		time.setEnabled(true);
     		long dayInMillis = 86400000;
         	String[][] times = controller.getWorkerAvailability(employeeId);
         	if (times != null && times.length > 0)
