@@ -16,18 +16,18 @@ public class TimePicker {
 
 
     @FXML
-    private AnchorPane container;
+	protected AnchorPane container;
 
     @FXML
-    private GridPane timeGrid;
+	protected GridPane timeGrid;
     
     private String[] availableStyle = new String[]{"-fx-background-color: #ffffff","-fx-background-color: #dddddd", "-fx-background-color: #bbbbbb"};
-    private String[] unavailableStyle = new String[]{"-fx-background-color: #ff0000","-fx-background-color: #dd0000", "-fx-background-color: #bb0000"};
+    protected String[] unavailableStyle = new String[]{"-fx-background-color: #ff0000","-fx-background-color: #dd0000", "-fx-background-color: #bb0000"};
     
-    private ArrayList<Integer> selected = new ArrayList<Integer>();
+    ArrayList<Integer> selected = new ArrayList<Integer>();
     private ArrayList<Integer> available = new ArrayList<Integer>();
     
-    private int duration = 1;
+    int duration = 1;
 
     public void init(Pane parent) {
     	container.setMaxWidth(parent.getPrefWidth());
@@ -91,7 +91,7 @@ public class TimePicker {
     	this.duration = duration;
     }
     
-    private Pane getTimePane(int i) {
+    Pane getTimePane(int i) {
     	int row, col;
     	if (i < 24) {
     		row = 0;
@@ -150,11 +150,16 @@ public class TimePicker {
     	});
     }
     
-    private String[] getAppropriateStyle(int i) {
+    String[] getAppropriateStyle(int i) {
     	for (int a : available)
     		if (a == i)
     			return availableStyle;
     	return unavailableStyle;
     }
+
+	public ArrayList<String> saveTimes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     	
 }

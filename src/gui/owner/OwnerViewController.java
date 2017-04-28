@@ -131,9 +131,11 @@ public class OwnerViewController {
     	
     	try
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployeeWorkingTimes.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployeeAvailabilities.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
+			OwnerAddEmployeeWorkingTimesController controller = loader.getController();
+		    controller.init(c);
 			
 			
     	}

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddEmployeeWorkingTimesController">
+   <center>
+      <AnchorPane prefHeight="500.0" prefWidth="680.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane layoutX="13.0" layoutY="15.0" prefHeight="470.0" prefWidth="654.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Add Employee Availability">
+                     <font>
+                        <Font name="Calibri" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="55.0" prefHeight="37.0" prefWidth="847.0" text="Fill the forms below to edit an employee's availabilities." textOverrun="CLIP">
+                     <font>
+                        <Font name="Calibri" size="18.0" />
+                     </font>
+                  </Label>
+                  <Pane layoutX="148.0" layoutY="119.0" prefHeight="330.0" prefWidth="299.0">
+                     <children>
+                        <ComboBox fx:id="start1" layoutX="107.0" layoutY="56.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" translateY="-20.0" />
+                        <ComboBox fx:id="end1" layoutX="195.0" layoutY="56.0" prefHeight="25.0" prefWidth="80.0" promptText="End" translateY="-20.0" />
+                        <ComboBox fx:id="start2" layoutX="107.0" layoutY="91.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" translateY="-20.0" />
+                        <ComboBox fx:id="end2" layoutX="195.0" layoutY="91.0" prefHeight="25.0" prefWidth="80.0" promptText="End" translateY="-20.0" />
+                        <ComboBox fx:id="start3" layoutX="107.0" layoutY="126.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" translateY="-20.0" />
+                        <ComboBox fx:id="end3" layoutX="195.0" layoutY="126.0" prefHeight="25.0" prefWidth="80.0" promptText="End" translateY="-20.0" />
+                        <ComboBox fx:id="start4" layoutX="107.0" layoutY="148.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" translateY="-7.0" />
+                        <ComboBox fx:id="end4" layoutX="195.0" layoutY="148.0" prefHeight="25.0" prefWidth="80.0" promptText="End" translateY="-7.0" />
+                        <ComboBox fx:id="start5" layoutX="107.0" layoutY="183.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" translateY="-7.0" />
+                        <ComboBox fx:id="end5" layoutX="195.0" layoutY="183.0" prefHeight="25.0" prefWidth="80.0" promptText="End" translateY="-7.0" />
+                        <ComboBox fx:id="start6" layoutX="107.0" layoutY="218.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" translateY="-7.0" />
+                        <ComboBox fx:id="end6" layoutX="195.0" layoutY="218.0" prefHeight="25.0" prefWidth="80.0" promptText="End" translateY="-7.0" />
+                        <ComboBox fx:id="start7" layoutX="107.0" layoutY="208.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" translateY="37.0" />
+                        <ComboBox fx:id="end7" layoutX="195.0" layoutY="208.0" prefHeight="25.0" prefWidth="80.0" promptText="End" translateY="37.0" />
+                        <Button fx:id="updateAvailabilityButton" layoutX="64.0" layoutY="279.0" mnemonicParsing="false" onAction="#updateAvailability" prefHeight="37.0" prefWidth="172.0" style="-fx-background-color: #ff471a;" text="Update Employee Availablity" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Calibri" size="13.0" />
+                           </font>
+                        </Button>
+                        <ComboBox fx:id="day1" layoutX="14.0" layoutY="36.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" />
+                        <ComboBox fx:id="day2" layoutX="14.0" layoutY="74.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" />
+                        <ComboBox fx:id="day3" layoutX="14.0" layoutY="106.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" />
+                        <ComboBox fx:id="day4" layoutX="14.0" layoutY="141.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" />
+                        <ComboBox fx:id="day5" layoutX="14.0" layoutY="176.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" />
+                        <ComboBox fx:id="day6" layoutX="14.0" layoutY="211.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" />
+                        <ComboBox fx:id="day7" layoutX="14.0" layoutY="245.0" prefHeight="25.0" prefWidth="80.0" promptText="Start" />
+                     </children>
+                  </Pane>
+                  <ComboBox fx:id="employeeList" layoutX="213.0" layoutY="94.0" onAction="#updateCurrentAvailability" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="169.0" promptText="Select Employee" />
+                  <Button fx:id="nextPageButton" layoutX="17.0" layoutY="303.0" mnemonicParsing="false" onAction="#nextPage" prefHeight="37.0" prefWidth="131.0" style="-fx-background-color: #ff471a;" text="Next Page" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="prevPageButton" layoutX="17.0" layoutY="350.0" mnemonicParsing="false" onAction="#prevPage" prefHeight="37.0" prefWidth="131.0" style="-fx-background-color: #ff471a;" text="Previous Page" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="NewLineButton" layoutX="438.0" layoutY="156.0" mnemonicParsing="false" onAction="#NewLine" prefHeight="6.0" prefWidth="88.0" style="-fx-background-color: #ff471a;" text="New Line" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="13.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="warning" layoutX="462.0" layoutY="339.0" prefHeight="97.0" prefWidth="165.0" />
+                  <Button fx:id="RemoveLineButton" layoutX="438.0" layoutY="119.0" mnemonicParsing="false" onAction="#RemoveLine" prefHeight="6.0" prefWidth="88.0" style="-fx-background-color: #ff471a;" text="Remove Line" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+         </children></AnchorPane>
+   </center>
+</BorderPane>

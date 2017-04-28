@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddEmployeeWorkingTimesController">
+   <center>
+      <AnchorPane prefHeight="500.0" prefWidth="648.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="34.0" layoutY="34.0" text="Add Employee Availability">
+               <font>
+                  <Font name="Calibri" size="36.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="pickEmployee" layoutX="34.0" layoutY="112.0" onAction="#updateCurrentAvailability" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="169.0" promptText="Select Employee" />
+            <Label fx:id="warning" layoutX="482.0" layoutY="359.0" prefHeight="97.0" prefWidth="165.0" />
+            <Label layoutX="34.0" layoutY="75.0" prefHeight="37.0" prefWidth="847.0" text="Click on a time slot to add it to this employees' available times." textOverrun="CLIP">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="SubmitButton" layoutX="175.0" layoutY="388.0" mnemonicParsing="false" onAction="#submit" prefHeight="39.0" prefWidth="236.0" style="-fx-background-color: #ff471a;" text="Save Employee Availabilities" textFill="WHITE">
+               <font>
+                  <Font name="Calibri" size="13.0" />
+               </font>
+            </Button>
+            <ComboBox fx:id="pickDay" layoutX="231.0" layoutY="112.0" onAction="#updateCurrentAvailability" onInputMethodTextChanged="#updateCurrentAvailability" onMouseDragReleased="#updateAvailability" prefHeight="25.0" prefWidth="169.0" promptText="Select Day" />
+            <Pane fx:id="TimePickerPane" layoutX="34.0" layoutY="165.0" prefHeight="193.0" prefWidth="518.0" />
+         </children></AnchorPane>
+   </center>
+</BorderPane>
