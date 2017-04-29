@@ -72,13 +72,16 @@ public class OwnerAddBooking {
     
     private void update() {
     	//Update gridtable with availabilities
-    	
     	if (date != null && employeeId != null) {
     		long dayInMillis = 86400000;
         	String[][] times = controller.getEmployeeBookingAvailability(employeeId, new Date(date.toEpochDay() * dayInMillis));
+        	
         	if (times != null && times.length > 0)
         		time.setAvailability(times, date);
-
+        	else
+        		time.setAvailability(new String[0][], date);
+    	} else {
+        	time.setAvailability(new String[0][], date);
     	}
     	
     	if (employeeId != null && customerUsername != null && date != null && services.size() != 0)

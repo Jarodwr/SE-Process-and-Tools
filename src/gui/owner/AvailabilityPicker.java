@@ -12,7 +12,7 @@ import model.period.Period;
 
 public class AvailabilityPicker extends TimePicker {
 	
-
+	private ArrayList<Integer> available = new ArrayList<Integer>();
 	private final String[] listOfDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	private boolean enabled = true;
 
@@ -168,6 +168,38 @@ public class AvailabilityPicker extends TimePicker {
     
     public void setEnabled(boolean enabled) {
     	this.enabled = enabled;
+    }
+    
+    public void setAvailability(String[][] times, LocalDate date) {
+    	long dayInSecs = 86400;
+    	long periodInSecs = 1800;
+    	
+    	for (int i : available)	//Reset all available panes to unavailable panes
+    		getTimePane(i).setStyle(unavailableStyle[0]);
+    	available.removeAll(available);	//Wipe info from panes
+
+    	int day = (int)(((date.toEpochDay() * dayInSecs) / 86400) % 7);
+
+    	for (long startTime = day * dayInSecs; startTime < (day+1) * dayInSecs; startTime += periodInSecs) {
+			Long endTime = startTime + periodInSecs;
+			boolean success = false;
+			
+    		for (String[] p : times) {
+    			if (Long.parseLong(p[0]) <= startTime && Long.parseLong(p[1]) >= endTime) {
+    				System.out.println(p[0] + ":" + startTime + "|" + p[1] + ":" + endTime);
+    				success = true;
+    				break;
+    			}
+    		}
+			if (success) {
+				available.add((int)((startTime - date.toEpochDay() * dayInSecs)/periodInSecs));
+			}
+    	}
+    	
+    	for (int i : available)	{//Paint available panes white
+    		getTimePane(i).setStyle(availableStyle[0]);
+    	}
+
     }
 }
     

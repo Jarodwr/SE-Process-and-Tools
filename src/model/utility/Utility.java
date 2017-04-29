@@ -2,13 +2,9 @@ package model.utility;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.database.SQLiteConnection;
@@ -26,8 +22,7 @@ import model.users.User;
  * A services class, used for interfacing between the controller and the database.
  */
 public class Utility {
-	
-//	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+
 	private Logger LOGGER = Logger.getLogger("main");
 	private User currentUser = null;
 	private String currentBusiness = "SARJ's Milk Business"; //TODO

@@ -59,6 +59,9 @@ public class TimePicker {
     		getTimePane(i).setStyle(unavailableStyle[0]);
     	available.removeAll(available);	//Wipe info from panes
 
+    	System.out.println("test");
+    	if (times == null || times.length == 0 || date == null)
+    		return;
     	
     	for (long startTime = date.toEpochDay() * dayInSecs; startTime < (date.toEpochDay()+1) * dayInSecs; startTime += periodInSecs) {
 			Long endTime = startTime + periodInSecs;
