@@ -84,7 +84,28 @@ public class OwnerAddEmployeeWorkingTimesController {
 
     @FXML
     void submit(ActionEvent event) {
-    	System.out.println(time.saveTimes("Monday").toString());
+    	ArrayList<String> savedTimes = time.saveTimes(currentDay);
+    	if (savedTimes != null ) {
+    		for(String s : savedTimes) {
+    			fullListOfDays.get(whichDay(currentDay)).add(s);
+    		}
+    	}
+    	ArrayList<String> availabilitiesToSubmit = new ArrayList<String>();
+    	for(ArrayList<String> days : fullListOfDays) {
+    		int i = 1;
+    		for(String currentTime : days) {
+    			if (i%2 == 0) { // skip every second option
+    				//continue; // not sure if this works in java but blank works as well so leaving this here
+    			}
+    			else {
+
+        			availabilitiesToSubmit.add(currentTime + " " + days.get(i - 1));
+        			i++;
+    				
+    			}
+    		}
+    	}
+    	c.editAvailability(employeeId, availabilitiesToSubmit);
     }
 
     @FXML
@@ -94,10 +115,12 @@ public class OwnerAddEmployeeWorkingTimesController {
     }
 
     private void update() {
+    	System.out.println("test");
     	time.deselectAll();
     	if (employeeId != null) {
        	 	String[][] availabilities = c.utilities.getEmployeeAvailability(employeeId).toStringArray();
        	 	time.setDefaultAvailability(availabilities, currentDay);
+       	 	time.setDefaultAvailabilityFromList(fullListOfDays.get(whichDay(currentDay)), currentDay);
     	}
     	
 	}
@@ -106,7 +129,10 @@ public class OwnerAddEmployeeWorkingTimesController {
     void updateCurrentAvailability(ActionEvent event) {
 		fullListOfDays.get(whichDay(currentDay)).clear();
 		ArrayList<String> savedTimes = time.saveTimes(currentDay);
-		if (savedTimes == null) return;
+		if (savedTimes == null) {
+			this.update();
+			return;
+		}
 		for(String s : savedTimes) {
 			fullListOfDays.get(whichDay(currentDay)).add(s);
 		}

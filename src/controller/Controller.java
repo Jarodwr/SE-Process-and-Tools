@@ -251,7 +251,7 @@ public class Controller {
 	 * @param employeeId a employee id taken from the users input
 	 * @param user the business owner passed to the function
 	 */
-	private void editAvailability(String employeeId, Owner user, ArrayList<String> availabilities) {
+	public void editAvailability(String employeeId, ArrayList<String> availabilities) {
 
 		Timetable t = new Timetable();
 
@@ -303,12 +303,12 @@ public class Controller {
 		try {
 			ResultSet rs = SQLiteConnection.getAllAvailabilities();
 			int id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
-			if (SQLiteConnection.createAvailability(id, user.getBusinessName(), t.toString())){
+			if (SQLiteConnection.createAvailability(id, utilities.getCurrentBusiness(), t.toString())){
 				
 			}
 			else {
-				SQLiteConnection.deleteAvailabilities(id, user.getBusinessName());
-				SQLiteConnection.createAvailability(id, user.getBusinessName(), t.toString());
+				SQLiteConnection.deleteAvailabilities(id, utilities.getCurrentBusiness());
+				SQLiteConnection.createAvailability(id, utilities.getCurrentBusiness(), t.toString());
 			}
 			SQLiteConnection.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
 			rs.close();

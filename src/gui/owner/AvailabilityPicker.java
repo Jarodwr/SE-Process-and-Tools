@@ -67,6 +67,7 @@ public class AvailabilityPicker extends TimePicker {
     }
     
     public void setDefaultAvailability(String[][] times, String day) {
+    	System.out.println(times.toString());
     	int lowerBoundsDay = Period.convertDayToSeconds(day);
     	int upperBoundsDay = lowerBoundsDay + 86400;
     	
@@ -86,6 +87,27 @@ public class AvailabilityPicker extends TimePicker {
     	}
 
     }
+    
+    public void setDefaultAvailabilityFromList(ArrayList<String> times, String day) {
+    	System.out.println(times.toString());
+    	int lowerBoundsDay = Period.convertDayToSeconds(day);
+    	int upperBoundsDay = lowerBoundsDay + 86400;
+    	
+		String[] style = getAppropriateStyle(0);
+		
+    	selected.clear();
+    	for(int i = 0; i < times.size(); i = i + 2) {
+    		int time1 = Integer.parseInt(times.get(i));
+    		int time2 = Integer.parseInt(times.get(i + 1));
+    		if (time1 < lowerBoundsDay || time1 > upperBoundsDay) {
+    			continue;
+    		}
+    		for(int j = time1; j <= time2; j++) {
+    			selected.add(j);
+    			getTimePane(j).setStyle(style[0]);
+    		}
+    	}
+	}
     
     
     

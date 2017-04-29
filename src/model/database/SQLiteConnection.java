@@ -456,6 +456,7 @@ public class SQLiteConnection {
 		Connection c = getDBConnection();
 		
 		try {
+			
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, SQLiteConnection.getNextAvailableId(getAllEmployees(), "employeeId"));
 			ps.setString(2, businessname);
@@ -838,6 +839,8 @@ public class SQLiteConnection {
 				i = rs.getInt(idString) + 1;
 			}
 		} while(rs.next());
+		System.out.println(i);
+		rs.close();
 		return i;
 		
 	}

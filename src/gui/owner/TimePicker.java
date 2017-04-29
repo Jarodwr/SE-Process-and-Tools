@@ -177,5 +177,10 @@ public class TimePicker {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void setDefaultAvailabilityFromList(ArrayList<String> arrayList, String currentDay) {
+		// TODO Auto-generated method stub
+		
+	}
     	
 }
