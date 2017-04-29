@@ -105,7 +105,11 @@ public class OwnerAddEmployeeWorkingTimesController {
 	@FXML
     void updateCurrentAvailability(ActionEvent event) {
 		fullListOfDays.get(whichDay(currentDay)).clear();
-		fullListOfDays.get(whichDay(currentDay)).addAll(time.saveTimes(currentDay));
+		ArrayList<String> savedTimes = time.saveTimes(currentDay);
+		if (savedTimes == null) return;
+		for(String s : savedTimes) {
+			fullListOfDays.get(whichDay(currentDay)).add(s);
+		}
 		currentDay = pickDay.getSelectionModel().getSelectedItem();
     	this.update();
     }
