@@ -142,7 +142,7 @@ public class Controller {
 	public boolean addNewBooking(String username, String startTime, String listOfServices, String employeeId) {
 		ArrayList<Service> servs;
 		servs = Service.stringOfServicesToArrayList(listOfServices);
-		return utilities.addNewBooking(startTime, (startTime + Service.getTotalArrayDuration(servs)), username, employeeId, listOfServices);
+		return utilities.addNewBooking(username, employeeId, startTime, (startTime + Service.getTotalArrayDuration(servs)), listOfServices);
 	}
 	
 	/**
@@ -422,7 +422,8 @@ public class Controller {
 		if (shiftsTimetable != null) {
 			if (bookings != null && bookings.length > 0) {
 				for (Booking b : bookings) {
-					shiftsTimetable.removePeriod(b);
+					if (b.getEmployeeId().equals(employeeId))
+						shiftsTimetable.removePeriod(b);
 				}
 			}
 			return shiftsTimetable.toStringArray();

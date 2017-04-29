@@ -712,7 +712,7 @@ public class SQLiteConnection {
 	/**
 	 * gets all shifts for given employee after specified time.
 	 */
-	public static ResultSet getShifts(int employeeId, String unixtime) throws SQLException { /* TODO */
+	public static ResultSet getShifts(long l, String unixtime) throws SQLException { /* TODO */
 		
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
@@ -720,10 +720,9 @@ public class SQLiteConnection {
 				+ "FROM EmployeeWorkingTimes "
 				+ "WHERE employeeId = ? AND CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER)";
 		PreparedStatement pst = c.prepareStatement(query);
-		pst.setInt(1, employeeId);
+		pst.setLong(1, l);
 		pst.setString(2, unixtime);
 		ResultSet rs = pst.executeQuery();
-
 		if (rs.next()) {
 			return rs;
 		}

@@ -251,7 +251,7 @@ public class Utility {
 	 */
 	public Booking[] getBookingsAfter(Date date) {
 		try {
-			ResultSet rs = SQLiteConnection.getBookingsByPeriodStart(date.getTime() / 1000);
+			ResultSet rs = SQLiteConnection.getBookingsByPeriodStart(date.getTime());
 			if (rs != null)
 				return bookingResultsetToArray(rs);
 		} catch (SQLException e) {
@@ -266,9 +266,29 @@ public class Utility {
 	 * @return 
 	 */
 	public boolean addNewBooking(String customerUsername, String employeeId, String start, String end, String services) {
-		//TODO: validation code
-		return SQLiteConnection.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
-//		new Booking(booking[0], booking[1], false, booking[2], booking[3], Service.stringOfServicesToArrayList(booking[4]), true);
+
+		Timetable t = getShift(employeeId);	//All employee shifts
+		Booking[] allBookings = getBookingsAfter(new Date(Long.parseLong(start))); //All bookings in database
+		
+		if (t == null)
+			return false;
+		
+		//	Get booking availabilities for the employee specified
+		for (Booking b : allBookings) {
+			if (b.getEmployeeId().equals(employeeId))
+				t.removePeriod(b);
+		}
+		
+		t = t.applicablePeriods(Long.parseLong(end) - Long.parseLong(start));	//Remove all periods that don't apply to the duration
+		
+		for (Period p : t.getAllPeriods()) {
+			long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
+			
+			if (Long.parseLong(start) >= p.getStart().getTime() + allowable)
+				return SQLiteConnection.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
+		}
+		return false;
+
 	}
 	
 	/**
@@ -305,7 +325,8 @@ public class Utility {
 			if (employeeId.equals("")) {
 				return null;
 			}
-			ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(employeeId), Long.toString(System.currentTimeMillis()/1000));
+			
+			ResultSet shifts = SQLiteConnection.getShifts(Long.parseLong(employeeId), "0");
 			if (shifts == null) {
 				return null;
 			}

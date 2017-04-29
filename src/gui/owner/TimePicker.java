@@ -60,23 +60,24 @@ public class TimePicker {
     	available.removeAll(available);	//Wipe info from panes
 
     	
-    	for (long startTime = date.toEpochDay() * dayInMillis; startTime < (date.toEpochDay()+1) * dayInMillis; startTime += periodInMillis) {
+    	for (long startTime = date.toEpochDay() * dayInMillis/1000; startTime < (date.toEpochDay()+1) * dayInMillis/1000; startTime += periodInMillis) {
 			Long endTime = startTime + periodInMillis;
-			
 			boolean success = false;
 			
     		for (String[] p : times) {
-    			if (Long.parseLong(p[0]) >= startTime && Long.parseLong(p[1]) <= endTime) {
+    			if (Long.parseLong(p[0]) <= startTime && Long.parseLong(p[1]) >= endTime) {
     				success = true;
     				break;
     			}
     		}
-			if (success)
-				available.add((int)((startTime - date.toEpochDay() * dayInMillis)/periodInMillis));
+			if (success) {
+				available.add((int)((startTime - date.toEpochDay() * dayInMillis/1000)/periodInMillis));
+			}
     	}
     	
-    	for (int i : available)	//Paint available panes white
-    		getTimePane(i).setStyle(availableStyle[0]);;
+    	for (int i : available)	{//Paint available panes white
+    		getTimePane(i).setStyle(availableStyle[0]);
+    	}
 
     }
     

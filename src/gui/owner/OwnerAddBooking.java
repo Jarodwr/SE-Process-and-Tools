@@ -79,7 +79,6 @@ public class OwnerAddBooking {
         	if (times != null && times.length > 0)
         		time.setAvailability(times, date);
 
-
     	}
     	
     	if (employeeId != null && customerUsername != null && date != null && services.size() != 0)

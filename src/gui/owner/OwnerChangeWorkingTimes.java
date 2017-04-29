@@ -77,10 +77,8 @@ public class OwnerChangeWorkingTimes {
         	if (times != null && times.length > 0)
         		time.setAvailability(times, date);
         	submit.setDisable(false);
-
-
     	} else {
-    		submit.setDisable(false);
+    		submit.setDisable(true);
     	}
     }
 
