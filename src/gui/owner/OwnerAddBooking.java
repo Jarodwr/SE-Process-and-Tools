@@ -101,7 +101,7 @@ public class OwnerAddBooking {
     			parseServices = parseServices + ":";
     		
     	}
-    	controller.addNewBooking(customerUsername, Long.toString(startTime), parseServices, employeeId);
+    	System.out.println(controller.addNewBooking(customerUsername, Long.toString(startTime), parseServices, employeeId));
     	this.update();
     }
     
