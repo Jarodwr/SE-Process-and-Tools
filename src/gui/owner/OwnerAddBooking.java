@@ -94,7 +94,14 @@ public class OwnerAddBooking {
 
     	long startTime = date.toEpochDay() * 86400000 + localStart * 1800000;
     	
-    	controller.addNewBooking(customerUsername, Long.toString(startTime), services.toString(), employeeId);
+    	String parseServices = "";
+    	for (int i = 0; i < services.size(); i++) {
+    		parseServices += services.get(i);
+    		if (i != services.size()+1)
+    			parseServices = parseServices + ":";
+    		
+    	}
+    	controller.addNewBooking(customerUsername, Long.toString(startTime), parseServices, employeeId);
     	this.update();
     }
     
@@ -115,7 +122,6 @@ public class OwnerAddBooking {
     	//Alternate time grid init
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimePicker.fxml"));
-			System.out.println(timeMenu);
 			timeMenu.getChildren().clear();
 			timeMenu.getChildren().add(loader.load());
 			
@@ -129,7 +135,9 @@ public class OwnerAddBooking {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	
+            	
             	duration = 0;
+        		services.removeAll(services);
             	
             	for (MenuItem mi : serviceMenu.getItems()) {
             		CheckMenuItem a = (CheckMenuItem) mi;
@@ -138,20 +146,12 @@ public class OwnerAddBooking {
             		String name = tk.nextToken();
             		String durationStr = tk.nextToken();
             		
-            		duration += Integer.parseInt(durationStr);
-            		
-            		if (a.isSelected())
-            			
-            		
-        			for (int i = 0; i < services.size(); i++)
-        				if (services.get(i).equals(name)) {
-            				if (!a.isSelected())
-            					services.remove(i);
-        					return;
-        				}
-        			
-    				if (a.isSelected())
+    				if (a.isSelected()) {
         				services.add(name);
+                		duration += Integer.parseInt(durationStr);
+                		System.out.println(name);
+    				}
+    				
             	}
             	if (duration == 0)
             		duration = 1;

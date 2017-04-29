@@ -65,6 +65,7 @@ public class TimePicker {
 			boolean success = false;
 			
     		for (String[] p : times) {
+    			System.out.println(startTime + ":" + p[0] + "|" + endTime + ":" + p[1]);
     			if (Long.parseLong(p[0]) <= startTime && Long.parseLong(p[1]) >= endTime) {
     				success = true;
     				break;
@@ -119,7 +120,7 @@ public class TimePicker {
 				p.setStyle(style[2]);
 				
 				for (int j : selected) {
-					getTimePane(j).setStyle(style[0]);
+					getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
 				}
 
 				selected.removeAll(selected);
@@ -164,8 +165,8 @@ public class TimePicker {
 	}
 
 	public void deselectAll() {
-		String[] style = getAppropriateStyle(0);
     	for(int i :selected) {
+    		String[] style = getAppropriateStyle(i);
     		getTimePane(i).setStyle(style[1]);
     	}
     	selected.clear();

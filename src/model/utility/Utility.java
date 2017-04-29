@@ -274,9 +274,11 @@ public class Utility {
 			return false;
 		
 		//	Get booking availabilities for the employee specified
-		for (Booking b : allBookings) {
-			if (b.getEmployeeId().equals(employeeId))
-				t.removePeriod(b);
+		if (allBookings != null) {
+			for (Booking b : allBookings) {
+				if (b.getEmployeeId().equals(employeeId))
+					t.removePeriod(b);
+			}
 		}
 		
 		t = t.applicablePeriods(Long.parseLong(end) - Long.parseLong(start));	//Remove all periods that don't apply to the duration
