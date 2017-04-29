@@ -11,10 +11,12 @@ public class Booking extends Period {
 	private String employeeId;
 	private ArrayList<Service> services;
 	
-	public Booking(String start, String end, boolean formatted, String customerUsername, String employeeId, ArrayList<Service> services) 
+	public Booking(String start, String end, boolean formatted, String customerUsername,String bookingId, String employeeId, ArrayList<Service> services) 
 	{
 		super(start, end, formatted);
+		this.bookingId = bookingId;
 		this.customerUsername = customerUsername;
+		this.employeeId = employeeId;
 		this.services = services;
 	}
 	
@@ -34,12 +36,13 @@ public class Booking extends Period {
 	
 	public String[] toStringArray() 
 	{
+		String bookingID = this.bookingId;
 		String first = Long.toString(this.start.getTime());
 		String second = Long.toString(this.end.getTime());
 		String name = this.customerUsername;
 		String servs = Service.arrayOfServicesToString(services, false);
-		System.out.println(servs);
-		return new String[] {first, second, name, servs};
+		String employeeId = this.employeeId;
+		return new String[] {bookingID, first, second, name, servs, employeeId};
 	}
 	
 }

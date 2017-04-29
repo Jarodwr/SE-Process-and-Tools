@@ -115,13 +115,13 @@ public class Controller {
 	/**
 	 * This method shows the list of all future bookings in the system
 	 */
-	private String[][] getCurrentBookings()
+	public String[][] getCurrentBookings()
 	{
 		//gets the bookings list of all the booking from the time the method is called
 		Booking[] bookings = utilities.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
 		
 		//if there are no bookings in the future then alert the user and exit function
-		if (bookings.length == 0) {
+		if (bookings == null || bookings.length == 0) {
 			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
 			return null;
 		} else {
@@ -164,7 +164,7 @@ public class Controller {
 	/**
 	 * This method shows the list of all bookings in the system
 	 */
-	private String[][] getSummaryOfBookings() {
+	public String[][] getSummaryOfBookings() {
 
 		//gets the bookings list of all the booking from the time the method is called
 		Booking[] bookings = utilities.getBookingsAfter(new Date(0));
@@ -185,6 +185,11 @@ public class Controller {
 			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 			return bookingsStringArray;
 		}
+	}
+	
+	public boolean removeBooking(int id, String businessname)
+	{
+		return utilities.removeBooking(id, businessname);
 	}
 	
 	/**

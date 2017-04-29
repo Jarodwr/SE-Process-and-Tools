@@ -292,6 +292,17 @@ public class Utility {
 	}
 	
 	/**
+	 * Removes an existing booking from the system
+	 * @param bookingID, the ID of the booking
+	 * @param businessname, the business name of the booking
+	 * @return true or false for success or failure
+	 */
+	public boolean removeBooking(int bookingID, String businessname)
+	{
+		return SQLiteConnection.deleteBooking(bookingID, businessname);
+	}
+	
+	/**
 	 * Gets a booking query and returns it as an array of bookings
 	 * @param rs ResultSet of query
 	 * @return Booking[]
@@ -302,7 +313,7 @@ public class Utility {
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		try {
 			do {
-				bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
+				bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("bookingId"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
 			} while (rs.next());
 			if (!bookings.isEmpty()) {
 				Booking[] b = new Booking[bookings.size()];

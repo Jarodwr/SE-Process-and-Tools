@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.users.Owner;
 import model.users.User;
 
 public class OwnerViewController {
@@ -58,7 +59,7 @@ public class OwnerViewController {
 
 	private Controller c;
 
-	private model.users.User u;
+	private User u;
 
     
     @FXML
@@ -188,6 +189,8 @@ public class OwnerViewController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewBookingSummery.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
+			OwnerViewBookingsController controller = loader.getController();
+			controller.init(c, (Owner) u);
 			
     	}
     	catch(Exception e)
