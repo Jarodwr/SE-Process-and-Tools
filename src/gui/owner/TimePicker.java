@@ -52,27 +52,27 @@ public class TimePicker {
     }
     
     public void setAvailability(String[][] times, LocalDate date) {
-    	long dayInMillis = 86400000;
-    	long periodInMillis = 1800000;
+    	long dayInSecs = 86400;
+    	long periodInSecs = 1800;
     	
     	for (int i : available)	//Reset all available panes to unavailable panes
     		getTimePane(i).setStyle(unavailableStyle[0]);
     	available.removeAll(available);	//Wipe info from panes
 
     	
-    	for (long startTime = date.toEpochDay() * dayInMillis/1000; startTime < (date.toEpochDay()+1) * dayInMillis/1000; startTime += periodInMillis) {
-			Long endTime = startTime + periodInMillis;
+    	for (long startTime = date.toEpochDay() * dayInSecs; startTime < (date.toEpochDay()+1) * dayInSecs; startTime += periodInSecs) {
+			Long endTime = startTime + periodInSecs;
 			boolean success = false;
 			
     		for (String[] p : times) {
-    			System.out.println(startTime + ":" + p[0] + "|" + endTime + ":" + p[1]);
     			if (Long.parseLong(p[0]) <= startTime && Long.parseLong(p[1]) >= endTime) {
+    				System.out.println(p[0] + ":" + startTime + "|" + p[1] + ":" + endTime);
     				success = true;
     				break;
     			}
     		}
 			if (success) {
-				available.add((int)((startTime - date.toEpochDay() * dayInMillis/1000)/periodInMillis));
+				available.add((int)((startTime - date.toEpochDay() * dayInSecs)/periodInSecs));
 			}
     	}
     	

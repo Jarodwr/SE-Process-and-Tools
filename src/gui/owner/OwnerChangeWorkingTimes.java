@@ -2,6 +2,8 @@ package gui.owner;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 import controller.Controller;
@@ -48,7 +50,21 @@ public class OwnerChangeWorkingTimes {
 
     @FXML
     void updateWorkingTime(ActionEvent event) {
-
+    	int[] selected = time.getSelectedPeriods();
+    	ArrayList<Integer> unselected = new ArrayList<Integer>();
+    	
+    	for (int i = 0; i < 48; i++)
+    		unselected.add(i);
+    	
+    	for (int i : selected) {
+    		unselected.remove(Integer.valueOf(i));
+    		System.out.println((date.toEpochDay() * 24 * 60 * 60 + (i * 30 * 60)) + ":" + (date.toEpochDay() * 24 * 60 * 60 + ((i+1) * 30 * 60)));
+    		controller.addWorkingTime(employeeId, Long.toString(date.toEpochDay() * 24 * 60 * 60), Integer.toString(i * 30 * 60), Integer.toString((i+1) * 30 * 60));
+    	}
+    	
+    	for (int i : unselected) {
+    		controller.removeWorkingTime(employeeId, Long.toString(date.toEpochDay() * 24 * 60 * 60), Integer.toString(i * 30 * 60), Integer.toString((i+1) * 30 * 60));
+    	}
     }
     
     public void init(Controller controller) {
@@ -64,6 +80,7 @@ public class OwnerChangeWorkingTimes {
 			time = loader.getController();
 			time.init(timeMenu);
     		time.setEnabled(false);
+    		submit.setDisable(true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

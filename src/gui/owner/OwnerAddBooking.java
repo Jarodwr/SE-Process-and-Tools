@@ -92,7 +92,7 @@ public class OwnerAddBooking {
     		if (i < localStart)
     			localStart = i;
 
-    	long startTime = date.toEpochDay() * 86400000 + localStart * 1800000;
+    	long startTime = date.toEpochDay() * 86400 + localStart * 1800;
     	
     	String parseServices = "";
     	for (int i = 0; i < services.size(); i++) {
