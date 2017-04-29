@@ -58,7 +58,6 @@ public class OwnerChangeWorkingTimes {
     	
     	for (int i : selected) {
     		unselected.remove(Integer.valueOf(i));
-    		System.out.println((date.toEpochDay() * 24 * 60 * 60 + (i * 30 * 60)) + ":" + (date.toEpochDay() * 24 * 60 * 60 + ((i+1) * 30 * 60)));
     		controller.addWorkingTime(employeeId, Long.toString(date.toEpochDay() * 24 * 60 * 60), Integer.toString(i * 30 * 60), Integer.toString((i+1) * 30 * 60));
     	}
     	

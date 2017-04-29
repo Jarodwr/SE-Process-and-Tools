@@ -59,7 +59,6 @@ public class TimePicker {
     		getTimePane(i).setStyle(unavailableStyle[0]);
     	available.removeAll(available);	//Wipe info from panes
 
-    	System.out.println("test");
     	if (times == null || times.length == 0 || date == null)
     		return;
     	
@@ -69,7 +68,6 @@ public class TimePicker {
 			
     		for (String[] p : times) {
     			if (Long.parseLong(p[0]) <= startTime && Long.parseLong(p[1]) >= endTime) {
-    				System.out.println(p[0] + ":" + startTime + "|" + p[1] + ":" + endTime);
     				success = true;
     				break;
     			}

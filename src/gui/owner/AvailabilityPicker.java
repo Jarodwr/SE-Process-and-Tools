@@ -67,7 +67,6 @@ public class AvailabilityPicker extends TimePicker {
     }
     
     public void setDefaultAvailability(String[][] times, String day) {
-    	System.out.println(times.toString());
     	int lowerBoundsDay = Period.convertDayToSeconds(day);
     	int upperBoundsDay = lowerBoundsDay + 86400;
     	
@@ -186,7 +185,6 @@ public class AvailabilityPicker extends TimePicker {
 			
     		for (String[] p : times) {
     			if (Long.parseLong(p[0]) <= startTime && Long.parseLong(p[1]) >= endTime) {
-    				System.out.println(p[0] + ":" + startTime + "|" + p[1] + ":" + endTime);
     				success = true;
     				break;
     			}

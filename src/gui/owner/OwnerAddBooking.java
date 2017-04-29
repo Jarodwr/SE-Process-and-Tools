@@ -104,7 +104,6 @@ public class OwnerAddBooking {
     			parseServices = parseServices + ":";
     		
     	}
-    	System.out.println(controller.addNewBooking(customerUsername, Long.toString(startTime), parseServices, employeeId));
     	this.update();
     }
     
@@ -152,7 +151,6 @@ public class OwnerAddBooking {
     				if (a.isSelected()) {
         				services.add(name);
                 		duration += Integer.parseInt(durationStr);
-                		System.out.println(name);
     				}
     				
             	}
