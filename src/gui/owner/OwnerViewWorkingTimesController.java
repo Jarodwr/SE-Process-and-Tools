@@ -132,7 +132,7 @@ public class OwnerViewWorkingTimesController {
     	tableView.setPlaceholder(new Label("Please select an employee and the week of interest."));
     	
     	//FIXME Remove this before submission. Only for test purposes
-    	this.c.addWorkingTime("0", "27/04/2017", "10:00", "11:00");
+    	this.c.addWorkingTime("0", "01/05/2017", "10:00", "11:00");
     	
     	int idPos;
     	
@@ -147,9 +147,24 @@ public class OwnerViewWorkingTimesController {
     		}
     	}
     	
-    	week.getItems().addAll("Past Week");
-    	week.getItems().addAll("Current Week");
-    	week.getItems().addAll("Next Week");
+    	Date date = new Date();
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        Date currentDate; // Will store current date being processed
+        SimpleDateFormat weekDate = new SimpleDateFormat("d/M/YYYY"); // Format for the week dates
+        int n = cl.get(Calendar.DAY_OF_WEEK) - cl.getFirstDayOfWeek();
+        
+        /* From Current Week */
+        cl.add(Calendar.DATE, -n);
+        week.getItems().addAll("From "+weekDate.format(cl.getTime()));
+        
+        /* From Next Week */
+        cl.add(Calendar.DATE, 7);
+        week.getItems().addAll("From "+weekDate.format(cl.getTime()));
+        
+        /* From Week after Next Week */
+        cl.add(Calendar.DATE, 7);
+        week.getItems().addAll("From "+weekDate.format(cl.getTime()));
     	
     	tableView.getColumns().clear(); // Clear the columns of the table
     	
@@ -203,14 +218,14 @@ public class OwnerViewWorkingTimesController {
         cl.setTime(date);
         int n = cl.get(Calendar.DAY_OF_WEEK) - cl.getFirstDayOfWeek();
         
-        if (weekNo == 0) //Last Week
-        	cl.add(Calendar.DATE, -n - 7);
-        
-        if (weekNo == 1) //This Week
+        if (weekNo == 0) //This Week
         	cl.add(Calendar.DATE, -n);
         
-        if (weekNo == 2) //Next Week
+        if (weekNo == 1) //Next Week
         	cl.add(Calendar.DATE, -n + 7);
+        
+        if (weekNo == 2) //Week after next week
+        	cl.add(Calendar.DATE, -n + 14);
         
         
         Date currentDate; // Will store current date being processed
