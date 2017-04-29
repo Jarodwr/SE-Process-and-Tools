@@ -10,9 +10,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -33,18 +36,26 @@ public class LoginController
     private PasswordField login_password; // Value injected by FXMLLoader
 
     @FXML
+    private Button loginButton;
+
+    @FXML
+    private Button registerButton;
+    
+    @FXML
     private BorderPane mainPane;
     
     @FXML
     private Label loginErrorMessage;
-
-    
-    private String owner = "Test Pass String";
     
     private Stage main;
     
     @FXML
     void loginClick(ActionEvent event) 
+    {
+    	login();
+    }
+
+    void login()
     {
     	//to change the error message
     	loginErrorMessage.setStyle("-fx-text-fill: RED");
@@ -63,7 +74,7 @@ public class LoginController
 		    	controller.init(main, this.c, u);
 		    	main.show();
 	    	}
-	    	else { // display user screen, i dont know if Russell has done it yet so leaving it blank
+	    	else { 
 	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/customer/CustomerView.fxml"));
 		    	BorderPane root = loader.load();
 		    	Scene ownerview = new Scene(root, 900, 600);
@@ -77,11 +88,18 @@ public class LoginController
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	
-    	
     }
-
+    
+    @FXML
+    void checkEnter(KeyEvent event) {
+    	if (event.getCode() == KeyCode.ENTER) {
+    		if(!loginButton.isDisabled())
+    		{
+    			login();
+    		}
+        }
+    }
+    
     @FXML
     void loginSignupClick(ActionEvent event) 
     {

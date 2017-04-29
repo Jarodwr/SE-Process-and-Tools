@@ -15,22 +15,22 @@
          <children>
             <Pane id="login-pane" layoutX="314.0" layoutY="140.0" prefHeight="320.0" prefWidth="273.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10 10 10 10;">
                <children>
-                  <TextField fx:id="login_username" layoutX="41.0" layoutY="114.0" promptText="Username">
+                  <TextField fx:id="login_username" layoutX="41.0" layoutY="114.0" onKeyPressed="#checkEnter" promptText="Username">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <PasswordField fx:id="login_password" layoutX="41.0" layoutY="160.0" promptText="Password">
+                  <PasswordField fx:id="login_password" layoutX="41.0" layoutY="160.0" onKeyPressed="#checkEnter" promptText="Password">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </PasswordField>
-                  <Button id="login" layoutX="41.0" layoutY="237.0" mnemonicParsing="false" onAction="#loginClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Login" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="login" fx:id="loginButton" layoutX="41.0" layoutY="237.0" mnemonicParsing="false" onAction="#loginClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Login" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="13.0" />
                      </font>
                   </Button>
-                  <Button id="login-signup" layoutX="149.0" layoutY="237.0" mnemonicParsing="false" onAction="#loginSignupClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="login-signup" fx:id="registerButton" layoutX="149.0" layoutY="237.0" mnemonicParsing="false" onAction="#loginSignupClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="13.0" />
                      </font>
