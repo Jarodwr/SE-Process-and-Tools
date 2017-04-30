@@ -88,10 +88,9 @@ public class OwnerChangeWorkingTimes {
     private void update() {
     	if (date != null && employeeId != null) {
     		time.setEnabled(true);
-    		long dayInMillis = 86400000;
         	String[][] times = controller.getWorkerAvailability(employeeId);
         	if (times != null && times.length > 0)
-        		//test
+        		time.setDefaultAvailability(times, Long.toString(date.toEpochDay()%7));
         	submit.setDisable(false);
     	} else {
     		submit.setDisable(true);
