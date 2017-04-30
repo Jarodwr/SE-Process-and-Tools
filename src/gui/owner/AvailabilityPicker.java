@@ -54,12 +54,12 @@ public class AvailabilityPicker extends TimePicker {
     		}
     		if (k == 0) {
     			timeperiods.add(Integer.toString(howManySecondsInWeekSoFar + i*30*60 ) ) ;
-    			timeperiods.add(Integer.toString(howManySecondsInWeekSoFar + i*30*60 + 30*60) ) ;
+    			timeperiods.add(Integer.toString((howManySecondsInWeekSoFar + i*30*60 + 30*60) - 1) ) ;
     			
     		}
     		else {
         		timeperiods.add(Integer.toString(howManySecondsInWeekSoFar + i*30*60) ) ;
-        		timeperiods.add(Integer.toString(howManySecondsInWeekSoFar + k*30*60) );
+        		timeperiods.add(Integer.toString((howManySecondsInWeekSoFar + k*30*60) - 1) );
     		}
     		
     	}
@@ -81,6 +81,7 @@ public class AvailabilityPicker extends TimePicker {
     		}
     		time1 = time1/(30*60);
     		time2 = time2/(30*60);
+
     		for(int j = time1; j <= time2; j++) {
     			selected.add(j);
     			getTimePane(j).setStyle(availableStyle[0]);
@@ -90,30 +91,23 @@ public class AvailabilityPicker extends TimePicker {
     }
     
     public void setDefaultAvailabilityFromList(ArrayList<String> times, String day) {
-    	System.out.println(times.toString());
     	int lowerBoundsDay = Period.convertDayToSeconds(day);
     	int upperBoundsDay = lowerBoundsDay + 86400;
     	
 		String[] style = getAppropriateStyle(0);
-		
     	selected.clear();
     	if (times == null || times.size() == 0) {
     		return;
     	}
-    	System.out.println(times.toString());
     	for(int i = 0; i < times.size(); i = i + 2) {
     		int time1 = (Integer.parseInt(times.get(i)));
-    		System.out.println(time1);
     		int time2 = (Integer.parseInt(times.get(i + 1)));
 
-    		System.out.println(time2);
-    		if (time1 < lowerBoundsDay || time1 > upperBoundsDay) {
-    			continue;
-    		}
     		time1 = time1%86400/(30*60);
-    		time2 = time1%86400/(30*60);
+
+    		time2 = time2%86400/(30*60);
+
     		for(int j = time1; j <= time2; j++) {
-    			System.out.println(j);
     			selected.add(j);
     			getTimePane(j).setStyle(availableStyle[0]);
     		}
@@ -133,7 +127,6 @@ public class AvailabilityPicker extends TimePicker {
 						if (selected.contains(j)) {
 							for(int k = 0; k < selected.size(); k++) {
 								if (selected.get(k) == j) {
-									System.out.println(selected.toString());
 									selected.remove(k);
 								}
 							}
@@ -143,7 +136,6 @@ public class AvailabilityPicker extends TimePicker {
 	
 							selected.add(j);
 	
-							System.out.println(selected.toString());
 							getTimePane(j).setStyle(style[0]);
 						}
 					}

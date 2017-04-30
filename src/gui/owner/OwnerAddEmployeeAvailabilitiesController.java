@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.Pane;
+import model.period.Period;
 
 public class OwnerAddEmployeeAvailabilitiesController {
 	
@@ -101,11 +102,10 @@ public class OwnerAddEmployeeAvailabilitiesController {
     				//continue; // not sure if this works in java but blank works as well so leaving this here
     			}
     			else {
-
         			availabilitiesToSubmit.add(currentTime + " " + days.get(i));
-        			i++;
     				
     			}
+    			i++;
     		}
     	}
     	System.out.println(employeeId + " - " + availabilitiesToSubmit.toString());
@@ -115,23 +115,26 @@ public class OwnerAddEmployeeAvailabilitiesController {
     @FXML
     void employeeSelect(ActionEvent event) {
     	this.employeeId = new StringTokenizer(pickEmployee.getSelectionModel().getSelectedItem()).nextToken(":");
+    	this.clearAvailabilities();
+    	loadCurrentAvailabilities(this.c.utilities.getEmployeeAvailability(employeeId).toStringArray());
     	update();
     }
 
-    private void update() {
+    private void clearAvailabilities() {
+		for(ArrayList<String> days : fullListOfDays) {
+			days.clear();
+		}
+		
+	}
+
+	private void update() {
     	time.deselectAll();
     	if (employeeId != null) {
-       	 	String[][] availabilities = c.utilities.getEmployeeAvailability(employeeId).toStringArray();
-       	 	if (fullListOfDays.get(whichDay(currentDay)).size() > 0) {
-       	 		System.out.println("test1");
-           	 	time.setDefaultAvailabilityFromList(fullListOfDays.get(whichDay(currentDay)), currentDay);
-       	 	} else
-       	 	{
-       	 		System.out.println("test2");
-           	 	time.setDefaultAvailability(availabilities, currentDay);
-       	 	}
+    		
+       	 	ArrayList<String> cDay = fullListOfDays.get(whichDay(currentDay));
+           	time.setDefaultAvailabilityFromList(cDay, currentDay);
+           	
     	}
-    	
 	}
 
 	@FXML
@@ -139,6 +142,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
 		fullListOfDays.get(whichDay(currentDay)).clear();
 		ArrayList<String> savedTimes = time.saveTimes(currentDay);
 		if (savedTimes == null) {
+			currentDay = pickDay.getSelectionModel().getSelectedItem();
 			this.update();
 			return;
 		}
@@ -153,9 +157,23 @@ public class OwnerAddEmployeeAvailabilitiesController {
 		for(int i = 0; i < 6; i++) {
 			if (listOfDays[i] == day) {
 				return i;
-			}
+			} 
 		}
 		return 0;
+	}
+	
+	void loadCurrentAvailabilities(String[][] availabilities) {
+			clearAvailabilities();
+		if (availabilities == null || availabilities.length == 0) {
+    		return;
+		}
+    	
+		for(String[] s : availabilities) {
+			String dayToInsert = Period.convertSecondsToDay(s[0]);
+			fullListOfDays.get(whichDay(dayToInsert)).add(s[0]);
+			fullListOfDays.get(whichDay(dayToInsert)).add(s[1]);
+			
+		}
 	}
 
 }

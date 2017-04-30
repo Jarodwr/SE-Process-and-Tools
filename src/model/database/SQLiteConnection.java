@@ -672,18 +672,32 @@ public class SQLiteConnection {
 		}
 	}
 	
-	public static ResultSet getEmployeeAvailability(int employeeId) throws SQLException {
+	public static ResultSet getEmployeeAvailability(int employeeId) throws SQLException { // change to return special if timetableId = 0
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Timetableinfo WHERE timetableId= (SELECT timetableId FROM Employeeinfo WHERE employeeId=?)";
-		PreparedStatement pst = c.prepareStatement(query);
-		pst.setInt(1, employeeId);
-		ResultSet rs = pst.executeQuery();
+		String query1 = "SELECT timetableId FROM Employeeinfo WHERE employeeId=?";
+		PreparedStatement pst1 = c.prepareStatement(query1);
+		pst1.setInt(1, employeeId);
+		ResultSet rs1 = pst1.executeQuery();
 
-		if (rs.next()) {
-			return rs;
+		if (rs1.next()) {
+			if (rs1.getInt("timetableId") == 0 ) {
+				return null;
+			}
+			else {
+				String query2 = "SELECT * FROM Timetableinfo WHERE timetableId= (SELECT timetableId FROM Employeeinfo WHERE employeeId=?)";
+				PreparedStatement pst2 = c.prepareStatement(query2);
+				pst2.setInt(1, employeeId);
+				ResultSet rs2 = pst2.executeQuery();
+
+				if (rs2.next()) {
+					return rs2;
+				}
+				else return null;
+			}
 		}
 		else return null;
+		
 	}
 	
 	public static ResultSet getAllAvailabilities() throws SQLException {
@@ -873,7 +887,7 @@ public class SQLiteConnection {
 		else return null;
 	}
 
-	public static int getNextAvailableId(ResultSet rs, String idString) throws SQLException {
+	public static int getNextAvailableId(ResultSet rs, String idString) throws SQLException { // edit to remove space leakage
 		int i = 0;
 		if (rs == null) return i;
 		do {

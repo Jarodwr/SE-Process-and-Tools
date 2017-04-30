@@ -65,6 +65,11 @@ public class Period {
 		int division = seconds/86400;
 		return weekdays[Math.min(6,division)];
 	}
+	public static String convertSecondsToDay(String seconds) {
+		int secs = Integer.parseInt(seconds);
+		int division = secs/86400;
+		return weekdays[Math.min(6,division)];
+	}
 	
 	public static Calendar unixToCalendar(long unixTime){
 	    Calendar c = Calendar.getInstance();
