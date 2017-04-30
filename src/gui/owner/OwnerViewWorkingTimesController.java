@@ -273,11 +273,12 @@ int tempPeriod;
 		
 		Date time=new Date((long)tempPeriod*1000);
 		cl.setTime(time);
-        int p = cl.get(Calendar.DAY_OF_WEEK);
+		cl.add(Calendar.HOUR, 14);
+
         
-        SimpleDateFormat weekDate = new SimpleDateFormat("HH:MM");
+        SimpleDateFormat weekDate = new SimpleDateFormat("HH:mm");
         
-        System.out.println("TIME WE NEED: "+weekDate.format(cl.getTime()));
+        //System.out.println("TIME WE NEED: "+weekDates.format(cl.getTime()));
         
         return weekDate.format(cl.getTime());
     }
