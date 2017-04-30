@@ -36,6 +36,7 @@ import javafx.util.Callback;
 public class OwnerViewWorkingTimesController {
 	
 	private String[] allEmployees;
+	private Boolean isTableEmpty = true;
 
     @FXML
     private ResourceBundle resources;
@@ -136,6 +137,7 @@ public class OwnerViewWorkingTimesController {
     	
     	int idPos;
     	
+    	if (Employees != null) { //Check if Employees exist
     	if (Employees[0] != null) {
     		for (int i = 0; i < Employees.length; i++) {
     			idPos = Employees[i].indexOf(":"); //Check position of ID and remove it
@@ -145,6 +147,7 @@ public class OwnerViewWorkingTimesController {
     			if (idPos != -1) //Make sure we found an id before continuing
     				employeeList.getItems().addAll(Employees[i].substring(idPos+1 ,Employees[i].length())); //Add employee to the drop downlist
     		}
+    	}
     	}
     	
     	Date date = new Date();
@@ -186,6 +189,7 @@ public class OwnerViewWorkingTimesController {
         
         	String [][] convertedWorkingTimes = getWeekDays(employeeWorkingTimes,this.c.Weekdays,weekNo);
         
+        	if (convertedWorkingTimes != null) {
         ObservableList<String[]> data = FXCollections.observableArrayList();
         data.addAll(Arrays.asList(convertedWorkingTimes));
         data.remove(0);//remove titles from data
@@ -203,6 +207,11 @@ public class OwnerViewWorkingTimesController {
         	tableView.getColumns().add(tc);
 }
         tableView.setItems(data);
+        	} else {
+        		tableView.setPlaceholder(new Label(employeeName+" has no registered working times for the selected week"));
+        	}
+        
+        
         }
         
 
@@ -274,10 +283,36 @@ int tempPeriod;
     }
     
     
+    public Boolean checkWithinSameWeek(String periodUnix,int currentWeek, int currentYear) {
+    	
+    	int tempPeriod;
+    	
+		tempPeriod = Integer.parseInt(periodUnix);
+		Date date = new Date();
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+		
+		Date time=new Date((long)tempPeriod*1000);
+		cl.setTime(time);
+    	/*Will use these to check if the date is within the same week*/
+        int periodYear = cl.get(cl.YEAR); 
+        int periodWeek =cl.get(cl.WEEK_OF_YEAR);
+        
+        if (periodYear == currentYear && periodWeek == currentWeek) {
+        	System.out.println("NO SMPTY");
+			//isTableEmpty = false;
+        	return true;
+        }else{
+        	return false;
+        }
+    }
+    
     
     
     public String[][] getWeekDays(String[][] contents,String[] Weekdays,int weekNo) {
     	int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
+    	Boolean issTableEmpty = true;
+    	
     	Date date = new Date();
         Calendar cl = Calendar.getInstance();
         cl.setTime(date);
@@ -291,6 +326,10 @@ int tempPeriod;
         
         if (weekNo == 2) //Week after next week
         	cl.add(Calendar.DATE, -n + 14);
+        
+        /*Will use these to check if the date is within the same week*/
+        int currentYear = cl.get(cl.YEAR); 
+        int currentWeek =cl.get(cl.WEEK_OF_YEAR);
         
         
         Date currentDate; // Will store current date being processed
@@ -338,20 +377,8 @@ int tempPeriod;
 		String tempDay;
 		String startPeriod;
 		String endPeriod;
-		
-		Long hi;
 		String tempRaw;
 		int tempPeriod;
-		tempPeriod = 1493942400;
-		
-		Date time=new Date((long)tempPeriod*1000);
-		cl.setTime(time);
-        int p = cl.get(Calendar.DAY_OF_WEEK) - cl.getFirstDayOfWeek();
-        cl.add(Calendar.DATE, -p);
-        
-       // tempPeriod = 1493942400;//Integer.parseInt( contents[i][0])/1000;
-		//startPeriod = Integer.toString(tempPeriod);
-        
 		
 		
 		
@@ -388,8 +415,9 @@ int tempPeriod;
 			
 			
 			for (int j = 1; j < contents[i].length; j++) { 
-				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
+				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null && checkWithinSameWeek(contents[i][0],currentWeek,currentYear)) {
 					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = startPeriod+" - "+endPeriod;
+					issTableEmpty = false;
 					break;
 				}
 				
@@ -397,66 +425,25 @@ int tempPeriod;
 			}
 		}
 		
+		isTableEmpty = true;
 		for (int i=0;i < convertedDates.length; i++) {
 			for (int j = 0; j < convertedDates[i].length; j++) {
-				if (convertedDates[i][j] == null)
+				if (convertedDates[i][j] == null){
+					///System.out.println("IS SMPTY");
 					convertedDates[i][j] = ""; //Make null table cells empty
+			}else {
+					//System.out.println("NO SMPTY");
+					//isTableEmpty = false;
+				}
 			
 		}
     }
 		
-		//Menu Title			
-				System.out.println("\n--------------------\nEmployee Availability\n--------------------\n");
-
-				
-				/*Table header*/
-				String tableTitles = "";
-				
-				for (int i = 0; i < Weekdays.length;i++) {
-					if (i == 0)
-						tableTitles += "     "+Weekdays[i]; // First table header title
-					else
-						tableTitles += "   | "+Weekdays[i]; // Second or more element of the table header title
-					
-					for (int k = 0; k < (12-Weekdays[i].length()); k++)
-						tableTitles += " ";
-					
-				
-				}
-				System.out.print(tableTitles); //Print all the header titles
-				
-				//Close header
-				System.out.println(); 
-				for (int k = 0; k < (tableTitles.length()); k++)
-					System.out.print("-"); //Line below the headers
-				
-				
-				System.out.println(); //Create a new line for the rest of the table contents
-				
-				
-						for (int i=1;i < convertedDates.length; i++) { //Go through all the rows
-							for (int j = 0; j < convertedDates[i].length; j++) { //Go through all the columns
-								
-								if (j ==0)
-									System.out.print("   ");
-								
-								System.out.print("  "+convertedDates[i][j]+"   "); //Print out the current detail
-								
-								/*Add enough spaces to keep table column length balanced*/
-								
-								if ( convertedDates[i][j] == "")
-									for (int k = 0; k < 12; k++)
-										System.out.print(" "); //Create a gap between columns
-							}
-							System.out.println(); //create a new row
-						}
 						
-						for (int k = 0; k < (tableTitles.length()); k++)
-							System.out.print("-"); //Add dashes "-" under the table
-		
-		
-		
-		return convertedDates;
+						if (issTableEmpty == false)
+							return convertedDates;
+						else
+							return null; //Table empty
     
    
     }
