@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.users.Customer;
 import model.users.User;
 
 
@@ -26,6 +27,9 @@ public class CustomerViewController {
 
     @FXML
     private Button addBookingButton;
+    
+    @FXML
+    private Button viewBookingButton;
 
     @FXML
     private Button logoutButton;
@@ -36,7 +40,7 @@ public class CustomerViewController {
     @FXML
     private Label welcometxt;
     
-    private User customer;
+    private Customer customer;
     
     private Controller c;
     
@@ -45,8 +49,35 @@ public class CustomerViewController {
     @FXML
     void addBooking(ActionEvent event) {
     	selectButton(addBookingButton);
+    	
+    	try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomerAddBooking.fxml"));
+			mainScreen.getChildren().clear();
+			mainScreen.getChildren().add(loader.load());
+			CustomerAddBooking controller = loader.getController();
+		    controller.init(c);
+			
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
+    @FXML
+    void viewBookings(ActionEvent event) {
+    	selectButton(viewBookingButton);
+    	
+    	try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomerViewBookingSummery.fxml"));
+			mainScreen.getChildren().clear();
+			mainScreen.getChildren().add(loader.load());
+			CustomerViewBookingsController controller = loader.getController();
+		    controller.init(c, customer);
+			
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
     @FXML
     void logout(ActionEvent event) 
     {
@@ -78,15 +109,16 @@ public class CustomerViewController {
     public void init(Stage main, Controller c, User u) 
     {
     	this.main = main;
-    	customer = u;
+    	customer = (Customer) u;
     	this.c = c;
 	}
     
     @FXML
-    private void selectButton(Button selected)
-    {
+    private void selectButton(Button selected) {
     	addBookingButton.setStyle("-fx-background-color: #e6e6e6");
+    	viewBookingButton.setStyle("-fx-background-color: #e6e6e6");
     	
     	selected.setStyle("-fx-background-color: #ff5930");
+    	
     }
 }

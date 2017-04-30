@@ -6,11 +6,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.customer.CustomerViewController">
+<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.customer.CustomerViewController">
    <left>
       <Pane prefHeight="500.0" prefWidth="220.0" style="-fx-background-color: #dddddd;" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="addBookingButton" mnemonicParsing="false" onAction="#addBooking" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Add Booking">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="viewBookingButton" layoutY="50.0" mnemonicParsing="false" onAction="#viewBookings" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="View Bookings">
                <font>
                   <Font name="Calibri" size="18.0" />
                </font>

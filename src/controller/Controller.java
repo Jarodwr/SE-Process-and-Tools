@@ -170,7 +170,7 @@ public class Controller {
 		Booking[] bookings = utilities.getBookingsAfter(new Date(0));
 		
 		//if there are no bookings in the future then alert the user and exit function
-		if (bookings.length == 0) {
+		if (bookings == null || bookings.length == 0) {
 			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
 			return null;
 		} else {
