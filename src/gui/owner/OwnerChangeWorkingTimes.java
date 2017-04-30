@@ -90,8 +90,7 @@ public class OwnerChangeWorkingTimes {
     		time.setEnabled(true);
         	String[][] times = controller.getWorkerAvailability(employeeId);
         	if (times != null && times.length > 0) {
-        		System.out.println(date.toEpochDay()%7);
-        		time.setDefaultAvailability(times, Long.toString(date.toEpochDay()%7));
+        		time.setDefaultAvailability(times, Long.toString(date.toEpochDay()));
         	}
         	submit.setDisable(false);
     	} else {

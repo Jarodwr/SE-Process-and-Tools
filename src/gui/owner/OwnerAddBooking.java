@@ -85,6 +85,8 @@ public class OwnerAddBooking {
     	
     	if (employeeId != null && customerUsername != null && date != null && services.size() != 0)
     		AddBookingBtn.setDisable(false);
+    	else
+    		AddBookingBtn.setDisable(true);
     }
     
     @FXML
