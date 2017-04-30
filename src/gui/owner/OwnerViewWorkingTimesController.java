@@ -132,7 +132,7 @@ public class OwnerViewWorkingTimesController {
     	tableView.setPlaceholder(new Label("Please select an employee and the week of interest."));
     	
     	//FIXME Remove this before submission. Only for test purposes
-    	this.c.addWorkingTime("0", "01/05/2017", "10:00", "11:00");
+    	//this.c.addWorkingTime("0", "01/05/2017", "10:00", "11:00");
     	
     	int idPos;
     	
@@ -248,7 +248,7 @@ public class OwnerViewWorkingTimesController {
 					dayTemp = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]))); 
 					tempLong = Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]);
 					tempStartOfWeek = Period.getCurrentWeekBeginning(contents[i][0]);
-					System.out.println("Subtraction LONG: "+tempLong+" Un-modified Seconds: "+contents[i][0]+" Start of Week: "+tempStartOfWeek+" CONVERTED To Day: "+dayTemp);
+					//System.out.println("Subtraction LONG: "+tempLong+" Un-modified Seconds: "+contents[i][0]+" Start of Week: "+tempStartOfWeek+" CONVERTED To Day: "+dayTemp);
 					
 					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]))); 
 					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
@@ -276,16 +276,42 @@ public class OwnerViewWorkingTimesController {
 		
 		
 		
-		
+		String tempDay;
+		String startPeriod;
+		String endPeriod;
+		int tempPeriod;
+		String tempRaw;
 		
 		for (int i=0;i < contents.length; i++) {
 			
-			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0])));
-			
 			/* Add it to the table under the specific day column with start - end time 24 hr format*/
+			//Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]))
+			//ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0])));
+			tempPeriod =Integer.parseInt( contents[i][0])/1000;
+			startPeriod = Integer.toString(tempPeriod);
+			tempRaw = startPeriod;
+			
+			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(startPeriod) - Period.getCurrentWeekBeginning(startPeriod)));
+			
+			System.out.println(contents[i][0]+" : "+startPeriod+" : "+ Period.getCurrentWeekBeginning(startPeriod));
+			
+			System.out.println("Converted Day: "+ConvertedDay);
+			
+			tempDay = Long.toString(Long.parseLong(startPeriod) - Period.getCurrentWeekBeginning(startPeriod));
+			startPeriod = Period.get24HrTimeFromWeekTime(tempDay);
+			
+			System.out.println("Start Period raw: "+tempRaw+" Start Period tempDay: "+tempDay+" startPeriod: "+startPeriod);
+			
+			tempDay = Long.toString(Long.parseLong(contents[i][1]) - Period.getCurrentWeekBeginning(contents[i][1]));
+			endPeriod = Period.get24HrTimeFromWeekTime(tempDay);
+			
+			System.out.println("End Period raw: "+contents[i][1]+" Start Period tempDay: "+startPeriod+" endPeriod: "+endPeriod);
+			
+			
+			
 			for (int j = 1; j < contents[i].length; j++) { 
 				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
-					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = Period.get24HrTimeFromWeekTime(contents[i][0])+" - "+Period.get24HrTimeFromWeekTime(contents[i][1]);
+					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = startPeriod+" - "+Period.get24HrTimeFromWeekTime(contents[i][1]);
 					break;
 				}
 				
