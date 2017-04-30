@@ -77,7 +77,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	pickDay.getItems().addAll("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
     	
     	try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("AvailabilityPicker.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("AvailabilityPicker.fxml"));  // load GUI element
 			TimePickerPane.getChildren().clear();
 			TimePickerPane.getChildren().add(loader.load());
 			
@@ -87,7 +87,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
 			e.printStackTrace();
 		}
     	
-    	pickDay.getSelectionModel().select(0);
+    	pickDay.getSelectionModel().select(0); // pick monday
     }
 
     @FXML
@@ -140,14 +140,14 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	update();
     }
 
-    private void clearAvailabilities() {
+    private void clearAvailabilities() { // empty selected availabilities
 		for(ArrayList<String> days : fullListOfDays) {
 			days.clear();
 		}
 		
 	}
 
-	private void update() {
+	private void update() { // refresh page with new data
     	time.deselectAll();
     	if (employeeId != null) {
     		
@@ -158,7 +158,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
 	}
 
 	@FXML
-    void updateCurrentAvailability(ActionEvent event) {
+    void updateCurrentAvailability(ActionEvent event) { // changed day combobox
 		fullListOfDays.get(whichDay(currentDay)).clear();
 		ArrayList<String> savedTimes = time.saveTimes(currentDay);
 		if (savedTimes == null) {
@@ -173,7 +173,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	this.update();
     }
 	
-	int whichDay(String day) {
+	int whichDay(String day) {  // gives a number from 0 - 6 indicating the index of the day in the fullListOfDays array
 		for(int i = 0; i < 6; i++) {
 			if (listOfDays[i] == day) {
 				return i;
@@ -182,7 +182,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
 		return 0;
 	}
 	
-	void loadCurrentAvailabilities(String[][] availabilities) {
+	void loadCurrentAvailabilities(String[][] availabilities) { // load the employee's existing availabilities onto our menu
 			clearAvailabilities();
 		if (availabilities == null || availabilities.length == 0) {
     		return;
