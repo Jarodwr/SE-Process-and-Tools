@@ -125,7 +125,7 @@ public class OwnerViewBookingsController {
     	}
     	
     	allBookings.setVgap(10);
-    	if(allBookings != null)
+    	if(summaryofBookings != null)
     	{
     		for(int i = 0; i < summaryofBookings.length; i++)
         	{

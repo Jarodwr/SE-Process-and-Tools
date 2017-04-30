@@ -186,7 +186,7 @@ public class OwnerViewController {
     	
     	try
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewBookingSummery.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewBookingSummary.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
 			OwnerViewBookingsController controller = loader.getController();
