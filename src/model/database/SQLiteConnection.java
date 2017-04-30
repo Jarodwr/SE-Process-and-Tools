@@ -436,6 +436,7 @@ public class SQLiteConnection {
 			if (rs == null) {
 				return false;
 			}
+			rs.close();
 			
 			String query = "DELETE FROM BookingsTable WHERE bookingId = ?";
 			PreparedStatement pst = c.prepareStatement(query);
@@ -456,7 +457,6 @@ public class SQLiteConnection {
 		Connection c = getDBConnection();
 		
 		try {
-			System.out.println(SQLiteConnection.getNextAvailableId(getAllEmployees(), "employeeId"));
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, SQLiteConnection.getNextAvailableId(getAllEmployees(), "employeeId"));
 			ps.setString(2, businessname);
@@ -540,7 +540,7 @@ public class SQLiteConnection {
 	}
 		
 	
-	public static ResultSet getBookingsByUsername(String username) throws SQLException {
+	public static ResultSet getBookingsByUsername(String username) throws SQLException { // not currently in use
 		Connection c = getDBConnection();
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE username=?";
@@ -648,17 +648,19 @@ public class SQLiteConnection {
 	public static boolean updateAvailabilityforEmployee(int employeeId, int timetableId) {
 		Connection c = getDBConnection();
 		try {
-			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
+			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this timetable currently exists
 
 			if (rs == null) {
 				return false;
 			}
+			rs.close();
 			
 			ResultSet rs2 = getEmployeeRow(employeeId);
 			if (rs2 == null) {
 				return false;
 			}
-
+			rs2.close();
+			
 			PreparedStatement ps = c.prepareStatement("UPDATE Employeeinfo SET timetableId=? WHERE employeeId=?"); // this creates a new user
 			ps.setInt(1, timetableId);
 			ps.setInt(2, employeeId);
@@ -779,6 +781,7 @@ public class SQLiteConnection {
 			pst.setString(4, businessname);
 			ResultSet rs = pst.executeQuery();
 			if (rs.next()) {
+				rs.close();
 				return true;
 			}
 		} catch (SQLException e) {

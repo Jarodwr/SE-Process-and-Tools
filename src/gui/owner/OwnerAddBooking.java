@@ -102,8 +102,14 @@ public class OwnerAddBooking {
     	this.controller = controller;
     	
     	AddBookingBtn.setDisable(true);
-    	employeeMenu.getItems().addAll(controller.getEmployeeList());
-    	customerMenu.getItems().addAll(controller.getCustomerList());
+    	String[] employees = controller.getEmployeeList();
+    	if (employees != null) {
+        	employeeMenu.getItems().addAll(employees);
+    	}
+    	String[] customers = controller.getCustomerList();
+    	if (customers != null) {
+    		customerMenu.getItems().addAll(customers);
+    	}
     	
     	
     	//Add all services to list

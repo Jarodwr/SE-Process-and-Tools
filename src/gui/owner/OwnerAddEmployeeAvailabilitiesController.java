@@ -2,6 +2,7 @@ package gui.owner;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import controller.Controller;
@@ -68,7 +69,11 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	fullListOfDays.add(saturdayTimes);
     	fullListOfDays.add(sundayTimes);
     	
-    	pickEmployee.getItems().addAll(c.getEmployeeList());
+    	String[] employees = c.getEmployeeList();
+    	if (employees != null) {
+    		pickEmployee.getItems().addAll(employees);
+    	}
+    	
     	pickDay.getItems().addAll("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
     	
     	try {
@@ -95,7 +100,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	}
     	ArrayList<String> availabilitiesToSubmit = new ArrayList<String>();
     	System.out.println(fullListOfDays.toString());
-    	for(ArrayList<String> days : fullListOfDays) {
+    	for(ArrayList<String> days : fullListOfDays) { //  copy into final arraylist
     		int i = 1;
     		for(String currentTime : days) {
     			if (i%2 == 0) { // skip every second option
@@ -108,6 +113,23 @@ public class OwnerAddEmployeeAvailabilitiesController {
     			i++;
     		}
     	}
+    	Iterator<String> iter = availabilitiesToSubmit.iterator();
+    	while(iter.hasNext()) {
+    		String s = iter.next();
+    		int i = 0;
+    		for(String s2 : availabilitiesToSubmit) {
+    			if (s2.equals(s)) {
+    				if (i == 0) {
+    					i++;
+    				}
+    				else {
+    					iter.remove();
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	
     	System.out.println(employeeId + " - " + availabilitiesToSubmit.toString());
     	c.editAvailability(employeeId, availabilitiesToSubmit);
     }

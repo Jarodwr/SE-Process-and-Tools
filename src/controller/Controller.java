@@ -331,16 +331,21 @@ public class Controller {
 	public boolean addEmployee(String name, String phone, String address, Owner user) 
 	{
 		//set variables that are used for checking and creating the new employee
-		String business = user.getBusinessName();
+		String business = utilities.getCurrentBusiness();
 		String id = "";
 		//create a unique ID for the new employee
 		
 		/* TODO Turn try block into utility method */
 		try {
 			ResultSet rs = SQLiteConnection.getAllEmployees();
-			int i = SQLiteConnection.getNextAvailableId(rs, "employeeId");
-			rs.close();
-			id = Integer.toString(i);
+			if (rs != null) {
+				int i = SQLiteConnection.getNextAvailableId(rs, "employeeId");
+				rs.close();
+				id = Integer.toString(i);
+			}
+			else {
+				id = "0";
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -362,6 +367,9 @@ public class Controller {
 	
 	public String[] getEmployeeList() {
 		Employee[] eList = utilities.getAllEmployees();
+		if (eList == null) {
+			return null;
+		}
 		String[] employees = new String[eList.length];
 		
 		for (int i = 0; i < eList.length; i++)

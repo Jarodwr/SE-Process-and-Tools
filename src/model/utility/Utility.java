@@ -81,7 +81,8 @@ public class Utility {
 		ResultSet rs;
 		try {
 			rs = SQLiteConnection.getAllEmployees();
-		} catch (SQLException e) {
+			if (rs == null) throw new Exception("No employees found");
+		} catch (Exception e) {
 				LOGGER.warning(e.getMessage());
 			return null;
 		}
@@ -250,8 +251,10 @@ public class Utility {
 	public Booking[] getBookingsAfter(Date date) {
 		try {
 			ResultSet rs = SQLiteConnection.getBookingsByPeriodStart(date.getTime());
-			if (rs != null)
+			if (rs != null)  {
 				return bookingResultsetToArray(rs);
+			}
+				
 		} catch (SQLException e) {
 			LOGGER.warning(e.getMessage());
 		}
@@ -344,6 +347,7 @@ public class Utility {
 			do {
 				t.addPeriod(new Shift(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false, employeeId));
 			} while (shifts.next());
+			shifts.close();
 			
 		} catch (SQLException e) {
 			LOGGER.warning(e.getMessage());
@@ -411,6 +415,9 @@ public class Utility {
 		ResultSet rs;
 		try {
 			rs = SQLiteConnection.getAllEmployees();
+			if (rs == null) {
+				return null;
+			}
 			do {
 				employees.add(new Employee(rs.getString(1), rs.getString(3), null));
 			} while (rs.next());

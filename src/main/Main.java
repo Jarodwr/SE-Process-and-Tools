@@ -40,10 +40,6 @@ public class Main {
 		
 		SQLiteConnection.createTables(); // Create table if it doesn't exist for all info
 		debugCreateOwnerBusiness();
-		//debugCreateEmptyAvailability();
-		debugCreateEmployees();
-		debugCreateService();
-
 		GuiMain.main(args);
 	}
 	
@@ -52,35 +48,6 @@ public class Main {
 		SQLiteConnection.createOwner("SARJ's Milk Business", "ownertest", "1234", "Name", "Address", "MobileNo");
 	}
 	
-	public static void debugCreateService() {
-		SQLiteConnection.addService("test", 20000, 15*60, "SARJ's Milk Business");
-//		try {
-//			Service s = new Service("test", 20000, 15*60, true);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-	}
-	public static void debugCreateEmptyAvailability() {
-		if (SQLiteConnection.createAvailability(1, "SARJ's Milk Business", "90000,93600|97200,100600|21600,43200")) {
-			
-		}
-		else {
-			SQLiteConnection.deleteAvailabilities(1, "SARJ's Milk Business");
-			SQLiteConnection.createAvailability(1, "SARJ's Milk Business", "90000,93600|97200,100600|21600,43200");
-		};
-	}
-	
-	public static void debugCreateEmployees() {
-		SQLiteConnection.deleteEmployee(0);
-		SQLiteConnection.deleteEmployee(1);
-		SQLiteConnection.deleteEmployee(2);
-		SQLiteConnection.deleteEmployee(3);
-		SQLiteConnection.deleteEmployee(4);
-		SQLiteConnection.createEmployee("SARJ's Milk Business", "Bob", "32 does not exists st", "0412345678", 0);
-		SQLiteConnection.createEmployee("SARJ's Milk Business", "John", "32 does not exists st", "0412345678", 0);
-		SQLiteConnection.createEmployee("SARJ's Milk Business", "Alex", "32 does not exists st", "0412345678", 0);
-		SQLiteConnection.createEmployee("SARJ's Milk Business", "Greg", "32 does not exists st", "0412345678", 1);
-	}
+
 
 }
