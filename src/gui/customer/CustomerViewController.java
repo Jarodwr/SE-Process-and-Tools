@@ -55,7 +55,7 @@ public class CustomerViewController {
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
 			CustomerAddBooking controller = loader.getController();
-		    controller.init(c);
+		    controller.init(c, customer);
 			
     	} catch(Exception e) {
     		e.printStackTrace();

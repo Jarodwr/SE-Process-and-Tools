@@ -21,11 +21,11 @@ public class TimePicker {
     @FXML
 	protected GridPane timeGrid;
     
-    private String[] availableStyle = new String[]{"-fx-background-color: #ffffff","-fx-background-color: #dddddd", "-fx-background-color: #bbbbbb"};
+    protected String[] availableStyle = new String[]{"-fx-background-color: #ffffff","-fx-background-color: #dddddd", "-fx-background-color: #bbbbbb"};
     protected String[] unavailableStyle = new String[]{"-fx-background-color: #ff0000","-fx-background-color: #dd0000", "-fx-background-color: #bb0000"};
     
     ArrayList<Integer> selected = new ArrayList<Integer>();
-    private ArrayList<Integer> available = new ArrayList<Integer>();
+    protected ArrayList<Integer> available = new ArrayList<Integer>();
     
     int duration = 1;
 
@@ -90,6 +90,17 @@ public class TimePicker {
     	return t;
     }
     
+    public boolean validPeriod() {
+    	for (int i : selected) {
+    		for (int j : available) {
+    			if (i == j) {
+    				return false;
+    			}
+    		}
+    	}
+    	return true;
+    }
+    
     public void setDuration(int duration) {
     	this.duration = duration;
     }
@@ -113,7 +124,7 @@ public class TimePicker {
         return null;
     }
     
-    private void addPaneListener(Pane p, int i) {
+    protected void addPaneListener(Pane p, int i) {
     	p.onMouseClickedProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
