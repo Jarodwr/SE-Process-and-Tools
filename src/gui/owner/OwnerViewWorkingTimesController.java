@@ -327,8 +327,6 @@ public class OwnerViewWorkingTimesController {
         int periodWeek =cl.get(cl.WEEK_OF_YEAR);
         
         if (periodYear == currentYear && periodWeek == currentWeek) {
-        	System.out.println("NO SMPTY");
-			//isTableEmpty = false;
         	return true;
         }else{
         	return false;
