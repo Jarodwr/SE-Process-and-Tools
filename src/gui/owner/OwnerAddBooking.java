@@ -12,6 +12,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
@@ -94,7 +96,21 @@ public class OwnerAddBooking {
 
     	long startTime = date.toEpochDay() * 86400000 + localStart * 1800000;
     	
-    	controller.addNewBooking(customerUsername, Long.toString(startTime), services.toString(), employeeId);
+    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), services.toString(), employeeId)) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Add booking");
+    		alert.setHeaderText("Booking successfully added!");
+    		alert.setContentText("press ok to continue...");
+
+    		alert.showAndWait();
+    	} else {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Add booking");
+    		alert.setHeaderText("failed to add booking");
+    		alert.setContentText("press ok to continue...");
+
+    		alert.showAndWait();
+    	}
     	this.update();
     }
     
