@@ -40,31 +40,41 @@ public class OwnerViewBookingsController {
     
     @FXML // fx:id="allBookingsAlert"
     private Label allBookingsAlert; // Value injected by FXMLLoader
-
+    
+    //variables to get from dependency injection when the controller is loaded
     private Controller c;
     private Owner o;
     
+    //variables to locally store the bookings
     String [][] summaryofBookings = null;
     String [][] newBookings = null;
     ArrayList<CheckBox> newBookingsDelete = null;
     
+    /*
+     * if the delete selected button is pressed then delete the selected bookings from the database and refresh tables
+     */
     @FXML
     void deleteSelectedBookings(ActionEvent event) 
     {
+    	//check if bookings exist in the first place
     	if(newBookingsDelete != null)
     	{
+    		//go through each of the new bookings delete check box and check if they are marked for deletion
     		for(int i = 0; i < newBookingsDelete.size(); i++)
 	    	{
+    			//if it is marked for deletion
 	    		if(newBookingsDelete.get(i).isSelected())
 	    		{
+	    			//get the details of the booking
 	    			int id = Integer.parseInt(newBookings[i][0]);
 	    			String businessName = o.getBusinessName();
 	    			
+	    			//delete the booking
 	    			c.removeBooking(id, businessName);
 	    		}
 	    	}
     	}
-    	
+    	//refresh the tables
     	initTables();
     }
 
@@ -77,28 +87,42 @@ public class OwnerViewBookingsController {
         
     }
     
+    //Dependency injection to get the current instance of the controller and the owner who is making changes
     void init(Controller c, Owner o)
     {
     	this.c = c;
     	this.o = o;
+    	//initiate the tables upon initialization
     	initTables();
     }
     
+    /*
+     * this method fills the data into the 2 tables on the view bookings page
+     */
     void initTables()
     {
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    	//get all bookings details from database
     	String[][] bookings = c.getSummaryOfBookings();
     	if (bookings != null) {
+    		//assign to private variable
         	summaryofBookings = bookings;
     	}
+    	//get the list of current bookings from database
     	String[][] currentBookings = c.getCurrentBookings();
     	if (currentBookings != null) {
+    		//assign to the private variable
     		newBookings = currentBookings;
     	}
+    	
+    	//create a new list of check boxes
     	newBookingsDelete = new ArrayList<CheckBox>();
+    	
+    	//if there are future bookings
     	if(!(newBookings == null))
     	{
     		futureBookings.setVgap(10);
+    		//go through each item and print it into gridpane
     		for(int i = 0; i < newBookings.length; i++)
 	    	{
     			Label id = new Label(newBookings[i][0]);
@@ -115,18 +139,22 @@ public class OwnerViewBookingsController {
 	    		futureBookings.add(delete, 4 , i+1);
 	    		
 	    	}
+    		//remove error message
     		futureBookingsAlert.setStyle("-fx-text-fill: #f5f5f5");
     		deleteBookings.setDisable(false);
     	}
     	else
     	{
+    		//if no bookings exist then disable the delete booking button and show the error message
     		futureBookingsAlert.setStyle("-fx-text-fill: BLACK");
     		deleteBookings.setDisable(true);
     	}
     	
     	allBookings.setVgap(10);
+    	//if there are any bookings
     	if(summaryofBookings != null)
     	{
+    		//go through each one and put it into the gridpane
     		for(int i = 0; i < summaryofBookings.length; i++)
         	{
         		Label id = new Label(summaryofBookings[i][0]);
@@ -146,6 +174,7 @@ public class OwnerViewBookingsController {
     	}
     	else
     	{
+    		//if there are none then show the error message
     		allBookingsAlert.setStyle("-fx-text-fill: BLACK");
     	}
     	

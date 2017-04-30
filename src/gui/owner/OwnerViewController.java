@@ -15,10 +15,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.users.Owner;
 import model.users.User;
-
+/*
+ * This class is the main controller for the owner view
+ * it will change the view when the owner selects the respective menu options
+ * and log out if that option is selected
+ */
 public class OwnerViewController {
 	
-
+	//injected variables by OwnerView.fxml file
     @FXML
     private ResourceBundle resources;
 
@@ -54,40 +58,53 @@ public class OwnerViewController {
     
     @FXML
     private BorderPane mainScreen;
-
+    
+    //objects to initialize by dependency injection
 	private Stage main;
 
 	private Controller c;
 
 	private User u;
 
-    
+    /*
+     * opens the add booking page when the button is clicked
+     */
     @FXML
     void addBooking(ActionEvent event) {
+    	//change the selected button
     	selectButton(addBookingButton);
     	
     	try {
+    		//open the page in the mainScreen
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddBooking.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
 			OwnerAddBooking addBookingController = loader.getController();
+			//inject variables
 			addBookingController.init(c);
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
     }
 
+    /*
+     * opens the add employee page when the button is clicked
+     */
     @FXML
     void addEmployee(ActionEvent event) 
     {
+    	//change the selected button
     	selectButton(addEmployeeButton);
     	
     	try
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployee.fxml"));
+			//open page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployee.fxml"));
 			mainScreen.getChildren().clear();
+			//add to main screen
 			mainScreen.getChildren().add(loader.load());
 			OwnerAddEmployee addEmployeeController = loader.getController();
+			//inject variables
 			addEmployeeController.init(c);
 			
     	}
@@ -97,19 +114,25 @@ public class OwnerViewController {
     	}
     }
 
+    /*
+     * opens the add service page when the button is clicked
+     */
     @FXML
     void addService(ActionEvent event) 
     {
+    	//change the selected button
     	selectButton(AddServiceButton);
     	
     	try
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddService.fxml"));
+			//open page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddService.fxml"));
 			
 			mainScreen.getChildren().clear();
+			//add to main screen
 			mainScreen.getChildren().add(loader.load());
-
 			OwnerAddService controller = loader.getController();
+			//inject variables
 			controller.init(this.c);
 			
     	}
@@ -119,17 +142,24 @@ public class OwnerViewController {
     	}
     }
 
+    /*
+     * opens the add working times page when the button is clicked
+     */
     @FXML
     void addWorkingTimes(ActionEvent event) 
     {
+    	//change the selected button
     	selectButton(addWorkingTimesButton);
     	
     	try
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerChangeWorkingTimes.fxml"));
+			//open the page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerChangeWorkingTimes.fxml"));
 			mainScreen.getChildren().clear();
+			//add to main screen
 			mainScreen.getChildren().add(loader.load());
 			OwnerChangeWorkingTimes controller = loader.getController();
+			//inject variables
 		    controller.init(c);
 			
     	}
@@ -139,17 +169,24 @@ public class OwnerViewController {
     	}
     }
 
+    /*
+     * opens the edit employee availability page when the button is clicked
+     */
     @FXML
     void editEmployeeAvailability(ActionEvent event) 
     {
+    	//change the selected button
     	selectButton(editEmployeeAvailabilityButton);
     	
     	try
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployeeAvailabilities.fxml"));
+			//open the page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployeeAvailabilities.fxml"));
 			mainScreen.getChildren().clear();
+			//add to the main screen
 			mainScreen.getChildren().add(loader.load());
 			OwnerAddEmployeeAvailabilitiesController controller = loader.getController();
+			//inject variables
 		    controller.init(c);
 			
 			
@@ -160,16 +197,21 @@ public class OwnerViewController {
     	}
     }
 
+    /*
+     * opens the login page when the button is clicked
+     */
     @FXML
     void logout(ActionEvent event) 
     {
     	try 
     	{
+    		//open the login page
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/login/Login.fxml")); /* TODO replace with page that says "are you sure you want to log out?" */
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
 	        LoginController controller = loader.getController();
 	        controller.init(c);
+	        //inject the main stage
 	        controller.initStage(main);
 	        main.setScene(scene);
 	        main.show();
@@ -179,17 +221,23 @@ public class OwnerViewController {
 		}
     }
 
+    /*
+     * opens the view bookings page when the button is clicked
+     */
     @FXML
     void viewBookings(ActionEvent event) 
     {
+    	//change the selected button
     	selectButton(veiwBookingsButton);
     	
     	try
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewBookingSummary.fxml"));
+			//open page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewBookingSummary.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
 			OwnerViewBookingsController controller = loader.getController();
+			//inject variables
 			controller.init(c, (Owner) u);
 			
     	}
@@ -199,18 +247,24 @@ public class OwnerViewController {
     	}
     }
 
+    /*
+     * opens the view working times page when the button is clicked
+     */
     @FXML
-    void viewWorkingTimes(ActionEvent event) {
+    void viewWorkingTimes(ActionEvent event) 
+    {
+    	//change the selected button
     	selectButton(viewWorkingTimesButton);
     	try
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewWorkingTimes.fxml"));
+			//open the page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewWorkingTimes.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add(loader.load());
 			OwnerViewWorkingTimesController controller = loader.getController();
-			
+			//get the list of employees
 			String[] allEmployees = this.c.getEmployeeList();
-			
+			//inject data to controller for the page
 			controller.initData(c, allEmployees);
 			
     	}
@@ -221,6 +275,9 @@ public class OwnerViewController {
     	
     }
     
+    /*
+     * injects the main, controller and the current user into the page
+     */
     public void init(Stage main, Controller c, User u) {
     	this.main = main;
     	this.u = u;
@@ -243,9 +300,13 @@ public class OwnerViewController {
 
     }
     
+    /*
+     * this method changes the button colour to indicate which option is selected
+     */
     @FXML
     private void selectButton(Button selected)
     {
+    	//reset all to default colour 
     	addEmployeeButton.setStyle("-fx-background-color: #e6e6e6");
     	addWorkingTimesButton.setStyle("-fx-background-color: #e6e6e6");
     	veiwBookingsButton.setStyle("-fx-background-color: #e6e6e6");
@@ -254,6 +315,7 @@ public class OwnerViewController {
     	AddServiceButton.setStyle("-fx-background-color: #e6e6e6");
     	addBookingButton.setStyle("-fx-background-color: #e6e6e6");
     	
+    	//change the selected button to the selected colour
     	selected.setStyle("-fx-background-color: #ff5930");
     	
     }
