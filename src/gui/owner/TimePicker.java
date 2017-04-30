@@ -117,17 +117,22 @@ public class TimePicker {
     	p.onMouseClickedProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				String[] style = getAppropriateStyle(i);
-				p.setStyle(style[2]);
+				p.setStyle(getAppropriateStyle(i)[2]);
 				
 				for (int j : selected) {
 					getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
 				}
 
 				selected.removeAll(selected);
-				for (int j = i; j < Math.min(i + duration, 48); j++) {
-					selected.add(j);
-					getTimePane(j).setStyle(style[2]);
+				for (int j = i; j < i + Math.min(duration, 48); j++) {
+					if (j > 47 && j - 48 < 47) {
+						int k = i - (j-47);
+						selected.add(k);
+						getTimePane(k).setStyle(getAppropriateStyle(k)[2]);
+					} else {
+						selected.add(j);
+						getTimePane(j).setStyle(getAppropriateStyle(j)[2]);
+					}
 				}
 			}
     	});
@@ -135,20 +140,33 @@ public class TimePicker {
     	p.onMouseEnteredProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				String[] style = getAppropriateStyle(i);
-				for (int j = i; j < Math.min(i + duration, 48); j++)
-					if (!selected.contains(j))
-						getTimePane(j).setStyle(style[1]);
+				
+				for (int j = i; j < i + Math.min(duration, 48); j++) {
+					if (j > 47 && j - 48 < 47) {
+						int k = i - (j-47);
+						if (!selected.contains(k))
+							getTimePane(k).setStyle(getAppropriateStyle(k)[1]);
+					} else {
+						if (!selected.contains(j))
+							getTimePane(j).setStyle(getAppropriateStyle(j)[1]);
+					}
+				}
 			}
     	});
     	
     	p.onMouseExitedProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				String[] style = getAppropriateStyle(i);
-				for (int j = i; j < Math.min(i + duration, 48); j++)
-					if (!selected.contains(j))
-						getTimePane(j).setStyle(style[0]);
+				for (int j = i; j < i + Math.min(duration, 48); j++) {
+					if (j > 47 && j - 48 < 47) {
+						int k = i - (j-47);
+						if (!selected.contains(k))
+							getTimePane(k).setStyle(getAppropriateStyle(k)[0]);
+					} else {
+						if (!selected.contains(j))
+							getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
+					}
+				}
 			}
     	});
     }
