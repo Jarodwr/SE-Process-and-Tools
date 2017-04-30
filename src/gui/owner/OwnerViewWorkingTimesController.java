@@ -209,6 +209,71 @@ public class OwnerViewWorkingTimesController {
     }
     
     
+    public static Long getStartOfWeek(String unixDate) {
+    	int tempPeriod;
+    	
+		tempPeriod = Integer.parseInt(unixDate);
+		Date date = new Date();
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+		
+		Date time=new Date((long)tempPeriod*1000);
+		cl.setTime(time);
+        int p = cl.get(Calendar.DAY_OF_WEEK) - cl.getFirstDayOfWeek();
+        cl.add(Calendar.DATE, -p);
+        
+        SimpleDateFormat weekDate = new SimpleDateFormat("d/M");
+        System.out.println("DATE WE NEED: "+weekDate.format(cl.getTime()));
+        
+        //Long startDate = (long) cl.getTimeInMillis()/1000;
+    	
+    	return cl.getTimeInMillis()/1000;
+    	
+    }
+    
+    
+    public static String getDayFromUnix(String unixDate,String[] weekDays) {
+    	int tempPeriod;
+    	
+		tempPeriod = Integer.parseInt(unixDate);
+		Date date = new Date();
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+		
+		Date time=new Date((long)tempPeriod*1000);
+		cl.setTime(time);
+        int p = cl.get(Calendar.DAY_OF_WEEK);
+        
+        SimpleDateFormat weekDate = new SimpleDateFormat("d/M");
+        System.out.println("D: "+p+"DAY WE NEED: "+weekDays[p-1]);
+        System.out.println("DATE WE NEED: "+weekDate.format(cl.getTime()));
+        
+        //Long startDate = (long) cl.getTimeInMillis()/1000;
+    	
+    	return weekDays[p-1];
+    	
+    }
+    
+    public static String get24HrFromUnix(String unixDate) {
+int tempPeriod;
+    	
+		tempPeriod = Integer.parseInt(unixDate);
+		Date date = new Date();
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+		
+		Date time=new Date((long)tempPeriod*1000);
+		cl.setTime(time);
+        int p = cl.get(Calendar.DAY_OF_WEEK);
+        
+        SimpleDateFormat weekDate = new SimpleDateFormat("HH:MM");
+        
+        System.out.println("TIME WE NEED: "+weekDate.format(cl.getTime()));
+        
+        return weekDate.format(cl.getTime());
+    }
+    
+    
     
     
     public String[][] getWeekDays(String[][] contents,String[] Weekdays,int weekNo) {
@@ -241,16 +306,10 @@ public class OwnerViewWorkingTimesController {
 		int dayWithMostWorkingHours = 0;
 		
 		for (int i=0;i < contents.length; i++) { //Find out the maximum number of working hours/period per day
-			
-					//ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0])/1000  )); //Convert to day from milliseconds to seconds then day
-					//Convert to day from milliseconds to seconds then day
+
+					ConvertedDay = getDayFromUnix( contents[i][0],Weekdays);//Period.convertSecondsToDay((int)(Long.parseLong(startPeriod) - getStartOfWeek(startPeriod)));
 					
-					dayTemp = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]))); 
-					tempLong = Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]);
-					tempStartOfWeek = Period.getCurrentWeekBeginning(contents[i][0]);
-					//System.out.println("Subtraction LONG: "+tempLong+" Un-modified Seconds: "+contents[i][0]+" Start of Week: "+tempStartOfWeek+" CONVERTED To Day: "+dayTemp);
-					
-					ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]))); 
+					//ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]))); 
 					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
 					
 						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
@@ -279,39 +338,58 @@ public class OwnerViewWorkingTimesController {
 		String tempDay;
 		String startPeriod;
 		String endPeriod;
-		int tempPeriod;
+		
+		Long hi;
 		String tempRaw;
+		int tempPeriod;
+		tempPeriod = 1493942400;
+		
+		Date time=new Date((long)tempPeriod*1000);
+		cl.setTime(time);
+        int p = cl.get(Calendar.DAY_OF_WEEK) - cl.getFirstDayOfWeek();
+        cl.add(Calendar.DATE, -p);
+        
+       // tempPeriod = 1493942400;//Integer.parseInt( contents[i][0])/1000;
+		//startPeriod = Integer.toString(tempPeriod);
+        
+		
+		
 		
 		for (int i=0;i < contents.length; i++) {
 			
 			/* Add it to the table under the specific day column with start - end time 24 hr format*/
 			//Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]))
 			//ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0])));
-			tempPeriod =Integer.parseInt( contents[i][0])/1000;
+			tempPeriod = Integer.parseInt( contents[i][0]); //1493942400;//
 			startPeriod = Integer.toString(tempPeriod);
 			tempRaw = startPeriod;
 			
-			ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(startPeriod) - Period.getCurrentWeekBeginning(startPeriod)));
 			
-			System.out.println(contents[i][0]+" : "+startPeriod+" : "+ Period.getCurrentWeekBeginning(startPeriod));
+			
+			ConvertedDay = getDayFromUnix(startPeriod,Weekdays);//Period.convertSecondsToDay((int)(Long.parseLong(startPeriod) - getStartOfWeek(startPeriod)));
+			
+			System.out.println(contents[i][0]+" : "+startPeriod+" : "+ getStartOfWeek(startPeriod));
 			
 			System.out.println("Converted Day: "+ConvertedDay);
 			
-			tempDay = Long.toString(Long.parseLong(startPeriod) - Period.getCurrentWeekBeginning(startPeriod));
-			startPeriod = Period.get24HrTimeFromWeekTime(tempDay);
+			//tempDay = Long.toString(Long.parseLong(startPeriod) - getStartOfWeek(startPeriod));
+			startPeriod = get24HrFromUnix(startPeriod); //Period.get24HrTimeFromWeekTime(tempDay);
 			
-			System.out.println("Start Period raw: "+tempRaw+" Start Period tempDay: "+tempDay+" startPeriod: "+startPeriod);
+			//System.out.println("Start Period raw: "+tempRaw+" Start Period tempDay: "+tempDay+" startPeriod: "+startPeriod);
 			
-			tempDay = Long.toString(Long.parseLong(contents[i][1]) - Period.getCurrentWeekBeginning(contents[i][1]));
-			endPeriod = Period.get24HrTimeFromWeekTime(tempDay);
+			//tempDay = Long.toString(Long.parseLong(contents[i][1]) - Period.getCurrentWeekBeginning(contents[i][1]));
+			tempPeriod = Integer.parseInt( contents[i][1]); //1493942400;//
+			endPeriod = Integer.toString(tempPeriod);
 			
-			System.out.println("End Period raw: "+contents[i][1]+" Start Period tempDay: "+startPeriod+" endPeriod: "+endPeriod);
+			endPeriod = get24HrFromUnix(endPeriod); //Period.get24HrTimeFromWeekTime(tempDay);
+			
+			//System.out.println("End Period raw: "+contents[i][1]+" Start Period tempDay: "+startPeriod+" endPeriod: "+endPeriod);
 			
 			
 			
 			for (int j = 1; j < contents[i].length; j++) { 
 				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null) {
-					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = startPeriod+" - "+Period.get24HrTimeFromWeekTime(contents[i][1]);
+					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = startPeriod+" - "+endPeriod;
 					break;
 				}
 				
