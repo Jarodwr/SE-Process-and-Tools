@@ -116,6 +116,11 @@ public class CustomerViewBookingsController {
 	    	}
     		futureBookingsAlert.setStyle("-fx-text-fill: #f5f5f5");
     		deleteBookings.setDisable(false);
+    		if(j == 0)
+    		{
+    			futureBookingsAlert.setStyle("-fx-text-fill: BLACK");
+        		deleteBookings.setDisable(true);
+    		}
     	}
     	else
     	{
@@ -126,12 +131,12 @@ public class CustomerViewBookingsController {
     	allBookings.setVgap(10);
     	if(allBookings != null && summeryofBookings != null)
     	{
-    		
+    		int j = 0;
     		for(int i = 0; i < summeryofBookings.length; i++)
         	{
     			if(o.getUsername().equals(summeryofBookings[i][3]))
     			{
-    				int j = 0;
+    				
     				
     				Label id = new Label(summeryofBookings[i][0]);
             		Label customername = new Label(summeryofBookings[i][3]);
@@ -149,6 +154,10 @@ public class CustomerViewBookingsController {
             		j++;
     			}
         	}
+    		if(j == 0)
+    		{
+    			allBookingsAlert.setStyle("-fx-text-fill: BLACK");
+    		}
     	}
     	else
     	{
