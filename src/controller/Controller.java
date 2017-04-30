@@ -142,6 +142,7 @@ public class Controller {
 	public boolean addNewBooking(String username, String startTime, String listOfServices, String employeeId) {
 		ArrayList<Service> servs;
 		servs = Service.stringOfServicesToArrayList(listOfServices);
+		LOGGER.log(Level.FINE, "User has requested to add the following booking: " + username + "|" + startTime + "|" + listOfServices + "|" + employeeId);
 		return utilities.addNewBooking(username, employeeId, startTime, Long.toString(Long.parseLong(startTime) + Service.getTotalArrayDuration(servs) * 1800), listOfServices);
 	}
 	
@@ -348,6 +349,7 @@ public class Controller {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 		
@@ -355,8 +357,14 @@ public class Controller {
 
 		if(name.matches("[A-Za-z -']+") &&
 				phone.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
-				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
-			return utilities.addNewEmployee(id, business, name, address, phone, 0); //try to add the new employee to the database
+				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
+			if (utilities.addNewEmployee(id, business, name, address, phone, 0)) { //try to add the new employee to the database
+				LOGGER.log(Level.FINE, "Employee successfully added");
+				return true;
+			}
+		}
+
+		LOGGER.log(Level.FINE, "Employee could not be added, incorrect field formats");
 		return false;
 		
 	}

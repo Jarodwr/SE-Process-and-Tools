@@ -123,111 +123,111 @@ public class ControllerTest {
 		testData17[3] = "s234567";
 	}
 	
-//	//customer logining in test cases
-//	@Test
-//	public void customerlogin01() 
-//	{
-//		assert(c.login(testData1) == null);
-//	}
-//
-//	@Test
-//	public void customerlogin02() 
-//	{
-//		assert(c.login(testData2) == null);
-//	}
-//	
-//	@Test
-//	public void customerlogin03() 
-//	{
-//		assert(c.login(testData3) == null);
-//	}
-//	
-//	@Test
-//	public void customerlogin04() 
-//	{
-//		assert(!c.login(testData4).isOwner());
-//	}
-//	
-//	//owner logging in test cases
-//	@Test
-//	public void ownererlogin01() 
-//	{
-//		assert(c.login(testData5) == null);
-//	}
-//	
-//	@Test
-//	public void ownererlogin02() 
-//	{
-//		assert(c.login(testData6) == null);
-//	}
-//	
-//	@Test
-//	public void ownererlogin03() 
-//	{
-//		assert(c.login(testData7) == null);
-//	}
-//	
-//	@Test
-//	public void ownererlogin04() 
-//	{
-//		assert(c.login(testData8).isOwner());
+	//customer logining in test cases
+	@Test
+	public void customerlogin01() 
+	{
+		assert(c.login(testData1[0], testData1[1]) == null);
+	}
+
+	@Test
+	public void customerlogin02() 
+	{
+		assert(c.login(testData2[0], testData2[1]) == null);
+	}
+	
+	@Test
+	public void customerlogin03() 
+	{
+		assert(c.login(testData3[0], testData3[1]) == null);
+	}
+	
+	@Test
+	public void customerlogin04() 
+	{
+		assert(!c.login(testData4[0], testData4[1]).isOwner());
+	}
+	
+	//owner logging in test cases
+	@Test
+	public void ownererlogin01() 
+	{
+		assert(c.login(testData5[0], testData5[1]) == null);
+	}
+	
+	@Test
+	public void ownererlogin02() 
+	{
+		assert(c.login(testData6[0], testData6[1]) == null);
+	}
+	
+	@Test
+	public void ownererlogin03() 
+	{
+		assert(c.login(testData7[0], testData7[1]) == null);
+	}
+	
+	@Test
+	public void ownererlogin04() 
+	{
+		assert(c.login(testData8[0], testData8[1]).isOwner());
 	}
 	
 	//register a customer tests
-//	@Test
-//	public void customerregister01() throws ValidationException 
-//	{
-//		assert(c.register(testData9).equals(null));
-//	}
-//	
-//	@Test
-//	public void customerregister02() throws ValidationException 
-//	{
-//		assert(!c.register(testData10).equals(null));
-//	}
-//	
-//	@Test
-//	public void customerregister03() throws ValidationException 
-//	{
-//		assert(c.register(testData11).equals(null));
-//	}
-//	
-//	@Test
-//	public void customerregister04() throws ValidationException 
-//	{
-//		assert(c.register(testData12).equals(null));
-//	}
-//	
-//	@Test
-//	public void customerregister05() throws ValidationException 
-//	{
-//		assert(c.register(testData13).equals(null));
-//	}
+	@Test
+	public void customerregister01() throws ValidationException 
+	{
+		assert(c.register(testData9[0], testData9[1], testData9[2], testData9[3], testData9[4], testData9[5]).equals(null));
+	}
+	
+	@Test
+	public void customerregister02() throws ValidationException 
+	{
+		assert(!c.register(testData10[0], testData10[1], testData10[2], testData10[3], testData10[4], testData10[5]).equals(null));
+	}
+	
+	@Test
+	public void customerregister03() throws ValidationException 
+	{
+		assert(c.register(testData11[0], testData11[1], testData11[2], testData11[3], testData11[4], testData11[5]).equals(null));
+	}
+	
+	@Test
+	public void customerregister04() throws ValidationException 
+	{
+		assert(c.register(testData12[0], testData12[1], testData12[2], testData12[3], testData12[4], testData12[5]).equals(null));
+	}
+	
+	@Test
+	public void customerregister05() throws ValidationException 
+	{
+		assert(c.register(testData13[0], testData13[1], testData13[2], testData13[3], testData13[4], testData13[5]).equals(null));
+	}
 	
 	//add new employee tests
-//	@Test
-//	public void addemployeetest01() 
-//	{
-//		assert(!c.addEmployee(testData14, user));
-//	}
-//	
-//	@Test
-//	public void addemployeetest02() 
-//	{
-//		assert(!c.addEmployee(testData15, user));
-//	}
-//	
-//	@Test
-//	public void addemployeetest03() 
-//	{
-//		assert(!c.addEmployee(testData16, user));
-//	}
-//	
-//	@Test
-//	public void addemployeetest04() 
-//	{
-//		assert(c.addEmployee(testData17, user));
-//	}
+	@Test
+	public void addemployeetest01() 
+	{
+		assert(!c.addEmployee(testData14[0], testData14[1], testData14[2], user));
+	}
+	
+	@Test
+	public void addemployeetest02() 
+	{
+		assert(!c.addEmployee(testData15[0], testData15[1], testData15[2], user));
+	}
+	
+	@Test
+	public void addemployeetest03() 
+	{
+		assert(!c.addEmployee(testData16[0], testData16[1], testData16[2], user));
+	}
+	
+	@Test
+	public void addemployeetest04() 
+	{
+		assert(c.addEmployee(testData17[0], testData17[1], testData17[2], user));
+	}
 	
 //	@Test
 //	public void testGetBookingsAfter01() {
@@ -306,6 +306,6 @@ public class ControllerTest {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-//	}
+	}
 	
 //}
