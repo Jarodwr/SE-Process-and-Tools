@@ -117,21 +117,29 @@ public class WorkingTimesPicker extends TimePicker {
     }
     
     public void setDefaultAvailability(String[][] times, String day) {
-    	int lowerBoundsDay = Period.convertDayToSeconds(day);
+    	int lowerBoundsDay = (Integer.parseInt(day)+5) % 7 * 86400;
     	int upperBoundsDay = lowerBoundsDay + 86400;
     	
+    	available.clear();
+
     	if (times == null || times.length == 0) {
     		return;
     	}
+    	
     	for(int i = 0; i < times.length; i++) {
-    		int time1 = Integer.parseInt(times[i][0])/(30*60); 
-    		int time2 = Integer.parseInt(times[i][1])/(30*60);
+    		int time1 = Integer.parseInt(times[i][0]); 
+    		int time2 = Integer.parseInt(times[i][1]);
     		if (time1 < lowerBoundsDay || time1 > upperBoundsDay) {
     			continue;
     		}
-
+    		
+			System.out.println(time1 + ":" + lowerBoundsDay);
+    		
+    		time1 = (time1 / (30*60))%48;
+    		time2 = (time2 / (30*60))%48;
+    		
+    		System.out.println(time1 + ":" + time2);
     		for(int j = time1; j <= time2; j++) {
-    			
     			available.add(j);
     			getTimePane(j).setStyle(availableStyle[0]);
     		}

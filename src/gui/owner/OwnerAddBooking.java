@@ -76,8 +76,8 @@ public class OwnerAddBooking {
     	//Update gridtable with availabilities
     	
     	if (date != null && employeeId != null) {
-    		long dayInMillis = 86400000;
-        	String[][] times = controller.getEmployeeBookingAvailability(employeeId, new Date(date.toEpochDay() * dayInMillis));
+    		long dayInSecs = 86400;
+        	String[][] times = controller.getEmployeeBookingAvailability(employeeId, new Date(date.toEpochDay() * dayInSecs));
         	if (times != null && times.length > 0)
         		time.setAvailability(times, date);
 
@@ -94,7 +94,7 @@ public class OwnerAddBooking {
     		if (i < localStart)
     			localStart = i;
 
-    	long startTime = date.toEpochDay() * 86400000 + localStart * 1800000;
+    	long startTime = date.toEpochDay() * 86400 + localStart * 1800;
     	
     	if (controller.addNewBooking(customerUsername, Long.toString(startTime), services.toString(), employeeId)) {
     		Alert alert = new Alert(AlertType.INFORMATION);
