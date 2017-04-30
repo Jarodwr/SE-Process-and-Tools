@@ -36,7 +36,6 @@ import javafx.util.Callback;
 public class OwnerViewWorkingTimesController {
 	
 	private String[] allEmployees;
-	private Boolean isTableEmpty = true;
 
     @FXML
     private ResourceBundle resources;
@@ -61,16 +60,16 @@ public class OwnerViewWorkingTimesController {
     	int selectedEmployeeIndex = employeeList.getSelectionModel().getSelectedIndex(); // Get the index value of the selected week in the comboBox
     	String employeeId = "";
     	
-    	if (selectedEmployeeIndex != -1 && selectedWeek != -1) {
+    	if (selectedEmployeeIndex != -1 && selectedWeek != -1) { // Check if everything we need has been selected
     		String selectedEmployee = allEmployees[selectedEmployeeIndex];
         	
     	
-    	int idSplit = selectedEmployee.indexOf(":");
+    	int idSplit = selectedEmployee.indexOf(":"); // Get the position of the ID and name splitter 
 
-    	if (idSplit != -1)
-    		employeeId = selectedEmployee.substring(0 , idSplit);
+    	if (idSplit != -1) // Make sure the id spliter does exist
+    		employeeId = selectedEmployee.substring(0 , idSplit); // Get the employee ID
     	
-    	String employeeName = selectedEmployee.substring(idSplit+1 ,selectedEmployee.length());
+    	String employeeName = selectedEmployee.substring(idSplit+1 ,selectedEmployee.length()); // Get the employee name
 
     	if (idSplit != -1) { //Check if everything is fine before continuing
     		insertEmployeeTimes(selectedWeek,employeeId,employeeName); //Set columns dates of the selected week
@@ -89,7 +88,7 @@ public class OwnerViewWorkingTimesController {
         	}
     		
     		if (selectedWeek == -1 && selectedEmployeeIndex == -1) { // Nothing selected
-    			tableView.setPlaceholder(new Label("You need to both select an employee and the week of interest."));
+    			tableView.setPlaceholder(new Label("You need to both select an employee and the week of interest.")); // Inform the user nothing is selected
     		}
     		
     		
@@ -109,7 +108,6 @@ public class OwnerViewWorkingTimesController {
     }
     
     private Controller c;
-    private Employee [] employees;
     
     public void init(Controller c) {
 		this.c = c;
@@ -122,6 +120,13 @@ public class OwnerViewWorkingTimesController {
         
 
     }
+    
+    /**
+	 * Initializes the view controller
+	 * @param c	Main controller
+	 * @param Employees	all the employees in the system
+	 **/
+    
     void initData(Controller c, String[] Employees)
     {
     	
@@ -173,26 +178,33 @@ public class OwnerViewWorkingTimesController {
     	
     }
     
+    /**
+	 * Inserts the working times table into the GUI if available
+	 * @param weekNo	User selected week (i.e current week = 0)
+	 * @param employeeID	selected employee's ID
+	 * @param employeeName	selected employee's Name
+	 **/
     
     public void insertEmployeeTimes(int weekNo, String employeeID,String employeeName) {
-    	
-    	
         
         tableView.getColumns().clear(); // Clear the columns
 
-        String[][] employeeWorkingTimes = this.c.getWorkingTimes(employeeID);
+        String[][] employeeWorkingTimes = this.c.getWorkingTimes(employeeID); // get employee timetable
         
-        if (employeeWorkingTimes == null) {
-        	tableView.setPlaceholder(new Label(employeeName+" has no registered working times"));
+        if (employeeWorkingTimes == null) { // Check if it's empty
+        	tableView.setPlaceholder(new Label(employeeName+" has no registered working times")); // Inform the use
         } else {
         
         
-        	String [][] convertedWorkingTimes = getWeekDays(employeeWorkingTimes,this.c.Weekdays,weekNo);
+        String [][] convertedWorkingTimes = getWeekDays(employeeWorkingTimes,this.c.Weekdays,weekNo); //Get an organized weekly view table
         
-        	if (convertedWorkingTimes != null) {
+        	if (convertedWorkingTimes != null) { //Check if there are no working times for that week (i.e no times = null)
+        
+        /*Add to the GUI Table*/		
         ObservableList<String[]> data = FXCollections.observableArrayList();
         data.addAll(Arrays.asList(convertedWorkingTimes));
         data.remove(0);//remove titles from data
+        
         for (int i = 0; i < convertedWorkingTimes[0].length; i++) {
         	TableColumn tc = new TableColumn(convertedWorkingTimes[0][i]);
         	
@@ -208,7 +220,7 @@ public class OwnerViewWorkingTimesController {
 }
         tableView.setItems(data);
         	} else {
-        		tableView.setPlaceholder(new Label(employeeName+" has no registered working times for the selected week"));
+        		tableView.setPlaceholder(new Label(employeeName+" has no registered working times for the selected week")); // Inform user about no working times
         	}
         
         
@@ -217,31 +229,62 @@ public class OwnerViewWorkingTimesController {
 
     }
     
+    /**
+	 * Gets start of the week
+	 * @param unixDate	the period's date in unix format
+	 * @return start of the week in unix time
+	 */
     
     public static Long getStartOfWeek(String unixDate) {
     	int tempPeriod;
     	
-		tempPeriod = Integer.parseInt(unixDate);
+		tempPeriod = Integer.parseInt(unixDate); // Convert unix date to an integer
+		
 		Date date = new Date();
         Calendar cl = Calendar.getInstance();
         cl.setTime(date);
 		
-		Date time=new Date((long)tempPeriod*1000);
-		cl.setTime(time);
+		Date time = new Date((long)tempPeriod*1000); // get date time of unix date (*1000 to convert to seconds) as a Date object
+		cl.setTime(time); // Set callendar to the given time
         int p = cl.get(Calendar.DAY_OF_WEEK) - cl.getFirstDayOfWeek();
-        cl.add(Calendar.DATE, -p);
+        cl.add(Calendar.DATE, -p); // Set date to the start of the week
         
-        SimpleDateFormat weekDate = new SimpleDateFormat("d/M");
-        System.out.println("DATE WE NEED: "+weekDate.format(cl.getTime()));
-        
-        //Long startDate = (long) cl.getTimeInMillis()/1000;
+        SimpleDateFormat weekDate = new SimpleDateFormat("d/M"); //set format for the week days
     	
-    	return cl.getTimeInMillis()/1000;
+    	return cl.getTimeInMillis()/1000; // return the start of the week in Unix format
     	
     }
     
+    /**
+	 * Gets the actual day of the week from given Unix time
+	 * @param unixDate	Time in unix format
+	 * @param weekDays	selected employee's ID
+	 * @return week day
+	 **/
     
     public static String getDayFromUnix(String unixDate,String[] weekDays) {
+    	int tempPeriod;
+    	
+		tempPeriod = Integer.parseInt(unixDate); // Convert unix date to an integer
+		Date date = new Date();
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+		
+		Date time=new Date((long)tempPeriod*1000); // get date time of unix date (*1000 to convert to seconds) as a Date object
+		cl.setTime(time); // Set callendar to the given time
+        int p = cl.get(Calendar.DAY_OF_WEEK); // Get the day's position of the week from the given unix date
+    	
+    	return weekDays[p-1]; //Return the actual day's name as string based on the week array given
+    	
+    }
+    
+    /**
+   	 * Gets the time in 24 hour format from unix time
+   	 * @param unixDate	Time in unix format
+   	 * @return Time
+   	 **/
+    
+    public static String get24HrFromUnix(String unixDate) {
     	int tempPeriod;
     	
 		tempPeriod = Integer.parseInt(unixDate);
@@ -249,40 +292,23 @@ public class OwnerViewWorkingTimesController {
         Calendar cl = Calendar.getInstance();
         cl.setTime(date);
 		
-		Date time=new Date((long)tempPeriod*1000);
-		cl.setTime(time);
-        int p = cl.get(Calendar.DAY_OF_WEEK);
-        
-        SimpleDateFormat weekDate = new SimpleDateFormat("d/M");
-        System.out.println("D: "+p+"DAY WE NEED: "+weekDays[p-1]);
-        System.out.println("DATE WE NEED: "+weekDate.format(cl.getTime()));
-        
-        //Long startDate = (long) cl.getTimeInMillis()/1000;
-    	
-    	return weekDays[p-1];
-    	
-    }
-    
-    public static String get24HrFromUnix(String unixDate) {
-int tempPeriod;
-    	
-		tempPeriod = Integer.parseInt(unixDate);
-		Date date = new Date();
-        Calendar cl = Calendar.getInstance();
-        cl.setTime(date);
-		
-		Date time=new Date((long)tempPeriod*1000);
-		cl.setTime(time);
-		cl.add(Calendar.HOUR, 14);
+		Date time=new Date((long)tempPeriod*1000); // get date time of unix date (*1000 to convert to seconds) as a Date object
+		cl.setTime(time); // Set callendar to the given time
+		cl.add(Calendar.HOUR, 14); //add 14 hours, fixes a calculation bug with the time
 
         
         SimpleDateFormat weekDate = new SimpleDateFormat("HH:mm");
         
-        //System.out.println("TIME WE NEED: "+weekDates.format(cl.getTime()));
-        
         return weekDate.format(cl.getTime());
     }
     
+    /**
+   	 * Checks if the date is within the selected week
+   	 * @param unixDate	Time in unix format
+   	 * @param currentWeek	Current week (from selection)
+   	 * @param currentYear	Current year (from selection)
+   	 * @return Success
+   	 **/
     
     public Boolean checkWithinSameWeek(String periodUnix,int currentWeek, int currentYear) {
     	
@@ -294,8 +320,9 @@ int tempPeriod;
         cl.setTime(date);
 		
 		Date time=new Date((long)tempPeriod*1000);
-		cl.setTime(time);
+		cl.setTime(time); // Set callendar to the given time
     	/*Will use these to check if the date is within the same week*/
+		
         int periodYear = cl.get(cl.YEAR); 
         int periodWeek =cl.get(cl.WEEK_OF_YEAR);
         
@@ -309,6 +336,13 @@ int tempPeriod;
     }
     
     
+    /**
+   	 * Checks if the date is within the selected week
+   	 * @param contents	All the employees' booked working times
+   	 * @param Weekdays	array of the names of the weekdays
+   	 * @param weekNo	User selected week number (i.e 0 = current week)
+   	 * @return convertedDates Table with the current week's booked times and the days embedded in the header
+   	 **/
     
     public String[][] getWeekDays(String[][] contents,String[] Weekdays,int weekNo) {
     	int[] DayPeriodCounts = new int[Weekdays.length]; //Used to figure out the number of rows in the table
@@ -339,17 +373,14 @@ int tempPeriod;
 		for (int i=0;i < DayPeriodCounts.length; i++) {
 			DayPeriodCounts[i] = 0; //initialize all the days to 0 count of working periods
 		}
-		String dayTemp;
-		Long tempLong;
-		Long tempStartOfWeek;
+		
+
 		String ConvertedDay; //Used to store a day name converted from Unix Seconds
-		int dayWithMostWorkingHours = 0;
+		int dayWithMostWorkingHours = 0; //Used to store the day with the most working periods
 		
 		for (int i=0;i < contents.length; i++) { //Find out the maximum number of working hours/period per day
 
-					ConvertedDay = getDayFromUnix( contents[i][0],Weekdays);//Period.convertSecondsToDay((int)(Long.parseLong(startPeriod) - getStartOfWeek(startPeriod)));
-					
-					//ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0]))); 
+					ConvertedDay = getDayFromUnix( contents[i][0],Weekdays); //Get the actual name of the day (i.e Tuesday)
 					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
 					
 						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
@@ -365,60 +396,31 @@ int tempPeriod;
 		//Add weeks
 		for (int i = 0; i < Weekdays.length; i++) { 
 			if (i != 0) {
-    			cl.add(Calendar.DATE, 1);
+    			cl.add(Calendar.DATE, 1); // Add to get next day's date
     		}
-    		
-    		
-    		currentDate = cl.getTime();
-			convertedDates[0][i] = Weekdays[i]+" "+weekDate.format(currentDate);
+
+    		currentDate = cl.getTime(); // Get day's date
+			convertedDates[0][i] = Weekdays[i]+" "+weekDate.format(currentDate); // Set Table header with day and formated date
 		}
-		
-		
-		
-		String tempDay;
+
+		/*Variables used to determine the actual formated times of the periods*/
 		String startPeriod;
 		String endPeriod;
-		String tempRaw;
-		int tempPeriod;
-		
-		
-		
+
 		for (int i=0;i < contents.length; i++) {
 			
 			/* Add it to the table under the specific day column with start - end time 24 hr format*/
-			//Long.parseLong(contents[i][0]) - Period.getCurrentWeekBeginning(contents[i][0]))
-			//ConvertedDay = Period.convertSecondsToDay((int)(Long.parseLong(contents[i][0])));
-			tempPeriod = Integer.parseInt( contents[i][0]); //1493942400;//
-			startPeriod = Integer.toString(tempPeriod);
-			tempRaw = startPeriod;
+			startPeriod = contents[i][0];
+			ConvertedDay = getDayFromUnix(startPeriod,Weekdays); // Get actual Day (i.e Tuesday)
+			startPeriod = get24HrFromUnix(startPeriod); // Get start of the period in 24 hrs
 			
+			endPeriod = contents[i][1]; 
+			endPeriod = get24HrFromUnix(endPeriod);  // Get end of the period in 24 hrs
 			
-			
-			ConvertedDay = getDayFromUnix(startPeriod,Weekdays);//Period.convertSecondsToDay((int)(Long.parseLong(startPeriod) - getStartOfWeek(startPeriod)));
-			
-			System.out.println(contents[i][0]+" : "+startPeriod+" : "+ getStartOfWeek(startPeriod));
-			
-			System.out.println("Converted Day: "+ConvertedDay);
-			
-			//tempDay = Long.toString(Long.parseLong(startPeriod) - getStartOfWeek(startPeriod));
-			startPeriod = get24HrFromUnix(startPeriod); //Period.get24HrTimeFromWeekTime(tempDay);
-			
-			//System.out.println("Start Period raw: "+tempRaw+" Start Period tempDay: "+tempDay+" startPeriod: "+startPeriod);
-			
-			//tempDay = Long.toString(Long.parseLong(contents[i][1]) - Period.getCurrentWeekBeginning(contents[i][1]));
-			tempPeriod = Integer.parseInt( contents[i][1]); //1493942400;//
-			endPeriod = Integer.toString(tempPeriod);
-			
-			endPeriod = get24HrFromUnix(endPeriod); //Period.get24HrTimeFromWeekTime(tempDay);
-			
-			//System.out.println("End Period raw: "+contents[i][1]+" Start Period tempDay: "+startPeriod+" endPeriod: "+endPeriod);
-			
-			
-			
-			for (int j = 1; j < contents[i].length; j++) { 
+			for (int j = 1; j < contents[i].length; j++) { //Go through all items in this column
 				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null && checkWithinSameWeek(contents[i][0],currentWeek,currentYear)) {
 					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = startPeriod+" - "+endPeriod;
-					issTableEmpty = false;
+					issTableEmpty = false; // the table isn't empty
 					break;
 				}
 				
@@ -426,23 +428,19 @@ int tempPeriod;
 			}
 		}
 		
-		isTableEmpty = true;
+		
 		for (int i=0;i < convertedDates.length; i++) {
 			for (int j = 0; j < convertedDates[i].length; j++) {
 				if (convertedDates[i][j] == null){
-					///System.out.println("IS SMPTY");
 					convertedDates[i][j] = ""; //Make null table cells empty
-			}else {
-					//System.out.println("NO SMPTY");
-					//isTableEmpty = false;
-				}
+			}
 			
 		}
     }
 		
 						
 						if (issTableEmpty == false)
-							return convertedDates;
+							return convertedDates; // return formatted table
 						else
 							return null; //Table empty
     
