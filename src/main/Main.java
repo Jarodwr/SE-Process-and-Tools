@@ -40,7 +40,6 @@ public class Main {
 		
 		SQLiteConnection.createTables(); // Create table if it doesn't exist for all info
 		debugCreateOwnerBusiness();
-		debugCreateBookingsTable();
 		//debugCreateEmptyAvailability();
 		debugCreateEmployees();
 		debugCreateService();
@@ -62,13 +61,6 @@ public class Main {
 //			e.printStackTrace();
 //		}
 	}
-	public static void debugCreateBookingsTable() {
-		SQLiteConnection.createBooking("SARJ's Milk Business", "Gary", "0", "1491580800", "1491584400", "test");
-		SQLiteConnection.createBooking("SARJ's Milk Business", "Joe", "1", "1491670800", "1491674400", "test");
-		SQLiteConnection.createBooking("SARJ's Milk Business", "Bob", "0", "1491757200", "1491760800", "test");
-		SQLiteConnection.createBooking("SARJ's Milk Business", "Bill", "1", "1491764400", "1491768000", "test");
-	}
-	
 	public static void debugCreateEmptyAvailability() {
 		if (SQLiteConnection.createAvailability(1, "SARJ's Milk Business", "90000,93600|97200,100600|21600,43200")) {
 			
@@ -80,6 +72,11 @@ public class Main {
 	}
 	
 	public static void debugCreateEmployees() {
+		SQLiteConnection.deleteEmployee(0);
+		SQLiteConnection.deleteEmployee(1);
+		SQLiteConnection.deleteEmployee(2);
+		SQLiteConnection.deleteEmployee(3);
+		SQLiteConnection.deleteEmployee(4);
 		SQLiteConnection.createEmployee("SARJ's Milk Business", "Bob", "32 does not exists st", "0412345678", 0);
 		SQLiteConnection.createEmployee("SARJ's Milk Business", "John", "32 does not exists st", "0412345678", 0);
 		SQLiteConnection.createEmployee("SARJ's Milk Business", "Alex", "32 does not exists st", "0412345678", 0);

@@ -406,7 +406,7 @@ public class SQLiteConnection {
 				rs.close();
 				return false;
 			}
-
+			
 			PreparedStatement ps = c.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, bookingId);
 			ps.setString(2, businessname);
@@ -456,7 +456,7 @@ public class SQLiteConnection {
 		Connection c = getDBConnection();
 		
 		try {
-			
+			System.out.println(SQLiteConnection.getNextAvailableId(getAllEmployees(), "employeeId"));
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, SQLiteConnection.getNextAvailableId(getAllEmployees(), "employeeId"));
 			ps.setString(2, businessname);
@@ -484,6 +484,8 @@ public class SQLiteConnection {
 			if (rs == null) {
 				return false;
 			}
+			
+			rs.close();
 			
 			String query = "DELETE FROM Employeeinfo WHERE employeeId = ?";
 			PreparedStatement pst = c.prepareStatement(query);
@@ -834,12 +836,12 @@ public class SQLiteConnection {
 
 	public static int getNextAvailableId(ResultSet rs, String idString) throws SQLException {
 		int i = 0;
+		if (rs == null) return i;
 		do {
-			if (rs.getInt(idString) > i) {
+			if (rs.getInt(idString) >= i) {
 				i = rs.getInt(idString) + 1;
 			}
 		} while(rs.next());
-		System.out.println(i);
 		rs.close();
 		return i;
 		

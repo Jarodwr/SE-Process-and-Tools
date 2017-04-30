@@ -15,7 +15,7 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.Pane;
 
-public class OwnerAddEmployeeWorkingTimesController {
+public class OwnerAddEmployeeAvailabilitiesController {
 	
 	private Controller c;
 	
@@ -80,6 +80,8 @@ public class OwnerAddEmployeeWorkingTimesController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    	
+    	pickDay.getSelectionModel().select(0);
     }
 
     @FXML
@@ -91,6 +93,7 @@ public class OwnerAddEmployeeWorkingTimesController {
     		}
     	}
     	ArrayList<String> availabilitiesToSubmit = new ArrayList<String>();
+    	System.out.println(fullListOfDays.toString());
     	for(ArrayList<String> days : fullListOfDays) {
     		int i = 1;
     		for(String currentTime : days) {
@@ -99,28 +102,34 @@ public class OwnerAddEmployeeWorkingTimesController {
     			}
     			else {
 
-        			availabilitiesToSubmit.add(currentTime + " " + days.get(i - 1));
+        			availabilitiesToSubmit.add(currentTime + " " + days.get(i));
         			i++;
     				
     			}
     		}
     	}
+    	System.out.println(employeeId + " - " + availabilitiesToSubmit.toString());
     	c.editAvailability(employeeId, availabilitiesToSubmit);
     }
 
     @FXML
-    void updateAvailability(ActionEvent event) {
-    	employeeId = new StringTokenizer(pickEmployee.getSelectionModel().getSelectedItem(), ":").nextToken();
-    	this.update();
+    void employeeSelect(ActionEvent event) {
+    	this.employeeId = new StringTokenizer(pickEmployee.getSelectionModel().getSelectedItem()).nextToken(":");
+    	update();
     }
 
     private void update() {
-    	System.out.println("test");
     	time.deselectAll();
     	if (employeeId != null) {
        	 	String[][] availabilities = c.utilities.getEmployeeAvailability(employeeId).toStringArray();
-       	 	time.setDefaultAvailability(availabilities, currentDay);
-       	 	time.setDefaultAvailabilityFromList(fullListOfDays.get(whichDay(currentDay)), currentDay);
+       	 	if (fullListOfDays.get(whichDay(currentDay)).size() > 0) {
+       	 		System.out.println("test1");
+           	 	time.setDefaultAvailabilityFromList(fullListOfDays.get(whichDay(currentDay)), currentDay);
+       	 	} else
+       	 	{
+       	 		System.out.println("test2");
+           	 	time.setDefaultAvailability(availabilities, currentDay);
+       	 	}
     	}
     	
 	}

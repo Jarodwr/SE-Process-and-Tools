@@ -266,31 +266,11 @@ public class Controller {
 		Iterator<String> iter = availabilities.iterator();
 		//go through the the iterator to split the availabilities
 		while(iter.hasNext()) {
-			//split the string to an array
-			String[] start = iter.next().split(" ");
-			
-			if (!iter.hasNext()) {
-				break; // weird issue with console where we're missing an end period, just cancel here
-			}
-			
-			//splits and outputs the end time into an array
-			String end = iter.next();
-			//if there is more than one start time then go to the next iteration
-			if (start.length != 2) {
-				continue;
-			}
+			String[] values = iter.next().split(" ");
 			
 			//start creating the new timetable
-			String weekday = start[0];
-			//check if the time is a valid day of the week
-			if (!Period.checkIsValidWeekday(weekday)) {
-				continue;
-			}
-			//create the start and end times for the period of availability
-			String starttime = Integer.toString(Period.convertDayToSeconds(weekday) + Period.convert24HrTimeToDaySeconds(start[1]));
-			String endtime = Integer.toString(Period.convertDayToSeconds(weekday) + Period.convert24HrTimeToDaySeconds(end));
 			//add it to the timetable
-			t.addPeriod(new Period(starttime, endtime, false));
+			t.addPeriod(new Period(values[0], values[1], false));
 		}
 		//if the employee doesn't exit then alert the user and exit the function
 		if (employeeId.equals("")) {
@@ -302,7 +282,14 @@ public class Controller {
 		/* TODO turn this try block below into a utility method */
 		try {
 			ResultSet rs = SQLiteConnection.getAllAvailabilities();
-			int id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
+			int id;
+			if (rs != null) {
+				id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
+				rs.close();
+			} 
+			else {
+				id = 0;
+			}
 			if (SQLiteConnection.createAvailability(id, utilities.getCurrentBusiness(), t.toString())){
 				
 			}
@@ -311,7 +298,6 @@ public class Controller {
 				SQLiteConnection.createAvailability(id, utilities.getCurrentBusiness(), t.toString());
 			}
 			SQLiteConnection.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
-			rs.close();
 		}
 		catch(SQLException e) {
 			LOGGER.warning(e.getMessage());

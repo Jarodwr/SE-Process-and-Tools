@@ -70,19 +70,21 @@ public class AvailabilityPicker extends TimePicker {
     	System.out.println(times.toString());
     	int lowerBoundsDay = Period.convertDayToSeconds(day);
     	int upperBoundsDay = lowerBoundsDay + 86400;
-    	
-		String[] style = getAppropriateStyle(0);
-		
     	selected.clear();
+    	if (times == null || times.length == 0) {
+    		return;
+    	}
     	for(int i = 0; i < times.length; i++) {
-    		int time1 = Integer.parseInt(times[i][0])/30; 
-    		int time2 = Integer.parseInt(times[i][1])/30;
+    		int time1 = Integer.parseInt(times[i][0])/(30*60); 
+    		int time2 = Integer.parseInt(times[i][1])/(30*60);
     		if (time1 < lowerBoundsDay || time1 > upperBoundsDay) {
     			continue;
     		}
+    		time1 = time1/(30*60);
+    		time2 = time2/(30*60);
     		for(int j = time1; j <= time2; j++) {
     			selected.add(j);
-    			getTimePane(j).setStyle(style[0]);
+    			getTimePane(j).setStyle(availableStyle[0]);
     		}
     	}
 
@@ -96,15 +98,25 @@ public class AvailabilityPicker extends TimePicker {
 		String[] style = getAppropriateStyle(0);
 		
     	selected.clear();
+    	if (times == null || times.size() == 0) {
+    		return;
+    	}
+    	System.out.println(times.toString());
     	for(int i = 0; i < times.size(); i = i + 2) {
-    		int time1 = Integer.parseInt(times.get(i));
-    		int time2 = Integer.parseInt(times.get(i + 1));
+    		int time1 = (Integer.parseInt(times.get(i)));
+    		System.out.println(time1);
+    		int time2 = (Integer.parseInt(times.get(i + 1)));
+
+    		System.out.println(time2);
     		if (time1 < lowerBoundsDay || time1 > upperBoundsDay) {
     			continue;
     		}
+    		time1 = time1%86400/(30*60);
+    		time2 = time1%86400/(30*60);
     		for(int j = time1; j <= time2; j++) {
+    			System.out.println(j);
     			selected.add(j);
-    			getTimePane(j).setStyle(style[0]);
+    			getTimePane(j).setStyle(availableStyle[0]);
     		}
     	}
 	}
