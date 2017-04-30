@@ -405,19 +405,6 @@ public class Controller {
 	 * @return	Timetable in string[][] format
 	 */
 	public String[][] getEmployeeBookingAvailability(String employeeId, Date date) {
-		//gets the bookings list of all the booking from the time the method is called
-		Timetable shiftsTimetable = utilities.getShift(employeeId);
-		Booking[] bookings = utilities.getBookingsAfter(date);
-		
-		if (shiftsTimetable != null) {
-			if (bookings != null && bookings.length > 0) {
-				for (Booking b : bookings) {
-					if (b.getEmployeeId().equals(employeeId))
-						shiftsTimetable.removePeriod(b);
-				}
-			}
-			return shiftsTimetable.toStringArray();
-		}	
-		return null;
+		return utilities.getEmployeeBookingAvailability(employeeId, date).toStringArray();
 	}
 }

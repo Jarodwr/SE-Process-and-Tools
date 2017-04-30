@@ -268,27 +268,15 @@ public class Utility {
 	 */
 	public boolean addNewBooking(String customerUsername, String employeeId, String start, String end, String services) {
 
-		Timetable t = getShift(employeeId);	//All employee shifts
-		Booking[] allBookings = getBookingsAfter(new Date(Long.parseLong(start))); //All bookings in database
+		Timetable t = getEmployeeBookingAvailability(employeeId, new Date(Long.parseLong(start)));	//All employee shifts
 		
 		if (t == null)
 			return false;
 		
-		//	Get booking availabilities for the employee specified
-		if (allBookings != null) {
-			for (Booking b : allBookings) {
-				if (b.getEmployeeId().equals(employeeId))
-					t.removePeriod(b);
-			}
-		}
-		System.out.println(t.toString());
-		t = t.applicablePeriods(Long.parseLong(end) - Long.parseLong(start));	//Remove all periods that don't apply to the duration
-		System.out.println("applicable: " + t.toString());
-
 		for (Period p : t.getAllPeriods()) {
 			long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
 			
-			if (Long.parseLong(start) >= p.getStart().getTime() + allowable) {
+			if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
 				return SQLiteConnection.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
 			}
 		}
@@ -536,6 +524,23 @@ public class Utility {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	public Timetable getEmployeeBookingAvailability(String employeeId, Date date) {
+		//gets the bookings list of all the booking from the time the method is called
+		Timetable shiftsTimetable = getShift(employeeId);
+		Booking[] bookings = getBookingsAfter(date);
+		
+		if (shiftsTimetable != null) {
+			if (bookings != null && bookings.length > 0) {
+				for (Booking b : bookings) {
+					if (b.getEmployeeId().equals(employeeId))
+						shiftsTimetable.removePeriod(b);
+				}
+			}
+			return shiftsTimetable;
+		}	
 		return null;
 	}
 

@@ -39,17 +39,17 @@ public class Timetable {
 			}
 			//Superset match, current period is a subset of removal period
 			else if (compareStarts < 0 && compareEnds > 0) {
-				periods.remove(i);
+				periods.remove(p);
 			}
 			//End match, start of current period to end of removal period is removed.
 			else if (compareStarts <= 0 && compareEnds < 0 && period.getEnd().compareTo(p.getStart()) >= 0) {
 				period = new Period(period.getStart(), periods.get(i).getEnd());
-				periods.remove(i);
+				periods.remove(p);
 			} 
 			//Start match, start of removal period to end of current period is removed.
 			else if (compareStarts > 0 && compareEnds >= 0 && period.getStart().compareTo(p.getEnd()) <= 0) {
 				period = new Period(periods.get(i).getStart(), period.getEnd());
-				periods.remove(i);
+				periods.remove(p);
 			} else {
 				continue;
 			}
@@ -73,33 +73,33 @@ public class Timetable {
 			
 			//Exact match, period directly removed
 			if (compareStarts == 0 && compareEnds == 0) {
-				periods.remove(i);
+				periods.remove(p);
 				remove = true;
 			} 
 			//Subset match, removal period is subset of current period, removal period is removed.
 			else if (compareStarts > 0 && compareEnds < 0) {
 				periods.add(new Period(p.getStart(), period.getStart()));
 				periods.add(new Period(period.getEnd(), p.getEnd()));
-				periods.remove(i);
+				periods.remove(p);
 				remove = true;
 				break;
 			}
 			//Superset match, current period is a subset of removal period
 			else if (compareStarts < 0 && compareEnds > 0) {
-				periods.remove(i);
+				periods.remove(p);
 				remove = true;
 			}
 
 			//End match, start of current period to end of removal period is removed.
 			else if (compareStarts <= 0 && compareEnds < 0 && period.getEnd().compareTo(p.getStart()) > 0) {
 				periods.add(new Period(period.getEnd(), p.getEnd()));
-				periods.remove(i);
+				periods.remove(p);
 				remove = true;
 			} 
 			//Start match, start of removal period to end of current period is removed.
 			else if (compareStarts > 0 && compareEnds >= 0 && period.getStart().compareTo(p.getEnd()) < 0) {
 				periods.add(new Period(p.getStart(), period.getStart()));
-				periods.remove(i);
+				periods.remove(p);
 				remove = true;
 			}
 		}

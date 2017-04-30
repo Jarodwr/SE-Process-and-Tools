@@ -61,7 +61,7 @@ public class Service {
 		Iterator<Service> iter = services.iterator();
 		while(iter.hasNext()) {
 			Service serv = iter.next();
-			i = serv.duration;
+			i += serv.duration;
 		}
 		return i;
 	}
