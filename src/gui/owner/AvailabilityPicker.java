@@ -116,7 +116,7 @@ public class AvailabilityPicker extends TimePicker {
     
     
     
-    private void addPaneListener(Pane p, int i) {
+    protected void addPaneListener(Pane p, int i) {
     	p.onMouseClickedProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {

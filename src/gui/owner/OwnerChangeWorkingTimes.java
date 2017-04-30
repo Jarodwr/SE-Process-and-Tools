@@ -3,7 +3,6 @@ package gui.owner;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.StringTokenizer;
 
 import controller.Controller;
@@ -29,7 +28,7 @@ public class OwnerChangeWorkingTimes {
     @FXML
     private Pane timeMenu;
     
-    private AvailabilityPicker time;
+    private WorkingTimesPicker time;
     
     private String employeeId;
     private LocalDate date;
@@ -72,7 +71,7 @@ public class OwnerChangeWorkingTimes {
     	employeeMenu.getItems().addAll(controller.getEmployeeList());
     	
     	try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("AvailabilityPicker.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("WorkingTimesPicker.fxml"));
 			timeMenu.getChildren().clear();
 			timeMenu.getChildren().add(loader.load());
 			
@@ -80,6 +79,7 @@ public class OwnerChangeWorkingTimes {
 			time.init(timeMenu);
     		time.setEnabled(false);
     		submit.setDisable(true);
+    		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -91,7 +91,7 @@ public class OwnerChangeWorkingTimes {
     		long dayInMillis = 86400000;
         	String[][] times = controller.getWorkerAvailability(employeeId);
         	if (times != null && times.length > 0)
-        		time.setAvailability(times, date);
+        		//test
         	submit.setDisable(false);
     	} else {
     		submit.setDisable(true);
