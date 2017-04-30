@@ -2,7 +2,6 @@ package model.utility;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,8 +22,7 @@ import model.users.User;
  * A services class, used for interfacing between the controller and the database.
  */
 public class Utility {
-	
-//	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+
 	private Logger LOGGER = Logger.getLogger("main");
 	private User currentUser = null;
 	private String currentBusiness = "SARJ's Milk Business"; //TODO
@@ -274,9 +272,11 @@ public class Utility {
 			return false;
 		
 		//	Get booking availabilities for the employee specified
-		for (Booking b : allBookings) {
-			if (b.getEmployeeId().equals(employeeId))
-				t.removePeriod(b);
+		if (allBookings != null) {
+			for (Booking b : allBookings) {
+				if (b.getEmployeeId().equals(employeeId))
+					t.removePeriod(b);
+			}
 		}
 		
 		t = t.applicablePeriods(Long.parseLong(end) - Long.parseLong(start));	//Remove all periods that don't apply to the duration
@@ -349,6 +349,41 @@ public class Utility {
 			LOGGER.warning(e.getMessage());
 		}
 		return t;
+	}
+	
+	public boolean addShift(String employeeId, String rawDate, String startTime, String endTime) {
+
+		Long starttime = Long.parseLong(rawDate) + Long.parseLong(startTime);
+		Long endtime = Long.parseLong(rawDate) + Long.parseLong(endTime);
+		
+		if (starttime > endtime)
+			return false;
+		else
+			try {
+				return (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
+						Long.toString(starttime), Long.toString(endtime)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return false;
+		
+	}
+	
+	public boolean removeShift(String employeeId, String rawDate, String startTime, String endTime) {
+		
+		Long starttime = Long.parseLong(rawDate) + Long.parseLong(startTime);
+		Long endtime = Long.parseLong(rawDate) + Long.parseLong(endTime);
+		
+		if (starttime > endtime)
+			return false;
+		else
+			try {
+				return (SQLiteConnection.removeShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
+						Long.toString(starttime), Long.toString(endtime)));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return false;
 	}
 	
 	/**

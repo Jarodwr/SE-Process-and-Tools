@@ -67,7 +67,7 @@ public class Service {
 	}
 	
 	public static ArrayList<Service> stringOfServicesToArrayList(String services) {
-		String[] servicesSplit = services.split(" ");
+		String[] servicesSplit = services.split(":");
 		ArrayList<Service> servs = new ArrayList<Service>();
 		try {
 			for(int i = 0; i < servicesSplit.length; i++) {

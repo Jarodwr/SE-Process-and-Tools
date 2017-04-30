@@ -199,24 +199,15 @@ public class Controller {
 	//TODO: Need to expand this string array out
 	//TODO: Fix millisecond conversion
 	public boolean addWorkingTime(String employeeId, String rawDate, String startTime, String endTime) {
+		return utilities.addShift(employeeId, rawDate, startTime, endTime);
+	
+	}
+	
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			Date date = sdf.parse(rawDate);
-			Long starttime = date.getTime() + (Period.convert24HrTimeToDaySeconds(startTime) * 1000);
-			Long endtime = date.getTime() + (Period.convert24HrTimeToDaySeconds(endTime) * 1000);
-			
-			if (starttime > endtime)
-				return false;
-			else
-				return (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
-						Long.toString(starttime/1000), Long.toString(endtime/1000)));
-			
-		} catch (ParseException e) {
-			LOGGER.log(Level.WARNING, e.getMessage());
-			return false;
-		}
-				
+
+	public boolean removeWorkingTime(String employeeId, String rawDate, String startTime, String endTime) {
+		return utilities.removeShift(employeeId, rawDate, startTime, endTime);
+	
 	}
 	
 	/**

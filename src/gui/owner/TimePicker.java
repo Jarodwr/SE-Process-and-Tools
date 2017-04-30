@@ -52,16 +52,18 @@ public class TimePicker {
     }
     
     public void setAvailability(String[][] times, LocalDate date) {
-    	long dayInMillis = 86400000;
-    	long periodInMillis = 1800000;
+    	long dayInSecs = 86400;
+    	long periodInSecs = 1800;
     	
     	for (int i : available)	//Reset all available panes to unavailable panes
     		getTimePane(i).setStyle(unavailableStyle[0]);
     	available.removeAll(available);	//Wipe info from panes
 
+    	if (times == null || times.length == 0 || date == null)
+    		return;
     	
-    	for (long startTime = date.toEpochDay() * dayInMillis/1000; startTime < (date.toEpochDay()+1) * dayInMillis/1000; startTime += periodInMillis) {
-			Long endTime = startTime + periodInMillis;
+    	for (long startTime = date.toEpochDay() * dayInSecs; startTime < (date.toEpochDay()+1) * dayInSecs; startTime += periodInSecs) {
+			Long endTime = startTime + periodInSecs;
 			boolean success = false;
 			
     		for (String[] p : times) {
@@ -71,7 +73,7 @@ public class TimePicker {
     			}
     		}
 			if (success) {
-				available.add((int)((startTime - date.toEpochDay() * dayInMillis/1000)/periodInMillis));
+				available.add((int)((startTime - date.toEpochDay() * dayInSecs)/periodInSecs));
 			}
     	}
     	
@@ -115,17 +117,22 @@ public class TimePicker {
     	p.onMouseClickedProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				String[] style = getAppropriateStyle(i);
-				p.setStyle(style[2]);
+				p.setStyle(getAppropriateStyle(i)[2]);
 				
 				for (int j : selected) {
-					getTimePane(j).setStyle(style[0]);
+					getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
 				}
 
 				selected.removeAll(selected);
-				for (int j = i; j < Math.min(i + duration, 48); j++) {
-					selected.add(j);
-					getTimePane(j).setStyle(style[2]);
+				for (int j = i; j < i + Math.min(duration, 48); j++) {
+					if (j > 47 && j - 48 < 47) {
+						int k = i - (j-47);
+						selected.add(k);
+						getTimePane(k).setStyle(getAppropriateStyle(k)[2]);
+					} else {
+						selected.add(j);
+						getTimePane(j).setStyle(getAppropriateStyle(j)[2]);
+					}
 				}
 			}
     	});
@@ -133,20 +140,33 @@ public class TimePicker {
     	p.onMouseEnteredProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				String[] style = getAppropriateStyle(i);
-				for (int j = i; j < Math.min(i + duration, 48); j++)
-					if (!selected.contains(j))
-						getTimePane(j).setStyle(style[1]);
+				
+				for (int j = i; j < i + Math.min(duration, 48); j++) {
+					if (j > 47 && j - 48 < 47) {
+						int k = i - (j-47);
+						if (!selected.contains(k))
+							getTimePane(k).setStyle(getAppropriateStyle(k)[1]);
+					} else {
+						if (!selected.contains(j))
+							getTimePane(j).setStyle(getAppropriateStyle(j)[1]);
+					}
+				}
 			}
     	});
     	
     	p.onMouseExitedProperty().set(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				String[] style = getAppropriateStyle(i);
-				for (int j = i; j < Math.min(i + duration, 48); j++)
-					if (!selected.contains(j))
-						getTimePane(j).setStyle(style[0]);
+				for (int j = i; j < i + Math.min(duration, 48); j++) {
+					if (j > 47 && j - 48 < 47) {
+						int k = i - (j-47);
+						if (!selected.contains(k))
+							getTimePane(k).setStyle(getAppropriateStyle(k)[0]);
+					} else {
+						if (!selected.contains(j))
+							getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
+					}
+				}
 			}
     	});
     }
@@ -164,8 +184,8 @@ public class TimePicker {
 	}
 
 	public void deselectAll() {
-		String[] style = getAppropriateStyle(0);
     	for(int i :selected) {
+    		String[] style = getAppropriateStyle(i);
     		getTimePane(i).setStyle(style[1]);
     	}
     	selected.clear();

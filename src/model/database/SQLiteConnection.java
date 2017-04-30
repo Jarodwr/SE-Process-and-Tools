@@ -747,23 +747,62 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
-
-	public static boolean addShift(int employeeId, String businessname, String start, String end) {
+	
+	public static boolean isShiftIn(int employeeId, String businessname, String start, String end) throws SQLException{
 		Connection c = getDBConnection();
+		String query = "SELECT * "
+				+ "FROM EmployeeWorkingTimes "
+				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND "
+				+ "CAST(unixendtime AS INTEGER) <= CAST(? AS INTEGER) AND "
+				+ "employeeId = ? AND "
+				+ "businessname = ?";
+		PreparedStatement pst;
 		try {
-			PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?, ?);"); // this creates a new user
-			ps.setString(1, businessname);
-			ps.setInt(2, employeeId);
-			ps.setString(3, start);
-			ps.setString(4, end);
-			ps.executeUpdate();
-			ps.close();
-
-			return true;
+			pst = c.prepareStatement(query);
+			pst.setString(1, start);
+			pst.setString(2, end);
+			pst.setInt(3, employeeId);
+			pst.setString(4, businessname);
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
-			return false;
+			e.printStackTrace();
 		}
+		return false;
+	}
+
+	public static boolean addShift(int employeeId, String businessname, String start, String end) throws SQLException{
+		Connection c = getDBConnection();
+		if (isShiftIn(employeeId, businessname, start, end))
+			return false;
+
+		PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?, ?);"); // this creates a new user
+		ps.setString(1, businessname);
+		ps.setInt(2, employeeId);
+		ps.setString(3, start);
+		ps.setString(4, end);
+		ps.executeUpdate();
+		ps.close();
+		return true;
+	}
+	
+	public static boolean removeShift(int employeeId, String businessname, String start, String end) throws SQLException{
+		Connection c = getDBConnection();
+		String query = "DELETE FROM EmployeeWorkingTimes WHERE employeeId = ? AND"
+				+ " businessname = ? AND"
+				+ " unixstarttime = ? AND"
+				+ " unixendtime = ?";
+
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setInt(1, employeeId);
+		pst.setString(2, businessname);
+		pst.setString(3, start);
+		pst.setString(4, end);
+		pst.executeUpdate();
+		return true;
+
 	}
 	
 	public static ResultSet getService(String servicename, String businessname) throws SQLException { /* TODO */
