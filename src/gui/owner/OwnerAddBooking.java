@@ -112,6 +112,7 @@ public class OwnerAddBooking {
     		CheckMenuItem cmi = new CheckMenuItem(s);
     		serviceMenu.getItems().add(cmi);
     	}
+    	
     	//Alternate time grid init
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimePicker.fxml"));
@@ -129,6 +130,8 @@ public class OwnerAddBooking {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	
+            	time.deselectAll();
+            	
             	duration = 0;
             	
             	for (MenuItem mi : serviceMenu.getItems()) {
@@ -138,20 +141,13 @@ public class OwnerAddBooking {
             		String name = tk.nextToken();
             		String durationStr = tk.nextToken();
             		
-            		duration += Integer.parseInt(durationStr);
-            		
-            		if (a.isSelected())
-            			
-            		
-        			for (int i = 0; i < services.size(); i++)
-        				if (services.get(i).equals(name)) {
-            				if (!a.isSelected())
-            					services.remove(i);
-        					return;
-        				}
-        			
-    				if (a.isSelected())
-        				services.add(name);
+            		services.removeAll(services);
+
+    				if (a.isSelected()) {
+    					services.add(name);
+                		duration += Integer.parseInt(durationStr);
+    				}
+
             	}
             	if (duration == 0)
             		duration = 1;
