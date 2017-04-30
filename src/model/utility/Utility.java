@@ -281,14 +281,16 @@ public class Utility {
 					t.removePeriod(b);
 			}
 		}
-		
+		System.out.println(t.toString());
 		t = t.applicablePeriods(Long.parseLong(end) - Long.parseLong(start));	//Remove all periods that don't apply to the duration
-		
+		System.out.println("applicable: " + t.toString());
+
 		for (Period p : t.getAllPeriods()) {
 			long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
 			
-			if (Long.parseLong(start) >= p.getStart().getTime() + allowable)
+			if (Long.parseLong(start) >= p.getStart().getTime() + allowable) {
 				return SQLiteConnection.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
+			}
 		}
 		return false;
 

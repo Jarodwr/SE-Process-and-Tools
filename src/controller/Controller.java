@@ -142,7 +142,7 @@ public class Controller {
 	public boolean addNewBooking(String username, String startTime, String listOfServices, String employeeId) {
 		ArrayList<Service> servs;
 		servs = Service.stringOfServicesToArrayList(listOfServices);
-		return utilities.addNewBooking(username, employeeId, startTime, (startTime + Service.getTotalArrayDuration(servs)), listOfServices);
+		return utilities.addNewBooking(username, employeeId, startTime, Long.toString(Long.parseLong(startTime) + Service.getTotalArrayDuration(servs) * 1800), listOfServices);
 	}
 	
 	/**

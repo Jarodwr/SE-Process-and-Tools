@@ -41,14 +41,13 @@ public class Timetable {
 			else if (compareStarts < 0 && compareEnds > 0) {
 				periods.remove(i);
 			}
-
 			//End match, start of current period to end of removal period is removed.
-			else if (compareStarts <= 0 && compareEnds < 0 && period.getEnd().compareTo(p.getStart()) > 0) {
+			else if (compareStarts <= 0 && compareEnds < 0 && period.getEnd().compareTo(p.getStart()) >= 0) {
 				period = new Period(period.getStart(), periods.get(i).getEnd());
 				periods.remove(i);
 			} 
 			//Start match, start of removal period to end of current period is removed.
-			else if (compareStarts > 0 && compareEnds >= 0 && period.getStart().compareTo(p.getEnd()) < 0) {
+			else if (compareStarts > 0 && compareEnds >= 0 && period.getStart().compareTo(p.getEnd()) <= 0) {
 				period = new Period(periods.get(i).getStart(), period.getEnd());
 				periods.remove(i);
 			} else {
@@ -110,7 +109,8 @@ public class Timetable {
 	public Timetable applicablePeriods(long duration) {
 		Timetable t = new Timetable();
 		for (Period p : periods) {
-			if (p.duration() > duration) {
+			System.out.println(p.duration() + ":" + duration);
+			if (p.duration() >= duration) {
 				t.addPeriod(new Period(Long.toString(p.getStart().getTime()), Long.toString(p.getEnd().getTime() - duration), false));
 			}
 		}

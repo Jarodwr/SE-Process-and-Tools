@@ -87,18 +87,30 @@ public class OwnerAddBooking {
     		AddBookingBtn.setDisable(false);
     	else
     		AddBookingBtn.setDisable(true);
+
     }
     
     @FXML
     void addBooking(ActionEvent event) {
-    	int localStart = 0;
+    	int localStart = 48;
     	for (int i : time.getSelectedPeriods())
     		if (i < localStart)
     			localStart = i;
+    	if (localStart == 48) {
+    		localStart = 0;
+    	}
 
-    	long startTime = date.toEpochDay() * 86400 + localStart * 1800;
+    	long startTime = (date.toEpochDay() * 86400 + localStart * 1800);
     	
-    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), services.toString(), employeeId)) {
+    	String listOfServices = "";
+    	for (int i = 0; i < services.size(); i++) {
+    		listOfServices += services.get(i);
+    		if (i != services.size()-1) {
+    			listOfServices += ":";
+    		}
+    	}
+    	
+    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId)) {
     		Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("Add booking");
     		alert.setHeaderText("Booking successfully added!");
@@ -108,9 +120,13 @@ public class OwnerAddBooking {
     	} else {
     		Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("Add booking");
-    		alert.setHeaderText("failed to add booking");
+    		if (time.validPeriod()) {
+    			alert.setHeaderText("invalid period");
+    		} else {
+    			alert.setHeaderText("failed to add booking");
+    		}
+    		
     		alert.setContentText("press ok to continue...");
-
     		alert.showAndWait();
     	}
     	this.update();
@@ -157,16 +173,17 @@ public class OwnerAddBooking {
             	time.deselectAll();
             	
             	duration = 0;
-            	
+        		
+        		services.removeAll(services);
+        		
             	for (MenuItem mi : serviceMenu.getItems()) {
             		CheckMenuItem a = (CheckMenuItem) mi;
         			
             		StringTokenizer tk = new StringTokenizer(a.getText(), ":");
             		String name = tk.nextToken();
             		String durationStr = tk.nextToken();
-            		
-            		services.removeAll(services);
 
+            		
     				if (a.isSelected()) {
     					services.add(name);
                 		duration += Integer.parseInt(durationStr);

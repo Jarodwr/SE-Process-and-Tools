@@ -58,7 +58,7 @@ public class Period {
 	}
 	
 	public long duration() {
-		return start.getTime() - end.getTime();
+		return end.getTime() - start.getTime();
 	}
 	
 	public static String convertSecondsToDay(int seconds) {

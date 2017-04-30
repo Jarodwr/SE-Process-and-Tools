@@ -90,6 +90,17 @@ public class TimePicker {
     	return t;
     }
     
+    public boolean validPeriod() {
+    	for (int i : selected) {
+    		for (int j : available) {
+    			if (i == j) {
+    				return false;
+    			}
+    		}
+    	}
+    	return true;
+    }
+    
     public void setDuration(int duration) {
     	this.duration = duration;
     }
