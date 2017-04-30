@@ -99,7 +99,6 @@ public class OwnerAddEmployeeAvailabilitiesController {
     		}
     	}
     	ArrayList<String> availabilitiesToSubmit = new ArrayList<String>();
-    	System.out.println(fullListOfDays.toString());
     	for(ArrayList<String> days : fullListOfDays) { //  copy into final arraylist
     		int i = 1;
     		for(String currentTime : days) {
@@ -130,7 +129,6 @@ public class OwnerAddEmployeeAvailabilitiesController {
     		}
     	}
     	
-    	System.out.println(employeeId + " - " + availabilitiesToSubmit.toString());
     	c.editAvailability(employeeId, availabilitiesToSubmit);
     }
 

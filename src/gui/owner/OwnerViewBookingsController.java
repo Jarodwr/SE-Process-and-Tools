@@ -44,7 +44,7 @@ public class OwnerViewBookingsController {
     private Controller c;
     private Owner o;
     
-    String [][] summeryofBookings = null;
+    String [][] summaryofBookings = null;
     String [][] newBookings = null;
     ArrayList<CheckBox> newBookingsDelete = null;
     
@@ -70,10 +70,10 @@ public class OwnerViewBookingsController {
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert futureBookings != null : "fx:id=\"futureBookings\" was not injected: check your FXML file 'OwnerViewBookingSummery.fxml'.";
-        assert deleteItem != null : "fx:id=\"deleteItem\" was not injected: check your FXML file 'OwnerViewBookingSummery.fxml'.";
-        assert deleteBookings != null : "fx:id=\"deleteBookings\" was not injected: check your FXML file 'OwnerViewBookingSummery.fxml'.";
-        assert allBookings != null : "fx:id=\"allBookings\" was not injected: check your FXML file 'OwnerViewBookingSummery.fxml'.";
+        assert futureBookings != null : "fx:id=\"futureBookings\" was not injected: check your FXML file 'OwnerViewBookingSummary.fxml'.";
+        assert deleteItem != null : "fx:id=\"deleteItem\" was not injected: check your FXML file 'OwnerViewBookingSummary.fxml'.";
+        assert deleteBookings != null : "fx:id=\"deleteBookings\" was not injected: check your FXML file 'OwnerViewBookingSummary.fxml'.";
+        assert allBookings != null : "fx:id=\"allBookings\" was not injected: check your FXML file 'OwnerViewBookingSummary.fxml'.";
         
     }
     
@@ -87,8 +87,14 @@ public class OwnerViewBookingsController {
     void initTables()
     {
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    	summeryofBookings = c.getSummaryOfBookings();
-    	newBookings = c.getCurrentBookings();
+    	String[][] bookings = c.getSummaryOfBookings();
+    	if (bookings != null) {
+        	summaryofBookings = bookings;
+    	}
+    	String[][] currentBookings = c.getCurrentBookings();
+    	if (currentBookings != null) {
+    		newBookings = currentBookings;
+    	}
     	newBookingsDelete = new ArrayList<CheckBox>();
     	if(!(newBookings == null))
     	{
@@ -121,14 +127,14 @@ public class OwnerViewBookingsController {
     	allBookings.setVgap(10);
     	if(allBookings != null)
     	{
-    		for(int i = 0; i < summeryofBookings.length; i++)
+    		for(int i = 0; i < summaryofBookings.length; i++)
         	{
-        		Label id = new Label(summeryofBookings[i][0]);
-        		Label customername = new Label(summeryofBookings[i][3]);
-        		Label startTime = new Label(sdf.format(new Date(Long.parseLong(summeryofBookings[i][1])*1000)));
-        		Label endTime = new Label(sdf.format(new Date(Long.parseLong(summeryofBookings[i][1])*1000)));
-        		Label employeeId = new Label(summeryofBookings[i][5]);
-        		Label services = new Label(summeryofBookings[i][4]);
+        		Label id = new Label(summaryofBookings[i][0]);
+        		Label customername = new Label(summaryofBookings[i][3]);
+        		Label startTime = new Label(sdf.format(new Date(Long.parseLong(summaryofBookings[i][1])*1000)));
+        		Label endTime = new Label(sdf.format(new Date(Long.parseLong(summaryofBookings[i][1])*1000)));
+        		Label employeeId = new Label(summaryofBookings[i][5]);
+        		Label services = new Label(summaryofBookings[i][4]);
         		
         		allBookings.add(id, 0 , i+1);
         		allBookings.add(customername, 1 , i+1);

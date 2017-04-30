@@ -15,7 +15,7 @@
                   <Font name="Calibri" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="addWorkingTimesButton" layoutY="50.0" mnemonicParsing="false" onAction="#addWorkingTimes" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Add Working times/days">
+            <Button fx:id="addWorkingTimesButton" layoutY="50.0" mnemonicParsing="false" onAction="#addWorkingTimes" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Add Working Times">
                <font>
                   <Font name="Calibri" size="18.0" />
                </font>
@@ -25,12 +25,12 @@
                   <Font name="Calibri" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="viewWorkingTimesButton" layoutY="100.0" mnemonicParsing="false" onAction="#viewWorkingTimes" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="View Working times/days">
+            <Button fx:id="viewWorkingTimesButton" layoutY="100.0" mnemonicParsing="false" onAction="#viewWorkingTimes" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="View Working Times">
                <font>
                   <Font name="Calibri" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="editEmployeeAvailabilityButton" layoutY="200.0" mnemonicParsing="false" onAction="#editEmployeeAvailability" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Edit Employee Availablity">
+            <Button fx:id="editEmployeeAvailabilityButton" layoutY="200.0" mnemonicParsing="false" onAction="#editEmployeeAvailability" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Edit Employee Availability">
                <font>
                   <Font name="Calibri" size="18.0" />
                </font>
