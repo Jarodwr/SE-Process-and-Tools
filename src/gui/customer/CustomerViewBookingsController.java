@@ -93,21 +93,26 @@ public class CustomerViewBookingsController {
     	if(!(newBookings == null))
     	{
     		futureBookings.setVgap(10);
+    		int j = 0;
     		for(int i = 0; i < newBookings.length; i++)
 	    	{
-    			Label id = new Label(newBookings[i][0]);
-	    		Label customername = new Label(newBookings[i][3]);
-	    		Label startTime = new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][1])*1000)));
-	    		Label endTime = new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][2])*1000)));
-	    		CheckBox delete = new CheckBox();
-	    		newBookingsDelete.add(delete);
-	    		
-	    		futureBookings.add(id, 0 , i+1);
-	    		futureBookings.add(customername, 1 , i+1);
-	    		futureBookings.add(startTime, 2 , i+1);
-	    		futureBookings.add(endTime, 3 , i+1);
-	    		futureBookings.add(delete, 4 , i+1);
-	    		
+    			if(o.getUsername().equals(newBookings[i][3]))
+    			{
+    				Label id = new Label(newBookings[i][0]);
+    	    		Label customername = new Label(newBookings[i][3]);
+    	    		Label startTime = new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][1])*1000)));
+    	    		Label endTime = new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][2])*1000)));
+    	    		CheckBox delete = new CheckBox();
+    	    		newBookingsDelete.add(delete);
+    	    		
+    	    		futureBookings.add(id, 0 , j+1);
+    	    		futureBookings.add(customername, 1 , j+1);
+    	    		futureBookings.add(startTime, 2 , j+1);
+    	    		futureBookings.add(endTime, 3 , j+1);
+    	    		futureBookings.add(delete, 4 , j+1);
+    	    		j++;
+    			}
+    			
 	    	}
     		futureBookingsAlert.setStyle("-fx-text-fill: #f5f5f5");
     		deleteBookings.setDisable(false);
@@ -121,21 +126,28 @@ public class CustomerViewBookingsController {
     	allBookings.setVgap(10);
     	if(allBookings != null && summeryofBookings != null)
     	{
+    		
     		for(int i = 0; i < summeryofBookings.length; i++)
         	{
-        		Label id = new Label(summeryofBookings[i][0]);
-        		Label customername = new Label(summeryofBookings[i][3]);
-        		Label startTime = new Label(sdf.format(new Date(Long.parseLong(summeryofBookings[i][1])*1000)));
-        		Label endTime = new Label(sdf.format(new Date(Long.parseLong(summeryofBookings[i][1])*1000)));
-        		Label employeeId = new Label(summeryofBookings[i][5]);
-        		Label services = new Label(summeryofBookings[i][4]);
-        		
-        		allBookings.add(id, 0 , i+1);
-        		allBookings.add(customername, 1 , i+1);
-        		allBookings.add(startTime, 2 , i+1);
-        		allBookings.add(endTime, 3 , i+1);
-        		allBookings.add(employeeId, 4 , i+1);
-        		allBookings.add(services, 5 , i+1);
+    			if(o.getUsername().equals(summeryofBookings[i][3]))
+    			{
+    				int j = 0;
+    				
+    				Label id = new Label(summeryofBookings[i][0]);
+            		Label customername = new Label(summeryofBookings[i][3]);
+            		Label startTime = new Label(sdf.format(new Date(Long.parseLong(summeryofBookings[i][1])*1000)));
+            		Label endTime = new Label(sdf.format(new Date(Long.parseLong(summeryofBookings[i][1])*1000)));
+            		Label employeeId = new Label(summeryofBookings[i][5]);
+            		Label services = new Label(summeryofBookings[i][4]);
+            		
+            		allBookings.add(id, 0 , j+1);
+            		allBookings.add(customername, 1 , j+1);
+            		allBookings.add(startTime, 2 , j+1);
+            		allBookings.add(endTime, 3 , j+1);
+            		allBookings.add(employeeId, 4 , j+1);
+            		allBookings.add(services, 5 , j+1);
+            		j++;
+    			}
         	}
     	}
     	else
