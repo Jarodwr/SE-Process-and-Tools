@@ -63,7 +63,7 @@ public class OwnerAddEmployee {
 
     @FXML
     void nameChange(KeyEvent event) {
-		if(!name.getText().matches("[A-Za-z -']+")) {
+		if(!name.getText().matches("[-A-Za-z ']+")) {
 			name.setStyle("-fx-border-color: red");
 		} else {
 			name.setStyle("-fx-border-color: green");
@@ -87,7 +87,7 @@ public class OwnerAddEmployee {
     }
 
     private void checkFields() {
-    	if(name.getText().matches("[A-Za-z -']+") && 
+    	if(name.getText().matches("[-A-Za-z ']+") && 
     			phone.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
     			address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
     		submitEmployee.setDisable(false);
