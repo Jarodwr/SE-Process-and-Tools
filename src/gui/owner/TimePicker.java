@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -46,8 +47,21 @@ public class TimePicker {
     		timeGrid.add(pm, i, 2);
     		
     		if (i%2 == 0) {
-    			timeGrid.add(new Label(Integer.toString(i/2)), i, 1);
-    			timeGrid.add(new Label(Integer.toString((i + 24)/2)), i, 3);
+    			int time = i%24;
+    			if (time == 0)
+    				time = 24;
+    			time /= 2;
+    			//Hacky solution to alignment
+    			String str = "";
+    			if (time < 10) {
+    				str += "  ";
+    			}
+    			str += "  " + Integer.toString(time);
+    			timeGrid.add(new Label(str), i, 1);
+    			timeGrid.add(new Label(str), i, 3);
+    		} else {
+    			timeGrid.add(new Label("am"), i, 1);
+    			timeGrid.add(new Label("pm"), i, 3);
     		}
     	}
     }
