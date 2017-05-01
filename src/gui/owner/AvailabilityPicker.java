@@ -16,7 +16,7 @@ public class AvailabilityPicker extends TimePicker {
 	private final String[] listOfDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	private boolean enabled = true;
 
-    private String[] availableStyle = new String[]{"-fx-background-color: #27e833","-fx-background-color: #ff0000", "-fx-background-color: #27e833"};
+    private String[] availableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #27e833","-fx-border-color: black;-fx-background-color: #ff0000", "-fx-border-color: black;-fx-background-color: #27e833"};
     
     public void init(Pane parent) {
     	container.setMaxWidth(parent.getPrefWidth());

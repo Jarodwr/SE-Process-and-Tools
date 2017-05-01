@@ -12,8 +12,8 @@ public class WorkingTimesPicker extends TimePicker {
     @Override
     public void init(Pane p) {
     	super.init(p);
-    	this.availableStyle = new String[]{"-fx-background-color: #ffffff","-fx-background-color: #dddddd", "-fx-background-color: #79CDCD"};
-    	this.unavailableStyle = new String[]{"-fx-background-color: #ff0000","-fx-background-color: #dd0000", "-fx-background-color: #79CDCD"};
+    	this.availableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ffffff","-fx-border-color: black;-fx-background-color: #dddddd", "-fx-border-color: black;-fx-background-color: #79CDCD"};
+    	this.unavailableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ff0000","-fx-border-color: black;-fx-background-color: #dd0000", "-fx-border-color: black;-fx-background-color: #79CDCD"};
     }
     
     public void setEnabled(boolean b) {

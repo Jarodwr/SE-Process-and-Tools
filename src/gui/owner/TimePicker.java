@@ -21,8 +21,9 @@ public class TimePicker {
     @FXML
 	protected GridPane timeGrid;
     
-    protected String[] availableStyle = new String[]{"-fx-background-color: #ffffff","-fx-background-color: #dddddd", "-fx-background-color: #bbbbbb"};
-    protected String[] unavailableStyle = new String[]{"-fx-background-color: #ff0000","-fx-background-color: #dd0000", "-fx-background-color: #bb0000"};
+    protected String[] availableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ffffff","-fx-border-color: black;-fx-background-color: #dddddd", "-fx-border-color: black;-fx-background-color: #bbbbbb"};
+    protected String[] unavailableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ff0000","-fx-border-color: black;-fx-background-color: #dd0000", "-fx-border-color: black;-fx-background-color: #bb0000"};
+    
     
     ArrayList<Integer> selected = new ArrayList<Integer>();
     protected ArrayList<Integer> available = new ArrayList<Integer>();
