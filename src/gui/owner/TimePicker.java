@@ -107,10 +107,16 @@ public class TimePicker {
     
     public boolean validPeriod() {
     	for (int i : selected) {
+    		boolean found = false;
     		for (int j : available) {
     			if (i == j) {
-    				return false;
+    				found = true;
     			}
+    		}
+    		if (found) {
+    			continue;
+    		} else {
+    			return false;
     		}
     	}
     	return true;

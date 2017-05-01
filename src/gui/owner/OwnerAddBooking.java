@@ -109,26 +109,30 @@ public class OwnerAddBooking {
     			listOfServices += ":";
     		}
     	}
-    	
-    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId)) {
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Add booking");
-    		alert.setHeaderText("Booking successfully added!");
-    		alert.setContentText("press ok to continue...");
 
-    		alert.showAndWait();
-    	} else {
+		if (time.validPeriod()) {
+	    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId)) {
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Add booking");
+	    		alert.setHeaderText("Booking successfully added!");
+	    		alert.setContentText("press ok to continue...");
+
+	    		alert.showAndWait();
+	    	} else {
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+	    		alert.setTitle("Add booking");
+	    		alert.setHeaderText("failed to add booking");
+	    		alert.setContentText("press ok to continue...");
+	    		alert.showAndWait();
+	    	}
+		} else {
     		Alert alert = new Alert(AlertType.INFORMATION);
     		alert.setTitle("Add booking");
-    		if (time.validPeriod()) {
-    			alert.setHeaderText("invalid period");
-    		} else {
-    			alert.setHeaderText("failed to add booking");
-    		}
-    		
+    		alert.setHeaderText("invalid period");
     		alert.setContentText("press ok to continue...");
     		alert.showAndWait();
-    	}
+		}
+
     	this.update();
     }
     
