@@ -129,8 +129,8 @@ public class OwnerViewBookingsController {
 	    	{
     			Label id = new Label(newBookings[i][0]);
 	    		Label customername = new Label(newBookings[i][3]);
-	    		Label startTime = new Label(newBookings[i][2]);//new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][1])*1000)));
-	    		Label endTime = new Label(newBookings[i][2]);//new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][2])*1000)));
+	    		Label startTime = new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][1])*1000)));
+	    		Label endTime = new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][2])*1000)));
 	    		CheckBox delete = new CheckBox();
 	    		newBookingsDelete.add(delete);
 	    		
@@ -161,8 +161,8 @@ public class OwnerViewBookingsController {
         	{
         		Label id = new Label(summaryofBookings[i][0]);
         		Label customername = new Label(summaryofBookings[i][3]);
-        		Label startTime = new Label(sdf.format(new Date(Long.parseLong(summaryofBookings[i][1])*1000)));
-        		Label endTime = new Label(sdf.format(new Date(Long.parseLong(summaryofBookings[i][1])*1000)));
+        		Label startTime = new Label(OwnerViewWorkingTimesController.get24HrFromUnix(summaryofBookings[i][1]));;//new Label(sdf.format(new Date(Long.parseLong(summaryofBookings[i][1])*1000)));
+        		Label endTime = new Label(OwnerViewWorkingTimesController.get24HrFromUnix(summaryofBookings[i][2]));//new Label(sdf.format(new Date(Long.parseLong(summaryofBookings[i][1])*1000)));
         		Label employeeId = new Label(summaryofBookings[i][5]);
         		Label services = new Label(summaryofBookings[i][4]);
         		
