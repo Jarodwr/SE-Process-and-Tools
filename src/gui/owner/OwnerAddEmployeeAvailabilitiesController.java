@@ -133,8 +133,8 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	
     	c.editAvailability(employeeId, availabilitiesToSubmit);
     	Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Add Service");
-		alert.setHeaderText("Service successfully added!");
+		alert.setTitle("Add Availability");
+		alert.setHeaderText("Availability successfully updated!");
 		alert.setContentText("press ok to continue...");
 		
 		alert.showAndWait();
