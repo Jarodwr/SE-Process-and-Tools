@@ -2,8 +2,6 @@ package controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -150,7 +148,7 @@ public class Controller {
 	 * This method gets all employees timetables and merges them all together to form the business hours
 	 * and outputs it to the view
 	 */
-	private String[][] getAvailableTimes() {
+	public String[][] getAvailableTimes() {
 		//get the available timetable
 		Timetable t = utilities.getAvailableBookingTimes();
 		
