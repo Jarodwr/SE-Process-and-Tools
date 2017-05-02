@@ -111,10 +111,28 @@ public class OwnerViewBookingsController {
         	summaryofBookings = bookings;
     	}
     	//get the list of current bookings from database
-    	String[][] currentBookings = c.getCurrentBookings();
+    	String[][] currentBookings = c.getSummaryOfBookings();
     	if (currentBookings != null) {
     		//assign to the private variable
-    		newBookings = currentBookings;
+    		long time = (new Date().getTime())/1000;
+    		int j = 0;
+    		ArrayList<String[]> strings = new ArrayList<String[]>();
+    		
+    		for(int i = 0; i < currentBookings.length; i++)
+    		{
+    			
+    			if(Long.parseLong(currentBookings[i][1]) > time)
+    			{
+    				strings.add(currentBookings[i]);
+    				j++;
+    			}
+    		}
+    		if(j != 0)
+    		{
+    			newBookings = new String [strings.size()][6];
+    			strings.toArray(newBookings);
+    		}
+
     	}
     	
     	//create a new list of check boxes
@@ -129,8 +147,10 @@ public class OwnerViewBookingsController {
 	    	{
     			Label id = new Label(newBookings[i][0]);
 	    		Label customername = new Label(newBookings[i][3]);
-	    		Label startTime = new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][1])*1000)));
-	    		Label endTime = new Label(sdf.format(new Date(Integer.parseInt(newBookings[i][2])*1000)));
+	    		Label startTime = new Label(sdf.format(new Date((Long.parseLong(newBookings[i][1])*1000) + 14*60*60*1000)));
+	    		Label endTime = new Label(sdf.format(new Date((Long.parseLong(newBookings[i][2])*1000) + 14*60*60*1000)));
+	    		Label employeeId = new Label(newBookings[i][5]);
+        		Label services = new Label(newBookings[i][4]);
 	    		CheckBox delete = new CheckBox();
 	    		newBookingsDelete.add(delete);
 	    		
@@ -138,7 +158,9 @@ public class OwnerViewBookingsController {
 	    		futureBookings.add(customername, 1 , i+1);
 	    		futureBookings.add(startTime, 2 , i+1);
 	    		futureBookings.add(endTime, 3 , i+1);
-	    		futureBookings.add(delete, 4 , i+1);
+	    		futureBookings.add(employeeId, 4 , i+1);
+	    		futureBookings.add(services, 5 , i+1);
+	    		futureBookings.add(delete, 6 , i+1);
 	    		
 	    	}
     		//remove error message
@@ -161,8 +183,8 @@ public class OwnerViewBookingsController {
         	{
         		Label id = new Label(summaryofBookings[i][0]);
         		Label customername = new Label(summaryofBookings[i][3]);
-        		Label startTime = new Label(OwnerViewWorkingTimesController.getdateFromUnix(summaryofBookings[i][1]));;//new Label(sdf.format(new Date(Long.parseLong(summaryofBookings[i][1])*1000)));
-        		Label endTime = new Label(OwnerViewWorkingTimesController.getdateFromUnix(summaryofBookings[i][2]));//new Label(sdf.format(new Date(Long.parseLong(summaryofBookings[i][1])*1000)));
+        		Label startTime = new Label(OwnerViewWorkingTimesController.getdateFromUnix(summaryofBookings[i][1]));
+        		Label endTime = new Label(OwnerViewWorkingTimesController.getdateFromUnix(summaryofBookings[i][2]));
         		Label employeeId = new Label(summaryofBookings[i][5]);
         		Label services = new Label(summaryofBookings[i][4]);
         		
