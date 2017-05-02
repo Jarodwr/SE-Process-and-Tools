@@ -143,7 +143,7 @@ public class Controller {
 		ArrayList<Service> servs;
 		servs = Service.stringOfServicesToArrayList(listOfServices);
 		LOGGER.log(Level.FINE, "User has requested to add the following booking: " + username + "|" + startTime + "|" + listOfServices + "|" + employeeId);
-		return utilities.addNewBooking(username, employeeId, startTime, Long.toString(Long.parseLong(startTime) + Service.getTotalArrayDuration(servs) * 1800), listOfServices);
+		return utilities.addNewBooking(username, employeeId, startTime, Long.toString(Long.parseLong(startTime) + (Service.getTotalArrayDuration(servs)/30) * 1800), listOfServices);
 	}
 	
 	/**
