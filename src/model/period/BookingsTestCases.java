@@ -1,11 +1,11 @@
 package model.period;
-
+/*
 import static org.junit.Assert.*;
 
 import java.util.Date;
 
 import org.junit.Test;
-
+*/
 public class BookingsTestCases 
 {
  /* TODO redo since bookings was redone

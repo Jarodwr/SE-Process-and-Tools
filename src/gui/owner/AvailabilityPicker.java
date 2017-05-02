@@ -13,6 +13,7 @@ import model.period.Period;
 public class AvailabilityPicker extends TimePicker {
 	
 	private ArrayList<Integer> available = new ArrayList<Integer>();
+	@SuppressWarnings("unused")
 	private final String[] listOfDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	private boolean enabled = true;
 
@@ -57,7 +58,8 @@ public class AvailabilityPicker extends TimePicker {
     	int howManySecondsInWeekSoFar = Period.convertDayToSeconds(day);
     	Collections.sort(selected);
     	ArrayList<String> timeperiods = new ArrayList<String>();
-    	boolean oddAvailabilities = false;
+    	@SuppressWarnings("unused")
+		boolean oddAvailabilities = false;
     	if (selected.size() == 0) return null; // Not available at all 
     	int k = 0;
     	for(int i : selected) {
@@ -105,8 +107,10 @@ public class AvailabilityPicker extends TimePicker {
     
     public void setDefaultAvailabilityFromList(ArrayList<String> times, String day) {
     	int lowerBoundsDay = Period.convertDayToSeconds(day);
-    	int upperBoundsDay = lowerBoundsDay + 86400;
+    	@SuppressWarnings("unused")
+		int upperBoundsDay = lowerBoundsDay + 86400;
     	
+		@SuppressWarnings("unused")
 		String[] style = getAppropriateStyle(0);
     	selected.clear();
     	if (times == null || times.size() == 0) {
