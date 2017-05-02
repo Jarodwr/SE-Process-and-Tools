@@ -9,9 +9,11 @@ import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 
 public class OwnerChangeWorkingTimes {
@@ -63,6 +65,12 @@ public class OwnerChangeWorkingTimes {
     	for (int i : unselected) {
     		controller.removeWorkingTime(employeeId, Long.toString(date.toEpochDay() * 24 * 60 * 60), Integer.toString(i * 30 * 60), Integer.toString((i+1) * 30 * 60));
     	}
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Edit Working Times");
+		alert.setHeaderText("Working times for this day successfully updated!");
+		alert.setContentText("press ok to continue...");
+		
+		alert.showAndWait();
     }
     
     public void init(Controller controller) {

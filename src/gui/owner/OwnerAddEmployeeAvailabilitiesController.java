@@ -9,9 +9,11 @@ import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.Pane;
@@ -130,6 +132,12 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	}
     	
     	c.editAvailability(employeeId, availabilitiesToSubmit);
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Add Service");
+		alert.setHeaderText("Service successfully added!");
+		alert.setContentText("press ok to continue...");
+		
+		alert.showAndWait();
     }
 
     @FXML

@@ -30,7 +30,7 @@
                      </font>
                   </Label>
                   <Label fx:id="warning" alignment="CENTER" layoutX="70.0" layoutY="378.0" prefHeight="78.0" prefWidth="517.0" textFill="RED" wrapText="true" />
-                  <TextField fx:id="TimeTaken" layoutX="197.0" layoutY="297.0" onInputMethodTextChanged="#validateMinutes" onKeyReleased="#validateMinutes" prefHeight="30.0" prefWidth="261.0" promptText="How many periods it takes">
+                  <TextField fx:id="TimeTaken" layoutX="197.0" layoutY="297.0" onInputMethodTextChanged="#validateMinutes" onKeyReleased="#validateMinutes" prefHeight="30.0" prefWidth="261.0" promptText="How many minutes it takes">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
