@@ -303,6 +303,30 @@ public class OwnerViewWorkingTimesController {
     }
     
     /**
+   	 * Gets the time in 24 hour format from unix time
+   	 * @param unixDate	Time in unix format
+   	 * @return Time
+   	 **/
+    
+    public static String getdateFromUnix(String unixDate) {
+    	int tempPeriod;
+    	
+		tempPeriod = Integer.parseInt(unixDate);
+		Date date = new Date();
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+		
+		Date time=new Date((long)tempPeriod*1000); // get date time of unix date (*1000 to convert to seconds) as a Date object
+		cl.setTime(time); // Set callendar to the given time
+		cl.add(Calendar.HOUR, 14); //add 14 hours, fixes a calculation bug with the time
+
+        
+        SimpleDateFormat weekDate = new SimpleDateFormat("dd/MM/YYY HH:mm");
+        
+        return weekDate.format(cl.getTime());
+    }
+    
+    /**
    	 * Checks if the date is within the selected week
    	 * @param unixDate	Time in unix format
    	 * @param currentWeek	Current week (from selection)
