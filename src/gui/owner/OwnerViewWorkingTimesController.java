@@ -193,7 +193,7 @@ public class OwnerViewWorkingTimesController {
         } else {
         
         
-        String [][] convertedWorkingTimes = getWeekDays(employeeWorkingTimes,this.c.Weekdays,weekNo); //Get an organized weekly view table
+        String [][] convertedWorkingTimes = getWeekDays(employeeWorkingTimes,Controller.Weekdays,weekNo); //Get an organized weekly view table
         
         	if (convertedWorkingTimes != null) { //Check if there are no working times for that week (i.e no times = null)
         
@@ -344,8 +344,8 @@ public class OwnerViewWorkingTimesController {
 		cl.setTime(time); // Set callendar to the given time
     	/*Will use these to check if the date is within the same week*/
 		
-        int periodYear = cl.get(cl.YEAR); 
-        int periodWeek =cl.get(cl.WEEK_OF_YEAR);
+        int periodYear = cl.get(Calendar.YEAR); 
+        int periodWeek =cl.get(Calendar.WEEK_OF_YEAR);
         
         if (periodYear == currentYear && periodWeek == currentWeek) {
         	return true;
@@ -382,8 +382,8 @@ public class OwnerViewWorkingTimesController {
         	cl.add(Calendar.DATE, -n + 14);
         
         /*Will use these to check if the date is within the same week*/
-        int currentYear = cl.get(cl.YEAR); 
-        int currentWeek =cl.get(cl.WEEK_OF_YEAR);
+        int currentYear = cl.get(Calendar.YEAR); 
+        int currentWeek =cl.get(Calendar.WEEK_OF_YEAR);
         
         
         Date currentDate; // Will store current date being processed
