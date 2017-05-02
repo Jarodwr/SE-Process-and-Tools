@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -21,8 +22,9 @@ public class TimePicker {
     @FXML
 	protected GridPane timeGrid;
     
-    protected String[] availableStyle = new String[]{"-fx-background-color: #ffffff","-fx-background-color: #dddddd", "-fx-background-color: #bbbbbb"};
-    protected String[] unavailableStyle = new String[]{"-fx-background-color: #ff0000","-fx-background-color: #dd0000", "-fx-background-color: #bb0000"};
+    protected String[] availableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ffffff","-fx-border-color: black;-fx-background-color: #dddddd", "-fx-border-color: black;-fx-background-color: #bbbbbb"};
+    protected String[] unavailableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ff0000","-fx-border-color: black;-fx-background-color: #dd0000", "-fx-border-color: black;-fx-background-color: #bb0000"};
+    
     
     ArrayList<Integer> selected = new ArrayList<Integer>();
     protected ArrayList<Integer> available = new ArrayList<Integer>();
@@ -45,8 +47,21 @@ public class TimePicker {
     		timeGrid.add(pm, i, 2);
     		
     		if (i%2 == 0) {
-    			timeGrid.add(new Label(Integer.toString(i/2)), i, 1);
-    			timeGrid.add(new Label(Integer.toString((i + 24)/2)), i, 3);
+    			int time = i%24;
+    			if (time == 0)
+    				time = 24;
+    			time /= 2;
+    			//Hacky solution to alignment
+    			String str = "";
+    			if (time < 10) {
+    				str += "  ";
+    			}
+    			str += "  " + Integer.toString(time);
+    			timeGrid.add(new Label(str), i, 1);
+    			timeGrid.add(new Label(str), i, 3);
+    		} else {
+    			timeGrid.add(new Label("am"), i, 1);
+    			timeGrid.add(new Label("pm"), i, 3);
     		}
     	}
     }
@@ -92,10 +107,16 @@ public class TimePicker {
     
     public boolean validPeriod() {
     	for (int i : selected) {
+    		boolean found = false;
     		for (int j : available) {
     			if (i == j) {
-    				return false;
+    				found = true;
     			}
+    		}
+    		if (found) {
+    			continue;
+    		} else {
+    			return false;
     		}
     	}
     	return true;

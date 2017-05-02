@@ -184,7 +184,7 @@ public class CustomerAddBooking {
             		
     				if (a.isSelected()) {
     					services.add(name);
-                		duration += Integer.parseInt(durationStr);
+                		duration += Integer.parseInt(durationStr)/30;
     				}
 
             	}
