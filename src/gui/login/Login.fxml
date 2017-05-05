@@ -25,12 +25,7 @@
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </PasswordField>
-                  <Button id="login" fx:id="loginButton" layoutX="41.0" layoutY="237.0" mnemonicParsing="false" onAction="#loginClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Login" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font name="Calibri" size="13.0" />
-                     </font>
-                  </Button>
-                  <Button id="login-signup" fx:id="registerButton" layoutX="149.0" layoutY="237.0" mnemonicParsing="false" onAction="#loginSignupClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Sign Up" textAlignment="CENTER" textFill="WHITE">
+                  <Button id="login" fx:id="loginButton" layoutX="79.0" layoutY="238.0" mnemonicParsing="false" onAction="#loginClick" prefHeight="27.0" prefWidth="113.0" style="-fx-background-color: #ff471a;" text="Login" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="13.0" />
                      </font>
@@ -51,6 +46,11 @@
                   <ColorAdjust />
                </effect>
             </Pane>
+            <Button id="login-signup" fx:id="registerButton" layoutX="714.0" layoutY="14.0" mnemonicParsing="false" onAction="#loginSignupClick" prefHeight="27.0" prefWidth="172.0" style="-fx-background-color: #ff471a;" text="Need an Account? Click here" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Calibri" size="13.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </center>
