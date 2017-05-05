@@ -21,6 +21,7 @@ public class SQLiteConnection {
 		createEmployeeWorkingTimesTable();
 		createBookingsTable();
 		createServicesTable();
+		createBusinessHoursTable();
 	}
 	
 	/**
@@ -204,7 +205,15 @@ public class SQLiteConnection {
 	}
 	
 	public static void createBusinessHoursTable() {
-		
+		String sql = "CREATE TABLE IF NOT EXISTS BusinessHoursTable (stringOfTimes varchar(255), businessname Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
+		try {
+			Connection c = getDBConnection();
+			Statement stmt = c.createStatement();
+	            stmt.execute(sql);
+		}
+		catch(Exception e){
+			LOGGER.warning(e.getMessage());
+		}
 	}
 		
 	public static ResultSet getUserRow(String username) throws SQLException {
@@ -919,5 +928,36 @@ public class SQLiteConnection {
 		else return null;
 		
 		
+	}
+	
+	public static boolean createBusinessHours(String businessname, String listOfHours) {
+		Connection c = getDBConnection();
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("INSERT INTO BusinessHoursTable VALUES (?, ?);");
+			ps.setString(1, businessname);
+			ps.setString(2, listOfHours);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	public static ResultSet getBusinessHours(String businessname) throws SQLException {
+		Connection c = getDBConnection();
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BusinessHoursTable WHERE businessname = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessname);
+		ResultSet rs = pst.executeQuery();
+	
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
 	}
 }
