@@ -202,6 +202,9 @@ public class SQLiteConnection {
 			LOGGER.warning(e.getMessage());
 		}
 	}
+	
+	public static void createBusinessHoursTable() {
+	}
 		
 	public static ResultSet getUserRow(String username) throws SQLException {
 		username = username.toLowerCase();
