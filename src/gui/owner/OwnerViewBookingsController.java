@@ -4,14 +4,18 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import model.users.Owner;
 
@@ -46,6 +50,7 @@ public class OwnerViewBookingsController {
     //variables to get from dependency injection when the controller is loaded
     private Controller c;
     private Owner o;
+    private BorderPane b;
     
     //variables to locally store the bookings
     String [][] summaryofBookings = null;
@@ -76,11 +81,25 @@ public class OwnerViewBookingsController {
 	    		}
 	    	}
     	}
-    	//refresh the tables
-    	initTables();
+    	//refresh the screen
+    	try
+    	{
+			//open page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewBookingSummary.fxml"));
+			b.getChildren().clear();
+			b.getChildren().add(loader.load());
+			OwnerViewBookingsController controller = loader.getController();
+			//inject variables
+			controller.init(c, o, b);
+			
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
     }
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
+    @FXML // This method is called by the FXMLLoader when initialisation is complete
     void initialize() {
         assert futureBookings != null : "fx:id=\"futureBookings\" was not injected: check your FXML file 'OwnerViewBookingSummary.fxml'.";
         assert deleteItem != null : "fx:id=\"deleteItem\" was not injected: check your FXML file 'OwnerViewBookingSummary.fxml'.";
@@ -90,10 +109,11 @@ public class OwnerViewBookingsController {
     }
     
     //Dependency injection to get the current instance of the controller and the owner who is making changes
-    void init(Controller c, Owner o)
+    void init(Controller c, Owner o, BorderPane b)
     {
     	this.c = c;
     	this.o = o;
+    	this.b = b;
     	//initiate the tables upon initialization
     	initTables();
     }
@@ -204,5 +224,7 @@ public class OwnerViewBookingsController {
     	
     	
     }
+    
+   
 }
 
