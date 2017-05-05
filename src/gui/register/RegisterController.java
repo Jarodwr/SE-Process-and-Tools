@@ -60,7 +60,6 @@ public class RegisterController{
     
     //variables to be injected from where it is created
     private Controller c;
-    private Utility u;
     private Stage main;
     
     //when any field is changed check all validation
@@ -220,7 +219,7 @@ public class RegisterController{
     //checks the user name to see if it exists
     void checkUsername()
     {
-    	if(u.searchUser(username.getText()) != null)
+    	if(c.utilities.searchUser(username.getText()) != null)
     	{
     		username.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
@@ -326,11 +325,10 @@ public class RegisterController{
     }
     
     //used for dependency injection for the main stage and the controller instance
-    public void initData(Stage stage, Controller c, Utility u)
+    public void initData(Stage stage, Controller c)
     {
     	this.c = c;
     	main = stage;
-    	this.u = u;
     }
     
     //checks all fields against regex's

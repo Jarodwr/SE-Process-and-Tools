@@ -139,7 +139,7 @@ public class LoginController
 			main.setScene(ownerview);
 			RegisterController controller = loader.getController();
 			//inject variables into the controller for the register page
-			controller.initData(main, c, new Utility());
+			controller.initData(main, c);
 			//show to the user
 	    	main.show();
 		} catch (IOException e) {
