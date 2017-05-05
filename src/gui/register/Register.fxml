@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.register.RegisterController">
+<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.register.RegisterController">
    <center>
       <Pane prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -33,32 +33,32 @@
                         <Label fx:id="passStrength" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="78.0" text="Strong" textFill="#dddddd" />
                      </children>
                   </HBox>
-                  <TextField fx:id="username" layoutX="78.0" layoutY="124.0" onKeyPressed="#checkEnter" promptText="Username">
+                  <TextField fx:id="username" layoutX="78.0" layoutY="124.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Username">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <PasswordField fx:id="password" layoutX="77.0" layoutY="189.0" onKeyPressed="#checkEnter" onKeyReleased="#checkPassword" promptText="Password">
+                  <PasswordField fx:id="password" layoutX="77.0" layoutY="189.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Password">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </PasswordField>
-                  <PasswordField fx:id="passwordCon" layoutX="78.0" layoutY="235.0" onKeyPressed="#checkEnter" onKeyReleased="#checkConfPassword" promptText="Confirm Password">
+                  <PasswordField fx:id="passwordCon" layoutX="78.0" layoutY="235.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Confirm Password">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </PasswordField>
-                  <TextField fx:id="name" layoutX="80.0" layoutY="283.0" onKeyPressed="#checkEnter" onKeyReleased="#checkName" promptText="Name">
+                  <TextField fx:id="name" layoutX="80.0" layoutY="283.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Name">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="address" layoutX="79.0" layoutY="329.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAddress" promptText="Address">
+                  <TextField fx:id="address" layoutX="79.0" layoutY="329.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Address">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="number" layoutX="80.0" layoutY="374.0" onKeyPressed="#checkEnter" onKeyReleased="#checkPhoneNumber" promptText="Phone Number">
+                  <TextField fx:id="number" layoutX="80.0" layoutY="374.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Phone Number">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>

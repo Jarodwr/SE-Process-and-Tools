@@ -238,7 +238,7 @@ public class OwnerViewController {
 			mainScreen.getChildren().add(loader.load());
 			OwnerViewBookingsController controller = loader.getController();
 			//inject variables
-			controller.init(c, (Owner) u);
+			controller.init(c, (Owner) u, mainScreen);
 			
     	}
     	catch(Exception e)
