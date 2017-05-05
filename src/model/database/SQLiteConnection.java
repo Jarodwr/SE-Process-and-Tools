@@ -204,6 +204,7 @@ public class SQLiteConnection {
 	}
 	
 	public static void createBusinessHoursTable() {
+		
 	}
 		
 	public static ResultSet getUserRow(String username) throws SQLException {
