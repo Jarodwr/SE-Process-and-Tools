@@ -102,37 +102,33 @@ public class OwnerAddBooking {
 
     	long startTime = (date.toEpochDay() * 86400 + localStart * 1800);
     	
-    	String listOfServices = "";
-    	for (int i = 0; i < services.size(); i++) {
-    		listOfServices += services.get(i);
-    		if (i != services.size()-1) {
-    			listOfServices += ":";
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Add booking");
+    	
+    	if (startTime < System.currentTimeMillis()/1000) {
+    		alert.setHeaderText("Cannot book in the past!");
+    	} else {
+        	String listOfServices = "";
+        	for (int i = 0; i < services.size(); i++) {
+        		listOfServices += services.get(i);
+        		if (i != services.size()-1) {
+        			listOfServices += ":";
+        		}
+        	}
+    		
+    		if (time.validPeriod()) {
+    	    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId))
+    	    		alert.setHeaderText("Booking successfully added!");
+    	    	else
+    	    		alert.setHeaderText("failed to add booking");
+    	    	
+    		} else {
+        		alert.setHeaderText("invalid period");
     		}
     	}
-
-		if (time.validPeriod()) {
-	    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId)) {
-	    		Alert alert = new Alert(AlertType.INFORMATION);
-	    		alert.setTitle("Add booking");
-	    		alert.setHeaderText("Booking successfully added!");
-	    		alert.setContentText("press ok to continue...");
-
-	    		alert.showAndWait();
-	    	} else {
-	    		Alert alert = new Alert(AlertType.INFORMATION);
-	    		alert.setTitle("Add booking");
-	    		alert.setHeaderText("failed to add booking");
-	    		alert.setContentText("press ok to continue...");
-	    		alert.showAndWait();
-	    	}
-		} else {
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Add booking");
-    		alert.setHeaderText("invalid period");
-    		alert.setContentText("press ok to continue...");
-    		alert.showAndWait();
-		}
-
+		
+		alert.setContentText("press ok to continue...");
+		alert.showAndWait();
     	this.update();
     }
     

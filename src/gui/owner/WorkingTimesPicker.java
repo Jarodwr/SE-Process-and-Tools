@@ -136,26 +136,23 @@ public class WorkingTimesPicker extends TimePicker {
     	long lowerBoundsDay = ((day.toEpochDay()-4)%7 )* 86400;
     	long upperBoundsDay = lowerBoundsDay + 86400;
     	
-    	for (int i : available) {
+    	for (int i : available)
     		getTimePane(i).setStyle(unavailableStyle[0]);
-    	}
     	available.clear();
 
-    	if (times == null || times.length == 0) {
+    	if (times == null || times.length == 0)
     		return;
-    	}
     	
     	for(int i = 0; i < times.length; i++) {
     		int time1 = Integer.parseInt(times[i][0]); 
     		int time2 = Integer.parseInt(times[i][1]);
-    		if (time1 < lowerBoundsDay || time1 > upperBoundsDay) {
+    		if (time1 < lowerBoundsDay || time1 > upperBoundsDay)
     			continue;
-    		}
     		
     		time1 = (time1 / (30*60))%48;
     		time2 = (time2 / (30*60))%48;
     		
-    		for(int j = time1; j <= time2; j++) {
+    		for(int j = time1; j < time2; j++) {
     			available.add(j);
     			getTimePane(j).setStyle(availableStyle[0]);
     		}
@@ -167,22 +164,18 @@ public class WorkingTimesPicker extends TimePicker {
     	long lowerBoundsDay = day.toEpochDay() * 86400;
     	long upperBoundsDay = lowerBoundsDay + 86400;
     	
-    	for (int i : selected) {
+    	for (int i : selected)
     		getTimePane(i).setStyle(getAppropriateStyle(i)[0]);
-    	}
-    	
     	selected.clear();
 
-    	if (times == null || times.length == 0) {
+    	if (times == null || times.length == 0)
     		return;
-    	}
-    	
+
     	for(int i = 0; i < times.length; i++) {
     		int time1 = Integer.parseInt(times[i][0]); 
     		int time2 = Integer.parseInt(times[i][1]);
-    		if (time1 < lowerBoundsDay || time1 > upperBoundsDay) {
+    		if (time1 < lowerBoundsDay || time1 > upperBoundsDay)
     			continue;
-    		}
     		
     		time1 = (time1 / (30*60))%48;
     		time2 = (time2 / (30*60))%48;

@@ -53,7 +53,6 @@ public class OwnerChangeWorkingTimes {
     void updateWorkingTime(ActionEvent event) {
     	int[] selected = time.getSelectedPeriods();
     	ArrayList<Integer> unselected = new ArrayList<Integer>();
-    	System.out.println("test");
     	
     	for (int i = 0; i < 48; i++)
     		unselected.add(i);
@@ -61,7 +60,6 @@ public class OwnerChangeWorkingTimes {
     	for (int i : selected) {
     		unselected.remove(Integer.valueOf(i));
     		controller.addWorkingTime(employeeId, Long.toString(date.toEpochDay() * 24 * 60 * 60), Integer.toString(i * 30 * 60), Integer.toString((i+1) * 30 * 60));
-    		System.out.println(i);
     	}
     	
     	for (int i : unselected) {
