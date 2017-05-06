@@ -96,10 +96,18 @@ public class OwnerChangeWorkingTimes {
     private void update() {
     	if (date != null && employeeId != null) {
     		time.setEnabled(true);
-        	String[][] times = controller.getWorkerAvailability(employeeId);
-        	if (times != null && times.length > 0) {
-        		time.setDefaultAvailability(times, Long.toString(date.toEpochDay()));
+    		
+        	String[][] availabilities = controller.getWorkerAvailability(employeeId);
+        	if (availabilities != null && availabilities.length > 0) {
+        		time.setDefaultAvailability(availabilities, date);
+        		
         	}
+        	
+        	String[][] shifts = controller.getWorkingTimes(employeeId);
+        	if (shifts != null && shifts.length > 0) {
+        		time.setDefaultSelected(shifts, date);
+        	}
+        	
         	submit.setDisable(false);
     	} else {
     		submit.setDisable(true);
