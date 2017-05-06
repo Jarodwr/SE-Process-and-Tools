@@ -187,7 +187,7 @@ public class WorkingTimesPicker extends TimePicker {
     		time1 = (time1 / (30*60))%48;
     		time2 = (time2 / (30*60))%48;
     		
-    		for(int j = time1; j <= time2; j++) {
+    		for(int j = time1; j < time2; j++) {
     			selected.add(j);
     			getTimePane(j).setStyle(getAppropriateStyle(j)[2]);
     		}
