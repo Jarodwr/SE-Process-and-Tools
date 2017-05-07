@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.junit.Test;
 */
-public class BookingsTestCases 
+public class BookingsTest 
 {
  /* TODO redo since bookings was redone
 	@Test

@@ -3,21 +3,34 @@ package model.utility;
 import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
-import org.junit.Before;
-
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import model.database.SQLiteConnection;
 
 public class UtilityTest {
 	
 	static Utility u = new Utility();
 
-	@Before
-	public void refresh() {
+	@BeforeClass
+	public static void createDB() {
+		SQLiteConnection db = new SQLiteConnection("jdbc:sqlite:test.sqlite");
+		db.createTables();
+		u.setConnection(db);
+//		db.createOwner(businessname, username, password, name, address, mobileno)
 		
+//		db.createCustomer(username, password, name, address, mobileno);
+		db.createCustomer("jarodwr", "1234", "Jarod", "32 der st", "0412341234");
+		
+//		db.createEmployee(businessname, name, address, mobileno, timetableId)
+		
+		
+		
+//		db.createAvailability(timetableId, businessname, availabilities);
 	}
 	
 	@AfterClass
-	public void changeBack() {
+	public static void deleteDB() {
 		
 	}
 	
