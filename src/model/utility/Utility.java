@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import model.database.SQLiteConnection;
@@ -26,28 +28,35 @@ public class Utility {
 	private Logger LOGGER = Logger.getLogger("main");
 	private User currentUser = null;
 	private String currentBusiness = "SARJ's Milk Business"; //TODO
+	private SQLiteConnection db = new SQLiteConnection();
+	
 	
 	/**
 	 * @param username username being searched
 	 * @return Returns the user with the username being searched
 	 */
+	
+	public void setConnection(String connection) {
+		
+	}
+	
 	public User searchUser(String username) {
 		ResultSet rs;
 		try {
-			rs = SQLiteConnection.getUserRow(username);
-			if (SQLiteConnection.getOwnerRow(username) != null) {
+			rs = db.getUserRow(username);
+			if (db.getOwnerRow(username) != null) {
 				ResultSet rs2;
-				rs2 = SQLiteConnection.getOwnerRow(username);
+				rs2 = db.getOwnerRow(username);
 				String business = rs2.getString("businessname");
 				rs2.close();
 
-				rs = SQLiteConnection.getUserRow(username);
+				rs = db.getUserRow(username);
 				Owner owner = new Owner(username, rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
 				rs.close();
 				return owner;
 			}
 			else {
-				rs = SQLiteConnection.getUserRow(username);
+				rs = db.getUserRow(username);
 				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
 				rs.close();
 				return customer;
@@ -80,7 +89,7 @@ public class Utility {
 	public String[][] getEmployeeList() {
 		ResultSet rs;
 		try {
-			rs = SQLiteConnection.getAllEmployees();
+			rs = db.getAllEmployees();
 			if (rs == null) throw new Exception("No employees found");
 		} catch (Exception e) {
 				LOGGER.warning(e.getMessage());
@@ -116,9 +125,9 @@ public class Utility {
 		
 		Timetable t = new Timetable();
 		try {
-			ResultSet rsEmployees = SQLiteConnection.getAllEmployees();
+			ResultSet rsEmployees = db.getAllEmployees();
 			do {
-				ResultSet rsTimetables = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
+				ResultSet rsTimetables = db.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
 				if (rsTimetables == null) {
 					continue;
 				}
@@ -141,7 +150,7 @@ public class Utility {
 			Employee[] employees = getAllEmployees();
 			for (Employee e : employees) {
 				Timetable t = new Timetable();
-				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
+				ResultSet shifts = db.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
 				
 				if (shifts == null) {
 					continue;
@@ -151,7 +160,7 @@ public class Utility {
 				} while (shifts.next());
 				shifts.close();
 				
-				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+				ResultSet bookings = db.getBookingsByEmployeeId(e.getEmployeeId());
 				if (bookings != null) {
 					do {
 						t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
@@ -172,13 +181,67 @@ public class Utility {
 		return filtered;
 	}
 	
+	public void editAvailability(String employeeId, ArrayList<String> availabilities) {
+
+		Timetable t = new Timetable();
+
+
+		//if the employee selected doesn't exist alert the user and exit the function
+		if(employeeId == null || employeeId.equals("")) {
+			LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
+			return;
+		}
+
+		//use an iterator to go through the availabilities
+		Iterator<String> iter = availabilities.iterator();
+		//go through the the iterator to split the availabilities
+		while(iter.hasNext()) {
+			String[] values = iter.next().split(" ");
+			
+			//start creating the new timetable
+			//add it to the timetable
+			t.addPeriod(new Period(values[0], values[1], false));
+		}
+		//if the employee doesn't exit then alert the user and exit the function
+		if (employeeId.equals("")) {
+
+			LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
+			return;
+		}
+		//add the availabilities to the timetable
+		/* TODO turn this try block below into a utility method */
+		try {
+			ResultSet rs = db.getAllAvailabilities();
+			int id;
+			if (rs != null) {
+				id = db.getNextAvailableId(rs, "timetableId");
+				rs.close();
+			} 
+			else {
+				id = 0;
+			}
+			if (db.createAvailability(id, getCurrentBusiness(), t.toString())){
+				
+			}
+			else {
+				db.deleteAvailabilities(id, getCurrentBusiness());
+				db.createAvailability(id, getCurrentBusiness(), t.toString());
+			}
+			db.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+		 
+	}
+	
 	public Timetable getAvailableBookingTimesByDuration(long duration) {
 		Timetable appPeriods = new Timetable();
 		try {
 			Employee[] employees = getAllEmployees();
 			for (Employee e : employees) {
 				Timetable t = new Timetable();
-				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
+				ResultSet shifts = db.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
 				
 				if (shifts == null) {
 					continue;
@@ -188,7 +251,7 @@ public class Utility {
 				} while (shifts.next());
 				shifts.close();
 				
-				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+				ResultSet bookings = db.getBookingsByEmployeeId(e.getEmployeeId());
 				if (bookings == null) {
 					appPeriods.mergeTimetable(t.applicablePeriods(duration));
 					continue;
@@ -213,7 +276,7 @@ public class Utility {
 		for (Employee e : employees) {
 			try {
 				Timetable t = new Timetable();
-				ResultSet shifts = SQLiteConnection.getShifts(Integer.parseInt(e.getEmployeeId()), "0");
+				ResultSet shifts = db.getShifts(Integer.parseInt(e.getEmployeeId()), "0");
 				
 				if (shifts == null) {
 					continue;
@@ -223,7 +286,7 @@ public class Utility {
 				} while (shifts.next());
 				shifts.close();
 				
-				ResultSet bookings = SQLiteConnection.getBookingsByEmployeeId(e.getEmployeeId());
+				ResultSet bookings = db.getBookingsByEmployeeId(e.getEmployeeId());
 				if (bookings == null) {
 					available.mergeTimetable(t);
 					continue;
@@ -250,7 +313,7 @@ public class Utility {
 	 */
 	public Booking[] getBookingsAfter(Date date) {
 		try {
-			ResultSet rs = SQLiteConnection.getBookingsByPeriodStart(date.getTime());
+			ResultSet rs = db.getBookingsByPeriodStart(date.getTime());
 			if (rs != null)  {
 				return bookingResultsetToArray(rs);
 			}
@@ -277,7 +340,7 @@ public class Utility {
 			long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
 			
 			if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
-				return SQLiteConnection.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
+				return db.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
 			}
 		}
 		return false;
@@ -292,7 +355,7 @@ public class Utility {
 	 */
 	public boolean removeBooking(int bookingID, String businessname)
 	{
-		return SQLiteConnection.deleteBooking(bookingID, businessname);
+		return db.deleteBooking(bookingID, businessname);
 	}
 	
 	/**
@@ -306,7 +369,7 @@ public class Utility {
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		try {
 			do {
-				bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("bookingId"), rs.getString("employeeId"), Service.stringOfServicesToArrayList(rs.getString("bookingData"))));
+				bookings.add(new Booking(rs.getString("starttimeunix"), rs.getString("endtimeunix"), false, rs.getString("username"), rs.getString("bookingId"), rs.getString("employeeId"), stringOfServicesToArrayList(rs.getString("bookingData"))));
 			} while (rs.next());
 			if (!bookings.isEmpty()) {
 				Booking[] b = new Booking[bookings.size()];
@@ -330,7 +393,7 @@ public class Utility {
 				return null;
 			}
 			
-			ResultSet shifts = SQLiteConnection.getShifts(Long.parseLong(employeeId), "0");
+			ResultSet shifts = db.getShifts(Long.parseLong(employeeId), "0");
 			if (shifts == null) {
 				return null;
 			}
@@ -354,7 +417,7 @@ public class Utility {
 			return false;
 		else
 			try {
-				return (SQLiteConnection.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
+				return (db.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
 						Long.toString(starttime), Long.toString(endtime)));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -372,7 +435,7 @@ public class Utility {
 			return false;
 		else
 			try {
-				return (SQLiteConnection.removeShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
+				return (db.removeShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
 						Long.toString(starttime), Long.toString(endtime)));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -385,7 +448,7 @@ public class Utility {
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addCustomerToDatabase(String username, String password, String name, String address, String mobileno) {
-		return SQLiteConnection.createCustomer(username, password, name, address, mobileno);
+		return db.createCustomer(username, password, name, address, mobileno);
 	}
 	
 	/**
@@ -393,7 +456,7 @@ public class Utility {
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addNewEmployee(String id, String businessName, String name, String address, String phonenumber, int timetableID) {
-		return SQLiteConnection.createEmployee("", name, address, phonenumber, 0);
+		return db.createEmployee("", name, address, phonenumber, 0);
 	}
 	
 	/**
@@ -404,7 +467,7 @@ public class Utility {
 		ArrayList<Employee> employees = new ArrayList<Employee>();
 		ResultSet rs;
 		try {
-			rs = SQLiteConnection.getAllEmployees();
+			rs = db.getAllEmployees();
 			if (rs == null) {
 				return null;
 			}
@@ -433,7 +496,7 @@ public class Utility {
 	 */
 	public Timetable getEmployeeAvailability(String employeeId) {
 		try {
-			ResultSet rs = SQLiteConnection.getEmployeeAvailability(Integer.parseInt(employeeId));
+			ResultSet rs = db.getEmployeeAvailability(Integer.parseInt(employeeId));
 			if (rs == null) {
 				return new Timetable();
 			}
@@ -450,7 +513,7 @@ public class Utility {
 	public Customer[] getAllCustomers(){
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		try {
-			ResultSet rs = SQLiteConnection.getAllCustomers();
+			ResultSet rs = db.getAllCustomers();
 			do {
 				customers.add(new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
 			} while (rs.next());
@@ -508,7 +571,7 @@ public class Utility {
 		
 		ArrayList<Service> services = new ArrayList<Service>();
 		try {
-			ResultSet rs = SQLiteConnection.getAllServices(currentBusiness);
+			ResultSet rs = db.getAllServices(currentBusiness);
 			do {
 				services.add(new Service(rs.getString("servicename"), Integer.parseInt(rs.getString("serviceprice")), Integer.parseInt(rs.getString("serviceminutes"))));
 			} while (rs.next());
@@ -544,4 +607,29 @@ public class Utility {
 		return null;
 	}
 
+	public boolean addService(String name, int priceInCents, String duration) {
+		return db.addService(name, priceInCents, Integer.parseInt(duration), getCurrentBusiness());
+	}
+
+	public ArrayList<Service> stringOfServicesToArrayList(String services) {
+		String[] servicesSplit = services.split(":");
+		ArrayList<Service> servs = new ArrayList<Service>();
+		
+		try {
+			for(int i = 0; i < servicesSplit.length; i++) {
+				ResultSet rs = db.getService(servicesSplit[i], "SARJ's Milk Business");
+				if (rs == null) {
+				}
+				else {
+					Service s = new Service(rs.getString("servicename"), Integer.parseInt(rs.getString("serviceprice")), Integer.parseInt(rs.getString("serviceminutes")));
+					servs.add(s);
+				}
+			}
+			return servs;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

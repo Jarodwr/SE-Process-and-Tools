@@ -18,20 +18,6 @@ public class Service {
 		this.duration = time;
 	}
 	
-	public Service(String name, String price, String time, boolean createDBEntry) throws Exception {
-		this.priceOfService = Integer.parseInt(price);
-		this.serviceName = name;
-		this.duration = Integer.parseInt(time);
-		if (createDBEntry) {
-			try {
-				SQLiteConnection.getService(serviceName, "SARJ's Milk Business");
-			}
-			catch(SQLException e) {
-				
-			}
-		}
-	}
-	
 	public String toString() {
 		int priceDollars = this.priceOfService / 100;
 		int priceCents = this.priceOfService - priceDollars;
@@ -64,26 +50,5 @@ public class Service {
 			i += serv.duration;
 		}
 		return i;
-	}
-	
-	public static ArrayList<Service> stringOfServicesToArrayList(String services) {
-		String[] servicesSplit = services.split(":");
-		ArrayList<Service> servs = new ArrayList<Service>();
-		try {
-			for(int i = 0; i < servicesSplit.length; i++) {
-				ResultSet rs = SQLiteConnection.getService(servicesSplit[i], "SARJ's Milk Business");
-				if (rs == null) {
-				}
-				else {
-					Service s = new Service(rs.getString("servicename"), rs.getString("serviceprice"), rs.getString("serviceminutes"), false);
-					servs.add(s);
-				}
-			}
-			return servs;
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }
