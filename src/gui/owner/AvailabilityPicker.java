@@ -39,17 +39,14 @@ public class AvailabilityPicker extends TimePicker {
     			if (time == 0)
     				time = 24;
     			time /= 2;
-    			//Hacky solution to alignment
-    			String str = "";
-    			if (time < 10) {
-    				str += "  ";
-    			}
-    			str += "  " + Integer.toString(time);
-    			timeGrid.add(new Label(str), i, 1);
-    			timeGrid.add(new Label(str), i, 3);
-    		} else {
-    			timeGrid.add(new Label("am"), i, 1);
-    			timeGrid.add(new Label("pm"), i, 3);
+
+    			Label amLabel = new Label(time + "am");
+    			Label pmLabel = new Label(time + "pm");
+    			String fontstr = "-fx-font: 9 consolas";
+    			amLabel.setStyle(fontstr);
+    			pmLabel.setStyle(fontstr);
+    			timeGrid.add(amLabel, i, 1);
+    			timeGrid.add(pmLabel, i, 3);
     		}
     	}
     }
