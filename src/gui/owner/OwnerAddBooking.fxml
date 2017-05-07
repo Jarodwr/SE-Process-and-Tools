@@ -21,6 +21,7 @@
             <MenuButton fx:id="serviceMenu" layoutX="31.0" layoutY="56.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Select services" AnchorPane.rightAnchor="420.0" AnchorPane.topAnchor="56.0" />
             <Pane fx:id="timeMenu" layoutX="30.0" layoutY="140.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="159.0" prefWidth="540.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
             <Label layoutX="31.0" layoutY="128.0" text="Pick an available time from below:" />
+            <Label layoutX="30.0" layoutY="314.0" text="| Red - Unavailable period | White - Available period | Darkened - Selected period |" />
          </children>
       </AnchorPane>
    </center>
