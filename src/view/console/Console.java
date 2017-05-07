@@ -1,6 +1,5 @@
 package view.console;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,15 +8,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Arrays;
 
-import model.database.SQLiteConnection;
 import model.period.Period;
-import model.service.Service;
-import model.service.ServiceExistsException;
 import model.timetable.Timetable;
 
 public class Console {
 	private static Scanner scanner = new Scanner(System.in);
-	private static java.io.Console console = System.console();
 	public static final String[] Weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
 	public Console() {

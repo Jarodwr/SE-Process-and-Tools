@@ -5,8 +5,6 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 
 import org.junit.Test;
 
-import controller.Controller;
-import model.users.Customer;
 import model.users.Owner;
 import model.users.User;
 

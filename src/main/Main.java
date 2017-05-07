@@ -11,9 +11,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import application.GuiMain;
-import controller.Controller;
 import model.database.SQLiteConnection;
-import model.service.Service;
 
 public class Main {
 	

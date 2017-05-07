@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.exceptions.ValidationException;
+import model.utility.Utility;
 import controller.Controller;
 import gui.login.LoginController;
 
@@ -59,29 +60,11 @@ public class RegisterController{
     
     //variables to be injected from where it is created
     private Controller c;
-    
     private Stage main;
     
-    //when the address field is changed check all validation
+    //when any field is changed check all validation
     @FXML
-    void checkAddress(KeyEvent event) {
-    	checkAll();
-    }
-    
-    //when the confirm password field is changed check all validation
-    @FXML
-    void checkConfPassword(KeyEvent event) {
-    	checkAll();
-    }
-    
- 	//when the name field is changed check all validation
-    @FXML
-    void checkName(KeyEvent event) {
-    	checkAll();
-    }
-    //when the password field is changed check all validation
-    @FXML
-    void checkPassword(KeyEvent event) {
+    void checkAll(KeyEvent event) {
     	checkAll();
     }
     
@@ -116,11 +99,6 @@ public class RegisterController{
     	}
     }
 
-    //when the number field is changed check all validation
-    @FXML
-    void checkPhoneNumber(KeyEvent event) {
-    	checkAll();
-    }
     
     //checks the address against regex
     void checkAddress()
@@ -191,7 +169,7 @@ public class RegisterController{
     void checkConfPassword()
     {
     	//check if the passwords match
-    	if(!password.getText().equals(passwordCon.getText())) {
+    	if(!password.getText().equals(passwordCon.getText()) || passwordCon.getText().equals("")) {
     		//if it doesn't, print error
 			passwordCon.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
@@ -238,6 +216,24 @@ public class RegisterController{
 		}
     }
     
+    //checks the user name to see if it exists
+    void checkUsername()
+    {
+    	if(c.utilities.searchUser(username.getText()) != null)
+    	{
+    		username.setStyle("-fx-border-color: red");
+			registerErrorMessage.setStyle("-fx-text-fill: RED");
+	    	registerErrorMessage.setText("Username is already Taken!");
+    	}
+    	else
+    	{
+    		//if it passes show good box border colour
+			username.setStyle("-fx-border-color: green");
+			//check all fields and if true remove error message
+			if(checkFields())
+				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
+    	}
+    }
     //runs all checks
     void checkAll()
     {
@@ -246,6 +242,7 @@ public class RegisterController{
     	checkName();
     	checkConfPassword();
     	checkPassword();
+    	checkUsername();
     }
     
     /*

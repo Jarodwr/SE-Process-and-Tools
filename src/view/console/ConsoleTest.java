@@ -3,7 +3,6 @@
  */
 package view.console;
 
-import static org.junit.Assert.*;
 
 import java.io.*;
 import java.util.Scanner;
@@ -54,6 +53,7 @@ public class ConsoleTest {
 		  System.setIn(new ByteArrayInputStream(data.getBytes()));
 		  Scanner scanner = new Scanner(System.in);
 		  System.out.println(scanner.nextLine());
+		  scanner.close();
 		} finally {
 		  System.setIn(stdin);
 		}
