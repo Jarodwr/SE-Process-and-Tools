@@ -14,8 +14,10 @@ public class WorkingTimesPicker extends TimePicker {
     @Override
     public void init(Pane p) {
     	super.init(p);
-    	this.availableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ffffff","-fx-border-color: black;-fx-background-color: #dddddd", "-fx-border-color: black;-fx-background-color: #79CDCD"};
-    	this.unavailableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ff0000","-fx-border-color: black;-fx-background-color: #dd0000", "-fx-border-color: black;-fx-background-color: #79CDCD"};
+    	this.availableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ffffff","-fx-border-color: black;-fx-background-color: #dddddd", 
+    			"-fx-border-color: black;-fx-background-color: #79CDCD", "-fx-border-color: black;-fx-background-color: #528989"};
+    	this.unavailableStyle = new String[]{"-fx-border-color: black;-fx-background-color: #ff0000","-fx-border-color: black;-fx-background-color: #dd0000", 
+    			"-fx-border-color: black;-fx-background-color: #79CDCD", "-fx-border-color: black;-fx-background-color: #528989"};
     }
     
     public void setEnabled(boolean b) {
@@ -36,10 +38,9 @@ public class WorkingTimesPicker extends TimePicker {
 								selected.remove(Integer.valueOf(j));
 								getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
 							} else if (arg0.getButton() == MouseButton.PRIMARY){
-								if (selected.contains(j))
-									continue;
-								selected.add(j);
 								getTimePane(j).setStyle(getAppropriateStyle(j)[2]);
+								if (!selected.contains(j))
+									selected.add(j);
 							}
 							
 						}
@@ -49,31 +50,27 @@ public class WorkingTimesPicker extends TimePicker {
 								selected.remove(Integer.valueOf(j));
 								getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
 							} else if (arg0.getButton() == MouseButton.PRIMARY){
-								if (selected.contains(j))
-									continue;
-								selected.add(j);
 								getTimePane(j).setStyle(getAppropriateStyle(j)[2]);
+								if (!selected.contains(j))
+									selected.add(j);
 							}
 							
 						}
 					}
 					focus = -1;
-				} else {
-					if (focus == i) {
-						if (arg0.getButton() == MouseButton.SECONDARY) {
-							if (selected.contains(i))
-								selected.remove(Integer.valueOf(i));
-						} else if (arg0.getButton() == MouseButton.PRIMARY) {
-							if (selected.contains(i))
-								return;
-							selected.add(i);
-						}
-						p.setStyle(getAppropriateStyle(i)[2]);
-
-						focus = -1;
-					} else {
-						focus = i;
+				} else if (focus == i) {
+					if (arg0.getButton() == MouseButton.SECONDARY) {
+						if (selected.contains(i))
+							selected.remove(Integer.valueOf(i));
+					} else if (arg0.getButton() == MouseButton.PRIMARY) {
+						if (selected.contains(i))
+							return;
+						selected.add(i);
 					}
+					p.setStyle(getAppropriateStyle(i)[2]);
+					focus = -1;
+				} else {
+					focus = i;	
 				}
 			}
     	});
@@ -85,21 +82,27 @@ public class WorkingTimesPicker extends TimePicker {
 				if (focus > -1) {
 					if (focus > i) {
 						for (int j = i; j < focus; j++) {
-							if (selected.contains(j))
-								continue;
-							getTimePane(j).setStyle(getAppropriateStyle(j)[1]);
+							if (selected.contains(j)) {
+								getTimePane(j).setStyle(getAppropriateStyle(j)[3]);
+							} else {
+								getTimePane(j).setStyle(getAppropriateStyle(j)[1]);
+							}
 						}
 					} else {
 						for (int j = i; j > focus; j--) {
-							if (selected.contains(j))
-								continue;
-							getTimePane(j).setStyle(getAppropriateStyle(j)[1]);
+							if (selected.contains(j)) {
+								getTimePane(j).setStyle(getAppropriateStyle(j)[3]);
+							} else {
+								getTimePane(j).setStyle(getAppropriateStyle(j)[1]);
+							}
 						}
 					}
 				} else {
-					if (selected.contains(i))
-						return;
-					p.setStyle(getAppropriateStyle(i)[1]);
+					if (selected.contains(i)) {
+						getTimePane(i).setStyle(getAppropriateStyle(i)[3]);
+					} else {
+						p.setStyle(getAppropriateStyle(i)[1]);
+					}
 				}
 			}
     	});
@@ -111,21 +114,27 @@ public class WorkingTimesPicker extends TimePicker {
 				if (focus > -1) {
 					if (focus > i) {
 						for (int j = i; j < focus; j++) {
-							if (selected.contains(j))
-								continue;
-							getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
+							if (selected.contains(j)) {
+								getTimePane(j).setStyle(getAppropriateStyle(j)[2]);
+							} else {
+								getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
+							}
 						}
 					} else {
 						for (int j = i; j > focus; j--) {
-							if (selected.contains(j))
-								continue;
-							getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
+							if (selected.contains(j)) {
+								getTimePane(j).setStyle(getAppropriateStyle(j)[2]);
+							} else {
+								getTimePane(j).setStyle(getAppropriateStyle(j)[0]);
+							}
 						}
 					}
 				} else {
-					if (selected.contains(i))
-						return;
-					p.setStyle(getAppropriateStyle(i)[0]);
+					if (selected.contains(i)) {
+						getTimePane(i).setStyle(getAppropriateStyle(i)[2]);
+					} else {
+						p.setStyle(getAppropriateStyle(i)[0]);
+					}
 				}
 			}
     	});
