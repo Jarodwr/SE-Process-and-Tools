@@ -18,7 +18,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		Logger LOGGER = Logger.getLogger("main");
-		
+		SQLiteConnection n = new SQLiteConnection();
 		Handler handler;
 		try {
 			handler = new FileHandler("logs\\" + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".txt");
@@ -36,16 +36,13 @@ public class Main {
 		LOGGER.setUseParentHandlers(false);
 		LOGGER.warning("test");
 		
-		SQLiteConnection.createTables(); // Create table if it doesn't exist for all info
-		debugCreateOwnerBusiness();
+		n.createTables(); // Create table if it doesn't exist for all info
+		debugCreateOwnerBusiness(n);
 		GuiMain.main(args);
 	}
 	
-	public static void debugCreateOwnerBusiness() {
-		SQLiteConnection.createBusiness("SARJ's Milk Business", "Cherry Lane", "0123456789");
-		SQLiteConnection.createOwner("SARJ's Milk Business", "ownertest", "1234", "Name", "Address", "MobileNo");
+	public static void debugCreateOwnerBusiness(SQLiteConnection n) {
+		n.createBusiness("SARJ's Milk Business", "Cherry Lane", "0123456789");
+		n.createOwner("SARJ's Milk Business", "ownertest", "1234", "Name", "Address", "MobileNo");
 	}
-	
-
-
 }
