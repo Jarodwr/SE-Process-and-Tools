@@ -1,19 +1,14 @@
 package controller;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.database.SQLiteConnection;
 import model.employee.Employee;
 import model.exceptions.ValidationException;
 import model.period.Booking;
-import model.period.Period;
 import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;

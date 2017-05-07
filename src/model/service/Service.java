@@ -1,11 +1,7 @@
 package model.service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import model.database.SQLiteConnection;
 
 public class Service {
 	public String serviceName;

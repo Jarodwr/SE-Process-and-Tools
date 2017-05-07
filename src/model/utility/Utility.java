@@ -36,8 +36,8 @@ public class Utility {
 	 * @return Returns the user with the username being searched
 	 */
 	
-	public void setConnection(String connection) {
-		
+	public void setConnection(SQLiteConnection newDb) {
+		this.db = newDb;
 	}
 	
 	public User searchUser(String username) {

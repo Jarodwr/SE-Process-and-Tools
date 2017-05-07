@@ -11,16 +11,6 @@ public class SQLiteConnectionTest {
 	SQLiteConnection testDb = new SQLiteConnection();
 	
 	@Test
-	public void testConnection() {
-		if (testDb.getDBConnection()==null) {
-			fail("could not connect");
-		}
-		else {
-			System.out.println("test");
-		}
-	}
-	
-	@Test
 	public void testCreateCustomer() {
 		try {
 			testDb.deleteUser("test");

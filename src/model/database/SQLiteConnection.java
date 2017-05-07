@@ -11,6 +11,30 @@ public class SQLiteConnection {
 	private Connection conn = null;
 	private Logger LOGGER = Logger.getLogger("main");
 	
+	/**
+	 * Constructor with unspecified database
+	 */
+	public SQLiteConnection() {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			conn = DriverManager.getConnection("jdbc:sqlite:BookingSystemDB.sqlite");
+		} catch (Exception x) {
+			System.out.println(x.getMessage());
+		}
+	}
+	
+	/**
+	 * Constructor that specifies database
+	 * @param db
+	 */
+	public SQLiteConnection(String db) {
+		try {
+			Class.forName("org.sqlite.JDBC");
+			this.conn = DriverManager.getConnection(db);
+		} catch (Exception x) {
+			LOGGER.warning(x.getMessage());
+		}
+	}
 	
 	public void createTables() {
 		createUsersTable();
@@ -21,34 +45,6 @@ public class SQLiteConnection {
 		createEmployeeWorkingTimesTable();
 		createBookingsTable();
 		createServicesTable();
-	}
-	
-	public void setConnection(String dbName) {
-		if (conn == null) {
-			try {
-				Class.forName("org.sqlite.JDBC");
-				conn = DriverManager.getConnection(dbName);
-			} catch (Exception x) {
-				System.out.println(x.getMessage());
-			}
-		}
-	}
-	
-	/**
-	 * Initialize database connection
-	 * @return
-	 */
-	public Connection getDBConnection() { // connects to a database only once, stays open after that
-		if (conn == null) {
-			try {
-				Class.forName("org.sqlite.JDBC");
-				conn = DriverManager.getConnection("jdbc:sqlite:BookingSystemDB.sqlite");
-			} catch (Exception x) {
-				System.out.println(x.getMessage());
-			}
-		}
-
-		return conn;
 	}
 	
 	/**
@@ -62,7 +58,7 @@ public class SQLiteConnection {
 	public void createUsersTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Userinfo (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
 				try {
-					Connection c = getDBConnection();
+					Connection c = this.conn;
 					Statement stmt = c.createStatement();
 			            stmt.execute(sql);
 				}
@@ -81,7 +77,7 @@ public class SQLiteConnection {
 	public void createBusinessTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Businessinfo (businessname Varchar(255) Primary Key, address Varchar(255), phonenumber Varchar(255))";
 				try {
-					Connection c = getDBConnection();
+					Connection c = this.conn;
 					Statement stmt = c.createStatement();
 			            stmt.execute(sql);
 				}
@@ -99,7 +95,7 @@ public class SQLiteConnection {
 	public void createOwnerTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Ownerinfo (businessname Varchar(255), username Varchar(255), Foreign Key(businessname) references Businessinfo(businessname), Foreign Key(username) references Userinfo(username))";
 				try {
-					Connection c = getDBConnection();
+					Connection c = this.conn;
 					Statement stmt = c.createStatement();
 			            stmt.execute(sql);
 				}
@@ -121,7 +117,7 @@ public class SQLiteConnection {
 	public void createEmployeeTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Employeeinfo (employeeId integer primary key, businessname Varchar(255),  name Varchar(255), address Varchar(255), mobileno Varchar(255), timetableId integer, Foreign Key(timetableId) references Timetableinfo(timetableId), Foreign Key(businessname) references Businessinfo(businessname))";
 				try {
-					Connection c = getDBConnection();
+					Connection c = this.conn;
 					Statement stmt = c.createStatement();
 			            stmt.execute(sql);
 				}
@@ -140,7 +136,7 @@ public class SQLiteConnection {
 	public void createAvailabilitiesTable()  {
 		String sql = "CREATE TABLE IF NOT EXISTS Timetableinfo (timetableId integer primary key, businessname Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
 		try {
-			Connection c = getDBConnection();
+			Connection c = this.conn;
 			Statement stmt = c.createStatement();
 	            stmt.execute(sql);
 		}
@@ -162,7 +158,7 @@ public class SQLiteConnection {
 				+ "Foreign Key(businessname) references Businessinfo(businessname),"
 				+ "Foreign Key(employeeId) references Employeeinfo(employeeId))";
 		try {
-			Connection c = getDBConnection();
+			Connection c = this.conn;
 			Statement stmt = c.createStatement();
 	            stmt.execute(sql);
 		}
@@ -185,7 +181,7 @@ public class SQLiteConnection {
 	public void createBookingsTable()  {
 		String sql = "CREATE TABLE IF NOT EXISTS BookingsTable ( bookingId integer Primary Key, businessname Varchar(255), username Varchar(255), employeeId Varchar(255), starttimeunix Varchar(255), endtimeunix Varchar(255), bookingData Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname), Foreign Key(employeeId) references Employeeinfo(employeeId))";
 		try {
-			Connection c = getDBConnection();
+			Connection c = this.conn;
 			Statement stmt = c.createStatement();
 	            stmt.execute(sql);
 		}
@@ -205,7 +201,7 @@ public class SQLiteConnection {
 	public void createServicesTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS ServicesTable (servicename Varchar(255) Primary Key, serviceprice integer, serviceminutes integer, businessname Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
 		try {
-			Connection c = getDBConnection();
+			Connection c = this.conn;
 			Statement stmt = c.createStatement();
 	            stmt.execute(sql);
 		}
@@ -216,7 +212,7 @@ public class SQLiteConnection {
 		
 	public ResultSet getUserRow(String username) throws SQLException {
 		username = username.toLowerCase();
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Userinfo WHERE Username=?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -229,7 +225,7 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getOwnerRow(String username) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Ownerinfo WHERE Username=?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -243,7 +239,7 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getBusinessRow(String businessname) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Businessinfo WHERE businessname=?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -257,7 +253,7 @@ public class SQLiteConnection {
 	}
 	
 	public void deleteUser(String username) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		String query = "DELETE FROM Userinfo WHERE username = ?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, username);
@@ -268,7 +264,7 @@ public class SQLiteConnection {
 	 * @return True if creation is successful, else false.
 	 */
 	public boolean createCustomer(String username, String password, String name, String address, String mobileno) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
 
@@ -297,7 +293,7 @@ public class SQLiteConnection {
 	 */
 	public boolean deleteCustomer(String username) {
 		username = username.toLowerCase();
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getUserRow(username); // search through businessnames to check if this user currently exists
 
@@ -318,7 +314,7 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getAllCustomers() throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Userinfo";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -335,7 +331,7 @@ public class SQLiteConnection {
 	 */
 	public boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
 		username = username.toLowerCase();
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		Boolean needToAddUser = true;
 		try {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
@@ -379,7 +375,7 @@ public class SQLiteConnection {
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public boolean createBusiness(String businessname, String address, String phonenumber) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getBusinessRow(businessname); // search through businessnames to check if this user currently exists
 
@@ -408,7 +404,7 @@ public class SQLiteConnection {
 	public boolean createBooking(String businessname, String customername, String employeeId, String unixstamp1, String unixstamp2, String data) {
 		
 		customername = customername.toLowerCase();
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			int bookingId = getNextAvailableId(getAllBookings(businessname), "bookingId");
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
@@ -440,7 +436,7 @@ public class SQLiteConnection {
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public boolean deleteBooking(int bookingId, String businessname) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
 
@@ -465,7 +461,7 @@ public class SQLiteConnection {
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public boolean createEmployee(String businessname, String name, String address, String mobileno, int timetableId) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		
 		try {
 			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
@@ -488,7 +484,7 @@ public class SQLiteConnection {
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public boolean deleteEmployee(int employeeId) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
 
@@ -511,7 +507,7 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getEmployeeRow(int employeeId) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Employeeinfo WHERE employeeId=?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -524,7 +520,7 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getBookingRow(int bookingId) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE bookingId=?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -538,7 +534,7 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getBookingsByEmployeeId(String employeeId) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching employeeId
 		String query = "SELECT * FROM BookingsTable WHERE employeeId=?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -552,7 +548,7 @@ public class SQLiteConnection {
 		
 	
 	public ResultSet getBookingsByUsername(String username) throws SQLException { // not currently in use
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE username=?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -572,7 +568,7 @@ public class SQLiteConnection {
 	 * @throws SQLException
 	 */
 	public ResultSet getBookingsByPeriodStart(long l) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER) ORDER BY CAST(starttimeunix AS INTEGER)";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -589,7 +585,7 @@ public class SQLiteConnection {
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public boolean createAvailability(int timetableId, String businessname, String availabilities) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
 
@@ -616,7 +612,7 @@ public class SQLiteConnection {
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public boolean deleteAvailabilities(int timetableId, String businessname) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
 
@@ -639,7 +635,7 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getAvailabilityRow(int timetableId) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Timetableinfo WHERE timetableId=?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -657,7 +653,7 @@ public class SQLiteConnection {
 	 * @return True if updating the employee's availability is successful, false if unsuccessful.
 	 */
 	public boolean updateAvailabilityforEmployee(int employeeId, int timetableId) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this timetable currently exists
 
@@ -686,7 +682,7 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getEmployeeAvailability(int employeeId) throws SQLException { // change to return special if timetableId = 0
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query1 = "SELECT timetableId FROM Employeeinfo WHERE employeeId=?";
 		PreparedStatement pst1 = c.prepareStatement(query1);
@@ -714,7 +710,7 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getAllAvailabilities() throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Timetableinfo";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -727,7 +723,7 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getAllEmployees() throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Employeeinfo";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -744,7 +740,7 @@ public class SQLiteConnection {
 	 */
 	public ResultSet getShifts(long l, String unixtime) throws SQLException { /* TODO */
 		
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * "
 				+ "FROM EmployeeWorkingTimes "
@@ -760,7 +756,7 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getShifts(String start, String end) throws SQLException{
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		String query = "SELECT * "
 				+ "FROM EmployeeWorkingTimes "
 				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND CAST(unixendtime AS INTEGER) <= CAST(? AS INTEGER)";
@@ -776,7 +772,7 @@ public class SQLiteConnection {
 	}
 	
 	public boolean isShiftIn(int employeeId, String businessname, String start, String end) throws SQLException{
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		String query = "SELECT * "
 				+ "FROM EmployeeWorkingTimes "
 				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND "
@@ -802,7 +798,7 @@ public class SQLiteConnection {
 	}
 
 	public boolean addShift(int employeeId, String businessname, String start, String end) throws SQLException{
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		if (isShiftIn(employeeId, businessname, start, end))
 			return false;
 
@@ -817,7 +813,7 @@ public class SQLiteConnection {
 	}
 	
 	public boolean removeShift(int employeeId, String businessname, String start, String end) throws SQLException{
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		String query = "DELETE FROM EmployeeWorkingTimes WHERE employeeId = ? AND"
 				+ " businessname = ? AND"
 				+ " unixstarttime = ? AND"
@@ -835,7 +831,7 @@ public class SQLiteConnection {
 	
 	public ResultSet getService(String servicename, String businessname) throws SQLException { /* TODO */
 	
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM ServicesTable WHERE servicename = ?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -850,7 +846,7 @@ public class SQLiteConnection {
 	
 	public ResultSet getAllServices(String businessName) throws SQLException{
 		
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		
 		String query = "SELECT * FROM ServicesTable WHERE businessname = ?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -864,7 +860,7 @@ public class SQLiteConnection {
 	}
 	
 	public boolean addService(String serviceName, int servicePrice, int serviceMinutes, String businessName) {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		try {
 			ResultSet rs = getService(serviceName, businessName);
 			if (rs != null) {
@@ -888,7 +884,7 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getAllBookings(String businessname) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE businessname = ?";
 		PreparedStatement pst = c.prepareStatement(query);
@@ -915,7 +911,7 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet genericGetQuery(String query) throws SQLException {
-		Connection c = getDBConnection();
+		Connection c = this.conn;
 		// Search for rows with matching usernames
 		PreparedStatement pst = c.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
@@ -924,7 +920,6 @@ public class SQLiteConnection {
 			return rs;
 		}
 		else return null;
-		
-		
+
 	}
 }
