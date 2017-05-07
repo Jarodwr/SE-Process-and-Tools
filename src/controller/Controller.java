@@ -1,19 +1,14 @@
 package controller;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.database.SQLiteConnection;
 import model.employee.Employee;
 import model.exceptions.ValidationException;
 import model.period.Booking;
-import model.period.Period;
 import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;
@@ -32,8 +27,7 @@ public class Controller {
 	public static final String[] Weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 	public boolean addService(String name, int priceInCents, String duration) {
-		
-		return SQLiteConnection.addService(name, priceInCents, Integer.parseInt(duration), utilities.getCurrentBusiness());
+		return utilities.addService(name, priceInCents, duration);
 	}
 
 	/**
@@ -139,7 +133,7 @@ public class Controller {
 	/* TODO requires javadoc */
 	public boolean addNewBooking(String username, String startTime, String listOfServices, String employeeId) {
 		ArrayList<Service> servs;
-		servs = Service.stringOfServicesToArrayList(listOfServices);
+		servs = utilities.stringOfServicesToArrayList(listOfServices);
 		LOGGER.log(Level.FINE, "User has requested to add the following booking: " + username + "|" + startTime + "|" + listOfServices + "|" + employeeId);
 		return utilities.addNewBooking(username, employeeId, startTime, Long.toString(Long.parseLong(startTime) + (Service.getTotalArrayDuration(servs)/30) * 1800), listOfServices);
 	}
@@ -157,8 +151,6 @@ public class Controller {
 		else
 			return null;
 	}
-	
-	
 	
 	/**
 	 * This method shows the list of all bookings in the system
@@ -242,57 +234,7 @@ public class Controller {
 	 * @param user the business owner passed to the function
 	 */
 	public void editAvailability(String employeeId, ArrayList<String> availabilities) {
-
-		Timetable t = new Timetable();
-
-
-		//if the employee selected doesn't exist alert the user and exit the function
-		if(employeeId == null || employeeId.equals("")) {
-			LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
-			return;
-		}
-
-		//use an iterator to go through the availabilities
-		Iterator<String> iter = availabilities.iterator();
-		//go through the the iterator to split the availabilities
-		while(iter.hasNext()) {
-			String[] values = iter.next().split(" ");
-			
-			//start creating the new timetable
-			//add it to the timetable
-			t.addPeriod(new Period(values[0], values[1], false));
-		}
-		//if the employee doesn't exit then alert the user and exit the function
-		if (employeeId.equals("")) {
-
-			LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
-			return;
-		}
-		//add the availabilities to the timetable
-		/* TODO turn this try block below into a utility method */
-		try {
-			ResultSet rs = SQLiteConnection.getAllAvailabilities();
-			int id;
-			if (rs != null) {
-				id = SQLiteConnection.getNextAvailableId(rs, "timetableId");
-				rs.close();
-			} 
-			else {
-				id = 0;
-			}
-			if (SQLiteConnection.createAvailability(id, utilities.getCurrentBusiness(), t.toString())){
-				
-			}
-			else {
-				SQLiteConnection.deleteAvailabilities(id, utilities.getCurrentBusiness());
-				SQLiteConnection.createAvailability(id, utilities.getCurrentBusiness(), t.toString());
-			}
-			SQLiteConnection.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
-		 
+		utilities.editAvailability(employeeId, availabilities);
 	}
 	
 	/**
@@ -335,24 +277,20 @@ public class Controller {
 		//create a unique ID for the new employee
 		
 		/* TODO Turn try block into utility method */
-		try {
-			ResultSet rs = SQLiteConnection.getAllEmployees();
-			if (rs != null) {
-				int i = SQLiteConnection.getNextAvailableId(rs, "employeeId");
-				rs.close();
-				id = Integer.toString(i);
+		Employee[] employees = utilities.getAllEmployees();
+		int nextId = -1;
+		for (Employee e : employees) {
+			if (Integer.parseInt(e.getEmployeeId()) > nextId) {
+				nextId = Integer.parseInt(e.getEmployeeId());
 			}
-			else {
-				id = "0";
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			LOGGER.log(Level.WARNING, e.getMessage());
-			return false;
 		}
+		if (nextId == -1) {
+			nextId = 0;
+		}
+
+		id = Integer.toString(nextId);
 		
 		//validate all the user inputs
-
 		if(name.matches("[A-Za-z -']+") &&
 				phone.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
 				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
