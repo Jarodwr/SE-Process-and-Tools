@@ -156,7 +156,6 @@ public class OwnerAddBooking {
     	//Alternate time grid init
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimePicker.fxml"));
-			System.out.println(timeMenu);
 			timeMenu.getChildren().clear();
 			timeMenu.getChildren().add(loader.load());
 			
