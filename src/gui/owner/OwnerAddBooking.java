@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
@@ -40,6 +41,9 @@ public class OwnerAddBooking {
     private Button AddBookingBtn;
     
     @FXML
+    private Label errorMessage;
+    
+    @FXML
     private Pane timeMenu;
     private TimePicker time;
 
@@ -58,18 +62,21 @@ public class OwnerAddBooking {
     void customerSelect(ActionEvent event) {
     	customerUsername = new StringTokenizer(customerMenu.getSelectionModel().getSelectedItem(), ":").nextToken();
     	this.update();
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
     }
 
     @FXML
     void dateSelect(ActionEvent event) {
     	date = dateMenu.getValue();
     	this.update();
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
     }
 
     @FXML
     void employeeSelect(ActionEvent event) {
     	employeeId = new StringTokenizer(employeeMenu.getSelectionModel().getSelectedItem(), ":").nextToken();
     	this.update();
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
     }
     
     private void update() {
@@ -112,25 +119,15 @@ public class OwnerAddBooking {
 
 		if (time.validPeriod()) {
 	    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId)) {
-	    		Alert alert = new Alert(AlertType.INFORMATION);
-	    		alert.setTitle("Add booking");
-	    		alert.setHeaderText("Booking successfully added!");
-	    		alert.setContentText("press ok to continue...");
-
-	    		alert.showAndWait();
+	    		errorMessage.setStyle("-fx-text-fill: GREEN");
+	    		errorMessage.setText("Booking Successfully added!");
 	    	} else {
-	    		Alert alert = new Alert(AlertType.INFORMATION);
-	    		alert.setTitle("Add booking");
-	    		alert.setHeaderText("failed to add booking");
-	    		alert.setContentText("press ok to continue...");
-	    		alert.showAndWait();
+	    		errorMessage.setStyle("-fx-text-fill: RED");
+	    		errorMessage.setText("Failed to add booking!");
 	    	}
 		} else {
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Add booking");
-    		alert.setHeaderText("invalid period");
-    		alert.setContentText("press ok to continue...");
-    		alert.showAndWait();
+			errorMessage.setStyle("-fx-text-fill: RED");
+    		errorMessage.setText("Invalid Period!");
 		}
 
     	this.update();
@@ -199,6 +196,7 @@ public class OwnerAddBooking {
 
             	time.setDuration(duration);
             	update();
+            	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
             }
         });
     }

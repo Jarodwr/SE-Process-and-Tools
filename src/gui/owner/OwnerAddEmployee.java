@@ -31,18 +31,19 @@ public class OwnerAddEmployee {
     @FXML
     private GridPane timeGrid;
     
+    @FXML
+    private Label errorMessage;
+    
     private Controller controller;
     
     @FXML
     void submitEmployee(ActionEvent event) {	//TODO: When exception is added use try/catch to display error
     	if (controller.addEmployee(name.getText(), phone.getText(), address.getText(), controller.getOwner())) {
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Add Employee");
-    		alert.setHeaderText(null);
-    		alert.setContentText("Employee " + name.getText() + " successfully added.");
-    		alert.showAndWait();
+    		errorMessage.setStyle("-fx-text-fill: GREEN");
+    		errorMessage.setText("Employee " + name.getText() + " successfully added.");
     	} else {
-    		//Failure message
+    		errorMessage.setStyle("-fx-text-fill: red");
+    		errorMessage.setText("Failed to add employee!");
     	}
     }
     
@@ -51,8 +52,11 @@ public class OwnerAddEmployee {
     void addressChange(KeyEvent event) {
 		if(!address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
 			address.setStyle("-fx-border-color: red");
+			errorMessage.setStyle("-fx-text-fill: RED");
+    		errorMessage.setText("Address is invalid");
     	} else {
 			address.setStyle("-fx-border-color: green");
+			errorMessage.setStyle("-fx-text-fill: #F2F2F2");
 			checkFields();
     	}
     }
@@ -61,8 +65,11 @@ public class OwnerAddEmployee {
     void nameChange(KeyEvent event) {
 		if(!name.getText().matches("[-A-Za-z ']+")) {
 			name.setStyle("-fx-border-color: red");
+			errorMessage.setStyle("-fx-text-fill: RED");
+    		errorMessage.setText("Name is invalid");
 		} else {
 			name.setStyle("-fx-border-color: green");
+			errorMessage.setStyle("-fx-text-fill: #F2F2F2");
 			checkFields();
 		}
 	}
@@ -71,8 +78,11 @@ public class OwnerAddEmployee {
     void phoneChange(KeyEvent event) {
 		if(!phone.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
 			phone.setStyle("-fx-border-color: red");
+			errorMessage.setStyle("-fx-text-fill: RED");
+    		errorMessage.setText("Phone number is invalid");
 		} else {
 			phone.setStyle("-fx-border-color: green");
+			errorMessage.setStyle("-fx-text-fill: #F2F2F2");
 			checkFields();
 		}
     }
@@ -80,6 +90,7 @@ public class OwnerAddEmployee {
     public void init(Controller controller) {
     	this.controller = controller;
     	submitEmployee.setDisable(true);
+    	checkFields();
     }
 
     private void checkFields() {

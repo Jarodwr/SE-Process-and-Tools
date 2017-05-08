@@ -8,9 +8,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddBooking">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddBooking">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -21,6 +22,15 @@
             <MenuButton fx:id="serviceMenu" layoutX="31.0" layoutY="56.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Select services" AnchorPane.rightAnchor="420.0" AnchorPane.topAnchor="56.0" />
             <Pane fx:id="timeMenu" layoutX="30.0" layoutY="140.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="159.0" prefWidth="540.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
             <Label layoutX="31.0" layoutY="128.0" text="Pick an available time from below:" />
+            <VBox alignment="TOP_RIGHT" layoutX="333.0" layoutY="345.0" prefHeight="13.0" prefWidth="237.0">
+               <children>
+                  <Label fx:id="errorMessage" prefHeight="13.0" text="Booking Created!" textAlignment="RIGHT" textFill="#f2f2f2">
+                     <font>
+                        <Font name="Calibri" size="10.285714149475098" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
          </children>
       </AnchorPane>
    </center>
