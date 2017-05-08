@@ -691,6 +691,7 @@ public class SQLiteConnection {
 
 		if (rs1.next()) {
 			if (rs1.getInt("timetableId") == 0 ) {
+				System.out.println("test");
 				return null;
 			}
 			else {
@@ -797,19 +798,24 @@ public class SQLiteConnection {
 		return false;
 	}
 
-	public boolean addShift(int employeeId, String businessname, String start, String end) throws SQLException{
+	public boolean addShift(int employeeId, String businessname, String start, String end){
 		Connection c = this.conn;
-		if (isShiftIn(employeeId, businessname, start, end))
-			return false;
+		try {
+			if (isShiftIn(employeeId, businessname, start, end))
+				return false;
 
-		PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?, ?);"); // this creates a new user
-		ps.setString(1, businessname);
-		ps.setInt(2, employeeId);
-		ps.setString(3, start);
-		ps.setString(4, end);
-		ps.executeUpdate();
-		ps.close();
-		return true;
+			PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?, ?);"); // this creates a new user
+			ps.setString(1, businessname);
+			ps.setInt(2, employeeId);
+			ps.setString(3, start);
+			ps.setString(4, end);
+			ps.executeUpdate();
+			ps.close();
+			return true;
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			return false;
+		}
 	}
 	
 	public boolean removeShift(int employeeId, String businessname, String start, String end) throws SQLException{
