@@ -632,4 +632,42 @@ public class Utility {
 		}
 		return null;
 	}
+	
+
+	public void editBusinessHours(String businessname, ArrayList<String> times) {
+
+		Timetable t = new Timetable();
+
+
+		//if the business selected doesn't exist alert the user and exit the function
+		
+		//use an iterator to go through the availabilities
+		Iterator<String> iter = times.iterator();
+		//go through the the iterator to split the availabilities
+		while(iter.hasNext()) {
+			String[] values = iter.next().split(" ");
+			
+			//start creating the new timetable
+			//add it to the timetable
+			t.addPeriod(new Period(values[0], values[1], false));
+		}
+		//if the employee doesn't exit then alert the user and exit the function
+		//add the availabilities to the timetable
+		/* TODO turn this try block below into a utility method */
+		try {
+			ResultSet rs = db.getBusinessHours(businessname);
+			int id;
+			if (rs != null) {
+				rs.close();
+				db.updateBusinessHours(businessname, t.toString());
+			} 
+			else {
+				db.createBusinessHours(businessname, t.toString());
+			}
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+		 
+	}
 }

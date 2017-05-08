@@ -953,6 +953,24 @@ public class SQLiteConnection {
 		return true;
 	}
 	
+	public boolean updateBusinessHours(String businessname, String listOfHours) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("UPDATE BusinessHoursTable "
+					+ "SET stringOfTimes=?"
+					+ "WHERE;");
+			ps.setString(1, listOfHours);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
 	public ResultSet getBusinessHours(String businessname) throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
