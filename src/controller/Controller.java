@@ -373,4 +373,8 @@ public class Controller {
 	public String[][] getEmployeeBookingAvailability(String employeeId, Date date) {
 		return utilities.getEmployeeBookingAvailability(employeeId, date).toStringArray();
 	}
+
+	public Timetable getOpeningHours(String currentBusiness) {
+		return utilities.getOpeningHours(currentBusiness);
+	}
 }

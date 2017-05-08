@@ -670,4 +670,23 @@ public class Utility {
 		}
 		 
 	}
+	/* marked for testing */
+	public Timetable getOpeningHours(String currentBusiness) {
+		Timetable t = null;
+		ResultSet rs;
+		try {
+			rs = db.getBusinessHours(currentBusiness);
+			if (rs == null) {
+				return t;
+			}
+			else {
+				t.mergeTimetable(rs.getString(1));
+				return t;
+			}
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			return t;
+		}
+		
+	}
 }
