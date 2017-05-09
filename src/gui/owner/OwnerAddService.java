@@ -28,7 +28,7 @@ public class OwnerAddService {
     private Button deleteService; */
 
     @FXML
-    private Label warning;
+    private Label errorMessage;
 /*
     @FXML
     private ComboBox<String> comboServiceList; */
@@ -74,13 +74,14 @@ public class OwnerAddService {
     			errorMsg = errorMsg + "Invalid characters in name field. ";
     		}
     	}
-    	if (cannotProceedPrice) {
+    	else if (cannotProceedPrice) {
     		errorMsg = errorMsg + "Invalid characters in price field. ";
+    		Price.setStyle("-fx-border-color: green");
     	}
-    	if (cannotProceedTimeTaken) {
+    	else if (cannotProceedTimeTaken) {
     		errorMsg = errorMsg  + "Invalid amount of periods (30 minute blocks) in time taken field. ";
     	}
-    	if (errorMsg != "") {
+    	else if (errorMsg != "") {
     		errorMsg = errorMsg + "Errors found in input fields, please fix to continue.";
     		editWarning(errorMsg, "red");
     		return;
@@ -116,11 +117,13 @@ public class OwnerAddService {
     	Pattern pattern = Pattern.compile(regx,Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         if (!matcher.find()) {
-        	editWarning("Name field has invalid characters, or is empty.", "red");
+        	editWarning("Name field has invalid characters, or is empty.", "RED");
+        	Name.setStyle("-fx-border-color: RED");
         	cannotProceedName = true;
         }
         else {
         	cannotProceedName = false;
+        	Name.setStyle("-fx-border-color: GREEN");
         	clearWarningField();
         }
 		
@@ -156,12 +159,12 @@ public class OwnerAddService {
 	}
 
 	private void editWarning(String string, String color) {
-		warning.setText(string);
+		errorMessage.setText(string);
 		if (color == "black") {
-			warning.setTextFill(Color.BLACK);
+			errorMessage.setStyle("-fx-text-fill: " + color);
 		}
 		else {
-			warning.setTextFill(Color.RED);
+			errorMessage.setStyle("-fx-text-fill: " + color);
 		}
 		
 	}
@@ -176,18 +179,6 @@ public class OwnerAddService {
 
     @FXML
     void validateMinutes(KeyEvent event) {
-    	try {
-    		int i = Integer.parseInt(TimeTaken.getText());
-    		if (i % 30 != 0) {
-    			throw new Exception();
-    		}
-    		cannotProceedTimeTaken = false;
-    		clearWarningField();
-    	}
-    	catch(Exception e) {
-    		cannotProceedTimeTaken = true;
-        	editWarning("Time Taken field has invalid characters, or is not a multiple of 30.", "red");
-    	}
     	
     }
 
@@ -196,8 +187,26 @@ public class OwnerAddService {
     	validateNameRegex(Name.getText());
     }
 
+    void validateMinutes()
+    {
+    	try {
+    		int i = Integer.parseInt(TimeTaken.getText());
+    		if (i % 30 != 0) {
+    			throw new Exception();
+    		}
+    		cannotProceedTimeTaken = false;
+    		TimeTaken.setStyle("-fx-border-color: GREEN");
+    		clearWarningField();
+    	}
+    	catch(Exception e) {
+    		cannotProceedTimeTaken = true;
+    		TimeTaken.setStyle("-fx-border-color: RED");
+        	editWarning("Time Taken field has invalid characters, or is not a multiple of 30.", "RED");
+    	}
+    }
+    
     private void clearWarningField() {
-		warning.setText("");
+		errorMessage.setText("");
 		
 	}
 
