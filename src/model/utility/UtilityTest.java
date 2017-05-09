@@ -373,63 +373,63 @@ public class UtilityTest {
 	
 	@Test
 	public void addCustomer1() {
-		assert(u.addCustomerToDatabase(username, password, name, address, mobileno));
+		assert(!u.addCustomerToDatabase("jarodwr", "asdfasdf", "jarod", "32 asa st", "0400440044"));
 	}
 	
 	@Test
 	public void addCustomer2() {
-		assert(u.addCustomerToDatabase(username, password, name, address, mobileno));
+		assert(!u.addCustomerToDatabase("!@#$%^&*()??//", "asdf", "asdf", "asdf", "0412341234"));
 	}
 	
 	@Test
 	public void addCustomer3() {
-		assert(u.addCustomerToDatabase(username, password, name, address, mobileno));
+		assert(!u.addCustomerToDatabase("bruceW", "asdf", "bruce", "asdfasdf", "fffffffffffff"));
 	}
 	
 	@Test
 	public void addCustomer4() {
-		assert(u.addCustomerToDatabase(username, password, name, address, mobileno));
+		assert(u.addCustomerToDatabase("kill", "1234", "Jill", "who cares", "0412345687"));
 	}
 	
 	@Test
 	public void addCustomer5() {
-		assert(u.addCustomerToDatabase(username, password, name, address, mobileno));
+		assert(!u.addCustomerToDatabase("CameronO", "", "Cameron", "yeah yeah", "0412341234"));
 	}
 	
 	@Test
 	public void addCustomer6() {
-		assert(u.addCustomerToDatabase(username, password, name, address, mobileno));
+		assert(!u.addCustomerToDatabase("", "1234", "1234", "asdf", "0412341234"));
 	}
 	
 	
 	@Test
 	public void addEmployee1() {
-		assert(u.addNewEmployee(id, businessName, name, address, phonenumber, timetableID));
+		assert(!u.addNewEmployee("1000", "Massage Business", "randomname", "544 sdffds", "0412341234", 0));
 	}
 	
 	@Test
 	public void addEmployee2() {
-		assert(u.addNewEmployee(id, businessName, name, address, phonenumber, timetableID));
+		assert(u.addNewEmployee("2000", "Massage Business", "mike", "21 no one cares where you live", "0412341234", 2000));
 	}
 	
 	@Test
 	public void addEmployee3() {
-		assert(u.addNewEmployee(id, businessName, name, address, phonenumber, timetableID));
+		assert(!u.addNewEmployee("1", "Massage Business", "asdsads", "asdfsadf", "0412341234", 9000));
 	}
 	
 	@Test
 	public void addEmployee4() {
-		assert(u.addNewEmployee(id, businessName, name, address, phonenumber, timetableID));
+		assert(!u.addNewEmployee("30", "non existent business", "brandon", "57 newry", "0412341234", 30));
 	}
 	
 	@Test
 	public void addEmployee5() {
-		assert(u.addNewEmployee(id, businessName, name, address, phonenumber, timetableID));
+		assert(u.addNewEmployee("2001", "Massage Business", "mike", "21 no one cares where you live", "", 2001));
 	}
 	
 	@Test
 	public void addEmployee6() {
-		assert(u.addNewEmployee(id, businessName, name, address, phonenumber, timetableID));
+		assert(u.addNewEmployee("2002", "Massage Business", "", "21 no one cares where you live", "0412341234", 2002));
 	}
 	
 	
