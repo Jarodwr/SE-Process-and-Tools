@@ -1,11 +1,13 @@
 package model.period;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.service.Service;
 
 public class Booking extends Period {
-	
+	private Logger LOGGER = Logger.getLogger("main");
 	private String bookingId;
 	private String customerUsername;
 	private String employeeId;
@@ -42,6 +44,7 @@ public class Booking extends Period {
 		String name = this.customerUsername;
 		String servs = Service.arrayOfServicesToString(services, false);
 		String employeeId = this.employeeId;
+		LOGGER.log(Level.FINE, "Booking toStringArray bookingID:"+bookingID+" first:"+first+" second:"+second+" name"+name+" servs:"+servs+" employeeId:"+employeeId);
 		return new String[] {bookingID, first, second, name, servs, employeeId};
 	}
 	
