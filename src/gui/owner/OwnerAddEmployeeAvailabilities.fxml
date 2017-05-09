@@ -5,12 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddEmployeeAvailabilitiesController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="680.0" prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddEmployeeAvailabilitiesController">
    <center>
-      <AnchorPane prefHeight="500.0" prefWidth="648.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="500.0" prefWidth="680.0" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="34.0" layoutY="34.0" text="Add Employee Availability">
                <font>
@@ -24,13 +25,22 @@
                   <Font name="Calibri" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="SubmitButton" layoutX="175.0" layoutY="388.0" mnemonicParsing="false" onAction="#submit" prefHeight="39.0" prefWidth="236.0" style="-fx-background-color: #ff471a;" text="Save Employee Availabilities" textFill="WHITE">
+            <Button fx:id="SubmitButton" layoutX="316.0" layoutY="401.0" mnemonicParsing="false" onAction="#submit" prefHeight="39.0" prefWidth="236.0" style="-fx-background-color: #ff471a;" text="Save Employee Availabilities" textFill="WHITE">
                <font>
                   <Font name="Calibri" size="13.0" />
                </font>
             </Button>
             <ComboBox fx:id="pickDay" layoutX="231.0" layoutY="112.0" onAction="#updateCurrentAvailability" prefHeight="25.0" prefWidth="169.0" promptText="Select Day" />
             <Pane fx:id="TimePickerPane" layoutX="34.0" layoutY="165.0" prefHeight="193.0" prefWidth="518.0" />
+            <HBox alignment="CENTER_RIGHT" layoutX="316.0" layoutY="376.0" prefHeight="17.0" prefWidth="236.0">
+               <children>
+                  <Label fx:id="errorMessage" text="Error Message" textFill="#f2f2f2">
+                     <font>
+                        <Font name="Calibri" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
          </children></AnchorPane>
    </center>
 </BorderPane>

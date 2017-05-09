@@ -50,6 +50,9 @@ public class OwnerAddEmployeeAvailabilitiesController {
 
     @FXML
     private Pane TimePickerPane;
+    
+    @FXML
+    private Label errorMessage;
   
     
 
@@ -130,12 +133,8 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	}
     	
     	c.editAvailability(employeeId, availabilitiesToSubmit);
-    	Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Add Availability");
-		alert.setHeaderText("Availability successfully updated!");
-		alert.setContentText("press ok to continue...");
-		
-		alert.showAndWait();
+    	errorMessage.setStyle("-fx-text-fill: GREEN");
+		errorMessage.setText("Availability successfully updated!");
     }
 
     @FXML
@@ -161,6 +160,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
            	time.setDefaultAvailabilityFromList(cDay, currentDay);
            	
     	}
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
 	}
 
 	@FXML
