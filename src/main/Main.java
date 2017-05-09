@@ -39,6 +39,7 @@ public class Main {
 		SQLiteConnection.createTables(); // Create table if it doesn't exist for all info
 		debugCreateOwnerBusiness();
 		GuiMain.main(args);
+		//TESTSTSETS
 	}
 	
 	public static void debugCreateOwnerBusiness() {
