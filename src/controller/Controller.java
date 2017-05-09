@@ -142,6 +142,7 @@ public class Controller {
 	 * This method gets all employees timetables and merges them all together to form the business hours
 	 * and outputs it to the view
 	 */
+	//TODO: deprecated
 	public String[][] getAvailableTimes() {
 		//get the available timetable
 		Timetable t = utilities.getAvailableBookingTimes();
