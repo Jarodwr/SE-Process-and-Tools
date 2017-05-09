@@ -20,7 +20,6 @@ public class UtilityTest {
 		new File("test.sqlite").delete();	//Deletes previous test database
 		
 		SQLiteConnection db = new SQLiteConnection("jdbc:sqlite:test.sqlite");
-		db.createTables();
 		u.setConnection(db);
 		u.setCurrentBusiness("Massage Business");
 		
