@@ -446,7 +446,6 @@ public class UtilityTest {
 	@Test
 	public void getEmployeeAvailability3() {
 		assert(u.getEmployeeAvailability("1").toString().equals("1800,14399|27000,86399"));
-
 	}
 	
 	
@@ -468,6 +467,7 @@ public class UtilityTest {
 	@Test
 	public void getAllCustomers3() {
 		assert(u.getAllCustomers() != null);
+
 	}
 	
 	
@@ -484,4 +484,5 @@ public class UtilityTest {
 		assert(u.getAllServices()[3].serviceName.equals("Spa"));
 	}
 	
+
 }
