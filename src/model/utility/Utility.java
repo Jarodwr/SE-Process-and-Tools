@@ -633,7 +633,7 @@ public class Utility {
 		return null;
 	}
 	
-
+	/* mark for testing */
 	public void editBusinessHours(String businessname, ArrayList<String> times) {
 
 		Timetable t = new Timetable();
@@ -688,5 +688,97 @@ public class Utility {
 			return t;
 		}
 		
+	}
+	/* marked for testing */
+	public String getBusinessColor(String businessname) {
+		ResultSet rs;
+		try {
+			rs = db.getBusinessColor(businessname);
+			if (rs == null) {
+				return ""; // TODO HEX FOR RED
+			}
+			else
+				return rs.getString("colorHex");
+		} catch (SQLException e) {
+			return ""; // TODO HEX FOR RED
+		}
+		
+	}
+	
+	public void editBusinessColor(String businessname, String colorHex) {
+		try {
+			ResultSet rs = db.getBusinessColor(businessname);
+			if (rs != null) {
+				rs.close();
+				db.updateBusinessColor(businessname, colorHex);
+			} 
+			else {
+				db.createBusinessColor(businessname, colorHex);
+			}
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+	}
+	
+	/* marked for testing */
+	public String getBusinessHeader(String businessname) {
+		ResultSet rs;
+		try {
+			rs = db.getBusinessHeader(businessname);
+			if (rs == null) {
+				return "";
+			}
+			else
+				return rs.getString("header");
+		} catch (SQLException e) {
+			return "";
+		}
+	}
+	
+	public void editBusinessHeader(String businessname, String header) {
+		try {
+			ResultSet rs = db.getBusinessHeader(businessname);
+			if (rs != null) {
+				rs.close();
+				db.updateBusinessHeader(businessname, header);
+			} 
+			else {
+				db.createBusinessHeader(businessname, header);
+			}
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+	}
+	/* marked for testing */
+	public String getBusinessLogo(String businessname) {
+		ResultSet rs;
+		try {
+			rs = db.getBusinessLogo(businessname);
+			if (rs == null) {
+				return "";
+			}
+			else
+				return rs.getString("logoLink");
+		} catch (SQLException e) {
+			return "";
+		}
+	}
+	
+	public void editBusinessLogo(String businessname, String logoLink) {
+		try {
+			ResultSet rs = db.getBusinessLogo(businessname);
+			if (rs != null) {
+				rs.close();
+				db.updateBusinessLogo(businessname, logoLink);
+			} 
+			else {
+				db.createBusinessLogo(businessname, logoLink);
+			}
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
 	}
 }

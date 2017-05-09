@@ -749,7 +749,7 @@ public class SQLiteConnection {
 		else return null;
 
 	}
-	
+	/* mark for testing */
 	public boolean createBusinessHours(String businessname, String listOfHours) {
 		Connection c = this.conn;
 		
@@ -766,7 +766,7 @@ public class SQLiteConnection {
 		}
 		return true;
 	}
-	
+	/* mark for testing */
 	public boolean updateBusinessHours(String businessname, String listOfHours) {
 		Connection c = this.conn;
 		
@@ -785,7 +785,7 @@ public class SQLiteConnection {
 		}
 		return true;
 	}
-	
+	/* mark for testing */
 	public ResultSet getBusinessHours(String businessname) throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
@@ -799,7 +799,7 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
-	
+	/* mark for testing */
 	public ResultSet getBusinessLogo(String businessname) throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
@@ -813,7 +813,7 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
-	
+	/* mark for testing */
 	public boolean createBusinessLogo(String businessname, String link) {
 		Connection c = this.conn;
 		
@@ -830,7 +830,7 @@ public class SQLiteConnection {
 		}
 		return true;
 	}
-	
+	/* mark for testing */
 	public boolean updateBusinessLogo(String businessname, String link) {
 		Connection c = this.conn;
 		
@@ -849,7 +849,7 @@ public class SQLiteConnection {
 		}
 		return true;
 	}
-	
+	/* mark for testing */
 	public ResultSet getBusinessHeader(String businessname) throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
@@ -863,7 +863,7 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
-	
+	/* mark for testing */
 	public boolean createBusinessHeader(String businessname, String header) {
 		Connection c = this.conn;
 		
@@ -880,7 +880,7 @@ public class SQLiteConnection {
 		}
 		return true;
 	}
-	
+	/* mark for testing */
 	public boolean updateBusinessHeader(String businessname, String header) {
 		Connection c = this.conn;
 		
@@ -899,7 +899,7 @@ public class SQLiteConnection {
 		}
 		return true;
 	}
-	
+	/* mark for testing */
 	public ResultSet getBusinessColor(String businessname) throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
@@ -913,7 +913,7 @@ public class SQLiteConnection {
 		}
 		else return null;
 	}
-	
+	/* mark for testing */
 	public boolean createBusinessColor(String businessname, String colorHex) {
 		Connection c = this.conn;
 		
@@ -930,7 +930,7 @@ public class SQLiteConnection {
 		}
 		return true;
 	}
-	
+	/* mark for testing */
 	public boolean updateBusinessColor(String businessname, String colorHex) {
 		Connection c = this.conn;
 		
