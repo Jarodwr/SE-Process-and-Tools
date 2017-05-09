@@ -54,6 +54,12 @@ public class OwnerViewController {
     private Button logoutButton;
     
     @FXML
+    private Button settingsButton;
+    
+    @FXML
+    private Button editOpeningHoursButton;
+    
+    @FXML
     private Label welcometxt;
     
     @FXML
@@ -197,6 +203,54 @@ public class OwnerViewController {
     	}
     }
 
+    @FXML
+    void settings(ActionEvent event) 
+    {
+    	//change the selected button
+    	selectButton(settingsButton);
+    	
+    	try
+    	{
+			//open the page
+//    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployeeAvailabilities.fxml"));
+//			mainScreen.getChildren().clear();
+//			//add to the main screen
+//			mainScreen.getChildren().add(loader.load());
+//			OwnerAddEmployeeAvailabilitiesController controller = loader.getController();
+//			//inject variables
+//		    controller.init(c);
+			
+			
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    @FXML
+    void editOpeningHours(ActionEvent event) 
+    {
+    	//change the selected button
+    	selectButton(editOpeningHoursButton);
+    	
+    	try
+    	{
+			//open the page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerEditOpeningHours.fxml"));
+			mainScreen.getChildren().clear();
+			//add to the main screen
+			mainScreen.getChildren().add(loader.load());
+			OwnerEditOpeningHours controller = loader.getController();
+			//inject variables
+		    controller.init(c);
+			
+			
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
     /*
      * opens the login page when the button is clicked
      */
@@ -297,6 +351,8 @@ public class OwnerViewController {
         assert AddServiceButton != null : "fx:id=\"AddServiceButton\" was not injected: check your FXML file 'OwnerView.fxml'.";
         assert addBookingButton != null : "fx:id=\"addBookingButton\" was not injected: check your FXML file 'OwnerView.fxml'.";
         assert logoutButton != null : "fx:id=\"logoutButton\" was not injected: check your FXML file 'OwnerView.fxml'.";
+        assert settingsButton != null : "fx:id=\"settingsButton\" was not injected: check your FXML file 'OwnerView.fxml'.";
+        assert editOpeningHoursButton != null : "fx:id=\"editOpeningHoursButton\" was not injected: check your FXML file 'OwnerView.fxml'.";
 
     }
     
@@ -314,6 +370,9 @@ public class OwnerViewController {
     	editEmployeeAvailabilityButton.setStyle("-fx-background-color: #e6e6e6");
     	AddServiceButton.setStyle("-fx-background-color: #e6e6e6");
     	addBookingButton.setStyle("-fx-background-color: #e6e6e6");
+    	settingsButton.setStyle("-fx-background-color: #e6e6e6");
+    	editOpeningHoursButton.setStyle("-fx-background-color: #e6e6e6");
+    	
     	
     	//change the selected button to the selected colour
     	selected.setStyle("-fx-background-color: #ff5930");
