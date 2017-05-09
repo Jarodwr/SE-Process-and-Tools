@@ -261,6 +261,28 @@ public class Controller {
 		return null;
 
 	}
+	
+	public Timetable getWorkerAvailabilityTimetable(String employeeId) {
+		try {
+			//get the employee ID of the selected employee to view their availability
+			//go through a loop till the user chooses to exit to the menu
+			if (employeeId != null && !employeeId.equals("")) {
+				//get the employees timetable
+				Timetable t = utilities.getEmployeeAvailability(employeeId);
+				if (t.equals(null) || t.getAllPeriods().length == 0)
+					return null;
+				else
+					return t;
+			}
+			
+		} catch(Exception e) {
+			//log any exceptions created
+			LOGGER.warning(e.getMessage());
+		}
+		
+		return null;
+
+	}
 
 //	Move the logic and checking into model
 	/**
@@ -350,5 +372,9 @@ public class Controller {
 	 */
 	public String[][] getEmployeeBookingAvailability(String employeeId, Date date) {
 		return utilities.getEmployeeBookingAvailability(employeeId, date).toStringArray();
+	}
+
+	public Timetable getOpeningHours(String currentBusiness) {
+		return utilities.getOpeningHours(currentBusiness);
 	}
 }
