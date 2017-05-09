@@ -40,7 +40,7 @@ public class Controller {
 		LOGGER.log(Level.INFO, "LOGIN: Login details: Username - " + username + ", Password - " + password);
 		//Search for the user in the arrayList and make sure the password is correct
 		User user = utilities.authenticate(username, password);
-		
+		//asdfadsf
 		if (user == null)
 			LOGGER.log(Level.INFO, "LOGIN: Failed");
 		else
