@@ -134,8 +134,6 @@ public class OwnerViewWorkingTimesController {
     	//Default table placeholder
     	tableView.setPlaceholder(new Label("Please select an employee and the week of interest."));
     	
-    	//FIXME Remove this before submission. Only for test purposes
-    	//this.c.addWorkingTime("0", "01/05/2017", "10:00", "11:00");
     	
     	int idPos;
     	
@@ -398,13 +396,12 @@ public class OwnerViewWorkingTimesController {
 		int dayWithMostWorkingHours = 0; //Used to store the day with the most working periods
 		
 		for (int i=0;i < contents.length; i++) { //Find out the maximum number of working hours/period per day
-
+			if (checkWithinSameWeek(contents[i][0],currentWeek,currentYear)) {
 					ConvertedDay = getDayFromUnix( contents[i][0],Weekdays); //Get the actual name of the day (i.e Tuesday)
 					DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] += 1; //increase the specific day's count of working periods
-					
 						if (DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)] > dayWithMostWorkingHours) //If this day has the highest number of periods,
 							dayWithMostWorkingHours = DayPeriodCounts[Arrays.asList(Weekdays).indexOf(ConvertedDay)]; //make this maximum number of rows
-				
+			}
 			
 		}
 		
@@ -436,7 +433,10 @@ public class OwnerViewWorkingTimesController {
 			endPeriod = contents[i][1]; 
 			endPeriod = get24HrFromUnix(endPeriod);  // Get end of the period in 24 hrs
 			
-			for (int j = 1; j < contents[i].length; j++) { //Go through all items in this column
+			
+			
+			for (int j = 1; j < convertedDates.length; j++) { //Go through all items in this column
+				
 				if (convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] == null && checkWithinSameWeek(contents[i][0],currentWeek,currentYear)) {
 					convertedDates[j][Arrays.asList(Weekdays).indexOf(ConvertedDay)] = startPeriod+" - "+endPeriod;
 					issTableEmpty = false; // the table isn't empty
