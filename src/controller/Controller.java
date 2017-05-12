@@ -37,14 +37,14 @@ public class Controller {
 	 * @return the user if the authentication passes
 	 */
 	public User login(String username, String password) {
-		LOGGER.log(Level.FINE, "LOGIN: Login details: Username - " + username + ", Password - " + password);
+		LOGGER.log(Level.INFO, "LOGIN: Login details: Username - " + username + ", Password - " + password);
 		//Search for the user in the arrayList and make sure the password is correct
 		User user = utilities.authenticate(username, password);
-		
+		//asdfadsf
 		if (user == null)
-			LOGGER.log(Level.FINE, "LOGIN: Failed");
+			LOGGER.log(Level.INFO, "LOGIN: Failed");
 		else
-			LOGGER.log(Level.FINE, "LOGIN: Success");
+			LOGGER.log(Level.INFO, "LOGIN: Success");
 
 		return user;
 	}
@@ -60,7 +60,7 @@ public class Controller {
 		
 		//validate all the user input to match the regular expression
 		
-		LOGGER.log(Level.FINE, "REGISTER: Registration details: "
+		LOGGER.log(Level.INFO, "REGISTER: Registration details: "
 				+ "Username - " + username + 
 				", Password - " + password + 
 				", Name - " + name + 
@@ -68,37 +68,37 @@ public class Controller {
 				", Phone Number - " + phoneno);
 		
 		if(!username.matches("[A-Za-z0-9]+"))	{
-			LOGGER.log(Level.FINE, "REGISTER: Failure, username does not match regex");
+			LOGGER.log(Level.INFO, "REGISTER: Failure, username does not match regex");
 			throw new ValidationException("Username only contains letters and numbers!");
 		}
 		
 		if(!password.equals(passwordConfirmation)) {
-			LOGGER.log(Level.FINE, "REGISTER: Failure, Passwords dont match");
+			LOGGER.log(Level.INFO, "REGISTER: Failure, Passwords dont match");
 			throw new ValidationException("Passwords do not match!");
 		}
 		
 		if(!name.matches("[A-Za-z]+")) {
-			LOGGER.log(Level.FINE, "REGISTER: Failure, Name does not match regex");
+			LOGGER.log(Level.INFO, "REGISTER: Failure, Name does not match regex");
 			throw new ValidationException("Name must only contain letters!");
 		}
 		
 		if(!address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
-			LOGGER.log(Level.FINE, "REGISTER: Failure, Address does not match regex");
+			LOGGER.log(Level.INFO, "REGISTER: Failure, Address does not match regex");
 			throw new ValidationException("Address is not valid!");
 		}
 		
 		if(!phoneno.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
-			LOGGER.log(Level.FINE, "REGISTER: Failure, phone number does not match regex");
+			LOGGER.log(Level.INFO, "REGISTER: Failure, phone number does not match regex");
 			throw new ValidationException("Mobile number is not valid!");
 		}
 		
 		// if they all pass then try to create a new user and return the created user
 		if (utilities.addCustomerToDatabase(username.toLowerCase(), password, name, address, phoneno)) {
-			LOGGER.log(Level.FINE, "REGISTER: Success, user added to system");
+			LOGGER.log(Level.INFO, "REGISTER: Success, user added to system");
 			return utilities.searchUser(username);
 		} else {
 			//	inform the user that there is a user with that name and return null
-			LOGGER.log(Level.FINE, "REGISTER: Failure, username already taken");
+			LOGGER.log(Level.INFO, "REGISTER: Failure, username already taken");
 			throw new ValidationException("Username already exists in the system!");
 		}
 				
@@ -114,7 +114,7 @@ public class Controller {
 		
 		//if there are no bookings in the future then alert the user and exit function
 		if (bookings == null || bookings.length == 0) {
-			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
+			LOGGER.log(Level.INFO, "VIEW SUMMARY OF BOOKINGS: failure, no bookings in database in the future");
 			return null;
 		} else {
 			//create a 2d array to copy the booking details from the list of bookings
@@ -125,7 +125,7 @@ public class Controller {
 				bookingsStringArray[i] = bookings[i].toStringArray();
 			
 			//send the list of all future bookings to the view to display
-			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
+			LOGGER.log(Level.INFO, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 			return bookingsStringArray;
 		}
 	}
@@ -163,7 +163,7 @@ public class Controller {
 		
 		//if there are no bookings in the future then alert the user and exit function
 		if (bookings == null || bookings.length == 0) {
-			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: failure, not bookings in database in the future");
+			LOGGER.log(Level.INFO, "VIEW SUMMARY OF BOOKINGS: failure, no bookings in database in the future");
 			return null;
 		} else {
 			//create a 2d array to copy the booking details from the list of bookings
@@ -174,7 +174,7 @@ public class Controller {
 				bookingsStringArray[i] = bookings[i].toStringArray();
 			
 			//send the list of all future bookings to the view to display
-			LOGGER.log(Level.FINE, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
+			LOGGER.log(Level.INFO, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 			return bookingsStringArray;
 		}
 	}
@@ -318,12 +318,12 @@ public class Controller {
 				phone.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
 				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
 			if (utilities.addNewEmployee(id, business, name, address, phone, 0)) { //try to add the new employee to the database
-				LOGGER.log(Level.FINE, "Employee successfully added");
+				LOGGER.log(Level.INFO, "Employee successfully added");
 				return true;
 			}
 		}
 
-		LOGGER.log(Level.FINE, "Employee could not be added, incorrect field formats");
+		LOGGER.log(Level.INFO, "Employee could not be added, incorrect field formats");
 		return false;
 		
 	}
