@@ -150,25 +150,25 @@ public class ControllerTest {
 	
 	//owner logging in test cases
 	@Test
-	public void ownererlogin01() 
+	public void ownerlogin01() 
 	{
 		assert(c.login(testData5[0], testData5[1]) == null);
 	}
 	
 	@Test
-	public void ownererlogin02() 
+	public void ownerlogin02() 
 	{
 		assert(c.login(testData6[0], testData6[1]) == null);
 	}
 	
 	@Test
-	public void ownererlogin03() 
+	public void ownerlogin03() 
 	{
 		assert(c.login(testData7[0], testData7[1]) == null);
 	}
 	
 	@Test
-	public void ownererlogin04() 
+	public void ownerlogin04() 
 	{
 		assert(c.login(testData8[0], testData8[1]).isOwner());
 	}
@@ -229,83 +229,498 @@ public class ControllerTest {
 		assert(c.addEmployee(testData17[0], testData17[1], testData17[2], user));
 	}
 	
-//	@Test
-//	public void testGetBookingsAfter01() {
-//		Booking[] testBooking;
-//		try {
-//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
-//			System.out.println(testBooking[0].getBookingId());
-//			
-//			assert(testBooking[0].getBookingId().equals("4"));
-//			assert(testBooking[1].getBookingId().equals("3"));
-//			assert(testBooking[2].getBookingId().equals("1"));
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	@Test
-//	public void testGetBookingsAfter02() {
-//		Booking[] testBooking;
-//		try {
-//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("00000000000000"));
-//			assert(testBooking[0].getBookingId().equals("2"));
-//			assert(testBooking[1].getBookingId().equals("4"));
-//			assert(testBooking[2].getBookingId().equals("3"));
-//			assert(testBooking[3].getBookingId().equals("1"));
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	@Test
-//	public void testGetBookingsAfter03() {
-//		Booking[] testBooking;
-//		try {
-//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("90000000000000"));
-//			assert(testBooking.length == 0);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	@Test
-//	public void testGetBookingsAfter04() {
-//		Booking[] testBooking;
-//		try {
-//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
-//			assert(testBooking[0].getBookingId() == "1");
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	@Test
-//	public void testGetBookingsAfter05() {
-//		Booking[] testBooking;
-//		try {
-//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
-//			assert(testBooking[0].getBookingId() == "1");
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	@Test
-//	public void testGetBookingsAfter06() {
-//		Booking[] testBooking;
-//		try {
-//			testBooking = c.bookingResultsetToArray(SQLiteConnection.getBookingsByPeriodStart("20170330123000"));
-//			assert(testBooking[0].getBookingId() == "1");
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+	@Test
+	public void testGetBookingsAfter01() {
+
 	}
 	
-//}
+	@Test
+	public void testGetBookingsAfter02() {
+
+	}
+	
+	@Test
+	public void testGetBookingsAfter03() {
+
+	}
+	
+	@Test
+	public void testGetBookingsAfter04() {
+
+	}
+	
+	@Test
+	public void testGetBookingsAfter05() {
+
+	}
+	
+	@Test
+	public void testGetBookingsAfter06() {
+
+	}
+	
+	@Test
+	public void addService01() {
+
+	}
+	
+	@Test
+	public void addService02() {
+
+	}
+	
+	@Test
+	public void addService03() {
+
+	}
+	
+	@Test
+	public void addService04() {
+
+	}
+	
+	@Test
+	public void addService05() {
+
+	}
+	
+	@Test
+	public void addService06() {
+
+	}
+	
+	
+	@Test
+	public void getCurrentBookings01() {
+
+	}
+	
+	@Test
+	public void getCurrentBookings02() {
+
+	}
+	
+	@Test
+	public void getCurrentBookings03() {
+
+	}
+	
+	@Test
+	public void getCurrentBookings04() {
+
+	}
+	
+	@Test
+	public void getCurrentBookings05() {
+
+	}
+	
+	@Test
+	public void getCurrentBookings06() {
+
+	}
+	
+	
+	@Test
+	public void addNewBooking01() {
+
+	}
+	
+	@Test
+	public void addNewBooking02() {
+
+	}
+	
+	@Test
+	public void addNewBooking03() {
+
+	}
+	
+	@Test
+	public void addNewBooking04() {
+
+	}
+	
+	@Test
+	public void addNewBooking05() {
+
+	}
+	
+	@Test
+	public void addNewBooking06() {
+
+	}
+	
+	
+	
+	@Test
+	public void getAvailableTimes01() {
+
+	}
+	
+	@Test
+	public void getAvailableTimes02() {
+
+	}
+	
+	@Test
+	public void getAvailableTimes03() {
+
+	}
+	
+	@Test
+	public void getAvailableTimes04() {
+
+	}
+	
+	@Test
+	public void getAvailableTimes05() {
+
+	}
+	
+	@Test
+	public void getAvailableTimes06() {
+
+	}
+	
+	
+	@Test
+	public void getSummaryOfBookings01() {
+
+	}
+	
+	@Test
+	public void getSummaryOfBookings02() {
+
+	}
+	
+	@Test
+	public void getSummaryOfBookings03() {
+
+	}
+	
+	@Test
+	public void getSummaryOfBookings04() {
+
+	}
+	
+	@Test
+	public void getSummaryOfBookings05() {
+
+	}
+	
+	@Test
+	public void getSummaryOfBookings06() {
+
+	}
+	
+	
+	@Test
+	public void removeBookings01() {
+
+	}
+	
+	@Test
+	public void removeBookings02() {
+
+	}
+	
+	@Test
+	public void removeBookings03() {
+
+	}
+	
+	@Test
+	public void removeBookings04() {
+
+	}
+	
+	@Test
+	public void removeBookings05() {
+
+	}
+	
+	@Test
+	public void removeBookings06() {
+
+	}
+	
+	
+	@Test
+	public void addWorkingTime01() {
+
+	}
+	
+	@Test
+	public void addWorkingTime02() {
+
+	}
+	
+	@Test
+	public void addWorkingTime03() {
+
+	}
+	
+	@Test
+	public void addWorkingTime04() {
+
+	}
+	
+	@Test
+	public void addWorkingTime05() {
+
+	}
+	
+	@Test
+	public void addWorkingTime06() {
+
+	}
+	
+	
+	@Test
+	public void removeWorkingTime01() {
+
+	}
+	
+	@Test
+	public void removeWorkingTime02() {
+
+	}
+	
+	@Test
+	public void removeWorkingTime03() {
+
+	}
+	
+	@Test
+	public void removeWorkingTime04() {
+
+	}
+	
+	@Test
+	public void removeWorkingTime05() {
+
+	}
+	
+	@Test
+	public void removeWorkingTime06() {
+
+	}
+	
+	
+	@Test
+	public void getWorkingTimes01() {
+
+	}
+	
+	@Test
+	public void getWorkingTimes02() {
+
+	}
+	
+	@Test
+	public void getWorkingTimes03() {
+
+	}
+	
+	@Test
+	public void getWorkingTimes04() {
+
+	}
+	
+	@Test
+	public void getWorkingTimes05() {
+
+	}
+	
+	@Test
+	public void getWorkingTimes06() {
+
+	}
+	
+	
+	@Test
+	public void getWorkerAvailability01() {
+
+	}
+	
+	@Test
+	public void getWorkerAvailability02() {
+
+	}
+	
+	@Test
+	public void getWorkerAvailability03() {
+
+	}
+	
+	@Test
+	public void getWorkerAvailability04() {
+
+	}
+	
+	@Test
+	public void getWorkerAvailability05() {
+
+	}
+	
+	@Test
+	public void getWorkerAvailability06() {
+
+	}
+	
+	
+	@Test
+	public void addEmployee01() {
+
+	}
+	
+	@Test
+	public void addEmployee02() {
+
+	}
+	
+	@Test
+	public void addEmployee03() {
+
+	}
+	
+	@Test
+	public void addEmployee04() {
+
+	}
+	
+	@Test
+	public void addEmployee05() {
+
+	}
+	
+	@Test
+	public void addEmployee06() {
+
+	}
+	
+	
+	@Test
+	public void getEmployeeList01() {
+
+	}
+	
+	@Test
+	public void getEmployeeList02() {
+
+	}
+	
+	@Test
+	public void getEmployeeList03() {
+
+	}
+	
+	@Test
+	public void getEmployeeList04() {
+
+	}
+	
+	@Test
+	public void getEmployeeList05() {
+
+	}
+	
+	@Test
+	public void getEmployeeList06() {
+
+	}
+	
+	
+	@Test
+	public void getCustomerList01() {
+
+	}
+	
+	@Test
+	public void getCustomerList02() {
+
+	}
+	
+	@Test
+	public void getCustomerList03() {
+
+	}
+	
+	@Test
+	public void getCustomerList04() {
+
+	}
+	
+	@Test
+	public void getCustomerList05() {
+
+	}
+	
+	@Test
+	public void getCustomerList06() {
+
+	}
+	
+	
+	@Test
+	public void getServicesList01() {
+
+	}
+	
+	@Test
+	public void getServicesList02() {
+
+	}
+	
+	@Test
+	public void getServicesList03() {
+
+	}
+	
+	@Test
+	public void getServicesList04() {
+
+	}
+	
+	@Test
+	public void getServicesList05() {
+
+	}
+	
+	@Test
+	public void getServicesList06() {
+
+	}
+	
+	
+	@Test
+	public void getEmployeeBookingAvailability01() {
+
+	}
+	
+	@Test
+	public void getEmployeeBookingAvailability02() {
+
+	}
+	
+	@Test
+	public void getEmployeeBookingAvailability03() {
+
+	}
+	
+	@Test
+	public void getEmployeeBookingAvailability04() {
+
+	}
+	
+	@Test
+	public void getEmployeeBookingAvailability05() {
+
+	}
+	
+	@Test
+	public void getEmployeeBookingAvailability06() {
+
+	}
+}

@@ -36,6 +36,10 @@ public class Utility {
 	 * @return Returns the user with the username being searched
 	 */
 	
+	public Utility() {
+		this.currentBusiness = "SARJ's Milk Business";
+	}
+	
 	public void setConnection(SQLiteConnection newDb) {
 		this.db = newDb;
 	}
@@ -124,6 +128,7 @@ public class Utility {
 	public Timetable getAvailableTimes() {
 		
 		Timetable t = new Timetable();
+
 		try {
 			ResultSet rsEmployees = db.getAllEmployees();
 			do {
@@ -131,7 +136,6 @@ public class Utility {
 				if (rsTimetables == null) {
 					continue;
 				}
-				System.out.println("test");
 				t.mergeTimetable(rsTimetables.getString("availability"));
 				rsTimetables.close();
 			} while(rsEmployees.next());
@@ -140,10 +144,13 @@ public class Utility {
 			return t;
 		}
 		catch(SQLException e) {
+
 			LOGGER.warning(e.getMessage());
 			return null;
 		}
 	}
+	
+	//TODO: Deprecate
 	public Employee[] getApplicableEmployees(long duration, long startTime) {
 		ArrayList<Employee> applicable = new ArrayList<Employee>();
 		try {
@@ -235,6 +242,7 @@ public class Utility {
 		 
 	}
 	
+	//TODO: deprecated
 	public Timetable getAvailableBookingTimesByDuration(long duration) {
 		Timetable appPeriods = new Timetable();
 		try {
@@ -268,6 +276,7 @@ public class Utility {
 		return appPeriods;
 	}
 	
+	//TODO: Deprecated
 	public Timetable getAvailableBookingTimes() {
 		Employee[] employees;
 
@@ -332,15 +341,15 @@ public class Utility {
 	public boolean addNewBooking(String customerUsername, String employeeId, String start, String end, String services) {
 
 		Timetable t = getEmployeeBookingAvailability(employeeId, new Date(Long.parseLong(start)));	//All employee shifts
-		
-		if (t == null)
+		if (t == null) {
 			return false;
-		
+		}
 		for (Period p : t.getAllPeriods()) {
 			long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
 			
 			if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
-				return db.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
+
+				return db.createBooking(getCurrentBusiness(), customerUsername, employeeId, start, end, services);
 			}
 		}
 		return false;
@@ -532,8 +541,10 @@ public class Utility {
 		return null;
 	}
 	
+	//TODO: remove
 	public String[][] getWorkingTimes() 
 	{
+		//TODO: refactor into other employeelist functions
 		String [][] employeelist = getEmployeeList();
 		Timetable t = new Timetable();
 		ArrayList<String[]> allShifts = new ArrayList<String[]>();
@@ -631,5 +642,154 @@ public class Utility {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/* mark for testing */
+	public void editBusinessHours(String businessname, ArrayList<String> times) {
+
+		Timetable t = new Timetable();
+
+
+		//if the business selected doesn't exist alert the user and exit the function
+		
+		//use an iterator to go through the availabilities
+		Iterator<String> iter = times.iterator();
+		//go through the the iterator to split the availabilities
+		while(iter.hasNext()) {
+			String[] values = iter.next().split(" ");
+			
+			//start creating the new timetable
+			//add it to the timetable
+			t.addPeriod(new Period(values[0], values[1], false));
+		}
+		//if the employee doesn't exit then alert the user and exit the function
+		//add the availabilities to the timetable
+		/* TODO turn this try block below into a utility method */
+		try {
+			ResultSet rs = db.getBusinessHours(businessname);
+			int id;
+			if (rs != null) {
+				rs.close();
+				db.updateBusinessHours(businessname, t.toString());
+			} 
+			else {
+				db.createBusinessHours(businessname, t.toString());
+			}
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+		 
+	}
+	/* marked for testing */
+	public Timetable getOpeningHours(String currentBusiness) {
+		Timetable t = null;
+		ResultSet rs;
+		try {
+			rs = db.getBusinessHours(currentBusiness);
+			if (rs == null) {
+				return t;
+			}
+			else {
+				t.mergeTimetable(rs.getString(1));
+				return t;
+			}
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			return t;
+		}
+		
+	}
+	/* marked for testing */
+	public String getBusinessColor(String businessname) {
+		ResultSet rs;
+		try {
+			rs = db.getBusinessColor(businessname);
+			if (rs == null) {
+				return ""; // TODO HEX FOR RED
+			}
+			else
+				return rs.getString("colorHex");
+		} catch (SQLException e) {
+			return ""; // TODO HEX FOR RED
+		}
+		
+	}
+	
+	public void editBusinessColor(String businessname, String colorHex) {
+		try {
+			ResultSet rs = db.getBusinessColor(businessname);
+			if (rs != null) {
+				rs.close();
+				db.updateBusinessColor(businessname, colorHex);
+			} 
+			else {
+				db.createBusinessColor(businessname, colorHex);
+			}
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+	}
+	
+	/* marked for testing */
+	public String getBusinessHeader(String businessname) {
+		ResultSet rs;
+		try {
+			rs = db.getBusinessHeader(businessname);
+			if (rs == null) {
+				return "";
+			}
+			else
+				return rs.getString("header");
+		} catch (SQLException e) {
+			return "";
+		}
+	}
+	
+	public void editBusinessHeader(String businessname, String header) {
+		try {
+			ResultSet rs = db.getBusinessHeader(businessname);
+			if (rs != null) {
+				rs.close();
+				db.updateBusinessHeader(businessname, header);
+			} 
+			else {
+				db.createBusinessHeader(businessname, header);
+			}
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
+	}
+	/* marked for testing */
+	public String getBusinessLogo(String businessname) {
+		ResultSet rs;
+		try {
+			rs = db.getBusinessLogo(businessname);
+			if (rs == null) {
+				return "";
+			}
+			else
+				return rs.getString("logoLink");
+		} catch (SQLException e) {
+			return "";
+		}
+	}
+	
+	public void editBusinessLogo(String businessname, String logoLink) {
+		try {
+			ResultSet rs = db.getBusinessLogo(businessname);
+			if (rs != null) {
+				rs.close();
+				db.updateBusinessLogo(businessname, logoLink);
+			} 
+			else {
+				db.createBusinessLogo(businessname, logoLink);
+			}
+		}
+		catch(SQLException e) {
+			LOGGER.warning(e.getMessage());
+		}
 	}
 }
