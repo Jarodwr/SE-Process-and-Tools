@@ -26,6 +26,14 @@ public class Controller {
 	
 	public static final String[] Weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
+	public Controller() {
+
+	}
+	
+	public Controller(String dbName) {
+		utilities.setConnection(dbName);
+	}
+	
 	public boolean addService(String name, int priceInCents, String duration) {
 		return utilities.addService(name, priceInCents, duration);
 	}

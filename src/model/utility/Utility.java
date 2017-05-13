@@ -40,10 +40,11 @@ public class Utility {
 		this.currentBusiness = "SARJ's Milk Business";
 	}
 	
-	public void setConnection(SQLiteConnection newDb) {
-		this.db = newDb;
+	public void setConnection(String newDb) {
+		this.db = new SQLiteConnection(newDb);
 	}
 	
+	//Refactor to private
 	public User searchUser(String username) {
 		ResultSet rs;
 		try {
