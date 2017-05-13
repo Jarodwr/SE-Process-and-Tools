@@ -22,7 +22,7 @@ public class Timetable {
 	 * @return Returns true if there is no clash and the period is 
 	 * successfully added
 	 */
-	public boolean addPeriod(Period period) {
+	public void addPeriod(Period period) {
 		for (int i = 0; i < periods.size(); i++) {
 			
 			Period p = periods.get(i);
@@ -31,11 +31,11 @@ public class Timetable {
 			
 			//Exact match, period directly removed
 			if (compareStarts == 0 && compareEnds == 0) {
-				return true;
+				return;
 			} 
 			//Subset match, removal period is subset of current period, removal period is removed.
 			else if (compareStarts > 0 && compareEnds < 0) {
-				return true;
+				return;
 			}
 			//Superset match, current period is a subset of removal period
 			else if (compareStarts < 0 && compareEnds > 0) {
@@ -56,7 +56,6 @@ public class Timetable {
 			i = -1;
 		}
 		periods.add(period);
-		return true;
 	}
 	
 	/**
