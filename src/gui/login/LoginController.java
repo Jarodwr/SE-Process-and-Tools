@@ -49,8 +49,6 @@ public class LoginController
     @FXML
     private Button registerButton;
     
-    @FXML
-    private Label newBussinessButton;
     
     @FXML
     private BorderPane mainPane;
@@ -157,8 +155,4 @@ public class LoginController
     	main = scene;
     }
     
-    @FXML
-    void registerNewBussiness(MouseEvent event) {
-
-    }
 }
