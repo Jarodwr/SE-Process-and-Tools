@@ -36,10 +36,15 @@ public class Utility {
 	 * @return Returns the user with the username being searched
 	 */
 	
-	public void setConnection(SQLiteConnection newDb) {
-		this.db = newDb;
+	public Utility() {
+		this.currentBusiness = "SARJ's Milk Business";
 	}
 	
+	public void setConnection(String newDb) {
+		this.db = new SQLiteConnection(newDb);
+	}
+	
+	//Refactor to private
 	public User searchUser(String username) {
 		ResultSet rs;
 		try {
@@ -124,6 +129,7 @@ public class Utility {
 	public Timetable getAvailableTimes() {
 		
 		Timetable t = new Timetable();
+
 		try {
 			ResultSet rsEmployees = db.getAllEmployees();
 			do {
@@ -131,7 +137,6 @@ public class Utility {
 				if (rsTimetables == null) {
 					continue;
 				}
-				System.out.println("test");
 				t.mergeTimetable(rsTimetables.getString("availability"));
 				rsTimetables.close();
 			} while(rsEmployees.next());
@@ -140,10 +145,13 @@ public class Utility {
 			return t;
 		}
 		catch(SQLException e) {
+
 			LOGGER.warning(e.getMessage());
 			return null;
 		}
 	}
+	
+	//TODO: Deprecate
 	public Employee[] getApplicableEmployees(long duration, long startTime) {
 		ArrayList<Employee> applicable = new ArrayList<Employee>();
 		try {
@@ -235,6 +243,7 @@ public class Utility {
 		 
 	}
 	
+	//TODO: deprecated
 	public Timetable getAvailableBookingTimesByDuration(long duration) {
 		Timetable appPeriods = new Timetable();
 		try {
@@ -268,6 +277,7 @@ public class Utility {
 		return appPeriods;
 	}
 	
+	//TODO: Deprecated
 	public Timetable getAvailableBookingTimes() {
 		Employee[] employees;
 
@@ -332,15 +342,15 @@ public class Utility {
 	public boolean addNewBooking(String customerUsername, String employeeId, String start, String end, String services) {
 
 		Timetable t = getEmployeeBookingAvailability(employeeId, new Date(Long.parseLong(start)));	//All employee shifts
-		
-		if (t == null)
+		if (t == null) {
 			return false;
-		
+		}
 		for (Period p : t.getAllPeriods()) {
 			long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
 			
 			if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
-				return db.createBooking("SARJ's Milk Business", customerUsername, employeeId, start, end, services);
+
+				return db.createBooking(getCurrentBusiness(), customerUsername, employeeId, start, end, services);
 			}
 		}
 		return false;
@@ -532,8 +542,10 @@ public class Utility {
 		return null;
 	}
 	
+	//TODO: remove
 	public String[][] getWorkingTimes() 
 	{
+		//TODO: refactor into other employeelist functions
 		String [][] employeelist = getEmployeeList();
 		Timetable t = new Timetable();
 		ArrayList<String[]> allShifts = new ArrayList<String[]>();

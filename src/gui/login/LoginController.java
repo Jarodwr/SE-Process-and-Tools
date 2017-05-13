@@ -16,6 +16,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.users.User;
@@ -48,6 +49,9 @@ public class LoginController
 
     @FXML
     private Button registerButton;
+    
+    @FXML
+    private Label newBussinessButton;
     
     @FXML
     private BorderPane mainPane;
@@ -152,5 +156,10 @@ public class LoginController
     public void initStage(Stage scene)
     {
     	main = scene;
+    }
+    
+    @FXML
+    void registerNewBussiness(MouseEvent event) {
+
     }
 }
