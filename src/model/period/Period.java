@@ -225,7 +225,7 @@ public class Period {
 		
 		LOGGER.log(Level.FINE, "get24HrTimeFromWeekTime given argument seconds:"+seconds+" returned String Time:"+s);
 		return s;
-	}
+  }
 	
 	/**
    	 * Get start of current period
