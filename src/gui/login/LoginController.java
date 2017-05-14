@@ -19,7 +19,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.users.User;
-import model.utility.Utility;
 /**
  * 
  * This class is the main functionality of the program, it is the first point of contact when the user interacts with the login page
