@@ -15,7 +15,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.exceptions.ValidationException;
-import model.utility.Utility;
 import controller.Controller;
 import gui.login.LoginController;
 
