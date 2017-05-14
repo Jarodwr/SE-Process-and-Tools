@@ -36,7 +36,6 @@ public class Main {
 		LOGGER.setUseParentHandlers(false);
 		LOGGER.warning("test");
 		
-		n.createTables(); // Create table if it doesn't exist for all info
 		debugCreateOwnerBusiness(n);
 		GuiMain.main(args);
 	}

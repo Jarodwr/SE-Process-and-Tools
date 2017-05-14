@@ -15,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
+import model.timetable.Timetable;
 
 public class OwnerChangeWorkingTimes {
 
@@ -97,9 +98,12 @@ public class OwnerChangeWorkingTimes {
     	if (date != null && employeeId != null) {
     		time.setEnabled(true);
     		
-        	String[][] availabilities = controller.getWorkerAvailability(employeeId);
-        	if (availabilities != null && availabilities.length > 0) {
-        		time.setDefaultAvailability(availabilities, date);
+        	Timetable availabilities = controller.getWorkerAvailabilityTimetable(employeeId);
+        	Timetable openingHours = controller.getOpeningHours(controller.utilities.getCurrentBusiness());
+        	availabilities.mergeTimetable(openingHours);
+        	String[][] availableTimes = availabilities.toStringArray();
+        	if (availableTimes != null && availableTimes.length > 0) {
+        		time.setDefaultAvailability(availableTimes, date);
         		
         	}
         	

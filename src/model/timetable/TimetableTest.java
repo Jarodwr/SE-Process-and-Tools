@@ -84,6 +84,16 @@ public class TimetableTest {
 		assert(t.toString().equals("90000,93600|40000,43600"));
 	}
 	
+	@Test
+	public void addPeriod5() {
+
+	}
+	
+	@Test
+	public void addPeriod6() {
+
+	}
+	
 	
 	@Test
 	public void removePeriod1() {
@@ -128,6 +138,15 @@ public class TimetableTest {
 		assert(t.removePeriod(new Period("40000","43600",false)));
 	}
 	
+	@Test
+	public void removePeriod5() {
+
+	}
+	
+	@Test
+	public void removePeriod6() {
+
+	}
 	
 	@Test
 	public void toStringArray01() {

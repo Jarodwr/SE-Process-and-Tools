@@ -11,32 +11,27 @@ import java.util.logging.Logger;
 public class SQLiteConnection {
 	private Connection conn = null;
 	private Logger LOGGER = Logger.getLogger("main");
-	
-	/**
-	 * Constructor with unspecified database
-	 */
+
 	public SQLiteConnection() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:BookingSystemDB.sqlite");
+			SQLiteTableCreation tableCreate = new SQLiteTableCreation(conn); // calling this creates tables
 		} catch (Exception x) {
 			LOGGER.log(Level.WARNING, x.getMessage());
 		}
 	}
 	
-	/**
-	 * Constructor that specifies database
-	 * @param db
-	 */
 	public SQLiteConnection(String db) {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			this.conn = DriverManager.getConnection(db);
+      SQLiteTableCreation tableCreate = new SQLiteTableCreation(conn); // calling this creates tables
 		} catch (Exception x) {
 			LOGGER.log(Level.WARNING, x.getMessage());
 		}
 	}
-	
+  
 	public void createTables() {
 		createUsersTable();
 		createBusinessTable();
@@ -760,6 +755,7 @@ public class SQLiteConnection {
 
 		if (rs1.next()) {
 			if (rs1.getInt("timetableId") == 0 ) {
+				System.out.println("test");
 				return null;
 			}
 			else {
@@ -866,19 +862,24 @@ public class SQLiteConnection {
 		return false;
 	}
 
-	public boolean addShift(int employeeId, String businessname, String start, String end) throws SQLException{
+	public boolean addShift(int employeeId, String businessname, String start, String end){
 		Connection c = this.conn;
-		if (isShiftIn(employeeId, businessname, start, end))
-			return false;
+		try {
+			if (isShiftIn(employeeId, businessname, start, end))
+				return false;
 
-		PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?, ?);"); // this creates a new user
-		ps.setString(1, businessname);
-		ps.setInt(2, employeeId);
-		ps.setString(3, start);
-		ps.setString(4, end);
-		ps.executeUpdate();
-		ps.close();
-		return true;
+			PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?, ?);"); // this creates a new user
+			ps.setString(1, businessname);
+			ps.setInt(2, employeeId);
+			ps.setString(3, start);
+			ps.setString(4, end);
+			ps.executeUpdate();
+			ps.close();
+			return true;
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+			return false;
+		}
 	}
 	
 	public boolean removeShift(int employeeId, String businessname, String start, String end) throws SQLException{
@@ -990,5 +991,206 @@ public class SQLiteConnection {
 		}
 		else return null;
 
+
+	}
+	/* mark for testing */
+	public boolean createBusinessHours(String businessname, String listOfHours) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("INSERT INTO BusinessHoursTable VALUES (?, ?);");
+			ps.setString(1, listOfHours);
+			ps.setString(2, businessname);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	/* mark for testing */
+	public boolean updateBusinessHours(String businessname, String listOfHours) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("UPDATE BusinessHoursTable "
+					+ "SET stringOfTimes=?"
+					+ "WHERE businessname = ?;");
+			ps.setString(1, listOfHours);
+			ps.setString(2, businessname);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	/* mark for testing */
+	public ResultSet getBusinessHours(String businessname) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BusinessHoursTable WHERE businessname = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessname);
+		ResultSet rs = pst.executeQuery();
+	
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	/* mark for testing */
+	public ResultSet getBusinessLogo(String businessname) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BusinessLogo WHERE businessname = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessname);
+		ResultSet rs = pst.executeQuery();
+	
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	/* mark for testing */
+	public boolean createBusinessLogo(String businessname, String link) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("INSERT INTO BusinessLogo VALUES (?, ?);");
+			ps.setString(1, businessname);
+			ps.setString(2, link);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	/* mark for testing */
+	public boolean updateBusinessLogo(String businessname, String link) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("UPDATE BusinessLogo "
+					+ "SET logoLink=?"
+					+ "WHERE businessname = ?;");
+			ps.setString(1, link);
+			ps.setString(2, businessname);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	/* mark for testing */
+	public ResultSet getBusinessHeader(String businessname) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BusinessHeader WHERE businessname = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessname);
+		ResultSet rs = pst.executeQuery();
+	
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	/* mark for testing */
+	public boolean createBusinessHeader(String businessname, String header) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("INSERT INTO BusinessLogo VALUES (?, ?);");
+			ps.setString(1, header);
+			ps.setString(2, businessname);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	/* mark for testing */
+	public boolean updateBusinessHeader(String businessname, String header) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("UPDATE BusinessLogo "
+					+ "SET header=?"
+					+ "WHERE businessname = ?;");
+			ps.setString(1, header);
+			ps.setString(2, businessname);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	/* mark for testing */
+	public ResultSet getBusinessColor(String businessname) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BusinessColor WHERE businessname = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessname);
+		ResultSet rs = pst.executeQuery();
+	
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	/* mark for testing */
+	public boolean createBusinessColor(String businessname, String colorHex) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("INSERT INTO BusinessColor VALUES (?, ?);");
+			ps.setString(1, colorHex);
+			ps.setString(2, businessname);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	/* mark for testing */
+	public boolean updateBusinessColor(String businessname, String colorHex) {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("UPDATE BusinessLogo "
+					+ "SET colorHex=?"
+					+ "WHERE businessname = ?;");
+			ps.setString(1, colorHex);
+			ps.setString(2, businessname);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
 	}
 }
