@@ -46,7 +46,10 @@ public class Utility {
 	
 	public User searchUser(String username) {
 		ResultSet rs;
+		String business;
 		try {
+			String type = db.findUserType();
+			business = db.findUserBusiness();
 			rs = db.getUserRow(username);
 			if (db.getOwnerRow(username) != null) {
 				ResultSet rs2;

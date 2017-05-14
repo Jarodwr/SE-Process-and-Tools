@@ -2,6 +2,8 @@ package model.database;
 
 import java.net.URLEncoder;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
@@ -15,6 +17,7 @@ public class SQLiteTableCreation {
 	}
 	
 	public void createTables() {
+		createUserMasterDB();
 		createBusinessTable();
 		createOwnerTable();
 		createEmployeeTable();
@@ -28,6 +31,29 @@ public class SQLiteTableCreation {
 		createBusinessColorTable();
 	}
 	
+	private void createUserMasterDB() {
+		String sql = "CREATE TABLE IF NOT EXISTS UserinfoMaster (userTableName Varchar(255))";
+		try {
+			Connection c = this.conn;
+			Statement stmt = c.createStatement();
+	            stmt.execute(sql);
+		}
+		catch(Exception e){
+			LOGGER.warning(e.getMessage());
+		}
+		
+	}
+	
+	private void addToMasterDB(String tableName) throws SQLException {
+		Connection c = this.conn;
+		
+		PreparedStatement ps;
+		ps = c.prepareStatement("INSERT INTO UserinfoMaster VALUES (?);");
+		ps.setString(1, tableName);
+		ps.executeUpdate();
+		ps.close();
+	}
+
 	/**
 	 * Userinfo (<br>
 	 * 1 - username Varchar(255) Primary Key,<br>
@@ -44,7 +70,8 @@ public class SQLiteTableCreation {
 				try {
 					Connection c = this.conn;
 					Statement stmt = c.createStatement();
-			            stmt.execute(sql);
+			        stmt.execute(sql);
+			        addToMasterDB(businessname +  "_Userinfo");
 				}
 				catch(Exception e){
 					LOGGER.warning(e.getMessage());

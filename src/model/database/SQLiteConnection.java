@@ -975,4 +975,18 @@ public class SQLiteConnection {
 		}
 		return true;
 	}
+	
+	public void createUserDB(String businessname) {
+		tableCreator.createUsersTable(businessname);
+	}
+
+	public String findUserBusiness(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String findUserType(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
