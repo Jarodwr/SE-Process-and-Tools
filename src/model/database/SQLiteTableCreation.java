@@ -1,5 +1,6 @@
 package model.database;
 
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.logging.Logger;
@@ -14,7 +15,6 @@ public class SQLiteTableCreation {
 	}
 	
 	public void createTables() {
-		createUsersTable();
 		createBusinessTable();
 		createOwnerTable();
 		createEmployeeTable();
@@ -36,8 +36,11 @@ public class SQLiteTableCreation {
 	 * 4 - address Varchar(255)<br>
 	 * )
 	 */
-	public void createUsersTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS Userinfo (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
+	
+	@SuppressWarnings("deprecation") // although deprecated, function .encode() acts as intended and is less lines of code than using recommended version.
+	public void createUsersTable(String businessname) {
+		businessname = URLEncoder.encode(businessname);
+		String sql = "CREATE TABLE IF NOT EXISTS [" + businessname +  "_Userinfo] (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
 				try {
 					Connection c = this.conn;
 					Statement stmt = c.createStatement();

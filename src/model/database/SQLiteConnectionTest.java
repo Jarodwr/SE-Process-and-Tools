@@ -13,9 +13,9 @@ public class SQLiteConnectionTest {
 	@Test
 	public void testCreateCustomer() {
 		try {
-			testDb.deleteUser("test");
-			testDb.createCustomer("test", "test", "Test Test", "11 Test Place", "0498232444");
-			ResultSet rs = testDb.getUserRow("test");
+			testDb.deleteUser("test", "T Business");
+			testDb.createCustomer("test", "test", "Test Test", "11 Test Place", "0498232444", "T Business");
+			ResultSet rs = testDb.getUserRow("test", "T Business");
 			if (!rs.getString("name").equals("Test Test")) {
 				fail("customer wasn't created correctly. rs.getString(\"name\") returns " + rs.getString("name"));
 			}

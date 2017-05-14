@@ -1,5 +1,7 @@
 package model.database;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -10,12 +12,13 @@ import java.util.logging.Logger;
 public class SQLiteConnection {
 	private Connection conn = null;
 	private Logger LOGGER = Logger.getLogger("main");
+	private SQLiteTableCreation tableCreator;
 
 	public SQLiteConnection() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:BookingSystemDB.sqlite");
-			SQLiteTableCreation tableCreate = new SQLiteTableCreation(conn); // calling this creates tables
+			this.tableCreator = new SQLiteTableCreation(conn); // calling this creates tables
 		} catch (Exception x) {
 			System.out.println(x.getMessage());
 		}
@@ -25,16 +28,17 @@ public class SQLiteConnection {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			this.conn = DriverManager.getConnection(db);
-      SQLiteTableCreation tableCreate = new SQLiteTableCreation(conn); // calling this creates tables
+			this.tableCreator = new SQLiteTableCreation(conn); // calling this creates tables
 		} catch (Exception x) {
 			LOGGER.warning(x.getMessage());
 		}
 	}
-	public ResultSet getUserRow(String username) throws SQLException {
+	public ResultSet getUserRow(String username, String businessname) throws SQLException {
+		businessname = URLEncoder.encode(businessname);
 		username = username.toLowerCase();
 		Connection c = this.conn;
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Userinfo WHERE Username=?";
+		String query = "SELECT * FROM "+ businessname +"_Userinfo WHERE Username=?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, username);
 		ResultSet rs = pst.executeQuery();
@@ -72,9 +76,10 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	public void deleteUser(String username) throws SQLException {
+	public void deleteUser(String username, String businessname) throws SQLException {
+		businessname = URLEncoder.encode(businessname);
 		Connection c = this.conn;
-		String query = "DELETE FROM Userinfo WHERE username = ?";
+		String query = "DELETE FROM "+ businessname +"_Userinfo WHERE username = ?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, username);
 		pst.executeUpdate();
@@ -83,16 +88,17 @@ public class SQLiteConnection {
 	/**
 	 * @return True if creation is successful, else false.
 	 */
-	public boolean createCustomer(String username, String password, String name, String address, String mobileno) {
+	public boolean createCustomer(String username, String password, String name, String address, String mobileno, String businessname) {
+		businessname = URLEncoder.encode(businessname);
 		Connection c = this.conn;
 		try {
-			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
+			ResultSet rs = getUserRow(username, businessname); // search through usernames to check if this user currently exists
 
 			if (rs != null) {
 				return false;
 			}
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO "+  businessname +"_Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setString(1, username);
 			ps.setString(2, password);
 			ps.setString(3, name);
@@ -111,17 +117,18 @@ public class SQLiteConnection {
 	/**
 	 * @return True if deletion is successful, false if user cannot be found.
 	 */
-	public boolean deleteCustomer(String username) {
+	public boolean deleteCustomer(String username, String businessname) {
+		businessname = URLEncoder.encode(businessname);
 		username = username.toLowerCase();
 		Connection c = this.conn;
 		try {
-			ResultSet rs = getUserRow(username); // search through businessnames to check if this user currently exists
+			ResultSet rs = getUserRow(username, businessname); // search through businessnames to check if this user currently exists
 
 			if (rs == null) {
 				return false;
 			}
 			
-			String query = "DELETE FROM Userinfo WHERE username = ?";
+			String query = "DELETE FROM " + businessname + "Userinfo WHERE username = ?";
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setString(1, username);
 			pst.executeUpdate();
@@ -133,10 +140,11 @@ public class SQLiteConnection {
 		}
 	}
 	
-	public ResultSet getAllCustomers() throws SQLException {
+	public ResultSet getAllCustomers(String businessname) throws SQLException {
+		businessname = URLEncoder.encode(businessname);
 		Connection c = this.conn;
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Userinfo";
+		String query = "SELECT * FROM " + businessname + "Userinfo";
 		PreparedStatement pst = c.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
 
@@ -150,18 +158,19 @@ public class SQLiteConnection {
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
+		businessname = URLEncoder.encode(businessname);
 		username = username.toLowerCase();
 		Connection c = this.conn;
 		Boolean needToAddUser = true;
 		try {
-			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
+			ResultSet rs = getUserRow(username, businessname); // search through usernames to check if this user currently exists
 
 			if (rs != null) {
 				rs.close();
 				return false;
 			}
 			if (needToAddUser) {
-				PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
+				PreparedStatement ps = c.prepareStatement("INSERT INTO " + businessname + "_Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
 				ps.setString(1, username);
 				ps.setString(2, password);
 				ps.setString(3, name);
@@ -179,7 +188,7 @@ public class SQLiteConnection {
 			}
 			
 			PreparedStatement ps2 = c.prepareStatement("INSERT INTO Ownerinfo VALUES (?, ?);"); // this links a user to a business, making them an owner
-			ps2.setString(1, businessname);
+			ps2.setString(1, URLDecoder.decode(businessname));
 			ps2.setString(2, username);
 			ps2.executeUpdate();
 			ps2.close();
@@ -367,12 +376,13 @@ public class SQLiteConnection {
 	}
 		
 	
-	public ResultSet getBookingsByUsername(String username) throws SQLException { // not currently in use
+	public ResultSet getBookingsByUsername(String username, String businessname) throws SQLException { // not currently in use
 		Connection c = this.conn;
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM BookingsTable WHERE username=?";
+		String query = "SELECT * FROM BookingsTable WHERE username=? AND businessname=?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, username);
+		pst.setString(2,  businessname);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
@@ -387,12 +397,13 @@ public class SQLiteConnection {
 	 * @return	table
 	 * @throws SQLException
 	 */
-	public ResultSet getBookingsByPeriodStart(long l) throws SQLException {
+	public ResultSet getBookingsByPeriodStart(long l, String businessname) throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER) ORDER BY CAST(starttimeunix AS INTEGER)";
+		String query = "SELECT * FROM BookingsTable WHERE (CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER) AND businessname=?) ORDER BY CAST(starttimeunix AS INTEGER)";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setLong(1, l);
+		pst.setString(2, businessname);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
@@ -556,6 +567,20 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
+	public ResultSet getAllEmployees(String businessname) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Employeeinfo WHERE businessname = ?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, businessname);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	
 	/**
 	 * gets all shifts for given employee after specified time.
 	 */
@@ -576,14 +601,15 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	public ResultSet getShifts(String start, String end) throws SQLException{
+	public ResultSet getShifts(String start, String end, String businessname) throws SQLException{
 		Connection c = this.conn;
 		String query = "SELECT * "
 				+ "FROM EmployeeWorkingTimes "
-				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND CAST(unixendtime AS INTEGER) <= CAST(? AS INTEGER)";
+				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND CAST(unixendtime AS INTEGER) <= CAST(? AS INTEGER) AND businessname = ?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, start);
 		pst.setString(2, end);
+		pst.setString(3, businessname);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
