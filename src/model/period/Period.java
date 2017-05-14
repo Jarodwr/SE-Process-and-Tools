@@ -225,35 +225,7 @@ public class Period {
 		
 		LOGGER.log(Level.FINE, "get24HrTimeFromWeekTime given argument seconds:"+seconds+" returned String Time:"+s);
 		return s;
-	}
-	
-    /**
-     * Verifies that the current period isn't overlapping with another period
-     * @param otherPeriod The other period currently being tested against
-     * @return boolean Returns true if there is any intersection
-     */
-	
-	public Period combineWith(Period otherPeriod) {
-		Date start = this.start;
-		Date end = this.end;
-
-		if (otherPeriod.getStart().compareTo(this.start) * otherPeriod.getEnd().compareTo(this.end) == 0) {
-			return otherPeriod;
-		}
-		
-		if (otherPeriod.getStart().compareTo(this.start) * this.start.compareTo(otherPeriod.getEnd()) > 0) {
-			start = otherPeriod.getStart();
-		}
-		
-		if (otherPeriod.getStart().compareTo(this.end) * this.end.compareTo(otherPeriod.getEnd()) > 0) {
-			end = otherPeriod.getEnd();
-		}
-		
-		if (start.equals(this.start) && end.equals(this.end)) {
-			return null;
-		}
-		return new Period(start, end);
-	}
+  }
 	
 	/**
    	 * Get start of current period

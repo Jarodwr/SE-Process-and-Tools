@@ -1,6 +1,7 @@
 package model.database;
 
 import java.sql.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -17,7 +18,7 @@ public class SQLiteConnection {
 			conn = DriverManager.getConnection("jdbc:sqlite:BookingSystemDB.sqlite");
 			SQLiteTableCreation tableCreate = new SQLiteTableCreation(conn); // calling this creates tables
 		} catch (Exception x) {
-			System.out.println(x.getMessage());
+			LOGGER.log(Level.WARNING, x.getMessage());
 		}
 	}
 	
@@ -27,9 +28,190 @@ public class SQLiteConnection {
 			this.conn = DriverManager.getConnection(db);
       SQLiteTableCreation tableCreate = new SQLiteTableCreation(conn); // calling this creates tables
 		} catch (Exception x) {
-			LOGGER.warning(x.getMessage());
+			LOGGER.log(Level.WARNING, x.getMessage());
 		}
 	}
+  
+	public void createTables() {
+		createUsersTable();
+		createBusinessTable();
+		createOwnerTable();
+		createEmployeeTable();
+		createAvailabilitiesTable();
+		createEmployeeWorkingTimesTable();
+		createBookingsTable();
+		createServicesTable();
+	}
+	
+	/**
+	 * Userinfo (<br>
+	 * 1 - username Varchar(255) Primary Key,<br>
+	 * 2 - password Varchar(255),<br>
+	 * 3 - name Varchar(255),<br>
+	 * 4 - address Varchar(255)<br>
+	 * )
+	 */
+	public void createUsersTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS Userinfo (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
+				try {
+					Connection c = this.conn;
+					Statement stmt = c.createStatement();
+			            stmt.execute(sql);
+				}
+				catch(Exception e){
+					LOGGER.log(Level.WARNING, e.getMessage());
+				}
+	}
+	
+	/**
+	 * Businessinfo (<br>
+	 * 1 - businessname Varchar(255) Primary Key,<br>
+	 * 2 - address Varchar(255),<br>
+	 * 3 - phonenumber Varchar(255)<br>
+	 * )
+	 */
+	public void createBusinessTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS Businessinfo (businessname Varchar(255) Primary Key, address Varchar(255), phonenumber Varchar(255))";
+				try {
+					Connection c = this.conn;
+					Statement stmt = c.createStatement();
+			            stmt.execute(sql);
+				}
+				catch(Exception e){
+					LOGGER.log(Level.WARNING, e.getMessage());
+				}
+	}
+	
+	/**
+	 * Ownerinfo (<br>
+	 * 1 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * 2 - username Varchar(255) references Userinfo(username)<br>
+	 * )
+	 */
+	public void createOwnerTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS Ownerinfo (businessname Varchar(255), username Varchar(255), Foreign Key(businessname) references Businessinfo(businessname), Foreign Key(username) references Userinfo(username))";
+				try {
+					Connection c = this.conn;
+					Statement stmt = c.createStatement();
+			            stmt.execute(sql);
+				}
+				catch(Exception e){
+					LOGGER.warning(e.getMessage());
+				}
+	}
+	
+	/**
+	 * Employeeinfo (<br>
+	 * 1 - employeeId integer primary key,<br> 
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname),<br> 
+	 * 3 - name Varchar(255),<br>
+	 * 4 - address Varchar(255),<br>
+	 * 5 - mobileno Varchar(255),<br>
+	 * 6 - timetableId integer references Timetableinfo(timetableId)<br>
+	 * )
+	 */
+	public void createEmployeeTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS Employeeinfo (employeeId integer primary key, businessname Varchar(255),  name Varchar(255), address Varchar(255), mobileno Varchar(255), timetableId integer, Foreign Key(timetableId) references Timetableinfo(timetableId), Foreign Key(businessname) references Businessinfo(businessname))";
+				try {
+					Connection c = this.conn;
+					Statement stmt = c.createStatement();
+			            stmt.execute(sql);
+				}
+				catch(Exception e){
+					LOGGER.log(Level.WARNING, e.getMessage());
+				}
+	}
+	
+	/**
+	 * Timetableinfo (<br>
+	 * 1 - timetableId integer primary key,<br>
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * 3 - availability Varchar(255)<br>
+	 * )
+	 */
+	public void createAvailabilitiesTable()  {
+		String sql = "CREATE TABLE IF NOT EXISTS Timetableinfo (timetableId integer primary key, businessname Varchar(255), availability Varchar(255), Foreign Key(businessname) references Businessinfo(businessname))";
+		try {
+			Connection c = this.conn;
+			Statement stmt = c.createStatement();
+	            stmt.execute(sql);
+		}
+		catch(Exception e){
+			LOGGER.warning(e.getMessage());
+		}
+	}
+	
+	/**
+	 * EmployeeWorkingTimes (<br>
+	 * 1 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * 2 - employeeId Varchar(255),<br>
+	 * 3 - unixstarttime Varchar(255),<br>
+	 * 4 - unixendtime Varchar(255),<br>
+	 * )
+	 */
+	public void createEmployeeWorkingTimesTable()  {
+		String sql = "CREATE TABLE IF NOT EXISTS EmployeeWorkingTimes (businessname Varchar(255), employeeId integer, unixstarttime Varchar(255), unixendtime Varchar(255), "
+				+ "Foreign Key(businessname) references Businessinfo(businessname),"
+				+ "Foreign Key(employeeId) references Employeeinfo(employeeId))";
+		try {
+			Connection c = this.conn;
+			Statement stmt = c.createStatement();
+	            stmt.execute(sql);
+		}
+		catch(Exception e){
+			LOGGER.log(Level.WARNING, e.getMessage());
+		}
+	}
+	
+	/**
+	 * BookingsTable ( 
+	 * 1 - bookingId integer Primary Key,<br>
+	 * 2 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * 3 - username Varchar(255),<br>
+	 * 4 - employeeId Varchar(255),<br>
+	 * 5 - starttimeunix Varchar(255),<br>
+	 * 6 - endtimeunix Varchar(255),<br>
+	 * 7 - bookingData Varchar(255)<br>
+	 * )
+	 */
+	public void createBookingsTable()  {
+		String sql = "CREATE TABLE IF NOT EXISTS BookingsTable ( bookingId integer Primary Key, businessname Varchar(255), username Varchar(255), employeeId Varchar(255), starttimeunix Varchar(255), endtimeunix Varchar(255), bookingData Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname), Foreign Key(employeeId) references Employeeinfo(employeeId))";
+		try {
+			Connection c = this.conn;
+			Statement stmt = c.createStatement();
+	            stmt.execute(sql);
+		}
+		catch(Exception e){
+			LOGGER.log(Level.WARNING, e.getMessage());
+		}
+	}
+	
+	/**
+	 * ServicesTable (
+	 * 1 - servicename Varchar(255) Primary Key,<br>
+	 * 2 - serviceprice integer,<br>
+	 * 3 - serviceminutes integer,<br>
+	 * 4 - businessname Varchar(255) references Businessinfo(businessname),<br>
+	 * )
+	 */
+	public void createServicesTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS ServicesTable (servicename Varchar(255) Primary Key, serviceprice integer, serviceminutes integer, businessname Varchar(255),  Foreign Key(businessname) references Businessinfo(businessname))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
+		try {
+			Connection c = this.conn;
+			Statement stmt = c.createStatement();
+	            stmt.execute(sql);
+		}
+		catch(Exception e){
+			LOGGER.log(Level.WARNING, e.getMessage());
+		}
+	}
+	
+	/**
+   	 * Gets the row in the database of the requested user using their username
+   	 * @param username	The username to look for in the database
+   	 * @return searchResult
+   	 **/
+		
 	public ResultSet getUserRow(String username) throws SQLException {
 		username = username.toLowerCase();
 		Connection c = this.conn;
@@ -41,8 +223,17 @@ public class SQLiteConnection {
 		if (rs.next()) {
 			return rs;
 		}
-		else return null;
+		else { 
+			LOGGER.log(Level.INFO, "Failed to find a customer user in the database with the username: "+username);
+			return null;
+		}
 	}
+	
+	/**
+   	 * Gets the row in the database of the requested owner using their username
+   	 * @param username	The username to look for in the database
+   	 * @return searchResult
+   	 **/
 	
 	public ResultSet getOwnerRow(String username) throws SQLException {
 		Connection c = this.conn;
@@ -55,8 +246,17 @@ public class SQLiteConnection {
 		if (rs.next()) {
 			return rs;
 		}
-		else return null;
+		else {
+			LOGGER.log(Level.INFO, "Failed to find an owner user in the database with the username: "+username);
+			return null;
+		}
 	}
+	
+	/**
+   	 * Gets the row in the database of the requested buisness from the name of the buisness
+   	 * @param businessname	The business name to look for in the database
+   	 * @return searchResult
+   	 **/
 
 	public ResultSet getBusinessRow(String businessname) throws SQLException {
 		Connection c = this.conn;
@@ -69,8 +269,16 @@ public class SQLiteConnection {
 		if (rs.next()) {
 			return rs;
 		}
-		else return null;
+		else {
+			LOGGER.log(Level.INFO, "Failed to find a buisness in the database with the username: "+ businessname);
+			return null;
+		}
 	}
+	
+	/**
+   	 * Delete user from the database using the given username
+   	 * @param username	The username to look for in the database
+   	 **/
 	
 	public void deleteUser(String username) throws SQLException {
 		Connection c = this.conn;
@@ -81,7 +289,13 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @return True if creation is successful, else false.
+	 * Add a new customer into the database
+	 * @param username	Customer's username
+	 * @param password	Customer's password
+	 * @param name	Customer's real name
+	 * @param address	Customer's physical home address
+	 * @param mobileno	Customer's mobile number
+	 * @return success True if creation is successful, else false.
 	 */
 	public boolean createCustomer(String username, String password, String name, String address, String mobileno) {
 		Connection c = this.conn;
@@ -89,6 +303,7 @@ public class SQLiteConnection {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
 
 			if (rs != null) {
+				LOGGER.log(Level.FINE, "Failed to add customer into the database because a customer with the same username exists with username: "+ username);
 				return false;
 			}
 
@@ -103,14 +318,17 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
 	
 	/**
-	 * @return True if deletion is successful, false if user cannot be found.
+	 * Deletes a customer from the database using their username
+	 * @param username	Customer's username
+	 * @return success True if deletion is successful, false if user cannot be found.
 	 */
+	
 	public boolean deleteCustomer(String username) {
 		username = username.toLowerCase();
 		Connection c = this.conn;
@@ -118,6 +336,7 @@ public class SQLiteConnection {
 			ResultSet rs = getUserRow(username); // search through businessnames to check if this user currently exists
 
 			if (rs == null) {
+				LOGGER.log(Level.FINE, "Failed to remove customer from the database because a customer does not exist with the username: "+ username);
 				return false;
 			}
 			
@@ -128,7 +347,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
@@ -147,8 +366,16 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * @return True if deletion is successful, false if unsuccessful.
+	 * Add a new owner into the database
+	 * @param businessname	The name of the buisness to assign to the owner
+	 * @param username	Owner's username
+	 * @param password	Owner's password
+	 * @param name	Owner's real name
+	 * @param address	Owner's physical home address
+	 * @param mobileno	Owner's mobile number
+	 * @return success True if creation is successful, else false.
 	 */
+	
 	public boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
 		username = username.toLowerCase();
 		Connection c = this.conn;
@@ -157,6 +384,7 @@ public class SQLiteConnection {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
 
 			if (rs != null) {
+				LOGGER.log(Level.FINE, "Failed to add owner into the database because an owner with the same username exists with username: "+ username);
 				rs.close();
 				return false;
 			}
@@ -186,14 +414,19 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
 	
 	/**
-	 * @return True if creation is successful, false if unsuccessful.
+	 * Adds a new buisness into the database
+	 * @param businessname	Name of the buisness
+	 * @param address	Buisness' address
+	 * @param phonenumber	Buisness' phone number
+	 * @return success True if creation is successful, false if unsuccessful.
 	 */
+	
 	public boolean createBusiness(String businessname, String address, String phonenumber) {
 		Connection c = this.conn;
 		try {
@@ -213,13 +446,20 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
 	
 	/**
-	 * @return True if creation is successful, false if unsuccessful.
+	 * Adds a new booking for a buisness in the database
+	 * @param businessname	Name of the buisness
+	 * @param customername	Name of customer
+	 * @param employeeId	Employee assigned to the booking's ID
+	 * @param unixstamp1	The start time of the booking period in unix time stamp format
+	 * @param unixstamp2	The end time of the booking period in unix time stamp format
+	 * @param data	Services for the booking
+	 * @return success True if creation is successful, false if unsuccessful.
 	 */
 	public boolean createBooking(String businessname, String customername, String employeeId, String unixstamp1, String unixstamp2, String data) {
 		
@@ -247,14 +487,18 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
 	
 	/**
-	 * @return True if deletion is successful, false if unsuccessful.
+	 * Removes a booking from a specific buisness from the database
+	 * @param bookingId	The assigned ID of the booking
+	 * @param businessname	The name of the buisness the booking belongs to
+	 * @return success True if deletion is successful, false if unsuccessful.
 	 */
+	
 	public boolean deleteBooking(int bookingId, String businessname) {
 		Connection c = this.conn;
 		try {
@@ -272,7 +516,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
@@ -295,7 +539,7 @@ public class SQLiteConnection {
 			ps.close();
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
@@ -321,7 +565,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
@@ -423,7 +667,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
@@ -449,7 +693,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
@@ -496,7 +740,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
@@ -613,7 +857,7 @@ public class SQLiteConnection {
 				return true;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, e.getMessage());
 		}
 		return false;
 	}
@@ -704,7 +948,7 @@ public class SQLiteConnection {
 
 			return true;
 		} catch (SQLException e) {
-			LOGGER.warning(e.getMessage());
+			LOGGER.log(Level.WARNING, e.getMessage());
 			return false;
 		}
 	}
