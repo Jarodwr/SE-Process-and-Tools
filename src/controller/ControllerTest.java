@@ -1,726 +1,464 @@
 package controller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
-import java.text.ParseException;
+import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.database.SQLiteConnection;
 import model.exceptions.ValidationException;
-import model.period.Booking;
 import model.users.Owner;
+import model.users.User;
 
-@SuppressWarnings("unused")
-public class ControllerTest {
-	static Controller c = new Controller();
+public class ControllerTest{
+	static Controller c;
 	static Owner user = new Owner("name", "pass", "SARJ's Milk Business", "Admin", "124 Address", "0412345678");
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-	//customer login test data
-	static String[] testData1 = new String[2];
-	static String[] testData2 = new String[2];
-	static String[] testData3 = new String[2];
-	static String[] testData4 = new String[2];
-	//owner login test data
-	static String[] testData5 = new String[2];
-	static String[] testData6 = new String[2];
-	static String[] testData7 = new String[2];
-	static String[] testData8 = new String[2];
-	//registration test data
-	static String[] testData9 = new String[5];
-	static String[] testData10 = new String[5];
-	static String[] testData11 = new String[5];
-	static String[] testData12 = new String[5];
-	static String[] testData13 = new String[5];
+	static SQLiteConnection db;
 	
-	//add employee test data
-	static String[] testData14 = new String[4];
-	static String[] testData15 = new String[4];
-	static String[] testData16 = new String[4];
-	static String[] testData17 = new String[4];
-	
-	
-	@Before
-	public void setup()
+	@BeforeClass
+	public static void setup()
 	{
-		testData1[0] = "admin";
-		testData1[1] = "admin";
+		new File("test.sqlite").delete();	//Deletes previous test database
 		
-		testData2[0] = "admin1";
-		testData2[1] = "password";
+		db = new SQLiteConnection("jdbc:sqlite:test.sqlite");
+//		db.createBusiness(businessname, address, phonenumber)
+		db.createBusiness("Massage Business", "123 nicholson st", "040303030303");
 		
-		testData3[0] = "admin1";
-		testData3[1] = "admin1";
+//		db.createOwner(businessname, username, password, name, address, mobileno)
+		db.createOwner("Massage Business", "JoeDoe97", "ayylmao", "Joe", "123 swanston st", "0491827462");
 		
-		testData4[0] = "admin";
-		testData4[1] = "password";
+//		db.createCustomer(username, password, name, address, mobileno);
+		db.createCustomer("jarodwr", "1234", "Jarod", "32 der st", "0412341234");
+		db.createCustomer("yargen", "asdf", "Bruce", "67 data st", "0412376534");
+		db.createCustomer("kate", "zxcv", "Andy", "A street that doesn't exist", "043841234");
+		db.createCustomer("bill", "uuuuuuuuuu", "Dave", "Junk location data", "0412340294");
+		db.createCustomer("death", "life", "Brandon", "Southern cross station", "0411821234");
+		db.createCustomer("grips", "yehnahyehyehnah", "Will", "entry dataaaaaaaaa", "0412900234");
 		
-		testData5[0] = "OwnerTest";
-		testData5[1] = "password";
+//		db.createAvailability(timetableId, businessname, availabilities);
+		db.createAvailability(1, "Massage Business", "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
+		db.createAvailability(2, "Massage Business", "1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
+		db.createAvailability(3, "Massage Business", "1800,14399|27000,86399");
+		db.createAvailability(4, "Massage Business", "1800,14399|27000,86399");
+		db.createAvailability(5, "Massage Business", "1800,14399|27000,86399");
+		db.createAvailability(6, "Massage Business", "1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
 		
-		testData6[0] = "OwnerTest1";
-		testData6[1] = "1234";
+//		db.createEmployee(businessname, name, address, mobileno, timetableId)
+		db.createEmployee("Massage Business", "spencer", "any", "0394815108", 1);
+		db.createEmployee("Massage Business", "russel", "somewhere", "9382738491", 2);
+		db.createEmployee("Massage Business", "jarod", "nowhere", "1738593827", 3);
+		db.createEmployee("Massage Business", "anesu", "anywhere", "2918273647", 4);
+		db.createEmployee("Massage Business", "anthrax", "blah", "9283746374", 5);
+		db.createEmployee("Massage Business", "marvin", "yes", "0192837465", 6);
 		
-		testData7[0] = "OwnerTest1";
-		testData7[1] = "password";
+//		db.addShift(employeeId, businessname, start, end)
+		db.addShift(0, "Massage Business", "1497544200", "1497546000");	//06/15/2017 @ 4:30pm-5:00pm (UTC)
+		db.addShift(0, "Massage Business", "1497506400", "1497513600");
+		db.addShift(1, "Massage Business", "1497513600", "1497520800");
+		db.addShift(2, "Massage Business", "1497506400", "1497565800");
+		db.addShift(3, "Massage Business", "1497508200", "1497520800");
+		db.addShift(3, "Massage Business", "1497522600", "1497565800");
+		db.addShift(4, "Massage Business", "1497508200", "1497522600");
+		db.addShift(5, "Massage Business", "1497555000", "1497565800");
+
+//		db.addService(serviceName, servicePrice, serviceMinutes, businessName)
+		db.addService("Light Massage", 1000, 30, "Massage Business");
+		db.addService("Heavy Massage", 3000, 90, "Massage Business");
+		db.addService("Hair cut", 1500, 60, "Massage Business");
+		db.addService("Spa", 5000, 120, "Massage Business");
 		
-		testData8[0] = "Ownertest";
-		testData8[1] = "password";
+//		db.createBooking(businessname, customername, employeeId, unixstamp1, unixstamp2, data)
+		db.createBooking("Massage Business", "jarodwr", "0", "1497549600", "1497555000", "Light Massage");
+		db.createBooking("Massage Business", "yargen", "0", "1497510000", "1497513600", "Hair cut");
+		db.createBooking("Massage Business", "derkaderka", "1", "1497555000", "1497558600", "Hair cut");
+		db.createBooking("Massage Business", "yargen", "2", "1497558600", "1497565800", "Spa");
+		db.createBooking("Massage Business", "death", "2", "1497513600", "1497520800", "Spa");
+		db.createBooking("Massage Business", "death", "3", "1497520800", "1497522600", "Heavy Massage");
+		db.createBooking("Massage Business", "grips", "3", "1497508200", "1497510000", "Heavy Massage");
+		db.createBooking("Massage Business", "derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
 		
-		testData9[0] = "Ownertest";
-		testData9[1] = "password";
-		testData9[2] = "Russell";
-		testData9[3] = "12 Melbourne";
-		testData9[4] = "0387656789";
+		c = new Controller("jdbc:sqlite:test.sqlite");
 		
-		testData10[0] = "admin";
-		testData10[1] = "password";
-		testData10[2] = "Russell";
-		testData10[3] = "12 Melbourne";
-		testData10[4] = "0387656789";
-		
-		testData11[0] = "admin";
-		testData11[1] = "password";
-		testData11[2] = "Russell234";
-		testData11[3] = "12 Melbourne";
-		testData11[4] = "0387656789";
-		
-		testData12[0] = "admin";
-		testData12[1] = "password";
-		testData12[2] = "Russell";
-		testData12[3] = "Fake888***";
-		testData12[4] = "0387656789";
-		
-		testData13[0] = "admin";
-		testData13[1] = "password";
-		testData13[2] = "Russell";
-		testData13[3] = "12 Melbourne";
-		testData13[4] = "abcd";
-		
-		
-		testData14[0] = "Fred1234";
-		testData14[1] = "03123456789";
-		testData14[2] = "12 Melbourne";
-		testData14[3] = "s234567";
-		
-		testData15[0] = "Fred";
-		testData15[1] = "asdf";
-		testData15[2] = "12 Melbourne";
-		testData15[3] = "s234567";
-		
-		testData16[0] = "Fred";
-		testData16[1] = "03123456789";
-		testData16[2] = "Melbourne";
-		testData16[3] = "s234567";
-		
-		testData17[0] = "Fred";
-		testData17[1] = "03123456789";
-		testData17[2] = "12 Melbourne";
-		testData17[3] = "s234567";
-	}
-	
-	//customer logining in test cases
-	@Test
-	public void customerlogin01() 
-	{
-		assert(c.login(testData1[0], testData1[1]) == null);
-	}
-
-	@Test
-	public void customerlogin02() 
-	{
-		assert(c.login(testData2[0], testData2[1]) == null);
-	}
-	
-	@Test
-	public void customerlogin03() 
-	{
-		assert(c.login(testData3[0], testData3[1]) == null);
-	}
-	
-	@Test
-	public void customerlogin04() 
-	{
-		assert(!c.login(testData4[0], testData4[1]).isOwner());
-	}
-	
-	//owner logging in test cases
-	@Test
-	public void ownerlogin01() 
-	{
-		assert(c.login(testData5[0], testData5[1]) == null);
-	}
-	
-	@Test
-	public void ownerlogin02() 
-	{
-		assert(c.login(testData6[0], testData6[1]) == null);
-	}
-	
-	@Test
-	public void ownerlogin03() 
-	{
-		assert(c.login(testData7[0], testData7[1]) == null);
-	}
-	
-	@Test
-	public void ownerlogin04() 
-	{
-		assert(c.login(testData8[0], testData8[1]).isOwner());
-	}
-	
-	//register a customer tests
-	@Test
-	public void customerregister01() throws ValidationException 
-	{
-		assert(c.register(testData9[0], testData9[1], testData9[2], testData9[3], testData9[4], testData9[5]).equals(null));
-	}
-	
-	@Test
-	public void customerregister02() throws ValidationException 
-	{
-		assert(!c.register(testData10[0], testData10[1], testData10[2], testData10[3], testData10[4], testData10[5]).equals(null));
-	}
-	
-	@Test
-	public void customerregister03() throws ValidationException 
-	{
-		assert(c.register(testData11[0], testData11[1], testData11[2], testData11[3], testData11[4], testData11[5]).equals(null));
-	}
-	
-	@Test
-	public void customerregister04() throws ValidationException 
-	{
-		assert(c.register(testData12[0], testData12[1], testData12[2], testData12[3], testData12[4], testData12[5]).equals(null));
-	}
-	
-	@Test
-	public void customerregister05() throws ValidationException 
-	{
-		assert(c.register(testData13[0], testData13[1], testData13[2], testData13[3], testData13[4], testData13[5]).equals(null));
-	}
-	
-	//add new employee tests
-	@Test
-	public void addemployeetest01() 
-	{
-		assert(!c.addEmployee(testData14[0], testData14[1], testData14[2], user));
-	}
-	
-	@Test
-	public void addemployeetest02() 
-	{
-		assert(!c.addEmployee(testData15[0], testData15[1], testData15[2], user));
-	}
-	
-	@Test
-	public void addemployeetest03() 
-	{
-		assert(!c.addEmployee(testData16[0], testData16[1], testData16[2], user));
-	}
-	
-	@Test
-	public void addemployeetest04() 
-	{
-		assert(c.addEmployee(testData17[0], testData17[1], testData17[2], user));
-	}
-	
-	@Test
-	public void testGetBookingsAfter01() {
-
-	}
-	
-	@Test
-	public void testGetBookingsAfter02() {
-
-	}
-	
-	@Test
-	public void testGetBookingsAfter03() {
-
-	}
-	
-	@Test
-	public void testGetBookingsAfter04() {
-
-	}
-	
-	@Test
-	public void testGetBookingsAfter05() {
-
-	}
-	
-	@Test
-	public void testGetBookingsAfter06() {
-
-	}
-	
-	@Test
-	public void addService01() {
-
-	}
-	
-	@Test
-	public void addService02() {
-
-	}
-	
-	@Test
-	public void addService03() {
-
-	}
-	
-	@Test
-	public void addService04() {
-
-	}
-	
-	@Test
-	public void addService05() {
-
-	}
-	
-	@Test
-	public void addService06() {
-
-	}
-	
-	
-	@Test
-	public void getCurrentBookings01() {
-
-	}
-	
-	@Test
-	public void getCurrentBookings02() {
-
-	}
-	
-	@Test
-	public void getCurrentBookings03() {
-
-	}
-	
-	@Test
-	public void getCurrentBookings04() {
-
-	}
-	
-	@Test
-	public void getCurrentBookings05() {
-
-	}
-	
-	@Test
-	public void getCurrentBookings06() {
-
-	}
-	
-	
-	@Test
-	public void addNewBooking01() {
-
-	}
-	
-	@Test
-	public void addNewBooking02() {
-
-	}
-	
-	@Test
-	public void addNewBooking03() {
-
-	}
-	
-	@Test
-	public void addNewBooking04() {
-
-	}
-	
-	@Test
-	public void addNewBooking05() {
-
-	}
-	
-	@Test
-	public void addNewBooking06() {
-
-	}
-	
-	
-	
-	@Test
-	public void getAvailableTimes01() {
-
-	}
-	
-	@Test
-	public void getAvailableTimes02() {
-
-	}
-	
-	@Test
-	public void getAvailableTimes03() {
-
-	}
-	
-	@Test
-	public void getAvailableTimes04() {
-
-	}
-	
-	@Test
-	public void getAvailableTimes05() {
-
-	}
-	
-	@Test
-	public void getAvailableTimes06() {
-
-	}
-	
-	
-	@Test
-	public void getSummaryOfBookings01() {
-
-	}
-	
-	@Test
-	public void getSummaryOfBookings02() {
-
-	}
-	
-	@Test
-	public void getSummaryOfBookings03() {
-
-	}
-	
-	@Test
-	public void getSummaryOfBookings04() {
-
-	}
-	
-	@Test
-	public void getSummaryOfBookings05() {
-
-	}
-	
-	@Test
-	public void getSummaryOfBookings06() {
-
-	}
-	
-	
-	@Test
-	public void removeBookings01() {
-
-	}
-	
-	@Test
-	public void removeBookings02() {
-
-	}
-	
-	@Test
-	public void removeBookings03() {
-
-	}
-	
-	@Test
-	public void removeBookings04() {
-
-	}
-	
-	@Test
-	public void removeBookings05() {
-
-	}
-	
-	@Test
-	public void removeBookings06() {
-
-	}
-	
-	
-	@Test
-	public void addWorkingTime01() {
-
-	}
-	
-	@Test
-	public void addWorkingTime02() {
-
-	}
-	
-	@Test
-	public void addWorkingTime03() {
-
-	}
-	
-	@Test
-	public void addWorkingTime04() {
-
-	}
-	
-	@Test
-	public void addWorkingTime05() {
-
-	}
-	
-	@Test
-	public void addWorkingTime06() {
-
-	}
-	
-	
-	@Test
-	public void removeWorkingTime01() {
-
-	}
-	
-	@Test
-	public void removeWorkingTime02() {
-
-	}
-	
-	@Test
-	public void removeWorkingTime03() {
-
-	}
-	
-	@Test
-	public void removeWorkingTime04() {
-
-	}
-	
-	@Test
-	public void removeWorkingTime05() {
-
-	}
-	
-	@Test
-	public void removeWorkingTime06() {
-
-	}
-	
-	
-	@Test
-	public void getWorkingTimes01() {
-
-	}
-	
-	@Test
-	public void getWorkingTimes02() {
-
-	}
-	
-	@Test
-	public void getWorkingTimes03() {
-
-	}
-	
-	@Test
-	public void getWorkingTimes04() {
-
-	}
-	
-	@Test
-	public void getWorkingTimes05() {
-
-	}
-	
-	@Test
-	public void getWorkingTimes06() {
-
-	}
-	
-	
-	@Test
-	public void getWorkerAvailability01() {
-
-	}
-	
-	@Test
-	public void getWorkerAvailability02() {
-
-	}
-	
-	@Test
-	public void getWorkerAvailability03() {
-
-	}
-	
-	@Test
-	public void getWorkerAvailability04() {
-
-	}
-	
-	@Test
-	public void getWorkerAvailability05() {
-
-	}
-	
-	@Test
-	public void getWorkerAvailability06() {
-
-	}
-	
-	
-	@Test
-	public void addEmployee01() {
-
-	}
-	
-	@Test
-	public void addEmployee02() {
-
-	}
-	
-	@Test
-	public void addEmployee03() {
-
-	}
-	
-	@Test
-	public void addEmployee04() {
-
-	}
-	
-	@Test
-	public void addEmployee05() {
-
-	}
-	
-	@Test
-	public void addEmployee06() {
-
 	}
 	
 	
 	@Test
 	public void getEmployeeList01() {
-
-	}
-	
-	@Test
-	public void getEmployeeList02() {
-
-	}
-	
-	@Test
-	public void getEmployeeList03() {
-
-	}
-	
-	@Test
-	public void getEmployeeList04() {
-
-	}
-	
-	@Test
-	public void getEmployeeList05() {
-
-	}
-	
-	@Test
-	public void getEmployeeList06() {
-
+		String[] employees = c.getEmployeeList();
+		assert(employees.length == 6);
 	}
 	
 	
 	@Test
 	public void getCustomerList01() {
-
-	}
-	
-	@Test
-	public void getCustomerList02() {
-
-	}
-	
-	@Test
-	public void getCustomerList03() {
-
-	}
-	
-	@Test
-	public void getCustomerList04() {
-
-	}
-	
-	@Test
-	public void getCustomerList05() {
-
-	}
-	
-	@Test
-	public void getCustomerList06() {
-
+		String[] customers = c.getCustomerList();
+		assert(customers.length == 7);
 	}
 	
 	
 	@Test
 	public void getServicesList01() {
+		String[] services = c.getServicesList();
+		System.out.println(services.length);
+		assert(services.length == 5);
+	}
+	
+	
+	@Test
+	public void getSummaryOfBookings01() {
+		String[][] bookings = c.getSummaryOfBookings();
+		assert(bookings.length == 8);
+	}
+	
 
+	@Test
+	public void loginTest01() {
+		assert(c.login("jarod", "naaahaahhaah") == null);
+	}
+
+	@Test
+	public void loginTest02() {
+		assert(false);
 	}
 	
 	@Test
-	public void getServicesList02() {
-
+	public void loginTest03() {
+		assert(c.login("yeahyeah", "nahnah") == null);
 	}
 	
 	@Test
-	public void getServicesList03() {
+	public void loginTest04() {
+		assert(!c.login("jarodwr", "1234").isOwner());
+	}
+	
+	//owner logging in test cases
+	@Test
+	public void loginTest05() {
+		assert(c.login("JoeDoe97", "ayylmao").isOwner());
+	}
+	
+	
+	//register a customer tests
+	@Test
+	public void registerTest01() {
+		try {
+			User customer = c.register("jarodwr", "asdfasdf", "asdfasdf", "jarod", "32 asa st", "0400440044");
+			System.out.println(customer);
+			assert(customer == null);
+		} catch(ValidationException e) {
 
+		}
 	}
 	
 	@Test
-	public void getServicesList04() {
+	public void registerTest02() {
+		try {
+			User customer = c.register("!@#$%^&*()??//", "asdf", "asdf", "asdf", "test", "0412341234");
+			assert(customer == null);
+		} catch(ValidationException e) {
 
+		}
 	}
 	
 	@Test
-	public void getServicesList05() {
-
+	public void registerTest03() {
+		try {
+			User customer = c.register("bruceW", "asdf", "asdf", "bruce", "asdfasdf", "fffffffffffff");
+			assert(customer == null);
+		} catch(ValidationException e) {
+			
+		}
 	}
 	
 	@Test
-	public void getServicesList06() {
-
+	public void registerTest04() {
+		try {
+			User customer = c.register("kill", "1234", "1234", "Jill", "12 who cares", "0412345687");
+			assert(customer != null);
+		} catch(ValidationException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+	
+	@Test
+	public void registerTest05() {
+		try {
+			User customer = c.register("CameronO", "", "", "Cameron", "yeah yeah", "0412341234");
+			assert(customer == null);
+		} catch(ValidationException e) {
+		}
+	}
+	
+	@Test
+	public void registerTest06() {
+		try {
+			User customer = c.register("", "1234", "1234", "1234", "asdf", "0412341234");
+			assert(customer == null);
+		} catch(ValidationException e) {
+		}
+	}
+	
+	
+	//add new employee tests
+	@Test
+	public void addEmployeeTest01() {
+		assert(!c.addEmployee("yeahnah", "0412341234", "12 blah st", null));
+	}
+	
+	@Test
+	public void addEmployeeTest02() {
+		assert(!c.addEmployee("testEmployee", "04sdfg41234", "21 no one cares where you live", c.getOwner()));
+	}
+	
+	@Test
+	public void addEmployeeTest03() {
+		assert(!c.addEmployee("", "0412341234", "21 no one cares where you live", c.getOwner()));
+	}
+	
+	@Test
+	public void addEmployeeTest04() {
+		assert(!c.addEmployee("yoyo@#$%@#$yoyo", "0412341234", "21 no one cares where you live", c.getOwner()));
+	}
+	
+	@Test
+	public void addEmployeeTest05() {
+		assert(!c.addEmployee("McMahon", "0412341234", "", c.getOwner()));
+	}
+	
+	@Test
+	public void addEmployeeTest06() {
+		assert(c.addEmployee("bowser", "0412341234", "21 no one cares where you live", c.getOwner()));
+	}
+	
+	
+	@Test
+	public void addService01() {
+		assert(!c.addService("?><><??!!@##$%^", 10000, "30"));
+	}
+	
+	@Test
+	public void addService02() {
+		assert(!c.addService("Light Massage", 10000, "90"));
+	}
+	
+	@Test
+	public void addService03() {
+		assert(!c.addService("New service", 2500, "-60"));
+	}
+	
+	@Test
+	public void addService04() {
+		assert(!c.addService("Absolutely new service", -2600, "60"));
+	}
+	
+	@Test
+	public void addService05() {
+		assert(c.addService("Definitely a new service", 9000, "90"));
+	}
+	
+	@Test
+	public void addService06() {
+		assert(!c.addService("Service with incorrect duration", 2000, "80"));
+	}
+	
+	
+	@Test
+	public void getCurrentBookings01() {
+		String[][] bookings = c.getCurrentBookings();
+		assert(bookings == null);
+	}
+	
+	@Test
+	public void getCurrentBookings02() {
+		db.createBooking("Massage Business", "jarodwr", "2", "1918726200", "1918728000", "Light Massage");	//TODO: Currently freezes the test
+		String[][] bookings = c.getCurrentBookings();
+		assert(bookings != null);
+	}
+	
+	
+	@Test
+	public void addNewBooking01() {
+		assert(c.addNewBooking("jarodwr", "1497524400", "Light Massage", "3"));
+	}
+	
+	@Test
+	public void addNewBooking02() {
+		assert(!c.addNewBooking("jarodwr", "1497524400", "Light Massage", "3"));
+	}
+	
+	@Test
+	public void addNewBooking03() {
+		assert(!c.addNewBooking("kate", "1497524500", "Light Massage", "3"));
+	}
+	
+	@Test
+	public void addNewBooking04() {
+		assert(c.addNewBooking("kate", "1497526200", "Light Massage", "3"));
+	}
+	
+	@Test
+	public void addNewBooking05() {
+		assert(!c.addNewBooking("non existent user", "1497506400", "Light Massage", "-1"));
+	}
+	
+	@Test
+	public void addNewBooking06() {
+		assert(!c.addNewBooking("jarodwr", "1497506400", "Light Massage", "2"));
+	}
+	
+	
+	@Test
+	public void removeBookings01() {
+		assert(!c.removeBooking(-1, "Massage Business"));
+	}
+	
+	@Test
+	public void removeBookings02() {
+		assert(!c.removeBooking(2, ""));
+	}
+	
+	@Test
+	public void removeBookings03() {
+		assert(c.removeBooking(1, "Massage Business"));
+	}
+	
+	@Test
+	public void removeBookings04() {
+		assert(c.removeBooking(60, "Massage Business"));
+	}
+	
+	@Test
+	public void removeBookings05() {
+		assert(c.removeBooking(0, "Massage Business"));
+	}
+	
+	
+	@Test
+	public void addWorkingTime01() {
+		assert(!c.addWorkingTime("1", "86400", "100", "50"));
+	}
+	
+	@Test
+	public void addWorkingTime02() {
+		assert(!c.addWorkingTime("1", "86400", "100", "100"));
+	}
+	
+	@Test
+	public void addWorkingTime03() {
+		assert(!c.addWorkingTime("1", "86400", "-100", "100"));
+	}
+	
+	@Test
+	public void addWorkingTime04() {
+		assert(c.addWorkingTime("1", "86400", "1000", "10000"));
+	}
+	
+	
+	@Test
+	public void getWorkingTimes01() {
+		String[][] workingTimes = c.getWorkingTimes("1");
+		assert(workingTimes[0][0].equals("1497513600"));
+	}
+	
+	@Test
+	public void getWorkingTimes02() {
+		String[][] workingTimes = c.getWorkingTimes("2");
+		assert(workingTimes[0][0].equals("1497506400"));
+	}
+	
+	@Test
+	public void getWorkingTimes03() {
+		String[][] workingTimes = c.getWorkingTimes("3");
+		assert(workingTimes[0][0].equals("1497508200"));
+		assert(workingTimes[1][0].equals("1497522600"));
+	}
+	
+	@Test
+	public void getWorkingTimes04() {
+		String[][] workingTimes = c.getWorkingTimes("-1");
+		assert(workingTimes == null || workingTimes.length == 0);
+	}
+	
+	@Test
+	public void getWorkingTimes05() {
+		String[][] workingTimes = c.getWorkingTimes("10");
+		assert(workingTimes == null || workingTimes.length == 0);
+	}
+	
+	
+	@Test
+	public void getWorkerAvailability01() {
+		String[][] availability = c.getWorkerAvailability("0");
+		assert(availability[0][0].equals("1800"));
+		assert(availability[1][0].equals("27000"));
+		assert(availability[2][0].equals("441000"));
+		assert(availability[3][0].equals("446400"));
+		assert(availability[4][0].equals("450000"));
+		assert(availability[5][0].equals("453600"));
+		assert(availability[6][0].equals("457200"));
+		assert(availability[7][0].equals("460800"));
+	}
+	
+	@Test
+	public void getWorkerAvailability02() {
+		String[][] availability = c.getWorkerAvailability("1");
+		assert(availability[0][0].equals("1800"));
+		assert(availability[1][0].equals("27000"));
+		assert(availability[2][0].equals("446400"));
+		assert(availability[3][0].equals("450000"));
+		assert(availability[4][0].equals("453600"));
+		assert(availability[5][0].equals("457200"));
+		assert(availability[6][0].equals("460800"));
+	}
+	
+	@Test
+	public void getWorkerAvailability03() {
+		String[][] availability = c.getWorkerAvailability("2");
+		assert(availability[0][0].equals("1800"));
+		assert(availability[1][0].equals("27000"));
+	}
+	
+	@Test
+	public void getWorkerAvailability04() {
+		String[][] availability = c.getWorkerAvailability("3");
+		assert(availability[0][0].equals("1800"));
+		assert(availability[1][0].equals("27000"));
+	}
+	
+	@Test
+	public void getWorkerAvailability05() {
+		String[][] availability = c.getWorkerAvailability("10");
+		assert(availability == null || availability.length == 0);
+	}
+	
+	@Test
+	public void getWorkerAvailability06() {
+		String[][] availability = c.getWorkerAvailability("-1");
+		assert(availability == null || availability.length == 0);
 	}
 	
 	
 	@Test
 	public void getEmployeeBookingAvailability01() {
-
+		String[][] bookingAvailability = c.getEmployeeBookingAvailability("0", new Date(0));
+		assert(bookingAvailability[0][0].equals("1497544200"));
+		assert(bookingAvailability[1][0].equals("1497506400"));
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability02() {
-
+		String[][] bookingAvailability = c.getEmployeeBookingAvailability("3", new Date(0));
+		assert(bookingAvailability[0][0].equals("1497522600"));
+		assert(bookingAvailability[1][0].equals("1497510000"));
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability03() {
-
-	}
-	
-	@Test
-	public void getEmployeeBookingAvailability04() {
-
-	}
-	
-	@Test
-	public void getEmployeeBookingAvailability05() {
-
-	}
-	
-	@Test
-	public void getEmployeeBookingAvailability06() {
-
+		assert(c.getEmployeeBookingAvailability("3", new Date(2147410000)).length == 0);
 	}
 }
