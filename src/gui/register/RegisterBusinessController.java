@@ -361,9 +361,9 @@ public class RegisterBusinessController{
     {
     	try {
     		//try to register a user, it will throw an exception if it is invalid
-    		c.registerBusiness(businessName.getText(), businessAddress.getText(), businessPhoneNumber.getText());
-    		c.registerOwner(username.getText(), password.getText(), selectedBusiness, passwordCon.getText(), 
-        			name.getText(), address.getText(), number.getText());
+    		c.registerBusiness(businessName.getText(),  businessAddress.getText(), businessPhoneNumber.getText());
+    		c.registerOwner(username.getText(), password.getText(),  selectedBusiness,  
+        			name.getText(), address.getText(), number.getText(), passwordCon.getText());
     		//if it doesnt throw an exception then user was created and alert the user
 			registerErrorMessage.setStyle("-fx-text-fill: GREEN");
 			registerErrorMessage.setText("User created!!");

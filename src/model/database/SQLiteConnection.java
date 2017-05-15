@@ -304,6 +304,7 @@ public class SQLiteConnection {
 
 			if (rs != null) {
 				LOGGER.log(Level.FINE, "Failed to add customer into the database because a customer with the same username exists with username: "+ username);
+				rs.close();
 				return false;
 			}
 
@@ -350,7 +351,7 @@ public class SQLiteConnection {
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setString(1, username);
 			pst.executeUpdate();
-
+			rs.close();
 			return true;
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, e.getMessage());

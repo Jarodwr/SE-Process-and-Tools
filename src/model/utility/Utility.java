@@ -53,6 +53,7 @@ public class Utility {
 			if (username.equals("admin")) {
 				Admin admin = new Admin(rs.getString("password"));
 				LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
+				rs.close();
 				return admin;
 			}
 			else if (db.getOwnerRow(username) != null) {
