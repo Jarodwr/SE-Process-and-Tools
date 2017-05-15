@@ -48,13 +48,15 @@ public class Utility {
 		ResultSet rs;
 		String business;
 		try {
-			String type = db.findUserType();
-			business = db.findUserBusiness();
+			String type = db.findUserType(username);
+			if (type != "admin") {
+				business = db.findUserBusiness(username);
+			}
 			rs = db.getUserRow(username);
 			if (db.getOwnerRow(username) != null) {
 				ResultSet rs2;
 				rs2 = db.getOwnerRow(username);
-				String business = rs2.getString("businessname");
+				business = rs2.getString("businessname");
 				rs2.close();
 
 				rs = db.getUserRow(username);
