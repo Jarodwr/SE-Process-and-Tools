@@ -23,6 +23,7 @@ import model.utility.Utility;
 public class Controller {
 	private Logger LOGGER = Logger.getLogger("main");
 	public Utility utilities = new Utility();
+	private static final String nameCheckerRegEx = "[A-Za-z -']+";
 	
 	public static final String[] Weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -48,11 +49,15 @@ public class Controller {
 		LOGGER.log(Level.INFO, "LOGIN: Login details: Username - " + username + ", Password - " + password);
 		//Search for the user in the arrayList and make sure the password is correct
 		User user = utilities.authenticate(username, password);
-		//asdfadsf
-		if (user == null)
+
+		if (user == null) {
 			LOGGER.log(Level.INFO, "LOGIN: Failed");
+		}
 		else
+		{
+			utilities.setCurrentBusiness(user.getBusinessName());
 			LOGGER.log(Level.INFO, "LOGIN: Success");
+		}
 
 		return user;
 	}
@@ -64,7 +69,7 @@ public class Controller {
 	 * @return returns the user created or null it it fails validation
 	 * @throws ValidationException 
 	 */
-	public User register(String username, String password, String passwordConfirmation, String name, String address, String phoneno) throws ValidationException {
+	public User register(String username, String password, String business, String passwordConfirmation, String name, String address, String phoneno) throws ValidationException {
 		
 		//validate all the user input to match the regular expression
 		
@@ -85,7 +90,7 @@ public class Controller {
 			throw new ValidationException("Passwords do not match!");
 		}
 		
-		if(!name.matches("[A-Za-z]+")) {
+		if(!name.matches(nameCheckerRegEx)) {
 			LOGGER.log(Level.INFO, "REGISTER: Failure, Name does not match regex");
 			throw new ValidationException("Name must only contain letters!");
 		}
@@ -101,7 +106,7 @@ public class Controller {
 		}
 		
 		// if they all pass then try to create a new user and return the created user
-		if (utilities.addCustomerToDatabase(username.toLowerCase(), password, name, address, phoneno)) {
+		if (utilities.addCustomerToDatabase(username.toLowerCase(), password, business, name, address, phoneno)) {
 			LOGGER.log(Level.INFO, "REGISTER: Success, user added to system");
 			return utilities.searchUser(username);
 		} else {
@@ -322,7 +327,7 @@ public class Controller {
 		id = Integer.toString(nextId);
 		
 		//validate all the user inputs
-		if(name.matches("[A-Za-z -']+") &&
+		if(name.matches(nameCheckerRegEx) &&
 				phone.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
 				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
 			if (utilities.addNewEmployee(id, business, name, address, phone, 0)) { //try to add the new employee to the database
@@ -385,5 +390,73 @@ public class Controller {
 
 	public Timetable getOpeningHours(String currentBusiness) {
 		return utilities.getOpeningHours(currentBusiness);
+	}
+
+	public String[] getBusinessList() {
+		return utilities.getBusinessList();
+		
+	}
+
+	public void registerBusiness(String businessName, String address, String phoneNumber) throws ValidationException {
+		if(!businessName.matches(nameCheckerRegEx)) {
+			LOGGER.log(Level.INFO, "REGISTER: Failure, Business name does not match regex Error 1");
+			throw new ValidationException("Name must only contain letters!");
+		}
+		
+		if(!address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
+			LOGGER.log(Level.INFO, "REGISTER: Failure, Business address does not match regex");
+			throw new ValidationException("Address is not valid!");
+		}
+		
+		if(!phoneNumber.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
+			LOGGER.log(Level.INFO, "REGISTER: Failure, Business phone number does not match regex");
+			throw new ValidationException("Mobile number is not valid!");
+		}
+		
+	}
+
+	public User registerOwner(String username, String password, String business, String name, String address,
+			String phoneNumber, String passwordConfirmation) throws ValidationException {
+		//validate all the user input to match the regular expression
+		
+				LOGGER.log(Level.INFO, "REGISTER: Registration details: "
+						+ "Username - " + username + 
+						", Password - " + password + 
+						", Name - " + name + 
+						", Address - " + address + 
+						", Phone Number - " + phoneNumber);
+				
+				if(!username.matches("[A-Za-z0-9]+"))	{
+					LOGGER.log(Level.INFO, "REGISTER: Failure, username does not match regex");
+					throw new ValidationException("Username must only contain letters and numbers!");
+				}
+				
+				
+				if(!name.matches(nameCheckerRegEx)) {
+					LOGGER.log(Level.INFO, "REGISTER: Failure, Name does not match regex");
+					throw new ValidationException("Name must only contain letters Error 5!");
+				}
+				
+				if(!address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
+					LOGGER.log(Level.INFO, "REGISTER: Failure, Address does not match regex");
+					throw new ValidationException("Address is not valid!");
+				}
+				
+				if(!phoneNumber.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
+					LOGGER.log(Level.INFO, "REGISTER: Failure, phone number does not match regex");
+					throw new ValidationException("Mobile number is not valid!");
+				}
+				
+				// if they all pass then try to create a new user and return the created user
+				if (utilities.addOwnerToDatabase(username.toLowerCase(), password, business, name, address, phoneNumber)) {
+					LOGGER.log(Level.INFO, "REGISTER: Success, user added to system");
+					return utilities.searchUser(username);
+				} else {
+					//	inform the user that there is a user with that name and return null
+					LOGGER.log(Level.INFO, "REGISTER: Failure, username already taken");
+					throw new ValidationException("Username already exists in the system!");
+				}
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -297,13 +297,14 @@ public class SQLiteConnection {
 	 * @param mobileno	Customer's mobile number
 	 * @return success True if creation is successful, else false.
 	 */
-	public boolean createCustomer(String username, String password, String name, String address, String mobileno) {
+	public boolean createCustomer(String username, String password, String business, String name, String address, String mobileno) {
 		Connection c = this.conn;
 		try {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
 
 			if (rs != null) {
 				LOGGER.log(Level.FINE, "Failed to add customer into the database because a customer with the same username exists with username: "+ username);
+				rs.close();
 				return false;
 			}
 
@@ -315,6 +316,12 @@ public class SQLiteConnection {
 			ps.setString(5, mobileno);
 			ps.executeUpdate();
 			ps.close();
+			
+			PreparedStatement ps2 = c.prepareStatement("INSERT INTO UserBusinessTable VALUES (?, ?);"); // this creates a new user
+			ps2.setString(1, username);
+			ps2.setString(2, business);
+			ps2.executeUpdate();
+			ps2.close();
 
 			return true;
 		} catch (SQLException e) {
@@ -344,7 +351,7 @@ public class SQLiteConnection {
 			PreparedStatement pst = c.prepareStatement(query);
 			pst.setString(1, username);
 			pst.executeUpdate();
-
+			rs.close();
 			return true;
 		} catch (SQLException e) {
 			LOGGER.log(Level.WARNING, e.getMessage());
@@ -420,10 +427,10 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * Adds a new buisness into the database
-	 * @param businessname	Name of the buisness
-	 * @param address	Buisness' address
-	 * @param phonenumber	Buisness' phone number
+	 * Adds a new business into the database
+	 * @param businessname	Name of the business
+	 * @param address	Business' address
+	 * @param phonenumber	Business' phone number
 	 * @return success True if creation is successful, false if unsuccessful.
 	 */
 	
@@ -1192,5 +1199,22 @@ public class SQLiteConnection {
 			e.printStackTrace();
 		}
 		return true;
+	}
+
+	public ResultSet getUserBusinessRow(String username) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM UserBusinessTable WHERE Username=?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setString(1, username);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else {
+			LOGGER.log(Level.INFO, "Failed to find an owner user in the database with the username: "+username);
+			return null;
+		}
 	}
 }

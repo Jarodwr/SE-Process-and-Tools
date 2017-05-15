@@ -26,6 +26,7 @@ public class SQLiteTableCreation {
 		createBusinessLogoTable();
 		createBusinessHeaderTable();
 		createBusinessColorTable();
+		createUserBusinessTable();
 	}
 	
 	/**
@@ -83,6 +84,18 @@ public class SQLiteTableCreation {
 				catch(Exception e){
 					LOGGER.warning(e.getMessage());
 				}
+	}
+	
+	public void createUserBusinessTable() {
+		String sql = "CREATE TABLE IF NOT EXISTS UserBusinessTable (businessname Varchar(255), username Varchar(255), Foreign Key(businessname) references Businessinfo(businessname), Foreign Key(username) references Userinfo(username))";
+		try {
+			Connection c = this.conn;
+			Statement stmt = c.createStatement();
+	            stmt.execute(sql);
+		}
+		catch(Exception e){
+			LOGGER.warning(e.getMessage());
+		}
 	}
 	
 	/**

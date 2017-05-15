@@ -36,10 +36,17 @@ public class Main {
 		LOGGER.setUseParentHandlers(false);
 		LOGGER.warning("test");
 		
+		createAdminUser(n);
+		
 		debugCreateOwnerBusiness(n);
 		GuiMain.main(args);
 	}
 	
+	private static void createAdminUser(SQLiteConnection n) {
+		n.createCustomer("admin", "banana", "none", "none", "none", "none");
+		
+	}
+
 	public static void debugCreateOwnerBusiness(SQLiteConnection n) {
 		n.createBusiness("SARJ's Milk Business", "Cherry Lane", "0123456789");
 		n.createOwner("SARJ's Milk Business", "ownertest", "1234", "Name", "Address", "MobileNo");

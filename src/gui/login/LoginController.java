@@ -1,10 +1,12 @@
 package gui.login;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import controller.Controller;
 import gui.customer.CustomerViewController;
 import gui.owner.OwnerViewController;
+import gui.register.RegisterBusinessController;
 import gui.register.RegisterController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,7 +31,8 @@ import model.utility.Utility;
  */
 public class LoginController 
 {
-	
+
+	Logger LOGGER = Logger.getLogger("main");
 	private Controller c; // named c to avoid confusion with JavaFX 2's controller classes, they are different things
 
 	//dependency injection to inject an instance of the controller object into the controller class
@@ -83,7 +86,18 @@ public class LoginController
     		User u = this.c.login(login_username.getText(), login_password.getText());
     		//if the user doesn't exist then end method and display the error message
 	    	if (u == null) { // fail
-	    		// display incorrect username or password screen
+	    		LOGGER.warning("failed to log in, user doesn't exist.");
+	    	} else if (u.isAdmin()) {
+ 	    		//if the user that us returned then go to the owner view
+ 	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/register/RegisterBusiness.fxml"));
+ 		    	BorderPane root = loader.load();
+ 		    	Scene ownerview = new Scene(root, 900, 600);
+ 				main.setScene(ownerview);
+ 				RegisterBusinessController controller = loader.getController();
+ 				//inject variables into the controller class for the owner view
+ 		    	controller.initData(main, this.c);
+ 		    	//show the new stage to the user
+ 		    	main.show();
 	    	} else if (u.isOwner()) {
 	    		//if the user that us returned then go to the owner view
 	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/owner/OwnerView.fxml"));
