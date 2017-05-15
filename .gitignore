@@ -3,3 +3,4 @@
 /logs/
 .classpath
 *.classpath
+/target/

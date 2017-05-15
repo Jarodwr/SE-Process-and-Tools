@@ -9,6 +9,7 @@ import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -82,7 +83,7 @@ public class OwnerChangeWorkingTimes {
     	try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("WorkingTimesPicker.fxml"));
 			timeMenu.getChildren().clear();
-			timeMenu.getChildren().add(loader.load());
+			timeMenu.getChildren().add((Node) loader.load());
 			
 			time = loader.getController();
 			time.init(timeMenu);

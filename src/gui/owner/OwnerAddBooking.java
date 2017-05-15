@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -157,7 +158,7 @@ public class OwnerAddBooking {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimePicker.fxml"));
 			timeMenu.getChildren().clear();
-			timeMenu.getChildren().add(loader.load());
+			timeMenu.getChildren().add((Node) loader.load());
 			
 			time = loader.getController();
 			time.init(timeMenu);
@@ -166,7 +167,6 @@ public class OwnerAddBooking {
 		}
     	
     	serviceMenu.showingProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	
             	time.deselectAll();

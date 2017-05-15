@@ -87,7 +87,7 @@ public class OwnerViewBookingsController {
 			//open page
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewBookingSummary.fxml"));
 			b.getChildren().clear();
-			b.getChildren().add(loader.load());
+			b.getChildren().add((Node) loader.load());
 			OwnerViewBookingsController controller = loader.getController();
 			//inject variables
 			controller.init(c, o, b);

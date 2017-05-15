@@ -144,9 +144,8 @@ public class TimePicker {
         return null;
     }
     
-    protected void addPaneListener(Pane p, int i) {
+    protected void addPaneListener(final Pane p, final int i) {
     	p.onMouseClickedProperty().set(new EventHandler<MouseEvent>(){
-			@Override
 			public void handle(MouseEvent arg0) {
 				p.setStyle(getAppropriateStyle(i)[2]);
 				
@@ -169,7 +168,6 @@ public class TimePicker {
     	});
     	
     	p.onMouseEnteredProperty().set(new EventHandler<MouseEvent>(){
-			@Override
 			public void handle(MouseEvent arg0) {
 				
 				for (int j = i; j < i + Math.min(duration, 48); j++) {
@@ -186,7 +184,6 @@ public class TimePicker {
     	});
     	
     	p.onMouseExitedProperty().set(new EventHandler<MouseEvent>(){
-			@Override
 			public void handle(MouseEvent arg0) {
 				for (int j = i; j < i + Math.min(duration, 48); j++) {
 					if (j > 47 && j - 48 < 47) {

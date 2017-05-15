@@ -8,6 +8,7 @@ import gui.login.LoginController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -53,7 +54,7 @@ public class CustomerViewController {
     	try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomerAddBooking.fxml"));
 			mainScreen.getChildren().clear();
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			CustomerAddBooking controller = loader.getController();
 		    controller.init(c, customer);
 			
@@ -69,7 +70,7 @@ public class CustomerViewController {
     	try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomerViewBookingSummery.fxml"));
 			mainScreen.getChildren().clear();
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			CustomerViewBookingsController controller = loader.getController();
 		    controller.init(c, customer);
 			

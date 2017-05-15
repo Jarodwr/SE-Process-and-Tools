@@ -8,6 +8,7 @@ import gui.login.LoginController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -78,7 +79,7 @@ public class OwnerViewController {
     		//open the page in the mainScreen
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddBooking.fxml"));
 			mainScreen.getChildren().clear();
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			OwnerAddBooking addBookingController = loader.getController();
 			//inject variables
 			addBookingController.init(c);
@@ -102,7 +103,7 @@ public class OwnerViewController {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployee.fxml"));
 			mainScreen.getChildren().clear();
 			//add to main screen
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			OwnerAddEmployee addEmployeeController = loader.getController();
 			//inject variables
 			addEmployeeController.init(c);
@@ -130,7 +131,7 @@ public class OwnerViewController {
 			
 			mainScreen.getChildren().clear();
 			//add to main screen
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			OwnerAddService controller = loader.getController();
 			//inject variables
 			controller.init(this.c);
@@ -157,7 +158,7 @@ public class OwnerViewController {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerChangeWorkingTimes.fxml"));
 			mainScreen.getChildren().clear();
 			//add to main screen
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			OwnerChangeWorkingTimes controller = loader.getController();
 			//inject variables
 		    controller.init(c);
@@ -184,7 +185,7 @@ public class OwnerViewController {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerAddEmployeeAvailabilities.fxml"));
 			mainScreen.getChildren().clear();
 			//add to the main screen
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			OwnerAddEmployeeAvailabilitiesController controller = loader.getController();
 			//inject variables
 		    controller.init(c);
@@ -235,7 +236,7 @@ public class OwnerViewController {
 			//open page
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewBookingSummary.fxml"));
 			mainScreen.getChildren().clear();
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			OwnerViewBookingsController controller = loader.getController();
 			//inject variables
 			controller.init(c, (Owner) u, mainScreen);
@@ -260,7 +261,7 @@ public class OwnerViewController {
 			//open the page
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerViewWorkingTimes.fxml"));
 			mainScreen.getChildren().clear();
-			mainScreen.getChildren().add(loader.load());
+			mainScreen.getChildren().add((Node) loader.load());
 			OwnerViewWorkingTimesController controller = loader.getController();
 			//get the list of employees
 			String[] allEmployees = this.c.getEmployeeList();
