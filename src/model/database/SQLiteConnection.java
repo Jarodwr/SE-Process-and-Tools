@@ -426,10 +426,10 @@ public class SQLiteConnection {
 	}
 	
 	/**
-	 * Adds a new buisness into the database
-	 * @param businessname	Name of the buisness
-	 * @param address	Buisness' address
-	 * @param phonenumber	Buisness' phone number
+	 * Adds a new business into the database
+	 * @param businessname	Name of the business
+	 * @param address	Business' address
+	 * @param phonenumber	Business' phone number
 	 * @return success True if creation is successful, false if unsuccessful.
 	 */
 	

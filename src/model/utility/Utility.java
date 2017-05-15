@@ -50,8 +50,9 @@ public class Utility {
 		ResultSet rs;
 		try {
 			rs = db.getUserRow(username);
-			if (username.toLowerCase() == "admin") {
+			if (username.equals("admin")) {
 				Admin admin = new Admin(rs.getString("password"));
+				LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
 				return admin;
 			}
 			else if (db.getOwnerRow(username) != null) {
@@ -69,6 +70,7 @@ public class Utility {
 				ResultSet rs2;
 				rs2 = db.getUserBusinessRow(username);
 				String business = rs2.getString("businessname");
+				rs2.close();
 				rs = db.getUserRow(username);
 				
 				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
@@ -537,7 +539,7 @@ public class Utility {
 				ResultSet rs2;
 				rs2 = db.getUserBusinessRow(rs.getString(1));
 				String business = rs2.getString("businessname");
-				
+				rs2.close();
 				customers.add(new Customer(rs.getString(1), rs.getString(2), business, rs.getString(3), rs.getString(4), rs.getString(5)));
 			} while (rs.next());
 			
@@ -607,7 +609,9 @@ public class Utility {
 				rs.close();
 				return b;
 			}
-			rs.close();
+			if (rs != null){
+				rs.close();
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -648,6 +652,7 @@ public class Utility {
 				else {
 					Service s = new Service(rs.getString("servicename"), Integer.parseInt(rs.getString("serviceprice")), Integer.parseInt(rs.getString("serviceminutes")));
 					servs.add(s);
+					rs.close();
 				}
 			}
 			return servs;
@@ -706,6 +711,7 @@ public class Utility {
 			}
 			else {
 				t.mergeTimetable(rs.getString(1));
+				rs.close();
 				return t;
 			}
 		} catch (SQLException e) {
@@ -722,8 +728,11 @@ public class Utility {
 			if (rs == null) {
 				return ""; // TODO HEX FOR RED
 			}
-			else
-				return rs.getString("colorHex");
+			else {
+				String colorHex = rs.getString("colorHex");
+				rs.close();
+				return colorHex;
+			}
 		} catch (SQLException e) {
 			return ""; // TODO HEX FOR RED
 		}
@@ -754,8 +763,11 @@ public class Utility {
 			if (rs == null) {
 				return "";
 			}
-			else
-				return rs.getString("header");
+			else {
+				String header = rs.getString("header");
+				rs.close();
+				return header;
+			}
 		} catch (SQLException e) {
 			return "";
 		}
@@ -805,5 +817,54 @@ public class Utility {
 		catch(SQLException e) {
 			LOGGER.warning(e.getMessage());
 		}
+	}
+
+	public boolean checkIfUserIsRegisteredToBusiness(String username, String business) {
+		try {
+				ResultSet rs = db.getUserBusinessRow(username);
+				if (rs == null) {
+					return false;
+				}
+				if (rs.getString("businessname") == business) {
+					rs.close();
+					return true;
+				}
+				return true; // needs to be changed to false if product owner changes requirements
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.warning(e.getMessage());
+				return false;
+			}
+		
+	}
+
+	public String[] getBusinessList() {
+		try {
+			ResultSet rs = db.genericGetQuery("SELECT * FROM Businessinfo");
+			if (rs == null) {
+				return null;
+			}
+			ArrayList<String> businessList = new ArrayList<String>();
+			do {
+				businessList.add(rs.getString("businessname"));
+			} while(rs.next());
+			String[] businessStringArray = new String[businessList.size()];
+			int i = 0;
+			for(String s : businessList) {
+				businessStringArray[i] = s;
+				i++;
+			}
+			rs.close();
+			return businessStringArray;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.warning(e.getMessage());
+			return null;
+		}
+	}
+
+	public boolean addOwnerToDatabase(String username, String password, String business, String name, String address,
+			String phoneNumber) {
+		return db.createOwner(username, password, business, name, address, phoneNumber);
 	}
 }

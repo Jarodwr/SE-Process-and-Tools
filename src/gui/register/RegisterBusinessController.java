@@ -20,7 +20,7 @@ import model.utility.Utility;
 import controller.Controller;
 import gui.login.LoginController;
 
-public class RegisterController{
+public class RegisterBusinessController{
 
     //variables injected from Register.fxml
 	@FXML
@@ -60,7 +60,14 @@ public class RegisterController{
     private Button backButton;
     
     @FXML
-    private ComboBox<String> chooseBusiness;
+    private TextField businessName;
+    
+    @FXML
+    private TextField businessPhoneNumber;
+    
+    @FXML
+    private TextField businessAddress;
+    
     
     
     //variables to be injected from where it is created
@@ -124,6 +131,23 @@ public class RegisterController{
     	}
     }
     
+    void checkBusinessAddress()
+    {
+    	//checks the address against regex
+    	if(!businessAddress.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+[,]?\\s[a-zA-Z])+")) {
+    		//alert user that it is not valid
+    		businessAddress.setStyle("-fx-border-color: red");
+			registerErrorMessage.setStyle("-fx-text-fill: RED");
+	    	registerErrorMessage.setText("Enter a valid Address!");
+    	} else {
+    		//if it is valid mark as good
+    		businessAddress.setStyle("-fx-border-color: green");
+			//check all fields and if true remove error message
+			if(checkFields())
+				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
+    	}
+    }
+    
     /*
      * this method check the password and shows errors on why it doesnt match
      */
@@ -152,7 +176,7 @@ public class RegisterController{
 			if(!pass.matches("^(?=.*[!`~@#\\$%\\^&\\+=]).{8,}$"))
 			{
 				//if it doesn't have a special character, print error
-				registerErrorMessage.setText("Password must contain atleast 1 special charater!");
+				registerErrorMessage.setText("Password must contain atleast 1 special character!");
 			}
 			if(!pass.matches(".{8,}"))
 			{
@@ -179,7 +203,7 @@ public class RegisterController{
     		//if it doesn't, print error
 			passwordCon.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Passwords Do not Match!");
+	    	registerErrorMessage.setText("Passwords do not match!");
 		} else {
 			//if it passes show good box border colour
 			passwordCon.setStyle("-fx-border-color: green");
@@ -207,6 +231,23 @@ public class RegisterController{
 		}
     }
     
+    void checkBusinessName()
+    {
+    	//check if it only contains certain characters
+    	if(!businessName.getText().matches("[A-Za-z -']+")) {
+    		//if it doesn't, print error
+			businessName.setStyle("-fx-border-color: red");
+			registerErrorMessage.setStyle("-fx-text-fill: RED");
+	    	registerErrorMessage.setText("Name must only contain only letteres!");
+		} else {
+			//if it passes show good box border colour
+			businessName.setStyle("-fx-border-color: green");
+			//check all fields and if true remove error message
+			if(checkFields())
+				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
+		}
+    }
+    
     void checkPhoneNumber()
     {
     	if(!number.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
@@ -216,6 +257,21 @@ public class RegisterController{
 		} else {
 			//if it passes show good box border colour
 			number.setStyle("-fx-border-color: green");
+			//check all fields and if true remove error message
+			if(checkFields())
+				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
+		}
+    }
+    
+    void checkBusinessPhoneNumber()
+    {
+    	if(!businessPhoneNumber.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
+			businessPhoneNumber.setStyle("-fx-border-color: red");
+			registerErrorMessage.setStyle("-fx-text-fill: RED");
+	    	registerErrorMessage.setText("Enter a valid Phone Number!");
+		} else {
+			//if it passes show good box border colour
+			businessPhoneNumber.setStyle("-fx-border-color: green");
 			//check all fields and if true remove error message
 			if(checkFields())
 				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
@@ -249,6 +305,9 @@ public class RegisterController{
     	checkConfPassword();
     	checkPassword();
     	checkUsername();
+    	checkBusinessName();
+    	checkBusinessPhoneNumber();
+    	checkBusinessAddress();
     }
     
     /*
@@ -284,7 +343,7 @@ public class RegisterController{
     		if(!registerButton.isDisabled())
     		{
     			//if all good, try to create user
-    			createUser();
+    			createBusinessAndOwner();
     		}
         }
     }
@@ -294,21 +353,16 @@ public class RegisterController{
     void onRegisterClick(ActionEvent event) 
     {
     	//try to create a user
-    	createUser();
-    }
-    
-    @FXML
-    void chooseBusinessAction(ActionEvent event) {
-    	this.selectedBusiness = chooseBusiness.getSelectionModel().getSelectedItem();
+    	createBusinessAndOwner();
     }
     
     //try to create a user
-    void createUser()
+    void createBusinessAndOwner()
     {
     	try {
-    		checkBusiness(selectedBusiness);
     		//try to register a user, it will throw an exception if it is invalid
-    		c.register(username.getText(), password.getText(), selectedBusiness, passwordCon.getText(), 
+    		c.registerBusiness(businessName.getText(), businessAddress.getText(), businessPhoneNumber.getText());
+    		c.registerOwner(username.getText(), password.getText(), selectedBusiness, passwordCon.getText(), 
         			name.getText(), address.getText(), number.getText());
     		//if it doesnt throw an exception then user was created and alert the user
 			registerErrorMessage.setStyle("-fx-text-fill: GREEN");
@@ -350,11 +404,6 @@ public class RegisterController{
     {
     	this.c = c;
     	main = stage;
-    	
-    	String[] businesses = c.getBusinessList();
-    	if (businesses != null) {
-    		chooseBusiness.getItems().addAll(businesses);
-    	}
     }
     
     //checks all fields against regex's

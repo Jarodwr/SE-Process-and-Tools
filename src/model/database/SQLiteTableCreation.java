@@ -26,6 +26,7 @@ public class SQLiteTableCreation {
 		createBusinessLogoTable();
 		createBusinessHeaderTable();
 		createBusinessColorTable();
+		createUserBusinessTable();
 	}
 	
 	/**
