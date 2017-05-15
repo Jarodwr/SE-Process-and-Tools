@@ -16,6 +16,7 @@ import model.period.Period;
 import model.period.Shift;
 import model.service.Service;
 import model.timetable.Timetable;
+import model.users.Admin;
 import model.users.Customer;
 import model.users.Owner;
 import model.users.User;
@@ -49,7 +50,11 @@ public class Utility {
 		ResultSet rs;
 		try {
 			rs = db.getUserRow(username);
-			if (db.getOwnerRow(username) != null) {
+			if (username.toLowerCase() == "admin") {
+				Admin admin = new Admin(rs.getString("password"));
+				return admin;
+			}
+			else if (db.getOwnerRow(username) != null) {
 				ResultSet rs2;
 				rs2 = db.getOwnerRow(username);
 				String business = rs2.getString("businessname");
@@ -61,8 +66,12 @@ public class Utility {
 				return owner;
 			}
 			else {
+				ResultSet rs2;
+				rs2 = db.getUserBusinessRow(username);
+				String business = rs2.getString("businessname");
 				rs = db.getUserRow(username);
-				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				
+				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
 				rs.close();
 				return customer;
 			}
@@ -457,8 +466,8 @@ public class Utility {
 	 * Gets the details of the customer and creates a user from it.
 	 * @return If creation is a success, return true. Else return false.
 	 */
-	public boolean addCustomerToDatabase(String username, String password, String name, String address, String mobileno) {
-		return db.createCustomer(username, password, name, address, mobileno);
+	public boolean addCustomerToDatabase(String username, String password, String business, String name, String address, String mobileno) {
+		return db.createCustomer(username, password, business, name, address, mobileno);
 	}
 	
 	/**
@@ -525,7 +534,11 @@ public class Utility {
 		try {
 			ResultSet rs = db.getAllCustomers();
 			do {
-				customers.add(new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+				ResultSet rs2;
+				rs2 = db.getUserBusinessRow(rs.getString(1));
+				String business = rs2.getString("businessname");
+				
+				customers.add(new Customer(rs.getString(1), rs.getString(2), business, rs.getString(3), rs.getString(4), rs.getString(5)));
 			} while (rs.next());
 			
 			if (!customers.isEmpty()) {
