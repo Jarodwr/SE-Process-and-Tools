@@ -52,6 +52,7 @@ public class Controller {
 		if (user == null)
 			LOGGER.log(Level.INFO, "LOGIN: Failed");
 		else
+			utilities.setCurrentBusiness(user.getBusinessName());
 			LOGGER.log(Level.INFO, "LOGIN: Success");
 
 		return user;
@@ -64,7 +65,7 @@ public class Controller {
 	 * @return returns the user created or null it it fails validation
 	 * @throws ValidationException 
 	 */
-	public User register(String username, String password, String passwordConfirmation, String name, String address, String phoneno) throws ValidationException {
+	public User register(String username, String password, String business, String passwordConfirmation, String name, String address, String phoneno) throws ValidationException {
 		
 		//validate all the user input to match the regular expression
 		
@@ -101,7 +102,7 @@ public class Controller {
 		}
 		
 		// if they all pass then try to create a new user and return the created user
-		if (utilities.addCustomerToDatabase(username.toLowerCase(), password, name, address, phoneno)) {
+		if (utilities.addCustomerToDatabase(username.toLowerCase(), password, business, name, address, phoneno)) {
 			LOGGER.log(Level.INFO, "REGISTER: Success, user added to system");
 			return utilities.searchUser(username);
 		} else {

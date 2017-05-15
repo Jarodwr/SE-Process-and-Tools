@@ -84,6 +84,17 @@ public class LoginController
     		//if the user doesn't exist then end method and display the error message
 	    	if (u == null) { // fail
 	    		// display incorrect username or password screen
+	    	} else if (u.isAdmin()) {
+ 	    		//if the user that us returned then go to the owner view
+ 	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/owner/OwnerView.fxml"));
+ 		    	BorderPane root = loader.load();
+ 		    	Scene ownerview = new Scene(root, 900, 600);
+ 				main.setScene(ownerview);
+ 				OwnerViewController controller = loader.getController();
+ 				//inject variables into the controller class for the owner view
+ 		    	controller.init(main, this.c, u);
+ 		    	//show the new stage to the user
+ 		    	main.show();
 	    	} else if (u.isOwner()) {
 	    		//if the user that us returned then go to the owner view
 	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/owner/OwnerView.fxml"));

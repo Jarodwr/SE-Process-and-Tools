@@ -5,14 +5,12 @@ package model.users;
  */
 public class Owner extends User {
 
-	private String businessName;
 	private String name;
 	private String address;
 	private String phoneNumber;
 	
-	public Owner(String username, String password, String businessName, String businessOwnerName, String address, String phoneNumber) {
-		super(username, password);
-		this.businessName = businessName;
+	public Owner(String username, String password, String business, String businessOwnerName, String address, String phoneNumber) {
+		super(username, password, business);
 		this.name = businessOwnerName;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
@@ -33,10 +31,6 @@ public class Owner extends User {
 				};
 	}
 	
-	public String getBusinessName() {
-		return this.businessName;
-	}
-	
 	public String getUsername() {
 		return this.username;
 	}
@@ -52,7 +46,7 @@ public class Owner extends User {
 	@Override
 	public String toString() {
 		
-		return this.username + ":" + this.password + ":" + this.businessName + ":" + this.name + ":" + this.address + ":" + this.phoneNumber;
+		return this.username + ":" + this.password + ":" + this.business + ":" + this.name + ":" + this.address + ":" + this.phoneNumber;
 	}
 	
 	public boolean isOwner() {

@@ -7,6 +7,7 @@ public abstract class User {
 
 	protected String username;
 	protected String password;
+	protected String business;
 	
 	/**
 	 * Current format of permissions is as follows:
@@ -37,13 +38,18 @@ public abstract class User {
 			true	//Log out
 			};
 	
-	public User(String username, String password) {
+	public User(String username, String password, String business) {
 		this.username = username;
 		this.password = password;
+		this.business = business;
 	}
 	
 	public String getUsername() {
 		return this.username;
+	}
+	
+	public String getBusinessName() {
+		return this.business;
 	}
 	
    /**
@@ -61,6 +67,10 @@ public abstract class User {
 	}
 	
 	public boolean isOwner() {
+		return false;
+	}
+	
+	public boolean isAdmin() {
 		return false;
 	}
 	
