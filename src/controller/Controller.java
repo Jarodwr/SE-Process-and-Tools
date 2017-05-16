@@ -358,13 +358,18 @@ public class Controller {
 		return employees;
 	}
 	public String[] getCustomerList() {
-		Customer[] eList = utilities.getAllCustomers();
-		String[] employees = new String[eList.length];
-		
-		for (int i = 0; i < eList.length; i++)
-			employees[i] = eList[i].getUsername() + ":" + eList[i].getName();
-		
-		return employees;
+		Customer[] cList = utilities.getAllCustomers();
+		if (cList != null) {
+			String[] customers = new String[cList.length];
+			
+			for (int i = 0; i < cList.length; i++)
+				customers[i] = cList[i].getUsername() + ":" + cList[i].getName();
+			
+			return customers;
+		} else {
+			return new String[0];
+		}
+
 
 	}
 

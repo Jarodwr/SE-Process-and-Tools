@@ -537,11 +537,17 @@ public class Utility {
 		try {
 			ResultSet rs = db.getAllCustomers();
 			do {
-				ResultSet rs2;
-				rs2 = db.getUserBusinessRow(rs.getString(1));
-				String business = rs2.getString("businessname");
-				rs2.close();
+				ResultSet rs2 = db.getUserBusinessRow(rs.getString("username"));
+				String business = "";
+				if (rs2 != null) {
+					business = rs2.getString("businessname");
+					rs2.close();
+				} else {
+					business = this.currentBusiness;
+				}
+
 				customers.add(new Customer(rs.getString(1), rs.getString(2), business, rs.getString(3), rs.getString(4), rs.getString(5)));
+				
 			} while (rs.next());
 			
 			if (!customers.isEmpty()) {
@@ -703,7 +709,7 @@ public class Utility {
 	}
 	/* marked for testing */
 	public Timetable getOpeningHours(String currentBusiness) {
-		Timetable t = null;
+		Timetable t = new Timetable();
 		ResultSet rs;
 		try {
 			rs = db.getBusinessHours(currentBusiness);

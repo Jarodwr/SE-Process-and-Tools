@@ -30,12 +30,12 @@ public class UtilityTest {
 		db.createOwner("Massage Business", "JoeDoe97", "ayylmao", "Joe", "123 swanston st", "0491827462");
 		
 //		db.createCustomer(username, password, name, address, mobileno);
-		db.createCustomer("jarodwr", "1234", "Jarod", "32 der st", "0412341234");
-		db.createCustomer("yargen", "asdf", "Bruce", "67 data st", "0412376534");
-		db.createCustomer("kate", "zxcv", "Andy", "A street that doesn't exist", "043841234");
-		db.createCustomer("bill", "uuuuuuuuuu", "Dave", "Junk location data", "0412340294");
-		db.createCustomer("death", "life", "Brandon", "Southern cross station", "0411821234");
-		db.createCustomer("grips", "yehnahyehyehnah", "Will", "entry dataaaaaaaaa", "0412900234");
+		db.createCustomer("jarodwr", "1234", "Massage Business", "Jarod", "32 der st", "0412341234");
+		db.createCustomer("yargen", "asdf", "Massage Business", "Bruce", "67 data st", "0412376534");
+		db.createCustomer("kate", "zxcv", "Massage Business", "Andy", "A street that doesn't exist", "043841234");
+		db.createCustomer("bill", "uuuuuuuuuu", "Massage Business", "Dave", "Junk location data", "0412340294");
+		db.createCustomer("death", "life", "Massage Business", "Brandon", "Southern cross station", "0411821234");
+		db.createCustomer("grips", "yehnahyehyehnah", "Massage Business", "Will", "entry dataaaaaaaaa", "0412900234");
 		
 //		db.createAvailability(timetableId, businessname, availabilities);
 		db.createAvailability(1, "Massage Business", "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
@@ -372,32 +372,32 @@ public class UtilityTest {
 	
 	@Test
 	public void addCustomer1() {
-		assert(!u.addCustomerToDatabase("jarodwr", "asdfasdf", "jarod", "32 asa st", "0400440044"));
+		assert(!u.addCustomerToDatabase("jarodwr", "asdfasdf", "Massage Business", "jarod", "32 asa st", "0400440044"));
 	}
 	
 	@Test
 	public void addCustomer2() {
-		assert(!u.addCustomerToDatabase("!@#$%^&*()??//", "asdf", "asdf", "asdf", "0412341234"));
+		assert(!u.addCustomerToDatabase("!@#$%^&*()??//", "asdf", "Massage Business", "asdf", "asdf", "0412341234"));
 	}
 	
 	@Test
 	public void addCustomer3() {
-		assert(!u.addCustomerToDatabase("bruceW", "asdf", "bruce", "asdfasdf", "fffffffffffff"));
+		assert(!u.addCustomerToDatabase("bruceW", "asdf", "Massage Business", "bruce", "asdfasdf", "fffffffffffff"));
 	}
 	
 	@Test
 	public void addCustomer4() {
-		assert(u.addCustomerToDatabase("kill", "1234", "Jill", "who cares", "0412345687"));
+		assert(u.addCustomerToDatabase("kill", "1234", "Massage Business", "Jill", "who cares", "0412345687"));
 	}
 	
 	@Test
 	public void addCustomer5() {
-		assert(!u.addCustomerToDatabase("CameronO", "", "Cameron", "yeah yeah", "0412341234"));
+		assert(!u.addCustomerToDatabase("CameronO", "", "Massage Business", "Cameron", "yeah yeah", "0412341234"));
 	}
 	
 	@Test
 	public void addCustomer6() {
-		assert(!u.addCustomerToDatabase("", "1234", "1234", "asdf", "0412341234"));
+		assert(!u.addCustomerToDatabase("", "1234", "Massage Business", "1234", "asdf", "0412341234"));
 	}
 	
 	
