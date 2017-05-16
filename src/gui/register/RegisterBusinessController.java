@@ -138,7 +138,7 @@ public class RegisterBusinessController{
     		//alert user that it is not valid
     		businessAddress.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Enter a valid Address!");
+	    	registerErrorMessage.setText("Enter a valid Bussiness Address!");
     	} else {
     		//if it is valid mark as good
     		businessAddress.setStyle("-fx-border-color: green");
@@ -238,7 +238,7 @@ public class RegisterBusinessController{
     		//if it doesn't, print error
 			businessName.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Name must only contain only letteres!");
+	    	registerErrorMessage.setText("Business Name must only contain only letteres!");
 		} else {
 			//if it passes show good box border colour
 			businessName.setStyle("-fx-border-color: green");
@@ -268,7 +268,7 @@ public class RegisterBusinessController{
     	if(!businessPhoneNumber.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
 			businessPhoneNumber.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Enter a valid Phone Number!");
+	    	registerErrorMessage.setText("Enter a valid Business Phone Number!");
 		} else {
 			//if it passes show good box border colour
 			businessPhoneNumber.setStyle("-fx-border-color: green");
@@ -366,7 +366,7 @@ public class RegisterBusinessController{
         			name.getText(), address.getText(), number.getText(), passwordCon.getText());
     		//if it doesnt throw an exception then user was created and alert the user
 			registerErrorMessage.setStyle("-fx-text-fill: GREEN");
-			registerErrorMessage.setText("User created!!");
+			registerErrorMessage.setText("User created!");
 			
 		} catch (ValidationException e) {
 			//if an error occurs then alert the user about the error
@@ -404,7 +404,10 @@ public class RegisterBusinessController{
     	if(password.getText().equals(passwordCon.getText()) &&
     			name.getText().matches("[A-Za-z -']+") && 
     			number.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
-    			address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")){
+    			address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+") &&
+    			businessPhoneNumber.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
+    			businessName.getText().matches("[A-Za-z0-9 -']+") &&
+    			businessAddress.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+[,]?\\s[a-zA-Z])+")){
     		//if it passes enable the register button to be clicked
     		registerButton.setDisable(false);
     		return true;

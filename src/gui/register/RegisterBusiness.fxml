@@ -35,23 +35,6 @@
                                     <Font name="Calibri" size="16.0" />
                                  </font>
                               </TextField>
-                              <PasswordField fx:id="password" layoutY="274.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Password">
-                                 <font>
-                                    <Font name="Calibri" size="16.0" />
-                                 </font>
-                              </PasswordField>
-                              <PasswordField fx:id="passwordCon" layoutY="314.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Confirm Password">
-                                 <font>
-                                    <Font name="Calibri" size="16.0" />
-                                 </font>
-                              </PasswordField>
-                              <Label layoutY="26.0" prefHeight="40.0" prefWidth="245.0" text="Please fill in the details below for the business owners account details" wrapText="true" />
-                              <Label layoutY="245.0" prefHeight="17.0" prefWidth="113.0" text="Password Strength :" />
-                              <HBox alignment="CENTER_RIGHT" layoutX="108.0" layoutY="245.0" prefHeight="17.0" prefWidth="137.0">
-                                 <children>
-                                    <Label fx:id="passStrength" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="78.0" text="Strong" textFill="#dddddd" />
-                                 </children>
-                              </HBox>
                               <TextField fx:id="name" layoutY="118.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Owner Name">
                                  <font>
                                     <Font name="Calibri" size="16.0" />
@@ -67,6 +50,23 @@
                                     <Font name="Calibri" size="16.0" />
                                  </font>
                               </TextField>
+                              <Label layoutY="26.0" prefHeight="40.0" prefWidth="245.0" text="Please fill in the details below for the business owners account details" wrapText="true" />
+                              <Label layoutY="245.0" prefHeight="17.0" prefWidth="113.0" text="Password Strength :" />
+                              <PasswordField fx:id="password" layoutY="274.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Password">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </PasswordField>
+                              <PasswordField fx:id="passwordCon" layoutY="314.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Confirm Password">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </PasswordField>
+                              <HBox alignment="CENTER_RIGHT" layoutX="108.0" layoutY="245.0" prefHeight="17.0" prefWidth="137.0">
+                                 <children>
+                                    <Label fx:id="passStrength" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="78.0" text="Strong" textFill="#dddddd" />
+                                 </children>
+                              </HBox>
                            </children>
                         </Pane>
                         <Pane layoutX="297.0" layoutY="50.0">
