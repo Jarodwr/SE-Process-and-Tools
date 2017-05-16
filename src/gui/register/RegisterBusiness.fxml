@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
@@ -13,82 +14,108 @@
    <center>
       <Pane prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane id="login-pane" layoutX="139.0" layoutY="57.0" prefHeight="522.0" prefWidth="622.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10 10 10 10;">
+            <Pane id="login-pane" layoutX="163.0" layoutY="84.0" prefHeight="432.0" prefWidth="575.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10 10 10 10;">
                <children>
-                  <Label layoutX="233.0" layoutY="29.0" text="Create Business">
-                     <font>
-                        <Font name="Calibri" size="30.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="60.0" layoutY="64.0" prefHeight="52.0" prefWidth="212.0" text="Please fill in the owner's account details below." wrapText="true">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="registerErrorMessage" alignment="CENTER" layoutX="2.0" layoutY="422.0" prefHeight="17.0" prefWidth="346.0" style="-fx-text-alignment: center;" text="Username must not only contain numbers!" textAlignment="CENTER" textFill="#dddddd" />
-                  <TextField fx:id="username" layoutX="60.0" layoutY="129.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Username">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <PasswordField fx:id="password" layoutX="60.0" layoutY="171.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Password">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </PasswordField>
-                  <PasswordField fx:id="passwordCon" layoutX="60.0" layoutY="211.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Confirm Password">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </PasswordField>
-                  <TextField fx:id="name" layoutX="60.0" layoutY="279.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Owner Name">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="address" layoutX="60.0" layoutY="318.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Owner Address">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="number" layoutX="60.0" layoutY="358.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Owner Phone Number">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <Button fx:id="registerButton" layoutX="269.0" layoutY="426.0" mnemonicParsing="false" onAction="#onRegisterClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Register" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font name="Calibri" size="13.0" />
-                     </font>
-                  </Button>
-                  <Label layoutX="60.0" layoutY="253.0" prefHeight="17.0" prefWidth="113.0" text="Password Strength :" />
-                  <Label fx:id="passStrength" alignment="CENTER_RIGHT" layoutX="176.0" layoutY="253.0" prefHeight="17.0" prefWidth="78.0" text="Strong" textFill="#dddddd" />
-                  <Label layoutX="383.0" layoutY="64.0" prefHeight="52.0" prefWidth="212.0" text="Please fill in the business details below." wrapText="true">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="businessName" layoutX="404.0" layoutY="129.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Business Name">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="businessAddress" layoutX="404.0" layoutY="171.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Business Address">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="businessPhoneNumber" layoutX="404.0" layoutY="211.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Business Phone Number">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
+                  <Pane layoutX="17.0" layoutY="19.0">
+                     <children>
+                        <Label text="Create Business">
+                           <font>
+                              <Font name="Calibri" size="30.0" />
+                           </font>
+                        </Label>
+                        <Pane layoutY="50.0">
+                           <children>
+                              <Label text="Owner Account Details" wrapText="true">
+                                 <font>
+                                    <Font name="Calibri" size="18.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="username" layoutY="77.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Username">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <PasswordField fx:id="password" layoutY="274.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Password">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </PasswordField>
+                              <PasswordField fx:id="passwordCon" layoutY="314.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Confirm Password">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </PasswordField>
+                              <Label layoutY="26.0" prefHeight="40.0" prefWidth="245.0" text="Please fill in the details below for the business owners account details" wrapText="true" />
+                              <Label layoutY="245.0" prefHeight="17.0" prefWidth="113.0" text="Password Strength :" />
+                              <HBox alignment="CENTER_RIGHT" layoutX="108.0" layoutY="245.0" prefHeight="17.0" prefWidth="137.0">
+                                 <children>
+                                    <Label fx:id="passStrength" alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="78.0" text="Strong" textFill="#dddddd" />
+                                 </children>
+                              </HBox>
+                              <TextField fx:id="name" layoutY="118.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Owner Name">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="address" layoutY="161.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Owner Address">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="number" layoutY="201.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Owner Phone Number">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="297.0" layoutY="50.0">
+                           <children>
+                              <Pane>
+                                 <children>
+                                    <Label text="Business Details" wrapText="true">
+                                       <font>
+                                          <Font name="Calibri" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutY="28.0" prefWidth="245.0" text="Please fill in the details below for the business" wrapText="true" />
+                                    <TextField fx:id="businessName" layoutY="79.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Business Name">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="businessAddress" layoutY="121.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Business Address">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="businessPhoneNumber" layoutY="161.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" prefHeight="30.0" prefWidth="245.0" promptText="Business Phone Number">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </Pane>
+                              <HBox alignment="CENTER_RIGHT" layoutY="289.0" prefHeight="17.0" prefWidth="245.0">
+                                 <children>
+                                    <Label fx:id="registerErrorMessage" alignment="CENTER" style="-fx-text-alignment: center;" text="Username must not only contain numbers!" textAlignment="CENTER" textFill="#dddddd" />
+                                 </children>
+                              </HBox>
+                              <Button fx:id="registerButton" layoutX="40.0" layoutY="315.0" mnemonicParsing="false" onAction="#onRegisterClick" prefHeight="27.0" prefWidth="205.0" style="-fx-background-color: #ff471a;" text="Register New Business" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="Calibri" size="13.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </Pane>
+                     </children>
+                  </Pane>
                </children>
                <effect>
                   <ColorAdjust />
                </effect>
             </Pane>
-            <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="27.0" prefWidth="105.0" style="-fx-background-color: #ff471a;" text="Return to menu" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="27.0" prefWidth="105.0" style="-fx-background-color: #ff471a;" text="Log out" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Calibri" size="13.0" />
                </font>

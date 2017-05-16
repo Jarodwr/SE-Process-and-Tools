@@ -234,7 +234,7 @@ public class RegisterBusinessController{
     void checkBusinessName()
     {
     	//check if it only contains certain characters
-    	if(!businessName.getText().matches("[A-Za-z -']+")) {
+    	if(!businessName.getText().matches("[A-Za-z0-9 -']+")) {
     		//if it doesn't, print error
 			businessName.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
@@ -299,15 +299,15 @@ public class RegisterBusinessController{
     //runs all checks
     void checkAll()
     {
+    	checkBusinessPhoneNumber();
+    	checkBusinessAddress();
+    	checkBusinessName();
+    	checkConfPassword();
+    	checkPassword();
     	checkPhoneNumber();
     	checkAddress();
     	checkName();
-    	checkConfPassword();
-    	checkPassword();
     	checkUsername();
-    	checkBusinessName();
-    	checkBusinessPhoneNumber();
-    	checkBusinessAddress();
     }
     
     /*
@@ -375,14 +375,7 @@ public class RegisterBusinessController{
 		}    	
     }
 
-    private void checkBusiness(String business) throws ValidationException {
-		if (business == null || business == "" || business == "Choose Business") {
-			throw new ValidationException("You must choose a business.");
-		}
-		if (c.utilities.checkIfUserIsRegisteredToBusiness(username.getText(), business)) {
-			throw new ValidationException("User is already registered.");
-		}
-	}
+
 
 	//make sure that the fxml objects exist
     @FXML
