@@ -9,11 +9,9 @@ import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import model.period.Period;
 
@@ -51,7 +49,8 @@ public class OwnerAddEmployeeAvailabilitiesController {
     @FXML
     private Pane TimePickerPane;
   
-    
+    @FXML
+    private Label errorMessage;
 
     private TimePicker time;
 
@@ -130,12 +129,8 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	}
     	
     	c.editAvailability(employeeId, availabilitiesToSubmit);
-    	Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Add Availability");
-		alert.setHeaderText("Availability successfully updated!");
-		alert.setContentText("press ok to continue...");
-		
-		alert.showAndWait();
+    	errorMessage.setStyle("-fx-text-fill: GREEN");
+    	errorMessage.setText("Availability successfully updated!");
     }
 
     @FXML
@@ -161,6 +156,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
            	time.setDefaultAvailabilityFromList(cDay, currentDay);
            	
     	}
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
 	}
 
 	@FXML

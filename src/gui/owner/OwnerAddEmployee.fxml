@@ -5,10 +5,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddEmployee">
+<BorderPane prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerAddEmployee">
    <center>
       <AnchorPane prefHeight="1699.0" prefWidth="680.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,17 +25,17 @@
                         <Font name="Calibri" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="name" layoutX="232.0" layoutY="123.0" onKeyReleased="#nameChange" promptText="Name">
+                  <TextField fx:id="name" layoutX="232.0" layoutY="123.0" onKeyReleased="#checkAll" promptText="Name">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="phone" layoutX="232.0" layoutY="169.0" onKeyReleased="#phoneChange" promptText="Phone Number">
+                  <TextField fx:id="phone" layoutX="232.0" layoutY="169.0" onKeyReleased="#checkAll" promptText="Phone Number">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="address" layoutX="232.0" layoutY="214.0" onKeyReleased="#addressChange" promptText="Address">
+                  <TextField fx:id="address" layoutX="232.0" layoutY="214.0" onKeyReleased="#checkAll" promptText="Address">
                      <font>
                         <Font name="Calibri" size="16.0" />
                      </font>
@@ -44,7 +45,15 @@
                         <Font name="Calibri" size="13.0" />
                      </font>
                   </Button>
-                  <Label fx:id="warning" alignment="CENTER" layoutX="161.0" layoutY="255.0" prefHeight="54.0" prefWidth="334.0" />
+                  <HBox alignment="CENTER" layoutX="176.0" layoutY="285.0" prefHeight="17.0" prefWidth="303.0">
+                     <children>
+                        <Label fx:id="errorMessage" text="Label" textFill="#f2f2f2">
+                           <font>
+                              <Font name="Calibri" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </Pane>
          </children></AnchorPane>

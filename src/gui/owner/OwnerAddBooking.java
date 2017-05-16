@@ -12,12 +12,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
@@ -40,6 +39,9 @@ public class OwnerAddBooking {
     private Button AddBookingBtn;
     
     @FXML
+    private Label errorMessage;
+    
+    @FXML
     private Pane timeMenu;
     private TimePicker time;
 
@@ -58,19 +60,30 @@ public class OwnerAddBooking {
     void customerSelect(ActionEvent event) {
     	customerUsername = new StringTokenizer(customerMenu.getSelectionModel().getSelectedItem(), ":").nextToken();
     	this.update();
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
     }
 
     @FXML
     void dateSelect(ActionEvent event) {
     	date = dateMenu.getValue();
     	this.update();
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
     }
 
     @FXML
     void employeeSelect(ActionEvent event) {
     	employeeId = new StringTokenizer(employeeMenu.getSelectionModel().getSelectedItem(), ":").nextToken();
     	this.update();
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
     }
+    
+    
+    @FXML
+    void servicesSelect(ActionEvent event) {
+    	this.update();
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
+    }
+    
     
     private void update() {
     	//Update gridtable with availabilities
@@ -102,11 +115,9 @@ public class OwnerAddBooking {
 
     	long startTime = (date.toEpochDay() * 86400 + localStart * 1800);
     	
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Add booking");
-    	
     	if (startTime < System.currentTimeMillis()/1000) {
-    		alert.setHeaderText("Cannot book in the past!");
+    		errorMessage.setStyle("-fx-text-fill: RED");
+        	errorMessage.setText("Cannot book in the past!");
     	} else {
         	String listOfServices = "";
         	for (int i = 0; i < services.size(); i++) {
@@ -118,17 +129,21 @@ public class OwnerAddBooking {
     		
     		if (time.validPeriod()) {
     	    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId))
-    	    		alert.setHeaderText("Booking successfully added!");
+    	    	{
+    	    		errorMessage.setStyle("-fx-text-fill: GREEN");
+    	        	errorMessage.setText("Booking successfully added!");
+    	    	}
     	    	else
-    	    		alert.setHeaderText("failed to add booking");
+    	    	{
+    	    		errorMessage.setStyle("-fx-text-fill: RED");
+    	        	errorMessage.setText("Failed to add Booking!");
+    	    	}
     	    	
     		} else {
-        		alert.setHeaderText("invalid period");
+    			errorMessage.setStyle("-fx-text-fill: RED");
+            	errorMessage.setText("Invalid Period!");
     		}
     	}
-		
-		alert.setContentText("press ok to continue...");
-		alert.showAndWait();
     	this.update();
     }
     

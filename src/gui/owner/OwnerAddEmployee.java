@@ -3,8 +3,6 @@ package gui.owner;
 import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,7 +21,7 @@ public class OwnerAddEmployee {
     private TextField address;
 
     @FXML
-    private Label warning;
+    private Label errorMessage;
 
     @FXML
     private Button submitEmployee;
@@ -34,60 +32,73 @@ public class OwnerAddEmployee {
     private Controller controller;
     
     @FXML
-    void submitEmployee(ActionEvent event) {	//TODO: When exception is added use try/catch to display error
+    void submitEmployee(ActionEvent event) {
     	if (controller.addEmployee(name.getText(), phone.getText(), address.getText(), controller.getOwner())) {
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Add Employee");
-    		alert.setHeaderText(null);
-    		alert.setContentText("Employee " + name.getText() + " successfully added.");
-    		alert.showAndWait();
+    		errorMessage.setStyle("-fx-text-fill: GREEN");
+        	errorMessage.setText("Employee successfully added!");
     	} else {
-    		//Failure message
+    		errorMessage.setStyle("-fx-text-fill: RED");
+        	errorMessage.setText("Failed to add Employee!");
     	}
     }
     
 
     @FXML
-    void addressChange(KeyEvent event) {
-		if(!address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
-			address.setStyle("-fx-border-color: red");
-    	} else {
-			address.setStyle("-fx-border-color: green");
-			checkFields();
-    	}
+    void checkAll(KeyEvent event) {
+		checkAll();
     }
 
-    @FXML
-    void nameChange(KeyEvent event) {
-		if(!name.getText().matches("[-A-Za-z ']+")) {
-			name.setStyle("-fx-border-color: red");
-		} else {
-			name.setStyle("-fx-border-color: green");
-			checkFields();
-		}
-	}
-
-    @FXML
-    void phoneChange(KeyEvent event) {
-		if(!phone.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
-			phone.setStyle("-fx-border-color: red");
-		} else {
-			phone.setStyle("-fx-border-color: green");
-			checkFields();
-		}
-    }
     
     public void init(Controller controller) {
     	this.controller = controller;
     	submitEmployee.setDisable(true);
     }
 
-    private void checkFields() {
+    private void checkAll()
+    {
+    	if(!address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
+			address.setStyle("-fx-border-color: red");
+			errorMessage.setStyle("-fx-text-fill: RED");
+        	errorMessage.setText("Please enter a valid address!");
+    	} else {
+			address.setStyle("-fx-border-color: green");
+    	}
+    	
+    	if(!phone.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
+			phone.setStyle("-fx-border-color: red");
+			errorMessage.setStyle("-fx-text-fill: RED");
+        	errorMessage.setText("Please enter a valid phone number!");
+		} else {
+			phone.setStyle("-fx-border-color: green");
+		}
+    	
+    	if(!name.getText().matches("[-A-Za-z ']+")) {
+			name.setStyle("-fx-border-color: red");
+			errorMessage.setStyle("-fx-text-fill: RED");
+        	errorMessage.setText("Name contains invalid characters!");
+		} else {
+			name.setStyle("-fx-border-color: green");
+			
+			
+		}
+    	if(checkFields())
+    		errorMessage.setStyle("-fx-text-fill: #F2F2F2");
+    	
+    }
+    
+    private boolean checkFields() {
     	if(name.getText().matches("[-A-Za-z ']+") && 
     			phone.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
     			address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+"))
+    	{
     		submitEmployee.setDisable(false);
+    		return true;
+    	}
     	else
+    	{
     		submitEmployee.setDisable(true);
+    		return false;
+    	}
+    		
     }
 }
