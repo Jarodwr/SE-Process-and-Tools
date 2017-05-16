@@ -42,11 +42,7 @@
                      </font>
                   </Label>
                   <Label fx:id="loginErrorMessage" contentDisplay="CENTER" layoutX="57.0" layoutY="205.0" style="-fx-alignment: CENTER;" text="Incorrect Username/Password" textAlignment="CENTER" textFill="#dddddd" />
-                  <HBox alignment="CENTER" layoutX="19.0" layoutY="289.0" prefHeight="17.0" prefWidth="233.0">
-                     <children>
-                        <Label fx:id="newBussinessButton" onMouseClicked="#registerNewBussiness" text="Resgister a new bussiness by clicking here" textFill="#3399ff" />
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" layoutX="19.0" layoutY="289.0" prefHeight="17.0" prefWidth="233.0" />
                </children>
                <effect>
                   <ColorAdjust />
