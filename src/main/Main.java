@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.ConsoleHandler;
@@ -34,21 +35,8 @@ public class Main {
 		handler.setFormatter(new SimpleFormatter());
 		LOGGER.addHandler(handler);
 		LOGGER.setUseParentHandlers(false);
-		LOGGER.warning("test");
 		
-		createAdminUser(n);
-		
-		debugCreateOwnerBusiness(n);
 		GuiMain.main(args);
 	}
 	
-	private static void createAdminUser(SQLiteConnection n) {
-		n.createCustomer("admin", "banana", "none", "none", "none", "none");
-		
-	}
-
-	public static void debugCreateOwnerBusiness(SQLiteConnection n) {
-		n.createBusiness("SARJ's Milk Business", "Cherry Lane", "0123456789");
-		n.createOwner("SARJ's Milk Business", "ownertest", "1234", "Name", "Address", "MobileNo");
-	}
 }

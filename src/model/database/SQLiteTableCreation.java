@@ -15,8 +15,6 @@ public class SQLiteTableCreation {
 	
 	public void createTables() {
 		createUsersTable();
-		createBusinessTable();
-		createOwnerTable();
 		createEmployeeTable();
 		createAvailabilitiesTable();
 		createEmployeeWorkingTimesTable();
@@ -39,43 +37,6 @@ public class SQLiteTableCreation {
 	 */
 	public void createUsersTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS Userinfo (username Varchar(255) Primary Key, password Varchar(255), name Varchar(255), address Varchar(255), mobileno Varchar(255))";
-				try {
-					Connection c = this.conn;
-					Statement stmt = c.createStatement();
-			            stmt.execute(sql);
-				}
-				catch(Exception e){
-					LOGGER.warning(e.getMessage());
-				}
-	}
-	
-	/**
-	 * Businessinfo (<br>
-	 * 1 - businessname Varchar(255) Primary Key,<br>
-	 * 2 - address Varchar(255),<br>
-	 * 3 - phonenumber Varchar(255)<br>
-	 * )
-	 */
-	public void createBusinessTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS Businessinfo (businessname Varchar(255) Primary Key, address Varchar(255), phonenumber Varchar(255))";
-				try {
-					Connection c = this.conn;
-					Statement stmt = c.createStatement();
-			            stmt.execute(sql);
-				}
-				catch(Exception e){
-					LOGGER.warning(e.getMessage());
-				}
-	}
-	
-	/**
-	 * Ownerinfo (<br>
-	 * 1 - businessname Varchar(255) references Businessinfo(businessname),<br>
-	 * 2 - username Varchar(255) references Userinfo(username)<br>
-	 * )
-	 */
-	public void createOwnerTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS Ownerinfo (businessname Varchar(255), username Varchar(255), Foreign Key(businessname) references Businessinfo(businessname), Foreign Key(username) references Userinfo(username))";
 				try {
 					Connection c = this.conn;
 					Statement stmt = c.createStatement();

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import model.database.SQLMaster;
 import model.database.SQLiteConnection;
 import model.employee.Employee;
 import model.period.Booking;
@@ -28,8 +29,9 @@ public class Utility {
 
 	private Logger LOGGER = Logger.getLogger("main");
 	private User currentUser = null;
-	private String currentBusiness = "SARJ's Milk Business"; //TODO
+	private String currentBusiness;
 	private SQLiteConnection db = new SQLiteConnection();
+	private SQLMaster masterDB = new SQLMaster();
 	
 	
 	/**
@@ -38,7 +40,7 @@ public class Utility {
 	 */
 	
 	public Utility() {
-		this.currentBusiness = "SARJ's Milk Business";
+		this.currentBusiness = null;
 	}
 	
 	public void setConnection(String newDb) {
@@ -75,6 +77,39 @@ public class Utility {
 				rs = db.getUserRow(username);
 				
 				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				rs.close();
+				return customer;
+			}
+
+		} catch (Exception e) {
+			//LOGGER.warning(e.getMessage()); Exceptions are intended behaviour here, no need to log
+			return null;
+		}
+		
+	}
+	
+	public User searchUserLogin(String username, String businessname) {
+		ResultSet rs;
+		setConnection(masterDB.getBusinessDBFromName(businessname));
+		try {
+			rs = db2.getUserRow(username);
+			if (username.equals("admin")) {
+				Admin admin = new Admin(rs.getString("password"));
+				LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
+				rs.close();
+				return admin;
+			}
+			else if (db2.getOwnerRow(username) != null) {
+
+				rs = db2.getUserRow(username);
+				Owner owner = new Owner(username, rs.getString("password"), businessname, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				rs.close();
+				return owner;
+			}
+			else {
+				rs = db2.getUserRow(username);
+				
+				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), businessname, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
 				rs.close();
 				return customer;
 			}
