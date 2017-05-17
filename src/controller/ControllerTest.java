@@ -3,7 +3,6 @@ package controller;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.BeforeClass;
@@ -388,58 +387,6 @@ public class ControllerTest{
 	public void getWorkingTimes05() {
 		String[][] workingTimes = c.getWorkingTimes("10");
 		assert(workingTimes == null || workingTimes.length == 0);
-	}
-	
-	
-	@Test
-	public void getWorkerAvailability01() {
-		String[][] availability = c.getWorkerAvailability("0");
-		assert(availability[0][0].equals("1800"));
-		assert(availability[1][0].equals("27000"));
-		assert(availability[2][0].equals("441000"));
-		assert(availability[3][0].equals("446400"));
-		assert(availability[4][0].equals("450000"));
-		assert(availability[5][0].equals("453600"));
-		assert(availability[6][0].equals("457200"));
-		assert(availability[7][0].equals("460800"));
-	}
-	
-	@Test
-	public void getWorkerAvailability02() {
-		String[][] availability = c.getWorkerAvailability("1");
-		assert(availability[0][0].equals("1800"));
-		assert(availability[1][0].equals("27000"));
-		assert(availability[2][0].equals("446400"));
-		assert(availability[3][0].equals("450000"));
-		assert(availability[4][0].equals("453600"));
-		assert(availability[5][0].equals("457200"));
-		assert(availability[6][0].equals("460800"));
-	}
-	
-	@Test
-	public void getWorkerAvailability03() {
-		String[][] availability = c.getWorkerAvailability("2");
-		assert(availability[0][0].equals("1800"));
-		assert(availability[1][0].equals("27000"));
-	}
-	
-	@Test
-	public void getWorkerAvailability04() {
-		String[][] availability = c.getWorkerAvailability("3");
-		assert(availability[0][0].equals("1800"));
-		assert(availability[1][0].equals("27000"));
-	}
-	
-	@Test
-	public void getWorkerAvailability05() {
-		String[][] availability = c.getWorkerAvailability("10");
-		assert(availability == null || availability.length == 0);
-	}
-	
-	@Test
-	public void getWorkerAvailability06() {
-		String[][] availability = c.getWorkerAvailability("-1");
-		assert(availability == null || availability.length == 0);
 	}
 	
 	

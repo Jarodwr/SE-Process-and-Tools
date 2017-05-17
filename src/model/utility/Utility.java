@@ -3,7 +3,6 @@ package model.utility;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -41,11 +40,19 @@ public class Utility {
 		this.currentBusiness = "SARJ's Milk Business";
 	}
 	
+	/**
+	 * Used for testing
+	 * @param newDb
+	 */
 	public void setConnection(String newDb) {
 		this.db = new SQLiteConnection(newDb);
 	}
 	
-	//Refactor to private
+	/**
+	 * Get a user
+	 * @param username username of the user requested
+	 * @return returns the user if it exists, null if there is no user.
+	 */
 	public User searchUser(String username) {
 		ResultSet rs;
 		try {
@@ -87,6 +94,7 @@ public class Utility {
 	}
 	
 	/**
+	 * Checks that the username and password match
 	 * @param username Requested user
 	 * @param password Attempted password
 	 * @return if the user exists with the entered password, return the user. Else return null.
@@ -99,108 +107,10 @@ public class Utility {
 	}
 	
 	/**
-	 * Gets a list of employees and returns their details as an array of strings
-	 * TODO: Change this to return a list&lt;Employee&gt; instead
-	 * @return String[Employee][Details]
+	 * Set the availability of an employee
+	 * @param employeeId	employee being set
+	 * @param availabilities	new availabilities
 	 */
-	public String[][] getEmployeeList() {
-		ResultSet rs;
-		try {
-			rs = db.getAllEmployees();
-			if (rs == null) throw new Exception("No employees found");
-		} catch (Exception e) {
-				LOGGER.warning(e.getMessage());
-			return null;
-		}
-
-		ArrayList<String[]> employees = new ArrayList<String[]>();
-		try {
-			do {
-				employees.add(new String[] {rs.getString(1), rs.getString(3)});
-			} while (rs.next());
-			
-			rs.close();
-			
-		} catch (Exception e) {
-			LOGGER.warning(e.getMessage());
-		}
-		
-		if (!employees.isEmpty()) {
-			String[][] b = new String[employees.size()][];
-			employees.toArray(b);
-			return b;
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * Compiles all available times for all employees
-	 * @return Merged timetable
-	 */
-	public Timetable getAvailableTimes() {
-		
-		Timetable t = new Timetable();
-
-		try {
-			ResultSet rsEmployees = db.getAllEmployees();
-			do {
-				ResultSet rsTimetables = db.getEmployeeAvailability(Integer.parseInt(rsEmployees.getString("employeeId")));
-				if (rsTimetables == null) {
-					continue;
-				}
-				t.mergeTimetable(rsTimetables.getString("availability"));
-				rsTimetables.close();
-			} while(rsEmployees.next());
-			
-			rsEmployees.close();
-			return t;
-		}
-		catch(SQLException e) {
-
-			LOGGER.warning(e.getMessage());
-			return null;
-		}
-	}
-	
-	//TODO: Deprecate
-	public Employee[] getApplicableEmployees(long duration, long startTime) {
-		ArrayList<Employee> applicable = new ArrayList<Employee>();
-		try {
-			Employee[] employees = getAllEmployees();
-			for (Employee e : employees) {
-				Timetable t = new Timetable();
-				ResultSet shifts = db.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
-				
-				if (shifts == null) {
-					continue;
-				}
-				do {
-					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
-				} while (shifts.next());
-				shifts.close();
-				
-				ResultSet bookings = db.getBookingsByEmployeeId(e.getEmployeeId());
-				if (bookings != null) {
-					do {
-						t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
-					} while (bookings.next());
-					bookings.close();
-				}
-				Timetable ap = t.applicablePeriods(duration);
-				if (ap.getAllPeriods().length > 0 && ap.isStartTimeIn(startTime)) {
-					applicable.add(e);
-				}
-			}
-		} catch (SQLException exception) {
-			LOGGER.warning(exception.getMessage());
-		}
-		
-		Employee[] filtered = new Employee[applicable.size()];
-		applicable.toArray(filtered);
-		return filtered;
-	}
-	
 	public void editAvailability(String employeeId, ArrayList<String> availabilities) {
 
 		Timetable t = new Timetable();
@@ -253,79 +163,6 @@ public class Utility {
 			LOGGER.warning(e.getMessage());
 		}
 		 
-	}
-	
-	//TODO: deprecated
-	public Timetable getAvailableBookingTimesByDuration(long duration) {
-		Timetable appPeriods = new Timetable();
-		try {
-			Employee[] employees = getAllEmployees();
-			for (Employee e : employees) {
-				Timetable t = new Timetable();
-				ResultSet shifts = db.getShifts(Integer.parseInt(e.getEmployeeId()), Long.toString(System.currentTimeMillis()));
-				
-				if (shifts == null) {
-					continue;
-				}
-				do {
-					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
-				} while (shifts.next());
-				shifts.close();
-				
-				ResultSet bookings = db.getBookingsByEmployeeId(e.getEmployeeId());
-				if (bookings == null) {
-					appPeriods.mergeTimetable(t.applicablePeriods(duration));
-					continue;
-				}
-				do {
-					t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
-				} while (bookings.next());
-				bookings.close();
-				appPeriods.mergeTimetable(t.applicablePeriods(duration));
-			}
-		} catch (SQLException exception) {
-			LOGGER.warning(exception.getMessage());
-		}
-		return appPeriods;
-	}
-	
-	//TODO: Deprecated
-	public Timetable getAvailableBookingTimes() {
-		Employee[] employees;
-
-		employees = getAllEmployees();
-		Timetable available = new Timetable();
-		for (Employee e : employees) {
-			try {
-				Timetable t = new Timetable();
-				ResultSet shifts = db.getShifts(Integer.parseInt(e.getEmployeeId()), "0");
-				
-				if (shifts == null) {
-					continue;
-				}
-				do {
-					t.addPeriod(new Period(shifts.getString("unixstarttime"), shifts.getString("unixendtime"), false));
-				} while (shifts.next());
-				shifts.close();
-				
-				ResultSet bookings = db.getBookingsByEmployeeId(e.getEmployeeId());
-				if (bookings == null) {
-					available.mergeTimetable(t);
-					continue;
-				}
-				do {
-					t.removePeriod(new Period(bookings.getString("starttimeunix"), bookings.getString("endtimeunix"), false));
-				} while (bookings.next());
-				bookings.close();
-				available.mergeTimetable(t);
-			} catch(SQLException exception) {
-				exception.printStackTrace();
-				LOGGER.warning(exception.getMessage());
-			}
-
-		}
-		return available;
-
 	}
 	
 	/**
@@ -384,7 +221,6 @@ public class Utility {
 	 * Gets a booking query and returns it as an array of bookings
 	 * @param rs ResultSet of query
 	 * @return Booking[]
-	 * @throws SQLException 
 	 */
 	public Booking[] bookingResultsetToArray(ResultSet rs){
 
@@ -408,6 +244,11 @@ public class Utility {
 		return new Booking[0];
 	}
 	
+	/**
+	 * gets all shifts of an employee
+	 * @param employeeId	id of requested employee
+	 * @return	Returns a timetable of shifts for the employee if the employee exists, else returns null
+	 */
 	public Timetable getShift(String employeeId) {
 		Timetable t = new Timetable();
 		try {
@@ -430,6 +271,14 @@ public class Utility {
 		return t;
 	}
 	
+	/**
+	 * 	Adds a working shift to an employee
+	 * @param employeeId	Id of the requested employee
+	 * @param rawDate	date of the shift
+	 * @param startTime	start time of the shift
+	 * @param endTime	end time of the shift
+	 * @return	whether the shift was added or not
+	 */
 	public boolean addShift(String employeeId, String rawDate, String startTime, String endTime) {
 
 		Long starttime = Long.parseLong(rawDate) + Long.parseLong(startTime);
@@ -448,6 +297,14 @@ public class Utility {
 		
 	}
 	
+	/**
+	 * Removal of a working shift for an employee
+	 * @param employeeId	Id of the requested employee
+	 * @param rawDate	date of the shift
+	 * @param startTime	start time of the shift
+	 * @param endTime	end time of the shift
+	 * @return	whether or not a shift was removed
+	 */
 	public boolean removeShift(String employeeId, String rawDate, String startTime, String endTime) {
 		
 		Long starttime = Long.parseLong(rawDate) + Long.parseLong(startTime);
@@ -532,6 +389,10 @@ public class Utility {
 		}
 	}
 
+	/**
+	 * Gets an array of all customers within the business
+	 * @return	an array of all customers
+	 */
 	public Customer[] getAllCustomers(){
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		try {
@@ -557,44 +418,44 @@ public class Utility {
 		}
 		return null;
 	}
-	
-	//TODO: remove
-	public String[][] getWorkingTimes() 
-	{
-		//TODO: refactor into other employeelist functions
-		String [][] employeelist = getEmployeeList();
-		Timetable t = new Timetable();
-		ArrayList<String[]> allShifts = new ArrayList<String[]>();
-		
-		for(int i = 0; i > employeelist.length; i++)
-		{
-			t = getShift(employeelist[i][0]);
-			String[][] table = t.toStringArray();
-			allShifts.addAll(Arrays.asList(table));
-		}
 
-		String[][] ftable = Arrays.copyOf(allShifts.toArray(), allShifts.toArray().length, String[][].class);
-		
-		return ftable;
-	}
-
+	/**
+	 * 	Getter for owner user in the current business
+	 * @return	Current business owner
+	 */
 	public Owner getBusinessOwner() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	/**
+	 * Getter for the currently logged in user
+	 * @return	Current user
+	 */
 	public User getCurrentUser() {
 		return this.currentUser;
 	}
 	
+	/**
+	 * Getter for the current business
+	 * @return	Current business
+	 */
 	public String getCurrentBusiness() {
 		return this.currentBusiness;
 	}
 	
+	/**
+	 * Setter for the current business
+	 * @param business	New business
+	 */
 	public void setCurrentBusiness(String business) {
 		this.currentBusiness = business;
 	}
 
+	/**
+	 * Gets an array of all services for the current business
+	 * @return	An array of all services for the current business
+	 */
 	public Service[] getAllServices() {
 		
 		ArrayList<Service> services = new ArrayList<Service>();
@@ -620,6 +481,12 @@ public class Utility {
 		return null;
 	}
 
+	/**
+	 * Get the booking availability for the specified employee
+	 * @param employeeId	Id of the requested employee
+	 * @param date	minimum date of the requested availability
+	 * @return	Timetable of all available slots for an employee
+	 */
 	public Timetable getEmployeeBookingAvailability(String employeeId, Date date) {
 		//gets the bookings list of all the booking from the time the method is called
 		Timetable shiftsTimetable = getShift(employeeId);
@@ -637,10 +504,22 @@ public class Utility {
 		return null;
 	}
 
+	/**
+	 * Add a service to the business
+	 * @param name	name of the service
+	 * @param priceInCents	price in cents of the service ie. 100 would equal $1.00
+	 * @param duration	duration in minutes of the service
+	 * @return	whether or not adding the service was a success
+	 */
 	public boolean addService(String name, int priceInCents, String duration) {
 		return db.addService(name, priceInCents, Integer.parseInt(duration), getCurrentBusiness());
 	}
 
+	/**
+	 * Parsing a string of services to an arraylist of equivalent services in the business
+	 * @param services	parsed string
+	 * @return	arraylist of services
+	 */
 	public ArrayList<Service> stringOfServicesToArrayList(String services) {
 		String[] servicesSplit = services.split(":");
 		ArrayList<Service> servs = new ArrayList<Service>();
@@ -665,6 +544,12 @@ public class Utility {
 	}
 	
 	/* mark for testing */
+	/**
+	 * Edits the opening hours for a business
+	 * TODO: user this.currentBusiness instead of a businessname parameter
+	 * @param businessname	name of the business
+	 * @param times	new times being added
+	 */
 	public void editBusinessHours(String businessname, ArrayList<String> times) {
 
 		Timetable t = new Timetable();
@@ -684,10 +569,9 @@ public class Utility {
 		}
 		//if the employee doesn't exit then alert the user and exit the function
 		//add the availabilities to the timetable
-		/* TODO turn this try block below into a utility method */
 		try {
 			ResultSet rs = db.getBusinessHours(businessname);
-			int id;
+			int id;	//TODO:????
 			if (rs != null) {
 				rs.close();
 				db.updateBusinessHours(businessname, t.toString());
@@ -701,9 +585,16 @@ public class Utility {
 		}
 		 
 	}
+	
 	/* marked for testing */
+	/**
+	 * Getter for business opening hours
+	 * TODO: change parameter to this.currentBusiness
+	 * @param currentBusiness name of the business being requested
+	 * @return	Timetable of all opening hours for the business
+	 */
 	public Timetable getOpeningHours(String currentBusiness) {
-		Timetable t = null;
+		Timetable t = new Timetable();
 		ResultSet rs;
 		try {
 			rs = db.getBusinessHours(currentBusiness);
@@ -721,7 +612,14 @@ public class Utility {
 		}
 		
 	}
+	
 	/* marked for testing */
+	/**
+	 * Get the customized color for the business
+	 * TODO: use this.currentBusiness instead
+	 * @param businessname	name of the requested business
+	 * @return	Hex format color of the current business
+	 */
 	public String getBusinessColor(String businessname) {
 		ResultSet rs;
 		try {
@@ -740,6 +638,12 @@ public class Utility {
 		
 	}
 	
+	/**
+	 * Setter for the current business color
+	 * TODO: user this.currentBusiness
+	 * @param businessname	business being requested
+	 * @param colorHex	Color to be set
+	 */
 	public void editBusinessColor(String businessname, String colorHex) {
 		try {
 			ResultSet rs = db.getBusinessColor(businessname);
@@ -757,6 +661,11 @@ public class Utility {
 	}
 	
 	/* marked for testing */
+	/**
+	 * 
+	 * @param businessname
+	 * @return
+	 */
 	public String getBusinessHeader(String businessname) {
 		ResultSet rs;
 		try {
@@ -774,6 +683,11 @@ public class Utility {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param businessname
+	 * @param header
+	 */
 	public void editBusinessHeader(String businessname, String header) {
 		try {
 			ResultSet rs = db.getBusinessHeader(businessname);
@@ -789,7 +703,13 @@ public class Utility {
 			LOGGER.warning(e.getMessage());
 		}
 	}
+	
 	/* marked for testing */
+	/**
+	 * 
+	 * @param businessname
+	 * @return
+	 */
 	public String getBusinessLogo(String businessname) {
 		ResultSet rs;
 		try {
@@ -804,6 +724,11 @@ public class Utility {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param businessname
+	 * @param logoLink
+	 */
 	public void editBusinessLogo(String businessname, String logoLink) {
 		try {
 			ResultSet rs = db.getBusinessLogo(businessname);

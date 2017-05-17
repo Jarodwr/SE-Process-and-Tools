@@ -16,8 +16,8 @@ import model.users.Owner;
 import model.users.User;
 import model.utility.Utility;
 
-/*
- * The controller class is the interface between our view and controller
+/**
+ * The controller class is the interface between our view and model classes
  * Only superficial business logic like field testing
  */
 public class Controller {
@@ -35,6 +35,13 @@ public class Controller {
 		utilities.setConnection(dbName);
 	}
 	
+	/**
+	 * Add a service for the current business
+	 * @param name	title of the service
+	 * @param priceInCents	price in cents of the service eg. 1000 = $10.00
+	 * @param duration duration in minutes eg. 90 = 1 hour 30 minutes
+	 * @return	Whether or not the service was added
+	 */
 	public boolean addService(String name, int priceInCents, String duration) {
 		return utilities.addService(name, priceInCents, duration);
 	}
@@ -143,7 +150,14 @@ public class Controller {
 		}
 	}
 	
-	/* TODO requires javadoc */
+	/**
+	 * Adding a new booking
+	 * @param username	username of the user which wishes to make the booking
+	 * @param startTime	start time of the booking
+	 * @param listOfServices	String of services separated by ":"
+	 * @param employeeId	id of the employee booked for the booking
+	 * @return	whether or not the booking was added
+	 */
 	public boolean addNewBooking(String username, String startTime, String listOfServices, String employeeId) {
 		ArrayList<Service> servs;
 		servs = utilities.stringOfServicesToArrayList(listOfServices);
@@ -152,22 +166,8 @@ public class Controller {
 	}
 	
 	/**
-	 * This method gets all employees timetables and merges them all together to form the business hours
-	 * and outputs it to the view
-	 */
-	//TODO: deprecated
-	public String[][] getAvailableTimes() {
-		//get the available timetable
-		Timetable t = utilities.getAvailableBookingTimes();
-		
-		if (t != null && t.getAllPeriods().length != 0)
-			return t.toStringArray();
-		else
-			return null;
-	}
-	
-	/**
-	 * This method shows the list of all bookings in the system
+	 * Getter for a summary of all bookings
+	 * @return	String[][] of all bookings, first dimension is the booking, second is the details
 	 */
 	public String[][] getSummaryOfBookings() {
 
@@ -192,31 +192,48 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * Remove a booking
+	 * @param id	id of the booking
+	 * TODO: remove the business name parameter, use this.currentBusiness in utility
+	 * @param businessname	name of the business we need to remove the booking of
+	 * @return	Whether or not the booking was removed
+	 */
 	public boolean removeBooking(int id, String businessname)
 	{
 		return utilities.removeBooking(id, businessname);
 	}
 	
 	/**
-	 * 
-	 * @param workingTimes [0][0] employee ID  [0][1] Name [0][2] start [0][3] end
+	 * Adding working times to an employee
+	 * @param employeeId	id of the employee
+	 * @param rawDate	date of the working time
+	 * @param startTime	start time in seconds from the start of the day
+	 * @param endTime	end time in seconds from the start of the day
+	 * @return whether or not the working times are added
 	 */
-	//TODO: Need to expand this string array out
-	//TODO: Fix millisecond conversion
 	public boolean addWorkingTime(String employeeId, String rawDate, String startTime, String endTime) {
 		return utilities.addShift(employeeId, rawDate, startTime, endTime);
 	
 	}
-	
 
-
+	/**
+	 * Removing a working shift for an employee
+	 * @param employeeId	id of the employee
+	 * @param rawDate	date of the working time
+	 * @param startTime	start time in seconds from the start of the day
+	 * @param endTime	end time in seconds from the start of the day
+	 * @return whether or not the working times are removed
+	 */
 	public boolean removeWorkingTime(String employeeId, String rawDate, String startTime, String endTime) {
 		return utilities.removeShift(employeeId, rawDate, startTime, endTime);
 	
 	}
 	
 	/**
-	 * this method gets the working times of an employee and outputs it to the user if it exists
+	 * Getter for an employee's working times
+	 * @param employeeId id of the requested employee
+	 * @return Timetable formatted as String[][]
 	 */
 	public String[][] getWorkingTimes(String employeeId)
 	{
@@ -252,30 +269,10 @@ public class Controller {
 	}
 	
 	/**
-	 * This method shows the availability for a particular employee
+	 * getter for worker availability for a given employee
+	 * @param employeeId	requested employee's id
+	 * @return	Timetable of the worker's availability
 	 */
-	public String[][] getWorkerAvailability(String employeeId) {
-		try {
-			//get the employee ID of the selected employee to view their availability
-			//go through a loop till the user chooses to exit to the menu
-			if (employeeId != null && !employeeId.equals("")) {
-				//get the employees timetable
-				Timetable t = utilities.getEmployeeAvailability(employeeId);
-				if (t.equals(null) || t.getAllPeriods().length == 0)
-					return null;
-				else
-					return t.toStringArray();
-			}
-			
-		} catch(Exception e) {
-			//log any exceptions created
-			LOGGER.warning(e.getMessage());
-		}
-		
-		return null;
-
-	}
-	
 	public Timetable getWorkerAvailabilityTimetable(String employeeId) {
 		try {
 			//get the employee ID of the selected employee to view their availability
@@ -341,10 +338,18 @@ public class Controller {
 		
 	}
 	
+	/**
+	 * getter for the owner of the current business
+	 * @return
+	 */
 	public Owner getOwner() {
 		return utilities.getBusinessOwner();
 	}
 	
+	/**
+	 * getter for list of employees in the current business
+	 * @return	String formatted list of employees
+	 */
 	public String[] getEmployeeList() {
 		Employee[] eList = utilities.getAllEmployees();
 		if (eList == null) {
@@ -357,6 +362,11 @@ public class Controller {
 		
 		return employees;
 	}
+	
+	/**
+	 * Getter for list of customers in current business
+	 * @return	String formatted customer list
+	 */
 	public String[] getCustomerList() {
 		Customer[] eList = utilities.getAllCustomers();
 		String[] employees = new String[eList.length];
@@ -368,6 +378,10 @@ public class Controller {
 
 	}
 
+	/**
+	 * Getter for list of services in current business
+	 * @return	String formatted services list
+	 */
 	public String[] getServicesList() {
 		Service[] sList = utilities.getAllServices();
 		String[] services = new String[sList.length];
@@ -379,7 +393,8 @@ public class Controller {
 	}
 	
 	/**
-	 * 
+	 * Getter for employee booking availability
+	 * TODO: Potentially a duplicate function
 	 * @param employeeId	employee in focus
 	 * @param date	day being observed
 	 * @return	Timetable in string[][] format
@@ -388,6 +403,12 @@ public class Controller {
 		return utilities.getEmployeeBookingAvailability(employeeId, date).toStringArray();
 	}
 
+	/**
+	 * Getter for opening hours for the current business
+	 * TODO: don't need current business parameter, use this.currentBusiness in utility
+	 * @param currentBusiness
+	 * @return	Timetable of the opening hours
+	 */
 	public Timetable getOpeningHours(String currentBusiness) {
 		return utilities.getOpeningHours(currentBusiness);
 	}
