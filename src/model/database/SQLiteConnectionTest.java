@@ -9,6 +9,7 @@ import org.junit.Test;
 public class SQLiteConnectionTest {
 
 	SQLiteConnection testDb = new SQLiteConnection();
+	SQLMaster testMasterDB = new SQLMaster("test");
 	
 	@Test
 	public void testCreateCustomer() {
@@ -34,7 +35,7 @@ public class SQLiteConnectionTest {
 				testDb.deleteEmployee(i);
 				
 			}
-			testDb.createBusiness("T Business", "Test Lane", "0412345678");
+			testMasterDB.createBusiness("T Business", "Test Lane", "0412345678");
 			testDb.createEmployee("T Business", "Dad", "A", "1", 0);
 			testDb.createEmployee("T Business", "Mum", "A", "1", 0);
 			testDb.createEmployee("T Business", "Brother", "A", "1", 0);

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import model.database.SQLMaster;
 import model.database.SQLiteConnection;
 import model.period.Booking;
 import model.period.Period;
@@ -18,16 +19,17 @@ public class UtilityTest {
 	@BeforeClass
 	public static void createDB() {
 		new File("test.sqlite").delete();	//Deletes previous test database
-		
-		SQLiteConnection db = new SQLiteConnection("jdbc:sqlite:test.sqlite");
-		u.setConnection("jdbc:sqlite:test.sqlite");
+		new File("TESTMasterDB.sqlite").delete();
+		SQLiteConnection db = new SQLiteConnection("test");
+		SQLMaster masterDB = new SQLMaster("test");
+		u.setConnection("test");
 		u.setCurrentBusiness("Massage Business");
 		
 //		db.createBusiness(businessname, address, phonenumber)
-		db.createBusiness("Massage Business", "123 nicholson st", "040303030303");
+		masterDB.createBusiness("Massage Business", "123 nicholson st", "040303030303");
 		
 //		db.createOwner(businessname, username, password, name, address, mobileno)
-		db.createOwner("Massage Business", "JoeDoe97", "ayylmao", "Joe", "123 swanston st", "0491827462");
+		masterDB.createOwner("Massage Business", "JoeDoe97", "ayylmao", "Joe", "123 swanston st", "0491827462");
 		
 //		db.createCustomer(username, password, name, address, mobileno);
 		db.createCustomer("jarodwr", "1234", "Massage Business", "Jarod", "32 der st", "0412341234");

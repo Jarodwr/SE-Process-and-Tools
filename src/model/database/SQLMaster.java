@@ -23,6 +23,16 @@ public class SQLMaster {
 		}
 	}
 	
+	public SQLMaster(String string) { // TESTING PURPOSES ONLY
+		try {
+			Class.forName("org.sqlite.JDBC");
+			conn = DriverManager.getConnection("jdbc:sqlite:TESTMasterDB.sqlite");
+			createBusinessTable();
+			createOwnerTable();
+		} catch (Exception x) {
+		}
+	}
+
 	/**
 	 * Businessinfo (<br>
 	 * 1 - businessname Varchar(255) Primary Key,<br>
