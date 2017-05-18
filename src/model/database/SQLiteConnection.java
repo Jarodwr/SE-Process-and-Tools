@@ -25,7 +25,7 @@ public class SQLiteConnection {
 	public SQLiteConnection(String db) {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			this.conn = DriverManager.getConnection(db);
+			this.conn = DriverManager.getConnection("jdbc:sqlite:" + db + ".sqlite");
       SQLiteTableCreation tableCreate = new SQLiteTableCreation(conn); // calling this creates tables
 		} catch (Exception x) {
 			LOGGER.log(Level.WARNING, x.getMessage());

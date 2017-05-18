@@ -61,7 +61,7 @@ public class SQLMaster {
 	}
 	
 	
-	public boolean createBusiness(int id, String businessname, String address, String phonenumber) {
+	public boolean createBusiness(String businessname, String address, String phonenumber) {
 		Connection c = this.conn;
 		try {
 			ResultSet rs = getBusinessRow(businessname); // search through businessnames to check if this user currently exists
@@ -86,7 +86,7 @@ public class SQLMaster {
 		}
 	}
 	
-	private ResultSet getAllBusinesses() throws SQLException {
+	public ResultSet getAllBusinesses() throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Businessinfo";
@@ -154,7 +154,7 @@ public class SQLMaster {
 				rs.close();
 				return false;
 			}
-				PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
+				PreparedStatement ps = c.prepareStatement("INSERT INTO Ownerinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 				ps.setInt(1, getBusinessDBFromName(businessname));
 				ps.setString(2, username);
 				ps.setString(3, password);

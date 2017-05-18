@@ -375,6 +375,9 @@ public class Controller {
 
 	public String[] getServicesList() {
 		Service[] sList = utilities.getAllServices();
+		if (sList == null) {
+			return null;
+		}
 		String[] services = new String[sList.length];
 		
 		for (int i = 0; i < sList.length; i++)
@@ -416,6 +419,15 @@ public class Controller {
 		if(!phoneNumber.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
 			LOGGER.log(Level.INFO, "REGISTER: Failure, Business phone number does not match regex");
 			throw new ValidationException("Mobile number is not valid!");
+		}
+		
+		if (utilities.addBusinessToDatabase(businessName, address, phoneNumber)) {
+			LOGGER.log(Level.INFO, "REGISTER: Success, business added to system");
+			
+		} else {
+			//	inform the user that there is a user with that name and return null
+			LOGGER.log(Level.INFO, "REGISTER: Failure, business name already taken");
+			throw new ValidationException("Business already exists in the system!");
 		}
 		
 	}
@@ -463,5 +475,22 @@ public class Controller {
 				}
 		// TODO Auto-generated method stub
 		
+	}
+
+	public User login(String username, String password, String selectedBusiness) {
+		LOGGER.log(Level.INFO, "LOGIN: Login details: Username - " + username + ", Password - " + password);
+		//Search for the user in the arrayList and make sure the password is correct
+		User user = utilities.authenticate(username, password, selectedBusiness);
+
+		if (user == null) {
+			LOGGER.log(Level.INFO, "LOGIN: Failed");
+		}
+		else
+		{
+			utilities.setCurrentBusiness(user.getBusinessName());
+			LOGGER.log(Level.INFO, "LOGIN: Success");
+		}
+
+		return user;
 	}
 }

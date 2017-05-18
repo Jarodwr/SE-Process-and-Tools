@@ -79,6 +79,16 @@ public class Utility {
 			Admin admin = new Admin("1234");
 			return admin;
 		}
+		try {
+				rs = masterDB.getOwnerRow(username);
+				Owner owner = new Owner(username, rs.getString("password"), businessname, rs.getString("name"), rs.getString("address"), rs.getString("phonenumber"));
+				LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
+				rs.close();
+				return owner;
+			}
+			catch (Exception e) {
+		
+			}
 		if (currentBusiness != businessname) {
 			setBusinessDBConnection(masterDB.getBusinessDBFromName(businessname));
 			currentBusiness = businessname;
@@ -117,7 +127,7 @@ public class Utility {
 	 * @return if the user exists with the entered password, return the user. Else return null.
 	 */
 	public User authenticate(String username, String password) {
-		User found = searchUser(username.toLowerCase());
+		User found = searchUserLogin(username.toLowerCase(), "");
 		if (found != null && found.checkPassword(password))
 			return found;
 		return null;
@@ -495,6 +505,10 @@ public class Utility {
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addCustomerToDatabase(String username, String password, String business, String name, String address, String mobileno) {
+		if (currentBusiness != business) {
+			setBusinessDBConnection(masterDB.getBusinessDBFromName(business));
+			currentBusiness = business;
+		}
 		return db.createCustomer(username, password, business, name, address, mobileno);
 	}
 	
@@ -503,6 +517,10 @@ public class Utility {
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addNewEmployee(String id, String businessName, String name, String address, String phonenumber, int timetableID) {
+		if (currentBusiness != businessName) {
+			setBusinessDBConnection(masterDB.getBusinessDBFromName(businessName));
+			currentBusiness = businessName;
+		}
 		return db.createEmployee("", name, address, phonenumber, 0);
 	}
 	
@@ -631,6 +649,9 @@ public class Utility {
 		ArrayList<Service> services = new ArrayList<Service>();
 		try {
 			ResultSet rs = db.getAllServices(currentBusiness);
+			if (rs == null) {
+				throw new Exception();
+			}
 			do {
 				services.add(new Service(rs.getString("servicename"), Integer.parseInt(rs.getString("serviceprice")), Integer.parseInt(rs.getString("serviceminutes"))));
 			} while (rs.next());
@@ -645,8 +666,9 @@ public class Utility {
 				rs.close();
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 		return null;
 	}
@@ -851,28 +873,9 @@ public class Utility {
 		}
 	}
 
-	public boolean checkIfUserIsRegisteredToBusiness(String username, String business) {
-		try {
-				ResultSet rs = db.getUserBusinessRow(username);
-				if (rs == null) {
-					return false;
-				}
-				if (rs.getString("businessname") == business) {
-					rs.close();
-					return true;
-				}
-				return true; // needs to be changed to false if product owner changes requirements
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				LOGGER.warning(e.getMessage());
-				return false;
-			}
-		
-	}
-
 	public String[] getBusinessList() {
 		try {
-			ResultSet rs = db.genericGetQuery("SELECT * FROM Businessinfo");
+			ResultSet rs = masterDB.getAllBusinesses();
 			if (rs == null) {
 				return null;
 			}
@@ -898,5 +901,16 @@ public class Utility {
 	public boolean addOwnerToDatabase(String username, String password, String business, String name, String address,
 			String phoneNumber) {
 		return masterDB.createOwner(username, password, business, name, address, phoneNumber);
+	}
+
+	public boolean addBusinessToDatabase(String businessName, String address, String phoneNumber) {
+		return masterDB.createBusiness(businessName, address, phoneNumber);
+	}
+
+	public User authenticate(String username, String password, String selectedBusiness) {
+		User found = searchUserLogin(username.toLowerCase(), selectedBusiness);
+		if (found != null && found.checkPassword(password))
+			return found;
+		return null;
 	}
 }

@@ -375,14 +375,6 @@ public class RegisterBusinessController{
 		}    	
     }
 
-    private void checkBusiness(String business) throws ValidationException {
-		if (business == null || business == "" || business == "Choose Business") {
-			throw new ValidationException("You must choose a business.");
-		}
-		if (c.utilities.checkIfUserIsRegisteredToBusiness(username.getText(), business)) {
-			throw new ValidationException("User is already registered.");
-		}
-	}
 
 	//make sure that the fxml objects exist
     @FXML
