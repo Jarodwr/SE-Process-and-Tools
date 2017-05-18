@@ -74,7 +74,7 @@ public class Utility {
 			}
 
 		} catch (Exception e) {
-			//LOGGER.warning(e.getMessage()); Exceptions are intended behaviour here, no need to log
+			LOGGER.warning(e.getMessage());
 			return null;
 		}
 		
@@ -97,8 +97,15 @@ public class Utility {
 		
 			}
 		if (currentBusiness != businessname) {
-			setBusinessDBConnection(masterDB.getBusinessDBFromName(businessname));
-			currentBusiness = businessname;
+			try {
+
+				setBusinessDBConnection(masterDB.getBusinessDBFromName(businessname));
+				currentBusiness = businessname;
+			}
+			catch (SQLException e) {
+				LOGGER.warning(e.getMessage());
+				return null;
+			}
 		}
 		try {
 			rs = db.getUserRow(username);
@@ -123,7 +130,8 @@ public class Utility {
 		
 	}
 	
-	private void setBusinessDBConnection(int businessDBFromName) {
+	private void setBusinessDBConnection(int businessDBFromName) throws SQLException {
+		this.db.close();
 		this.db = new SQLiteConnection("businessDB_" + Integer.toString(businessDBFromName));
 		
 	}
@@ -363,8 +371,14 @@ public class Utility {
 	 */
 	public boolean addCustomerToDatabase(String username, String password, String business, String name, String address, String mobileno) {
 		if (currentBusiness != business) {
-			setBusinessDBConnection(masterDB.getBusinessDBFromName(business));
-			currentBusiness = business;
+			try{
+
+				setBusinessDBConnection(masterDB.getBusinessDBFromName(business));
+				currentBusiness = business;
+			}
+			catch (SQLException e) {
+				return false;
+			}
 		}
 		return db.createCustomer(username, password, business, name, address, mobileno);
 	}
@@ -375,8 +389,14 @@ public class Utility {
 	 */
 	public boolean addNewEmployee(String id, String businessName, String name, String address, String phonenumber, int timetableID) {
 		if (currentBusiness != businessName) {
-			setBusinessDBConnection(masterDB.getBusinessDBFromName(businessName));
-			currentBusiness = businessName;
+			try{
+
+				setBusinessDBConnection(masterDB.getBusinessDBFromName(businessName));
+				currentBusiness = businessName;
+			}
+			catch (SQLException e) {
+				return false;
+			}
 		}
 		return db.createEmployee("", name, address, phonenumber, 0);
 	}
@@ -528,7 +548,7 @@ public class Utility {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.warning(e.getMessage());
 			return null;
 		}
 		return null;
