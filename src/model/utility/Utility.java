@@ -58,25 +58,10 @@ public class Utility {
 				rs.close();
 				return admin;
 			}
-			else if (db.getOwnerRow(username) != null) {
-				ResultSet rs2;
-				rs2 = db.getOwnerRow(username);
-				String business = rs2.getString("businessname");
-				rs2.close();
-
-				rs = db.getUserRow(username);
-				Owner owner = new Owner(username, rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
-				rs.close();
-				return owner;
-			}
 			else {
-				ResultSet rs2;
-				rs2 = db.getUserBusinessRow(username);
-				String business = rs2.getString("businessname");
-				rs2.close();
 				rs = db.getUserRow(username);
 				
-				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), business, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), currentBusiness, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
 				rs.close();
 				return customer;
 			}
@@ -90,24 +75,24 @@ public class Utility {
 	
 	public User searchUserLogin(String username, String businessname) {
 		ResultSet rs;
-		setConnection(masterDB.getBusinessDBFromName(businessname));
+		if (username.equals("admin")) {
+			Admin admin = new Admin("1234");
+			return admin;
+		}
+		if (currentBusiness != businessname) {
+			setBusinessDBConnection(masterDB.getBusinessDBFromName(businessname));
+			currentBusiness = businessname;
+		}
 		try {
-			rs = db2.getUserRow(username);
+			rs = db.getUserRow(username);
 			if (username.equals("admin")) {
 				Admin admin = new Admin(rs.getString("password"));
 				LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
 				rs.close();
 				return admin;
 			}
-			else if (db2.getOwnerRow(username) != null) {
-
-				rs = db2.getUserRow(username);
-				Owner owner = new Owner(username, rs.getString("password"), businessname, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
-				rs.close();
-				return owner;
-			}
 			else {
-				rs = db2.getUserRow(username);
+				rs = db.getUserRow(username);
 				
 				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), businessname, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
 				rs.close();
@@ -121,6 +106,11 @@ public class Utility {
 		
 	}
 	
+	private void setBusinessDBConnection(int businessDBFromName) {
+		this.db = new SQLiteConnection("businessDB_" + Integer.toString(businessDBFromName));
+		
+	}
+
 	/**
 	 * @param username Requested user
 	 * @param password Attempted password
@@ -907,6 +897,6 @@ public class Utility {
 
 	public boolean addOwnerToDatabase(String username, String password, String business, String name, String address,
 			String phoneNumber) {
-		return db.createOwner(username, password, business, name, address, phoneNumber);
+		return masterDB.createOwner(username, password, business, name, address, phoneNumber);
 	}
 }

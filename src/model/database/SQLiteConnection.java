@@ -181,59 +181,7 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	/**
-	 * Add a new owner into the database
-	 * @param businessname	The name of the buisness to assign to the owner
-	 * @param username	Owner's username
-	 * @param password	Owner's password
-	 * @param name	Owner's real name
-	 * @param address	Owner's physical home address
-	 * @param mobileno	Owner's mobile number
-	 * @return success True if creation is successful, else false.
-	 */
 	
-	public boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
-		username = username.toLowerCase();
-		Connection c = this.conn;
-		Boolean needToAddUser = true;
-		try {
-			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
-
-			if (rs != null) {
-				LOGGER.log(Level.FINE, "Failed to add owner into the database because an owner with the same username exists with username: "+ username);
-				rs.close();
-				return false;
-			}
-			if (needToAddUser) {
-				PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
-				ps.setString(1, username);
-				ps.setString(2, password);
-				ps.setString(3, name);
-				ps.setString(4, address);
-				ps.setString(5, mobileno);
-				ps.executeUpdate();
-				ps.close();
-			}
-			
-			ResultSet rs2 = getOwnerRow(username); // search through usernames to check if this user currently exists
-
-			if (rs2 != null) {
-				rs2.close();
-				return false;
-			}
-			
-			PreparedStatement ps2 = c.prepareStatement("INSERT INTO Ownerinfo VALUES (?, ?);"); // this links a user to a business, making them an owner
-			ps2.setString(1, businessname);
-			ps2.setString(2, username);
-			ps2.executeUpdate();
-			ps2.close();
-
-			return true;
-		} catch (SQLException e) {
-			LOGGER.log(Level.WARNING, e.getMessage());
-			return false;
-		}
-	}
 	
 	/**
 	 * Adds a new business into the database
