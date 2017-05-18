@@ -146,9 +146,11 @@ public class CustomerAddBooking {
     	
     	//Add all services to list
     	String[] sList = controller.getServicesList();
-    	for (String s : sList) {
-    		CheckMenuItem cmi = new CheckMenuItem(s);
-    		serviceMenu.getItems().add(cmi);
+    	if (sList != null) {
+        	for (String s : sList) {
+        		CheckMenuItem cmi = new CheckMenuItem(s);
+        		serviceMenu.getItems().add(cmi);
+        	}
     	}
     	
     	//Alternate time grid init

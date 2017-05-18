@@ -1,6 +1,0 @@
-Apr 09, 2017 4:21:51 PM main.Main main
-WARNING: test
-Apr 09, 2017 4:21:56 PM model.database.SQLiteConnection createOwner
-WARNING: [SQLITE_BUSY]  The database file is locked (database is locked)
-Apr 09, 2017 4:21:59 PM model.database.SQLiteConnection createBooking
-WARNING: [SQLITE_BUSY]  The database file is locked (database is locked)

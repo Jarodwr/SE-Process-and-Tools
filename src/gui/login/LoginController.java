@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -59,7 +60,11 @@ public class LoginController
     @FXML
     private Label loginErrorMessage;
     
+    @FXML
+    private ComboBox<String> chooseBusinessComboBox;
+    
     private Stage main;
+	private String selectedBusiness;
     
     //this method runs when the login button is clicked
     @FXML
@@ -67,6 +72,11 @@ public class LoginController
     {
     	//run the login function
     	login();
+    }
+    
+    @FXML
+    void chooseBusiness(ActionEvent event) {
+    	this.selectedBusiness = chooseBusinessComboBox.getSelectionModel().getSelectedItem();
     }
     
     /*
@@ -81,9 +91,24 @@ public class LoginController
     	try {
     		//try to log in the user and assign the output to a new user object
     		User u = this.c.login(login_username.getText(), login_password.getText());
-    		//if the user doesn't exist then end method and display the error message
-	    	if (u == null) { // fail
-	    		LOGGER.warning("failed to log in, user doesn't exist.");
+    		//if the user doesn't exist then check for customer
+	    	if (u == null) { 
+	    		if (selectedBusiness == null || selectedBusiness == "" || selectedBusiness == "Choose Business") {
+	    			return;
+	    		}
+	    		User u2 = this.c.login(login_username.getText(), login_password.getText(), selectedBusiness);
+	    		if (u2 == null) {
+	    			return;
+	    		}
+	    		//if the user logging in is not a owner then show them the customer view
+	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/customer/CustomerView.fxml"));
+		    	BorderPane root = loader.load();
+		    	Scene ownerview = new Scene(root, 900, 600);
+				main.setScene(ownerview);
+				CustomerViewController controller = loader.getController();
+				//inject variables into the controller class for the customer view
+		    	controller.init(main, this.c, u2);
+		    	main.show();
 	    	} else if (u.isAdmin()) {
  	    		//if the user that us returned then go to the owner view
  	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/register/RegisterBusiness.fxml"));
@@ -167,6 +192,10 @@ public class LoginController
     public void initStage(Stage scene)
     {
     	main = scene;
+    	String[] businesses = c.getBusinessList();
+    	if (businesses != null) {
+    		chooseBusinessComboBox.getItems().addAll(businesses);
+    	}
     }
     
 }

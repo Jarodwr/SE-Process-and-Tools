@@ -1,2 +1,0 @@
-Apr 09, 2017 5:22:39 PM main.Main main
-WARNING: test

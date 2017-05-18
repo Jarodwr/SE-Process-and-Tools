@@ -31,12 +31,12 @@ public class ControllerTest{
 		db.createOwner("Massage Business", "JoeDoe97", "ayylmao", "Joe", "123 swanston st", "0491827462");
 		
 //		db.createCustomer(username, password, name, address, mobileno);
-		db.createCustomer("jarodwr", "1234", "Jarod", "32 der st", "0412341234");
-		db.createCustomer("yargen", "asdf", "Bruce", "67 data st", "0412376534");
-		db.createCustomer("kate", "zxcv", "Andy", "A street that doesn't exist", "043841234");
-		db.createCustomer("bill", "uuuuuuuuuu", "Dave", "Junk location data", "0412340294");
-		db.createCustomer("death", "life", "Brandon", "Southern cross station", "0411821234");
-		db.createCustomer("grips", "yehnahyehyehnah", "Will", "entry dataaaaaaaaa", "0412900234");
+		db.createCustomer("jarodwr", "1234", "Massage Business", "Jarod", "32 der st", "0412341234");
+		db.createCustomer("yargen", "asdf", "Massage Business", "Bruce", "67 data st", "0412376534");
+		db.createCustomer("kate", "zxcv", "Massage Business", "Andy", "A street that doesn't exist", "043841234");
+		db.createCustomer("bill", "uuuuuuuuuu", "Massage Business", "Dave", "Junk location data", "0412340294");
+		db.createCustomer("death", "life", "Massage Business", "Brandon", "Southern cross station", "0411821234");
+		db.createCustomer("grips", "yehnahyehyehnah", "Massage Business", "Will", "entry dataaaaaaaaa", "0412900234");
 		
 //		db.createAvailability(timetableId, businessname, availabilities);
 		db.createAvailability(1, "Massage Business", "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
@@ -145,7 +145,7 @@ public class ControllerTest{
 	@Test
 	public void registerTest01() {
 		try {
-			User customer = c.register("jarodwr", "asdfasdf", "asdfasdf", "jarod", "32 asa st", "0400440044");
+			User customer = c.register("jarodwr", "asdfasdf", "Massage Business", "asdfasdf", "jarod", "32 asa st", "0400440044");
 			System.out.println(customer);
 			assert(customer == null);
 		} catch(ValidationException e) {
@@ -156,7 +156,7 @@ public class ControllerTest{
 	@Test
 	public void registerTest02() {
 		try {
-			User customer = c.register("!@#$%^&*()??//", "asdf", "asdf", "asdf", "test", "0412341234");
+			User customer = c.register("!@#$%^&*()??//", "asdf", "Massage Business", "asdf", "asdf", "test", "0412341234");
 			assert(customer == null);
 		} catch(ValidationException e) {
 
@@ -166,7 +166,7 @@ public class ControllerTest{
 	@Test
 	public void registerTest03() {
 		try {
-			User customer = c.register("bruceW", "asdf", "asdf", "bruce", "asdfasdf", "fffffffffffff");
+			User customer = c.register("bruceW", "asdf", "Massage Business", "asdf", "bruce", "asdfasdf", "fffffffffffff");
 			assert(customer == null);
 		} catch(ValidationException e) {
 			
@@ -176,7 +176,7 @@ public class ControllerTest{
 	@Test
 	public void registerTest04() {
 		try {
-			User customer = c.register("kill", "1234", "1234", "Jill", "12 who cares", "0412345687");
+			User customer = c.register("kill", "1234", "Massage Business", "1234", "Jill", "12 who cares", "0412345687");
 			assert(customer != null);
 		} catch(ValidationException e) {
 			e.printStackTrace();
@@ -187,7 +187,7 @@ public class ControllerTest{
 	@Test
 	public void registerTest05() {
 		try {
-			User customer = c.register("CameronO", "", "", "Cameron", "yeah yeah", "0412341234");
+			User customer = c.register("CameronO", "", "Massage Business", "", "Cameron", "yeah yeah", "0412341234");
 			assert(customer == null);
 		} catch(ValidationException e) {
 		}
@@ -196,7 +196,7 @@ public class ControllerTest{
 	@Test
 	public void registerTest06() {
 		try {
-			User customer = c.register("", "1234", "1234", "1234", "asdf", "0412341234");
+			User customer = c.register("", "1234", "Massage Business", "1234", "1234", "asdf", "0412341234");
 			assert(customer == null);
 		} catch(ValidationException e) {
 		}

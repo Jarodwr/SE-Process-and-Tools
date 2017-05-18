@@ -375,8 +375,6 @@ public class RegisterBusinessController{
 		}    	
     }
 
-
-
 	//make sure that the fxml objects exist
     @FXML
     void initialize() {

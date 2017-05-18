@@ -368,13 +368,18 @@ public class Controller {
 	 * @return	String formatted customer list
 	 */
 	public String[] getCustomerList() {
-		Customer[] eList = utilities.getAllCustomers();
-		String[] employees = new String[eList.length];
-		
-		for (int i = 0; i < eList.length; i++)
-			employees[i] = eList[i].getUsername() + ":" + eList[i].getName();
-		
-		return employees;
+		Customer[] cList = utilities.getAllCustomers();
+		if (cList != null) {
+			String[] customers = new String[cList.length];
+			
+			for (int i = 0; i < cList.length; i++)
+				customers[i] = cList[i].getUsername() + ":" + cList[i].getName();
+			
+			return customers;
+		} else {
+			return new String[0];
+		}
+
 
 	}
 
@@ -384,6 +389,9 @@ public class Controller {
 	 */
 	public String[] getServicesList() {
 		Service[] sList = utilities.getAllServices();
+		if (sList == null) {
+			return null;
+		}
 		String[] services = new String[sList.length];
 		
 		for (int i = 0; i < sList.length; i++)
@@ -434,6 +442,15 @@ public class Controller {
 			throw new ValidationException("Mobile number is not valid!");
 		}
 		
+		if (utilities.addBusinessToDatabase(businessName, address, phoneNumber)) {
+			LOGGER.log(Level.INFO, "REGISTER: Success, business added to system");
+			
+		} else {
+			//	inform the user that there is a user with that name and return null
+			LOGGER.log(Level.INFO, "REGISTER: Failure, business name already taken");
+			throw new ValidationException("Business already exists in the system!");
+		}
+		
 	}
 
 	public User registerOwner(String username, String password, String business, String name, String address,
@@ -479,5 +496,22 @@ public class Controller {
 				}
 		// TODO Auto-generated method stub
 		
+	}
+
+	public User login(String username, String password, String selectedBusiness) {
+		LOGGER.log(Level.INFO, "LOGIN: Login details: Username - " + username + ", Password - " + password);
+		//Search for the user in the arrayList and make sure the password is correct
+		User user = utilities.authenticate(username, password, selectedBusiness);
+
+		if (user == null) {
+			LOGGER.log(Level.INFO, "LOGIN: Failed");
+		}
+		else
+		{
+			utilities.setCurrentBusiness(user.getBusinessName());
+			LOGGER.log(Level.INFO, "LOGIN: Success");
+		}
+
+		return user;
 	}
 }
