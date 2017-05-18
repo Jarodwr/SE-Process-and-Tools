@@ -15,58 +15,62 @@
    <center>
       <Pane prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane id="login-pane" layoutX="277.0" layoutY="60.0" prefHeight="522.0" prefWidth="352.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10 10 10 10;">
+            <Pane id="login-pane" layoutX="274.0" layoutY="39.0" prefHeight="522.0" prefWidth="352.0" style="-fx-background-color: #dddddd; -fx-background-radius: 10 10 10 10;">
                <children>
-                  <Label layoutX="124.0" layoutY="14.0" text="Register">
-                     <font>
-                        <Font name="Calibri" size="30.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="60.0" layoutY="64.0" prefHeight="52.0" prefWidth="268.0" text="Please fill in your details below, and choose a business to register to." wrapText="true">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="registerErrorMessage" alignment="CENTER" layoutX="2.0" layoutY="422.0" prefHeight="17.0" prefWidth="346.0" style="-fx-text-alignment: center;" text="Username must not only contain numbers!" textAlignment="CENTER" textFill="#dddddd" />
+                  <Pane layoutX="3.0" layoutY="14.0">
+                     <children>
+                        <Label layoutX="121.0" text="Register">
+                           <font>
+                              <Font name="Calibri" size="30.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="35.0" layoutY="35.0" prefHeight="52.0" prefWidth="268.0" text="Please choose a business and fill in your details below to register" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Calibri" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="registerErrorMessage" alignment="CENTER" layoutY="423.0" prefHeight="17.0" prefWidth="346.0" style="-fx-text-alignment: center;" text="Username must not only contain numbers!" textAlignment="CENTER" textFill="#dddddd" />
+                        <TextField fx:id="username" layoutX="74.0" layoutY="157.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Username">
+                           <font>
+                              <Font name="Calibri" size="16.0" />
+                           </font>
+                        </TextField>
+                        <PasswordField fx:id="password" layoutX="74.0" layoutY="194.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Password">
+                           <font>
+                              <Font name="Calibri" size="16.0" />
+                           </font>
+                        </PasswordField>
+                        <PasswordField fx:id="passwordCon" layoutX="74.0" layoutY="232.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Confirm Password">
+                           <font>
+                              <Font name="Calibri" size="16.0" />
+                           </font>
+                        </PasswordField>
+                        <TextField fx:id="name" layoutX="78.0" layoutY="300.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Name">
+                           <font>
+                              <Font name="Calibri" size="16.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="address" layoutX="77.0" layoutY="341.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Address">
+                           <font>
+                              <Font name="Calibri" size="16.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="number" layoutX="78.0" layoutY="378.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Phone Number">
+                           <font>
+                              <Font name="Calibri" size="16.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="registerButton" layoutX="113.0" layoutY="457.0" mnemonicParsing="false" onAction="#onRegisterClick" prefHeight="27.0" prefWidth="114.0" style="-fx-background-color: #ff471a;" text="Register" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Calibri" size="13.0" />
+                           </font>
+                        </Button>
+                        <Label layoutX="78.0" layoutY="275.0" prefHeight="17.0" prefWidth="113.0" text="Password Strength :" />
+                        <Label fx:id="passStrength" alignment="CENTER_RIGHT" layoutX="191.0" layoutY="275.0" prefHeight="17.0" prefWidth="78.0" text="Strong" textFill="#dddddd" />
+                        <ComboBox fx:id="chooseBusiness" layoutX="76.0" layoutY="114.0" onAction="#chooseBusinessAction" prefHeight="25.0" prefWidth="188.0" />
+                     </children>
+                  </Pane>
                   <HBox alignment="CENTER_LEFT" layoutX="78.0" layoutY="159.0" prefHeight="27.0" prefWidth="191.0" />
-                  <TextField fx:id="username" layoutX="77.0" layoutY="171.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Username">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <PasswordField fx:id="password" layoutX="77.0" layoutY="208.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Password">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </PasswordField>
-                  <PasswordField fx:id="passwordCon" layoutX="77.0" layoutY="246.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Confirm Password">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </PasswordField>
-                  <TextField fx:id="name" layoutX="81.0" layoutY="314.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Name">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="address" layoutX="80.0" layoutY="355.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Address">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="number" layoutX="81.0" layoutY="392.0" onKeyPressed="#checkEnter" onKeyReleased="#checkAll" promptText="Phone Number">
-                     <font>
-                        <Font name="Calibri" size="16.0" />
-                     </font>
-                  </TextField>
-                  <Button fx:id="registerButton" layoutX="132.0" layoutY="469.0" mnemonicParsing="false" onAction="#onRegisterClick" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #ff471a;" text="Register" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font name="Calibri" size="13.0" />
-                     </font>
-                  </Button>
-                  <Label layoutX="81.0" layoutY="289.0" prefHeight="17.0" prefWidth="113.0" text="Password Strength :" />
-                  <Label fx:id="passStrength" alignment="CENTER_RIGHT" layoutX="194.0" layoutY="289.0" prefHeight="17.0" prefWidth="78.0" text="Strong" textFill="#dddddd" />
-                  <ComboBox fx:id="chooseBusiness" layoutX="79.0" layoutY="128.0" onAction="#chooseBusinessAction" prefHeight="25.0" prefWidth="188.0" />
                </children>
                <effect>
                   <ColorAdjust />

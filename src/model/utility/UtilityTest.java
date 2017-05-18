@@ -141,28 +141,6 @@ public class UtilityTest {
 	public void authenticate6() {
 		assert(u.authenticate("", "") == null);
 	}
-
-	
-	@Test
-	public void getEmployeeList1() {
-		
-		assert(u.getEmployeeList().length == 6);
-	}
-	
-	@Test
-	public void getEmployeeList2() {
-		assert(u.getEmployeeList()[0][1].equals("spencer"));
-		assert(u.getEmployeeList()[1][1].equals("russel"));
-		assert(u.getEmployeeList()[2][1].equals("jarod"));
-		assert(u.getEmployeeList()[3][1].equals("anesu"));
-		assert(u.getEmployeeList()[4][1].equals("anthrax"));
-		assert(u.getEmployeeList()[5][1].equals("marvin"));
-	}
-	
-	@Test
-	public void getEmployeeList3() {
-		assert(u.getEmployeeList() != null);
-	}
 	
 	//TODO: All these tests are testing the wrong functionality
 	@Test
