@@ -202,12 +202,12 @@ public class SQLiteConnection {
 	 * @param data	Services for the booking
 	 * @return success True if creation is successful, false if unsuccessful.
 	 */
-	public boolean createBooking(String businessname, String customername, String employeeId, String unixstamp1, String unixstamp2, String data) {
+	public boolean createBooking(String customername, String employeeId, String unixstamp1, String unixstamp2, String data) {
 		
 		customername = customername.toLowerCase();
 		Connection c = this.conn;
 		try {
-			int bookingId = getNextAvailableId(getAllBookings(businessname), "bookingId");
+			int bookingId = getNextAvailableId(getAllBookings(), "bookingId");
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
 
 			if (rs != null) {
@@ -215,14 +215,13 @@ public class SQLiteConnection {
 				return false;
 			}
 			
-			PreparedStatement ps = c.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?, ?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, bookingId);
-			ps.setString(2, businessname);
-			ps.setString(3, customername);
-			ps.setString(4, employeeId);
-			ps.setString(5, unixstamp1);
-			ps.setString(6, unixstamp2);
-			ps.setString(7, data);
+			ps.setString(2, customername);
+			ps.setString(3, employeeId);
+			ps.setString(4, unixstamp1);
+			ps.setString(5, unixstamp2);
+			ps.setString(6, data);
 			ps.executeUpdate();
 			ps.close();
 
@@ -265,17 +264,16 @@ public class SQLiteConnection {
 	/**
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
-	public boolean createEmployee(String businessname, String name, String address, String mobileno, int timetableId) {
+	public boolean createEmployee(String name, String address, String mobileno, int timetableId) {
 		Connection c = this.conn;
 		
 		try {
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, this.getNextAvailableId(getAllEmployees(), "employeeId"));
-			ps.setString(2, businessname);
-			ps.setString(3, name);
-			ps.setString(4, address);
-			ps.setString(5, mobileno);
-			ps.setInt(6, timetableId);
+			ps.setString(2, name);
+			ps.setString(3, address);
+			ps.setString(4, mobileno);
+			ps.setInt(5, timetableId);
 			ps.executeUpdate();
 			ps.close();
 			return true;
@@ -389,7 +387,7 @@ public class SQLiteConnection {
 	/**
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
-	public boolean createAvailability(int timetableId, String businessname, String availabilities) {
+	public boolean createAvailability(int timetableId, String availabilities) {
 		Connection c = this.conn;
 		try {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
@@ -399,10 +397,9 @@ public class SQLiteConnection {
 				return false;
 			}
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Timetableinfo VALUES (?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO Timetableinfo VALUES (?, ?);"); // this creates a new user
 			ps.setInt(1, timetableId);
-			ps.setString(2, businessname);
-			ps.setString(3, availabilities);
+			ps.setString(2, availabilities);
 			ps.executeUpdate();
 			ps.close();
 
@@ -577,21 +574,19 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	public boolean isShiftIn(int employeeId, String businessname, String start, String end) throws SQLException{
+	public boolean isShiftIn(int employeeId, String start, String end) throws SQLException{
 		Connection c = this.conn;
 		String query = "SELECT * "
 				+ "FROM EmployeeWorkingTimes "
 				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND "
 				+ "CAST(unixendtime AS INTEGER) <= CAST(? AS INTEGER) AND "
-				+ "employeeId = ? AND "
-				+ "businessname = ?";
+				+ "employeeId = ?";
 		PreparedStatement pst;
 		try {
 			pst = c.prepareStatement(query);
 			pst.setString(1, start);
 			pst.setString(2, end);
 			pst.setInt(3, employeeId);
-			pst.setString(4, businessname);
 			ResultSet rs = pst.executeQuery();
 			if (rs.next()) {
 				rs.close();
@@ -603,17 +598,16 @@ public class SQLiteConnection {
 		return false;
 	}
 
-	public boolean addShift(int employeeId, String businessname, String start, String end){
+	public boolean addShift(int employeeId, String start, String end){
 		Connection c = this.conn;
 		try {
-			if (isShiftIn(employeeId, businessname, start, end))
+			if (isShiftIn(employeeId, start, end))
 				return false;
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?, ?);"); // this creates a new user
-			ps.setString(1, businessname);
-			ps.setInt(2, employeeId);
-			ps.setString(3, start);
-			ps.setString(4, end);
+			PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?);"); // this creates a new user
+			ps.setInt(1, employeeId);
+			ps.setString(2, start);
+			ps.setString(3, end);
 			ps.executeUpdate();
 			ps.close();
 			return true;
@@ -640,7 +634,7 @@ public class SQLiteConnection {
 
 	}
 	
-	public ResultSet getService(String servicename, String businessname) throws SQLException { /* TODO */
+	public ResultSet getService(String servicename) throws SQLException { /* TODO */
 	
 		Connection c = this.conn;
 		// Search for rows with matching usernames
@@ -670,20 +664,19 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	public boolean addService(String serviceName, int servicePrice, int serviceMinutes, String businessName) {
+	public boolean addService(String serviceName, int servicePrice, int serviceMinutes) {
 		Connection c = this.conn;
 		try {
-			ResultSet rs = getService(serviceName, businessName);
+			ResultSet rs = getService(serviceName);
 			if (rs != null) {
 				rs.close();
 				return false;
 			}
 			
-			PreparedStatement ps = c.prepareStatement("INSERT INTO ServicesTable VALUES (?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO ServicesTable VALUES (?, ?, ?);"); // this creates a new user
 			ps.setString(1, serviceName);
 			ps.setInt(2, servicePrice);
 			ps.setInt(3, serviceMinutes);
-			ps.setString(4, businessName);
 			ps.executeUpdate();
 			ps.close();
 
@@ -694,12 +687,11 @@ public class SQLiteConnection {
 		}
 	}
 
-	public ResultSet getAllBookings(String businessname) throws SQLException {
+	public ResultSet getAllBookings() throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM BookingsTable WHERE businessname = ?";
+		String query = "SELECT * FROM BookingsTable";
 		PreparedStatement pst = c.prepareStatement(query);
-		pst.setString(1, businessname);
 		ResultSet rs = pst.executeQuery();
 	
 		if (rs.next()) {

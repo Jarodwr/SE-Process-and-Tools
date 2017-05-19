@@ -56,7 +56,7 @@ public class SQLMaster {
 	public ResultSet getBusinessRow(String businessname) throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
+		String query = "SELECT * FROM Businessinfo WHERE businessname=?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, businessname);
 		ResultSet rs = pst.executeQuery();

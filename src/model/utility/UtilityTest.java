@@ -40,46 +40,46 @@ public class UtilityTest {
 		db.createCustomer("grips", "yehnahyehyehnah", "Massage Business", "Will", "entry dataaaaaaaaa", "0412900234");
 		
 //		db.createAvailability(timetableId, businessname, availabilities);
-		db.createAvailability(1, "Massage Business", "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
-		db.createAvailability(2, "Massage Business", "1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
-		db.createAvailability(3, "Massage Business", "1800,14399|27000,86399");
-		db.createAvailability(4, "Massage Business", "1800,14399|27000,86399");
-		db.createAvailability(5, "Massage Business", "1800,14399|27000,86399");
-		db.createAvailability(6, "Massage Business", "1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
+		db.createAvailability(1, "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
+		db.createAvailability(2, "1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
+		db.createAvailability(3, "1800,14399|27000,86399");
+		db.createAvailability(4, "1800,14399|27000,86399");
+		db.createAvailability(5, "1800,14399|27000,86399");
+		db.createAvailability(6, "1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
 		
 //		db.createEmployee(businessname, name, address, mobileno, timetableId)
-		db.createEmployee("Massage Business", "spencer", "any", "0394815108", 1);
-		db.createEmployee("Massage Business", "russel", "somewhere", "9382738491", 2);
-		db.createEmployee("Massage Business", "jarod", "nowhere", "1738593827", 3);
-		db.createEmployee("Massage Business", "anesu", "anywhere", "2918273647", 4);
-		db.createEmployee("Massage Business", "anthrax", "blah", "9283746374", 5);
-		db.createEmployee("Massage Business", "marvin", "yes", "0192837465", 6);
+		db.createEmployee("spencer", "any", "0394815108", 1);
+		db.createEmployee("russel", "somewhere", "9382738491", 2);
+		db.createEmployee("jarod", "nowhere", "1738593827", 3);
+		db.createEmployee("anesu", "anywhere", "2918273647", 4);
+		db.createEmployee("anthrax", "blah", "9283746374", 5);
+		db.createEmployee("marvin", "yes", "0192837465", 6);
 		
 //		db.addShift(employeeId, businessname, start, end)
-		db.addShift(0, "Massage Business", "1497544200", "1497546000");	//06/15/2017 @ 4:30pm-5:00pm (UTC)
-		db.addShift(0, "Massage Business", "1497506400", "1497513600");
-		db.addShift(1, "Massage Business", "1497513600", "1497520800");
-		db.addShift(2, "Massage Business", "1497506400", "1497565800");
-		db.addShift(3, "Massage Business", "1497508200", "1497520800");
-		db.addShift(3, "Massage Business", "1497522600", "1497565800");
-		db.addShift(4, "Massage Business", "1497508200", "1497522600");
-		db.addShift(5, "Massage Business", "1497555000", "1497565800");
+		db.addShift(0, "1497544200", "1497546000");	//06/15/2017 @ 4:30pm-5:00pm (UTC)
+		db.addShift(0, "1497506400", "1497513600");
+		db.addShift(1, "1497513600", "1497520800");
+		db.addShift(2, "1497506400", "1497565800");
+		db.addShift(3, "1497508200", "1497520800");
+		db.addShift(3, "1497522600", "1497565800");
+		db.addShift(4, "1497508200", "1497522600");
+		db.addShift(5, "1497555000", "1497565800");
 
 //		db.addService(serviceName, servicePrice, serviceMinutes, businessName)
-		db.addService("Light Massage", 1000, 30, "Massage Business");
-		db.addService("Heavy Massage", 3000, 90, "Massage Business");
-		db.addService("Hair cut", 1500, 60, "Massage Business");
-		db.addService("Spa", 5000, 120, "Massage Business");
+		db.addService("Light Massage", 1000, 30);
+		db.addService("Heavy Massage", 3000, 90);
+		db.addService("Hair cut", 1500, 60);
+		db.addService("Spa", 5000, 120);
 		
 //		db.createBooking(businessname, customername, employeeId, unixstamp1, unixstamp2, data)
-		db.createBooking("Massage Business", "jarodwr", "0", "1497549600", "1497555000", "Light Massage");
-		db.createBooking("Massage Business", "yargen", "0", "1497510000", "1497513600", "Hair cut");
-		db.createBooking("Massage Business", "derkaderka", "1", "1497555000", "1497558600", "Hair cut");
-		db.createBooking("Massage Business", "yargen", "2", "1497558600", "1497565800", "Spa");
-		db.createBooking("Massage Business", "death", "2", "1497513600", "1497520800", "Spa");
-		db.createBooking("Massage Business", "death", "3", "1497520800", "1497522600", "Heavy Massage");
-		db.createBooking("Massage Business", "grips", "3", "1497508200", "1497510000", "Heavy Massage");
-		db.createBooking("Massage Business", "derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
+		db.createBooking("jarodwr", "0", "1497549600", "1497555000", "Light Massage");
+		db.createBooking("yargen", "0", "1497510000", "1497513600", "Hair cut");
+		db.createBooking("derkaderka", "1", "1497555000", "1497558600", "Hair cut");
+		db.createBooking("yargen", "2", "1497558600", "1497565800", "Spa");
+		db.createBooking("death", "2", "1497513600", "1497520800", "Spa");
+		db.createBooking("death", "3", "1497520800", "1497522600", "Heavy Massage");
+		db.createBooking("grips", "3", "1497508200", "1497510000", "Heavy Massage");
+		db.createBooking("derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
 		
 	}
 	

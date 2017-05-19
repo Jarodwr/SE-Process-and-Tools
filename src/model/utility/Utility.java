@@ -29,7 +29,7 @@ public class Utility {
 	private Logger LOGGER = Logger.getLogger("main");
 	private User currentUser = null;
 	private String currentBusiness;
-	private SQLiteConnection db = new SQLiteConnection();
+	private SQLiteConnection db = null;
 	private SQLMaster masterDB = new SQLMaster();
 	
 	
@@ -108,30 +108,35 @@ public class Utility {
 			}
 		}
 		try {
-			rs = db.getUserRow(username);
-			if (username.equals("admin")) {
-				Admin admin = new Admin(rs.getString("password"));
-				LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
-				rs.close();
-				return admin;
-			}
-			else {
-				rs = db.getUserRow(username);
-				
-				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
-				rs.close();
-				return customer;
+			ResultSet br = masterDB.getBusinessRow(businessname);
+			if (br != null) {
+				SQLiteConnection tempConn = new SQLiteConnection("businessDB_" + br.getString("businessid"));
+				rs = tempConn.getUserRow(username);
+				if (username.equals("admin")) {
+					Admin admin = new Admin(rs.getString("password"));
+					LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
+					rs.close();
+					return admin;
+				}
+				else {
+					rs = tempConn.getUserRow(username);
+					Customer customer = new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+					rs.close();
+					return customer;
+				}
 			}
 
 		} catch (Exception e) {
 			//LOGGER.warning(e.getMessage()); Exceptions are intended behaviour here, no need to log
-			return null;
 		}
+		return null;
 		
 	}
 	
 	private void setBusinessDBConnection(int businessDBFromName) throws SQLException {
-		this.db.close();
+		if (db != null) {
+			this.db.close();
+		}
 		this.db = new SQLiteConnection("businessDB_" + Integer.toString(businessDBFromName));
 	}
 
@@ -145,9 +150,10 @@ public class Utility {
 		User found = searchUserLogin(username.toLowerCase(), "");
 		if (found != null && found.checkPassword(password)) {
 			try {
-				int businessId = Integer.parseInt(masterDB.getOwnerRow(username).getString("businessid"));
-				String businessName = masterDB.getBusinessRow(businessId).getString("businessname");
-				this.setCurrentBusiness(businessName);
+				ResultSet rs = masterDB.getOwnerRow(username);
+				int businessId = Integer.parseInt(rs.getString("businessid"));
+//				String businessName = masterDB.getBusinessRow(businessId).getString("businessname");
+				this.setBusinessDBConnection(businessId);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -200,12 +206,12 @@ public class Utility {
 			else {
 				id = 0;
 			}
-			if (db.createAvailability(id, getCurrentBusiness(), t.toString())){
+			if (db.createAvailability(id, t.toString())){
 				
 			}
 			else {
 				db.deleteAvailabilities(id, getCurrentBusiness());
-				db.createAvailability(id, getCurrentBusiness(), t.toString());
+				db.createAvailability(id, t.toString());
 			}
 			db.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
 		}
@@ -249,7 +255,7 @@ public class Utility {
 			
 			if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
 
-				return db.createBooking(getCurrentBusiness(), customerUsername, employeeId, start, end, services);
+				return db.createBooking(customerUsername, employeeId, start, end, services);
 			}
 		}
 		return false;
@@ -338,8 +344,7 @@ public class Utility {
 			return false;
 		else
 			try {
-				return (db.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
-						Long.toString(starttime), Long.toString(endtime)));
+				return (db.addShift(Integer.parseInt(employeeId), Long.toString(starttime), Long.toString(endtime)));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -395,7 +400,7 @@ public class Utility {
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addNewEmployee(String id, String name, String address, String phonenumber, int timetableID) {
-		return db.createEmployee("", name, address, phonenumber, 0);
+		return db.createEmployee(name, address, phonenumber, 0);
 	}
 	
 	/**
@@ -564,7 +569,7 @@ public class Utility {
 	 * @return	whether or not adding the service was a success
 	 */
 	public boolean addService(String name, int priceInCents, String duration) {
-		return db.addService(name, priceInCents, Integer.parseInt(duration), getCurrentBusiness());
+		return db.addService(name, priceInCents, Integer.parseInt(duration));
 	}
 
 	/**
@@ -578,7 +583,7 @@ public class Utility {
 		
 		try {
 			for(int i = 0; i < servicesSplit.length; i++) {
-				ResultSet rs = db.getService(servicesSplit[i], "SARJ's Milk Business");
+				ResultSet rs = db.getService(servicesSplit[i]);
 				if (rs == null) {
 				}
 				else {
@@ -805,6 +810,7 @@ public class Utility {
 			ArrayList<String> businessList = new ArrayList<String>();
 			do {
 				businessList.add(rs.getString("businessname"));
+				System.out.println(rs.getString("address"));
 			} while(rs.next());
 			String[] businessStringArray = new String[businessList.size()];
 			int i = 0;
@@ -832,8 +838,16 @@ public class Utility {
 
 	public User authenticate(String username, String password, String selectedBusiness) {
 		User found = searchUserLogin(username.toLowerCase(), selectedBusiness);
-		if (found != null && found.checkPassword(password))
+		if (found != null && found.checkPassword(password)) {
+			try {
+				this.setBusinessDBConnection(Integer.parseInt(masterDB.getBusinessRow(selectedBusiness).getString("businessId")));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 			return found;
+		}
 		return null;
 	}
 }

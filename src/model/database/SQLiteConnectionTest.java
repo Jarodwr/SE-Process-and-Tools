@@ -43,14 +43,13 @@ public class SQLiteConnectionTest {
 
 			for(int i = 1; i < 6; i++) {
 				testDB.deleteEmployee(i);
-				
 			}
 			testMasterDB.createBusiness("T Business", "Test Lane", "0412345678");
-			testDB.createEmployee("T Business", "Dad", "A", "1", 0);
-			testDB.createEmployee("T Business", "Mum", "A", "1", 0);
-			testDB.createEmployee("T Business", "Brother", "A", "1", 0);
-			testDB.createEmployee("T Business", "Sister", "A", "1", 0);
-			testDB.createEmployee("T Business", "Baby", "A", "1", 0);
+			testDB.createEmployee("Dad", "A", "1", 0);
+			testDB.createEmployee("Mum", "A", "1", 0);
+			testDB.createEmployee("Brother", "A", "1", 0);
+			testDB.createEmployee("Sister", "A", "1", 0);
+			testDB.createEmployee("Baby", "A", "1", 0);
 			String[] s = {"Dad", "Mum", "Brother", "Sister", "Baby"};
 			for(int i = 1; i < 6; i++) {
 				ResultSet rs = testDB.getEmployeeRow(i);
