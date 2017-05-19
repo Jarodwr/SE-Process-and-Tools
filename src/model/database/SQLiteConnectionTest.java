@@ -2,21 +2,31 @@ package model.database;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.sql.ResultSet;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SQLiteConnectionTest {
+	static SQLiteConnection testDB;
+	static SQLMaster testMasterDB;
 
-	SQLiteConnection testDb = new SQLiteConnection();
-	SQLMaster testMasterDB = new SQLMaster("test");
+	@BeforeClass
+	public static void setup() {
+		new File("TESTMasterDB.sqlite").delete();
+		new File("test.sqlite").delete();
+		testDB = new SQLiteConnection("test");
+		testMasterDB = new SQLMaster("test");
+		
+	}
 	
 	@Test
 	public void testCreateCustomer() {
 		try {
-			testDb.deleteUser("test");
-			testDb.createCustomer("test", "test", "test", "Test Test", "11 Test Place", "0498232444");
-			ResultSet rs = testDb.getUserRow("test");
+			testDB.deleteUser("test");
+			testDB.createCustomer("test", "test", "test", "Test Test", "11 Test Place", "0498232444");
+			ResultSet rs = testDB.getUserRow("test");
 			if (!rs.getString("name").equals("Test Test")) {
 				fail("customer wasn't created correctly. rs.getString(\"name\") returns " + rs.getString("name"));
 			}
@@ -32,24 +42,25 @@ public class SQLiteConnectionTest {
 		try {
 
 			for(int i = 1; i < 6; i++) {
-				testDb.deleteEmployee(i);
+				testDB.deleteEmployee(i);
 				
 			}
 			testMasterDB.createBusiness("T Business", "Test Lane", "0412345678");
-			testDb.createEmployee("T Business", "Dad", "A", "1", 0);
-			testDb.createEmployee("T Business", "Mum", "A", "1", 0);
-			testDb.createEmployee("T Business", "Brother", "A", "1", 0);
-			testDb.createEmployee("T Business", "Sister", "A", "1", 0);
-			testDb.createEmployee("T Business", "Baby", "A", "1", 0);
+			testDB.createEmployee("T Business", "Dad", "A", "1", 0);
+			testDB.createEmployee("T Business", "Mum", "A", "1", 0);
+			testDB.createEmployee("T Business", "Brother", "A", "1", 0);
+			testDB.createEmployee("T Business", "Sister", "A", "1", 0);
+			testDB.createEmployee("T Business", "Baby", "A", "1", 0);
 			String[] s = {"Dad", "Mum", "Brother", "Sister", "Baby"};
 			for(int i = 1; i < 6; i++) {
-				ResultSet rs = testDb.getEmployeeRow(i);
+				ResultSet rs = testDB.getEmployeeRow(i);
+				assert(rs!=null);
 				assert(rs.getString("name").equals(s[i]));
 				
 			}
 
 			for(int i = 1; i < 6; i++) {
-				testDb.deleteEmployee(i);
+				testDB.deleteEmployee(i);
 				
 			}
 		
