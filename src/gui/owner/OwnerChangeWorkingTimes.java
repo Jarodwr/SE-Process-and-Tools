@@ -98,7 +98,7 @@ public class OwnerChangeWorkingTimes {
     		time.setEnabled(true);
     		
         	Timetable availabilities = controller.getWorkerAvailabilityTimetable(employeeId);
-        	Timetable openingHours = controller.getOpeningHours(controller.utilities.getCurrentBusiness());
+        	Timetable openingHours = controller.getOpeningHours();
         	if (openingHours != null) {
         		availabilities.mergeTimetable(openingHours);
         	}

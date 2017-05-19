@@ -56,7 +56,7 @@ public class SQLMaster {
 	public ResultSet getBusinessRow(String businessname) throws SQLException {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
-		String query = "SELECT * FROM Businessinfo WHERE businessname=?";
+		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
 		PreparedStatement pst = c.prepareStatement(query);
 		pst.setString(1, businessname);
 		ResultSet rs = pst.executeQuery();
@@ -70,6 +70,22 @@ public class SQLMaster {
 		}
 	}
 	
+	public ResultSet getBusinessRow(int businessId) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setInt(1, businessId);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else {
+			LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ businessId);
+			return null;
+		}
+	}
 	
 	public boolean createBusiness(String businessname, String address, String phonenumber) {
 		Connection c = this.conn;

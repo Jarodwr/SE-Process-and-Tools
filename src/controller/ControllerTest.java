@@ -11,12 +11,10 @@ import org.junit.Test;
 import model.database.SQLMaster;
 import model.database.SQLiteConnection;
 import model.exceptions.ValidationException;
-import model.users.Owner;
 import model.users.User;
 
 public class ControllerTest{
 	static Controller c;
-	static Owner user = new Owner("name", "pass", "SARJ's Milk Business", "Admin", "124 Address", "0412345678");
 	static SQLiteConnection db;
 	static SQLMaster masterDB;
 	
@@ -210,32 +208,32 @@ public class ControllerTest{
 	//add new employee tests
 	@Test
 	public void addEmployeeTest01() {
-		assert(!c.addEmployee("yeahnah", "0412341234", "12 blah st", null));
+		assert(!c.addEmployee("yeahnah", "0412341234", "12 blah st"));
 	}
 	
 	@Test
 	public void addEmployeeTest02() {
-		assert(!c.addEmployee("testEmployee", "04sdfg41234", "21 no one cares where you live", c.getOwner()));
+		assert(!c.addEmployee("testEmployee", "04sdfg41234", "21 no one cares where you live"));
 	}
 	
 	@Test
 	public void addEmployeeTest03() {
-		assert(!c.addEmployee("", "0412341234", "21 no one cares where you live", c.getOwner()));
+		assert(!c.addEmployee("", "0412341234", "21 no one cares where you live"));
 	}
 	
 	@Test
 	public void addEmployeeTest04() {
-		assert(!c.addEmployee("yoyo@#$%@#$yoyo", "0412341234", "21 no one cares where you live", c.getOwner()));
+		assert(!c.addEmployee("yoyo@#$%@#$yoyo", "0412341234", "21 no one cares where you live"));
 	}
 	
 	@Test
 	public void addEmployeeTest05() {
-		assert(!c.addEmployee("McMahon", "0412341234", "", c.getOwner()));
+		assert(!c.addEmployee("McMahon", "0412341234", ""));
 	}
 	
 	@Test
 	public void addEmployeeTest06() {
-		assert(c.addEmployee("bowser", "0412341234", "21 no one cares where you live", c.getOwner()));
+		assert(c.addEmployee("bowser", "0412341234", "21 no one cares where you live"));
 	}
 	
 	
@@ -317,27 +315,27 @@ public class ControllerTest{
 	
 	@Test
 	public void removeBookings01() {
-		assert(!c.removeBooking(-1, "Massage Business"));
+		assert(!c.removeBooking(-1));
 	}
 	
 	@Test
 	public void removeBookings02() {
-		assert(!c.removeBooking(2, ""));
+		assert(!c.removeBooking(2));
 	}
 	
 	@Test
 	public void removeBookings03() {
-		assert(c.removeBooking(1, "Massage Business"));
+		assert(c.removeBooking(1));
 	}
 	
 	@Test
 	public void removeBookings04() {
-		assert(c.removeBooking(60, "Massage Business"));
+		assert(c.removeBooking(60));
 	}
 	
 	@Test
 	public void removeBookings05() {
-		assert(c.removeBooking(0, "Massage Business"));
+		assert(c.removeBooking(0));
 	}
 	
 	

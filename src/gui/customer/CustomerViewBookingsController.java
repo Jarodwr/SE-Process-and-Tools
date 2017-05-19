@@ -58,9 +58,8 @@ public class CustomerViewBookingsController {
 	    		if(newBookingsDelete.get(i).isSelected())
 	    		{
 	    			int id = Integer.parseInt(newBookings[i][0]);
-	    			String businessName = "SARJ's Milk Business";
 	    			
-	    			c.removeBooking(id, businessName);
+	    			c.removeBooking(id);
 	    		}
 	    	}
     	}

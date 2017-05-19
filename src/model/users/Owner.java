@@ -9,8 +9,8 @@ public class Owner extends User {
 	private String address;
 	private String phoneNumber;
 	
-	public Owner(String username, String password, String business, String businessOwnerName, String address, String phoneNumber) {
-		super(username, password, business);
+	public Owner(String username, String password, String businessOwnerName, String address, String phoneNumber) {
+		super(username, password);
 		this.name = businessOwnerName;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
@@ -46,7 +46,7 @@ public class Owner extends User {
 	@Override
 	public String toString() {
 		
-		return this.username + ":" + this.password + ":" + this.business + ":" + this.name + ":" + this.address + ":" + this.phoneNumber;
+		return this.username + ":" + this.password + ":" + this.name + ":" + this.address + ":" + this.phoneNumber;
 	}
 	
 	public boolean isOwner() {

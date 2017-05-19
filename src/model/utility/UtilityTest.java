@@ -289,27 +289,27 @@ public class UtilityTest {
 	
 	@Test
 	public void removeBooking1() {
-		assert(!u.removeBooking(-1, "Massage Business"));
+		assert(!u.removeBooking(-1));
 	}
 	
 	@Test
 	public void removeBooking2() {
-		assert(!u.removeBooking(0, ""));
+		assert(!u.removeBooking(0));
 	}
 	
 	@Test
 	public void removeBooking3() {
-		assert(u.removeBooking(1, "Massage Business"));
+		assert(u.removeBooking(1));
 	}
 	
 	@Test
 	public void removeBooking4() {
-		assert(!u.removeBooking(60, "Massage Business"));
+		assert(!u.removeBooking(60));
 	}
 	
 	@Test
 	public void removeBooking5() {
-		assert(!u.removeBooking(0, "Massage Business"));
+		assert(!u.removeBooking(0));
 	}
 	
 	
@@ -383,32 +383,32 @@ public class UtilityTest {
 	
 	@Test
 	public void addEmployee1() {
-		assert(!u.addNewEmployee("1000", "Massage Business", "randomname", "544 sdffds", "0412341234", 0));
+		assert(!u.addNewEmployee("1000", "randomname", "544 sdffds", "0412341234", 0));
 	}
 	
 	@Test
 	public void addEmployee2() {
-		assert(u.addNewEmployee("2000", "Massage Business", "mike", "21 no one cares where you live", "0412341234", 2000));
+		assert(u.addNewEmployee("2000", "mike", "21 no one cares where you live", "0412341234", 2000));
 	}
 	
 	@Test
 	public void addEmployee3() {
-		assert(!u.addNewEmployee("1", "Massage Business", "asdsads", "asdfsadf", "0412341234", 9000));
+		assert(!u.addNewEmployee("1", "asdsads", "asdfsadf", "0412341234", 9000));
 	}
 	
 	@Test
 	public void addEmployee4() {
-		assert(!u.addNewEmployee("30", "non existent business", "brandon", "57 newry", "0412341234", 30));
+		assert(!u.addNewEmployee("30", "brandon", "57 newry", "0412341234", 30));
 	}
 	
 	@Test
 	public void addEmployee5() {
-		assert(u.addNewEmployee("2001", "Massage Business", "mike", "21 no one cares where you live", "", 2001));
+		assert(u.addNewEmployee("2001", "mike", "21 no one cares where you live", "", 2001));
 	}
 	
 	@Test
 	public void addEmployee6() {
-		assert(u.addNewEmployee("2002", "Massage Business", "", "21 no one cares where you live", "0412341234", 2002));
+		assert(u.addNewEmployee("2002", "", "21 no one cares where you live", "0412341234", 2002));
 	}
 	
 	

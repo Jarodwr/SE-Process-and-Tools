@@ -72,10 +72,9 @@ public class OwnerViewBookingsController {
 	    		{
 	    			//get the details of the booking
 	    			int id = Integer.parseInt(newBookings[i][0]);
-	    			String businessName = o.getBusinessName();
 	    			
 	    			//delete the booking
-	    			c.removeBooking(id, businessName);
+	    			c.removeBooking(id);
 	    		}
 	    	}
     	}
