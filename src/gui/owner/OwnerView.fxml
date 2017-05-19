@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerViewController">
+<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerViewController">
    <left>
       <Pane prefHeight="500.0" prefWidth="220.0" style="-fx-background-color: #dddddd;" BorderPane.alignment="CENTER">
          <children>
@@ -45,18 +45,28 @@
                   <Font name="Calibri" size="18.0" />
                </font>
             </Button>
+            <Button fx:id="changeOpeningTimesButton" layoutY="350.0" mnemonicParsing="false" onAction="#changeOpeningTimes" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Change Opening Times">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="preferencesButton" layoutY="400.0" mnemonicParsing="false" onAction="#preferences" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Preferences">
+               <font>
+                  <Font name="Calibri" size="18.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </left>
    <top>
-      <Pane prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #ff471a;" BorderPane.alignment="CENTER">
+      <Pane fx:id="header" prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #ff471a;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="logoutButton" layoutX="803.0" layoutY="12.0" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #cc2900;" text="Log out" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="logoutButton" layoutX="803.0" layoutY="12.0" mnemonicParsing="false" onAction="#logout" prefHeight="27.0" prefWidth="83.0" style="-fx-background-color: #e6e6e6;" text="Log out" textAlignment="CENTER">
                <font>
                   <Font name="Calibri" size="13.0" />
                </font>
             </Button>
-            <Label layoutX="14.0" layoutY="11.0" text="ASRJ Booking System" textFill="WHITE">
+            <Label fx:id="headerText" layoutX="14.0" layoutY="11.0" text="ASRJ Booking System" textFill="WHITE">
                <font>
                   <Font name="Calibri" size="24.0" />
                </font>

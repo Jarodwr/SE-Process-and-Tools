@@ -90,7 +90,7 @@ public class LoginController
     	
     	try {
     		//try to log in the user and assign the output to a new user object
-    		User u = this.c.login(login_username.getText(), login_password.getText());
+    		User u = this.c.login(login_username.getText(), login_password.getText(), chooseBusinessComboBox.getValue());
     		//if the user doesn't exist then check for customer
 	    	if (u == null) { 
 	    		if (selectedBusiness == null || selectedBusiness == "" || selectedBusiness == "Choose Business") {

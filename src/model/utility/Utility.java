@@ -678,7 +678,7 @@ public class Utility {
 		try {
 			rs = db.getBusinessColor(businessname);
 			if (rs == null) {
-				return ""; // TODO HEX FOR RED
+				return "#ff471A"; // TODO HEX FOR RED
 			}
 			else {
 				String colorHex = rs.getString("colorHex");
@@ -724,7 +724,7 @@ public class Utility {
 		try {
 			rs = db.getBusinessHeader(businessname);
 			if (rs == null) {
-				return "";
+				return businessname;
 			}
 			else {
 				String header = rs.getString("header");
