@@ -397,7 +397,11 @@ public class Controller {
 	 * @return	Timetable in string[][] format
 	 */
 	public String[][] getEmployeeBookingAvailability(String employeeId, Date date) {
-		return utilities.getEmployeeBookingAvailability(employeeId, date).toStringArray();
+		Timetable bookingAvailability = utilities.getEmployeeBookingAvailability(employeeId, date);
+		if (bookingAvailability != null) {
+			return bookingAvailability.toStringArray();
+		}
+		return null;
 	}
 
 	/**

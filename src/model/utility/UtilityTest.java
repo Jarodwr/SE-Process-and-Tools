@@ -10,6 +10,7 @@ import model.database.SQLMaster;
 import model.database.SQLiteConnection;
 import model.period.Booking;
 import model.period.Period;
+import model.service.Service;
 import model.timetable.Timetable;
 
 public class UtilityTest {
@@ -452,15 +453,19 @@ public class UtilityTest {
 	
 	@Test
 	public void getAllServices1() {
-		assert(u.getAllServices().length == 4);
+		Service[] services = u.getAllServices();
+		assert(services != null);
+		assert(services.length == 4);
 	}
 	
 	@Test
 	public void getAllServices2() {
-		assert(u.getAllServices()[0].serviceName.equals("Light Massage"));
-		assert(u.getAllServices()[1].serviceName.equals("Heavy Massage"));
-		assert(u.getAllServices()[2].serviceName.equals("Hair cut"));
-		assert(u.getAllServices()[3].serviceName.equals("Spa"));
+		Service[] services = u.getAllServices();
+		assert(services != null);
+		assert(services[0].serviceName.equals("Light Massage"));
+		assert(services[1].serviceName.equals("Heavy Massage"));
+		assert(services[2].serviceName.equals("Hair cut"));
+		assert(services[3].serviceName.equals("Spa"));
 	}
 	
 

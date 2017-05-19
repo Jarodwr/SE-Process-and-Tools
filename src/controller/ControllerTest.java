@@ -83,6 +83,7 @@ public class ControllerTest{
 		db.createBooking("derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
 		
 		c = new Controller("jdbc:sqlite:test.sqlite");
+		c.login("JoeDoe97", "ayylmao");
 		
 	}
 	
@@ -104,7 +105,7 @@ public class ControllerTest{
 	@Test
 	public void getServicesList01() {
 		String[] services = c.getServicesList();
-		System.out.println(services.length);
+		assert(services != null);
 		assert(services.length == 5);
 	}
 	
@@ -112,13 +113,15 @@ public class ControllerTest{
 	@Test
 	public void getSummaryOfBookings01() {
 		String[][] bookings = c.getSummaryOfBookings();
+		assert(bookings != null);
 		assert(bookings.length == 8);
 	}
 	
 
 	@Test
 	public void loginTest01() {
-		assert(c.login("jarod", "naaahaahhaah") == null);
+		User user = c.login("jarod", "naaahaahhaah");
+		assert(user == null);
 	}
 
 	@Test
@@ -128,18 +131,23 @@ public class ControllerTest{
 	
 	@Test
 	public void loginTest03() {
-		assert(c.login("yeahyeah", "nahnah") == null);
+		User user = c.login("yeahyeah", "nahnah");
+		assert(user == null);
 	}
 	
 	@Test
 	public void loginTest04() {
-		assert(!c.login("jarodwr", "1234").isOwner());
+		User user = c.login("jarodwr", "1234");
+		assert(user != null);
+		assert(!user.isOwner());
 	}
 	
 	//owner logging in test cases
 	@Test
 	public void loginTest05() {
-		assert(c.login("JoeDoe97", "ayylmao").isOwner());
+		User user = c.login("JoeDoe97", "ayylmao");
+		assert(user != null);
+		assert(user.isOwner());
 	}
 	
 	
@@ -363,18 +371,21 @@ public class ControllerTest{
 	@Test
 	public void getWorkingTimes01() {
 		String[][] workingTimes = c.getWorkingTimes("1");
+		assert(workingTimes != null && workingTimes.length != 0);
 		assert(workingTimes[0][0].equals("1497513600"));
 	}
 	
 	@Test
 	public void getWorkingTimes02() {
 		String[][] workingTimes = c.getWorkingTimes("2");
+		assert(workingTimes != null && workingTimes.length != 0);
 		assert(workingTimes[0][0].equals("1497506400"));
 	}
 	
 	@Test
 	public void getWorkingTimes03() {
 		String[][] workingTimes = c.getWorkingTimes("3");
+		assert(workingTimes != null && workingTimes.length != 0);
 		assert(workingTimes[0][0].equals("1497508200"));
 		assert(workingTimes[1][0].equals("1497522600"));
 	}
@@ -395,6 +406,7 @@ public class ControllerTest{
 	@Test
 	public void getEmployeeBookingAvailability01() {
 		String[][] bookingAvailability = c.getEmployeeBookingAvailability("0", new Date(0));
+		assert(bookingAvailability != null && bookingAvailability.length != 0);
 		assert(bookingAvailability[0][0].equals("1497544200"));
 		assert(bookingAvailability[1][0].equals("1497506400"));
 	}
@@ -402,12 +414,15 @@ public class ControllerTest{
 	@Test
 	public void getEmployeeBookingAvailability02() {
 		String[][] bookingAvailability = c.getEmployeeBookingAvailability("3", new Date(0));
+		assert(bookingAvailability != null && bookingAvailability.length != 0);
 		assert(bookingAvailability[0][0].equals("1497522600"));
 		assert(bookingAvailability[1][0].equals("1497510000"));
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability03() {
-		assert(c.getEmployeeBookingAvailability("3", new Date(2147410000)).length == 0);
+		String[][] bookingAvailability = c.getEmployeeBookingAvailability("3", new Date(2147410000));
+		assert(bookingAvailability != null && bookingAvailability.length != 0);
+		assert(bookingAvailability.length == 0);
 	}
 }
