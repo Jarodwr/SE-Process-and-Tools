@@ -20,10 +20,6 @@ public class SQLiteTableCreation {
 		createEmployeeWorkingTimesTable();
 		createBookingsTable();
 		createServicesTable();
-		createBusinessHoursTable();
-		createBusinessLogoTable();
-		createBusinessHeaderTable();
-		createBusinessColorTable();
 	}
 	
 	/**
@@ -136,58 +132,6 @@ public class SQLiteTableCreation {
 	 */
 	public void createServicesTable() {
 		String sql = "CREATE TABLE IF NOT EXISTS ServicesTable (servicename Varchar(255) Primary Key, serviceprice integer, serviceminutes integer)"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
-		try {
-			Connection c = this.conn;
-			Statement stmt = c.createStatement();
-	            stmt.execute(sql);
-		}
-		catch(Exception e){
-			LOGGER.warning(e.getMessage());
-		}
-	}
-	/**
-	 * createBusinessHoursTable (
-	 * 1 - stringOfTimes Varchar(255), <br>
-	 * )
-	 */
-	public void createBusinessHoursTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS BusinessHoursTable (stringOfTimes varchar(255))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
-		try {
-			Connection c = this.conn;
-			Statement stmt = c.createStatement();
-	            stmt.execute(sql);
-		}
-		catch(Exception e){
-			LOGGER.warning(e.getMessage());
-		}
-	}
-	
-	public void createBusinessLogoTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS BusinessLogo (logoLink varchar(255))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
-		try {
-			Connection c = this.conn;
-			Statement stmt = c.createStatement();
-	            stmt.execute(sql);
-		}
-		catch(Exception e){
-			LOGGER.warning(e.getMessage());
-		}
-	}
-	
-	public void createBusinessHeaderTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS BusinessHeader (headerName varchar(255))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
-		try {
-			Connection c = this.conn;
-			Statement stmt = c.createStatement();
-	            stmt.execute(sql);
-		}
-		catch(Exception e){
-			LOGGER.warning(e.getMessage());
-		}
-	}
-	
-	public void createBusinessColorTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS BusinessColor (colorHex varchar(255))"; // serviceprice is cents, as in $1.00 is 100, serviceminutes is the time in minutes that the service takes eg 120 for two hours or 15 for 15 minutes
 		try {
 			Connection c = this.conn;
 			Statement stmt = c.createStatement();

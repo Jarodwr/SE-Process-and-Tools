@@ -278,11 +278,7 @@ public class Controller {
 			//go through a loop till the user chooses to exit to the menu
 			if (employeeId != null && !employeeId.equals("")) {
 				//get the employees timetable
-				Timetable t = utilities.getEmployeeAvailability(employeeId);
-				if (t.equals(null) || t.getAllPeriods().length == 0)
-					return null;
-				else
-					return t;
+				return utilities.getEmployeeAvailability(employeeId);
 			}
 			
 		} catch(Exception e) {
@@ -290,7 +286,7 @@ public class Controller {
 			LOGGER.warning(e.getMessage());
 		}
 		
-		return null;
+		return new Timetable();
 
 	}
 
@@ -498,10 +494,7 @@ public class Controller {
 
 		if (user == null) {
 			LOGGER.log(Level.INFO, "LOGIN: Failed");
-		}
-		else
-		{
-			utilities.setCurrentBusiness(selectedBusiness);
+		} else {
 			LOGGER.log(Level.INFO, "LOGIN: Success");
 		}
 

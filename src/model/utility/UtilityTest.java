@@ -1,6 +1,7 @@
 package model.utility;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.junit.BeforeClass;
@@ -12,19 +13,19 @@ import model.period.Booking;
 import model.period.Period;
 import model.service.Service;
 import model.timetable.Timetable;
+import model.users.User;
 
 public class UtilityTest {
 	
 	static Utility u = new Utility();
 
 	@BeforeClass
-	public static void createDB() {
+	public static void createDB() throws SQLException {
 		new File("test.sqlite").delete();	//Deletes previous test database
 		new File("TESTMasterDB.sqlite").delete();
 		SQLiteConnection db = new SQLiteConnection("test");
 		SQLMaster masterDB = new SQLMaster("test");
 		u.setConnection("test");
-		u.setCurrentBusiness("Massage Business");
 		
 //		db.createBusiness(businessname, address, phonenumber)
 		masterDB.createBusiness("Massage Business", "123 nicholson st", "040303030303");
@@ -82,26 +83,35 @@ public class UtilityTest {
 		db.createBooking("grips", "3", "1497508200", "1497510000", "Heavy Massage");
 		db.createBooking("derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
 		
+		u.searchUserLogin("JoeDoe97", "Massage Business");
 	}
 	
 	@Test
 	public void searchUser1() {
-		assert(u.searchUser("yargen").getUsername().equals("yargen"));
+		User user = u.searchUser("yargen");
+		assert(user != null);
+		assert(user.getUsername().equals("yargen"));
 	}
 	
 	@Test
 	public void searchUser2() {
-		assert(u.searchUser("bill").getUsername().equals("bill"));
+		User user = u.searchUser("bill");
+		assert(user != null);
+		assert(user.getUsername().equals("bill"));
 	}
 	
 	@Test
 	public void searchUser3() {
-		assert(u.searchUser("kate").getUsername().equals("kate"));
+		User user = u.searchUser("kate");
+		assert(user != null);
+		assert(user.getUsername().equals("kate"));
 	}
 	
 	@Test
 	public void searchUser4() {
-		assert(u.searchUser("jarodwr").getUsername().equals("jarodwr"));
+		User user = u.searchUser("jarodwr");
+		assert(user != null);
+		assert(user.getUsername().equals("jarodwr"));
 	}
 	
 	@Test
@@ -185,18 +195,21 @@ public class UtilityTest {
 	@Test
 	public void getBookingsAfter1() {
 		Booking[] b = u.getBookingsAfter(new Date(0));
+		assert(b != null);
 		assert(b.length == 8);
 	}
 	
 	@Test
 	public void getBookingsAfter2() {
 		Booking[] b = u.getBookingsAfter(new Date(1497506400));
+		assert(b != null);
 		assert(b.length == 8);
 	}
 	
 	@Test
 	public void getBookingsAfter3() {
 		Booking[] b = u.getBookingsAfter(new Date(1497558600));
+		assert(b != null);
 		assert(b.length == 1);
 	}
 	
@@ -209,46 +222,58 @@ public class UtilityTest {
 	@Test
 	public void getBookingsAfter5() {
 		Booking[] b = u.getBookingsAfter(new Date(1497558599));
+		assert(b != null);
 		assert(b.length == 1);
 	}
 	
 	@Test
 	public void getBookingsAfter6() {
 		Booking[] b = u.getBookingsAfter(new Date(1497506401));
+		assert(b != null);
 		assert(b.length == 7);
 	}
 	
 	
 	@Test
 	public void getEmployeeBookingAvailability1() {
-		assert(u.getEmployeeBookingAvailability("0", new Date(0)).toString().equals("1497544200,1497546000|1497506400,1497513600"));
+		Timetable t = u.getEmployeeBookingAvailability("0", new Date(0));
+		assert(t != null);
+		assert(t.toString().equals("1497544200,1497546000|1497506400,1497513600"));
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability2() {
-		assert(u.getEmployeeBookingAvailability("3", new Date(0)).toString().equals("1497510000,1497520800|1497522600,1497524400|1497528000,1497565800"));
+		Timetable t = u.getEmployeeBookingAvailability("3", new Date(0));
+		assert(t != null);
+		assert(t.toString().equals("1497510000,1497520800|1497522600,1497524400|1497528000,1497565800"));
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability3() {
-		assert(u.getEmployeeBookingAvailability("3", new Date(2147410000)).getAllPeriods().length == 0);
+		Timetable t = u.getEmployeeBookingAvailability("3", new Date(2147410000));
+		assert(t == null || t.getAllPeriods().length == 0);
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability4() {
-		assert(u.getEmployeeBookingAvailability("3", new Date(1497522600)).getAllPeriods().length == 1);
+		Timetable t = u.getEmployeeBookingAvailability("3", new Date(1497522600));
+		assert(t != null);
+		assert(t.getAllPeriods().length == 1);
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability5() {
-		for (Period p : u.getEmployeeBookingAvailability("3", new Date(1497522600)).getAllPeriods()) {
+		Timetable t = u.getEmployeeBookingAvailability("3", new Date(1497522600));
+		assert(t != null);
+		for (Period p : t.getAllPeriods()) {
 			assert(p.getStart().getTime() != 1497508200);
 		}
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability6() {
-		assert(u.getEmployeeBookingAvailability("3", new Date(1497522601)).getAllPeriods().length == 0);
+		Timetable t = u.getEmployeeBookingAvailability("3", new Date(1497522601));
+		assert(t == null || t.getAllPeriods().length == 0);
 	}
 	
 	
@@ -316,17 +341,23 @@ public class UtilityTest {
 	
 	@Test
 	public void getShift1() {
-		assert(u.getShift("0").toString().equals("1497544200,1497546000|1497506400,1497513600"));
+		Timetable t = u.getShift("0");
+		assert(t != null);
+		assert(t.toString().equals("1497544200,1497546000|1497506400,1497513600"));
 	}
 	
 	@Test
 	public void getShift2() {
-		assert(u.getShift("1").toString().equals("1497513600,1497520800"));
+		Timetable t = u.getShift("1");
+		assert(t != null);
+		assert(t.toString().equals("1497513600,1497520800"));
 	}
 	
 	@Test
 	public void getShift3() {
-		assert(u.getShift("2").toString().equals("1497506400,1497565800"));
+		Timetable t = u.getShift("2");
+		assert(t != null);
+		assert(t.toString().equals("1497506400,1497565800"));
 	}
 	
 	

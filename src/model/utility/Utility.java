@@ -28,19 +28,9 @@ public class Utility {
 
 	private Logger LOGGER = Logger.getLogger("main");
 	private User currentUser = null;
-	private String currentBusiness;
+	private int currentBusiness;
 	private SQLiteConnection db = null;
 	private SQLMaster masterDB = new SQLMaster();
-	
-	
-	/**
-	 * @param username username being searched
-	 * @return Returns the user with the username being searched
-	 */
-	
-	public Utility() {
-		this.currentBusiness = null;
-	}
 	
 	/**
 	 * Used for testing
@@ -96,17 +86,6 @@ public class Utility {
 			catch (Exception e) {
 		
 			}
-		if (currentBusiness != businessname) {
-			try {
-
-				setBusinessDBConnection(masterDB.getBusinessDBFromName(businessname));
-				currentBusiness = businessname;
-			}
-			catch (SQLException e) {
-				LOGGER.warning(e.getMessage());
-				return null;
-			}
-		}
 		try {
 			ResultSet br = masterDB.getBusinessRow(businessname);
 			if (br != null) {
@@ -138,6 +117,7 @@ public class Utility {
 			this.db.close();
 		}
 		this.db = new SQLiteConnection("businessDB_" + Integer.toString(businessDBFromName));
+		this.currentBusiness = businessDBFromName;
 	}
 
 	/**
@@ -210,7 +190,7 @@ public class Utility {
 				
 			}
 			else {
-				db.deleteAvailabilities(id, getCurrentBusiness());
+				db.deleteAvailabilities(id);
 				db.createAvailability(id, t.toString());
 			}
 			db.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
@@ -270,7 +250,7 @@ public class Utility {
 	 */
 	public boolean removeBooking(int bookingID)
 	{
-		return db.deleteBooking(bookingID, this.currentBusiness);
+		return db.deleteBooking(bookingID);
 	}
 	
 	/**
@@ -369,8 +349,7 @@ public class Utility {
 			return false;
 		else
 			try {
-				return (db.removeShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
-						Long.toString(starttime), Long.toString(endtime)));
+				return (db.removeShift(Integer.parseInt(employeeId), Long.toString(starttime), Long.toString(endtime)));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -382,15 +361,11 @@ public class Utility {
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addCustomerToDatabase(String username, String password, String business, String name, String address, String mobileno) {
-		if (currentBusiness != business) {
-			try{
 
-				setBusinessDBConnection(masterDB.getBusinessDBFromName(business));
-				currentBusiness = business;
-			}
-			catch (SQLException e) {
-				return false;
-			}
+		try {
+			setBusinessDBConnection(masterDB.getBusinessDBFromName(business));
+		} catch(SQLException e) {
+			
 		}
 		return db.createCustomer(username, password, business, name, address, mobileno);
 	}
@@ -493,7 +468,7 @@ public class Utility {
 	 * Getter for the current business
 	 * @return	Current business
 	 */
-	public String getCurrentBusiness() {
+	public int getCurrentBusiness() {
 		return this.currentBusiness;
 	}
 	
@@ -501,7 +476,7 @@ public class Utility {
 	 * Setter for the current business
 	 * @param business	New business
 	 */
-	public void setCurrentBusiness(String business) {
+	public void setCurrentBusiness(int business) {
 		this.currentBusiness = business;
 	}
 
@@ -513,7 +488,7 @@ public class Utility {
 		
 		ArrayList<Service> services = new ArrayList<Service>();
 		try {
-			ResultSet rs = db.getAllServices(currentBusiness);
+			ResultSet rs = db.getAllServices();
 			if (rs == null) {
 				throw new Exception();
 			}
@@ -610,8 +585,6 @@ public class Utility {
 	public void editBusinessHours(ArrayList<String> times) {
 
 		Timetable t = new Timetable();
-
-
 		//if the business selected doesn't exist alert the user and exit the function
 		
 		//use an iterator to go through the availabilities
@@ -626,19 +599,8 @@ public class Utility {
 		}
 		//if the employee doesn't exit then alert the user and exit the function
 		//add the availabilities to the timetable
-		try {
-			ResultSet rs = db.getBusinessHours(this.currentBusiness);
-			if (rs != null) {
-				rs.close();
-				db.updateBusinessHours(this.currentBusiness, t.toString());
-			} 
-			else {
-				db.createBusinessHours(this.currentBusiness, t.toString());
-			}
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+
+		masterDB.setOpeningHours(this.currentBusiness, t.toString());
 		 
 	}
 	
@@ -651,22 +613,13 @@ public class Utility {
 	 */
 	public Timetable getOpeningHours() {
 		Timetable t = new Timetable();
-		ResultSet rs;
-		try {
-			rs = db.getBusinessHours(currentBusiness);
-			if (rs == null) {
-				return t;
-			}
-			else {
-				t.mergeTimetable(rs.getString(1));
-				rs.close();
-				return t;
-			}
-		} catch (SQLException e) {
-			LOGGER.severe(e.getMessage());
-			return t;
+		String oh = masterDB.getOpeningHours(currentBusiness);
+
+		if (oh != null) {
+			t.mergeTimetable(oh);
 		}
 		
+		return t;
 	}
 	
 	/* marked for testing */
@@ -677,21 +630,7 @@ public class Utility {
 	 * @return	Hex format color of the current business
 	 */
 	public String getBusinessColor() {
-		ResultSet rs;
-		try {
-			rs = db.getBusinessColor(this.currentBusiness);
-			if (rs == null) {
-				return ""; // TODO HEX FOR RED
-			}
-			else {
-				String colorHex = rs.getString("colorHex");
-				rs.close();
-				return colorHex;
-			}
-		} catch (SQLException e) {
-			return ""; // TODO HEX FOR RED
-		}
-		
+		return masterDB.getColor(currentBusiness);
 	}
 	
 	/**
@@ -701,19 +640,7 @@ public class Utility {
 	 * @param colorHex	Color to be set
 	 */
 	public void editBusinessColor(String colorHex) {
-		try {
-			ResultSet rs = db.getBusinessColor(this.currentBusiness);
-			if (rs != null) {
-				rs.close();
-				db.updateBusinessColor(this.currentBusiness, colorHex);
-			} 
-			else {
-				db.createBusinessColor(this.currentBusiness, colorHex);
-			}
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+		masterDB.setColor(currentBusiness, colorHex);
 	}
 	
 	/* marked for testing */
@@ -723,20 +650,7 @@ public class Utility {
 	 * @return
 	 */
 	public String getBusinessHeader() {
-		ResultSet rs;
-		try {
-			rs = db.getBusinessHeader(this.currentBusiness);
-			if (rs == null) {
-				return "";
-			}
-			else {
-				String header = rs.getString("header");
-				rs.close();
-				return header;
-			}
-		} catch (SQLException e) {
-			return "";
-		}
+		return masterDB.getHeader(currentBusiness);
 	}
 	
 	/**
@@ -745,19 +659,7 @@ public class Utility {
 	 * @param header
 	 */
 	public void editBusinessHeader(String header) {
-		try {
-			ResultSet rs = db.getBusinessHeader(this.currentBusiness);
-			if (rs != null) {
-				rs.close();
-				db.updateBusinessHeader(this.currentBusiness, header);
-			} 
-			else {
-				db.createBusinessHeader(this.currentBusiness, header);
-			}
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+		masterDB.setHeader(currentBusiness, header);
 	}
 	
 	/* marked for testing */
@@ -767,17 +669,7 @@ public class Utility {
 	 * @return
 	 */
 	public String getBusinessLogo() {
-		ResultSet rs;
-		try {
-			rs = db.getBusinessLogo(this.currentBusiness);
-			if (rs == null) {
-				return "";
-			}
-			else
-				return rs.getString("logoLink");
-		} catch (SQLException e) {
-			return "";
-		}
+		return masterDB.getLogo(this.currentBusiness);
 	}
 	
 	/**
@@ -786,19 +678,7 @@ public class Utility {
 	 * @param logoLink
 	 */
 	public void editBusinessLogo(String logoLink) {
-		try {
-			ResultSet rs = db.getBusinessLogo(this.currentBusiness);
-			if (rs != null) {
-				rs.close();
-				db.updateBusinessLogo(this.currentBusiness, logoLink);
-			} 
-			else {
-				db.createBusinessLogo(this.currentBusiness, logoLink);
-			}
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+		masterDB.setLogo(currentBusiness, logoLink);
 	}
 
 	public String[] getBusinessList() {
