@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import model.employee.Employee;
 import model.exceptions.ValidationException;
 import model.period.Booking;
+import model.period.Period;
 import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;
@@ -42,6 +43,16 @@ public class Controller {
 	 * @return	Whether or not the service was added
 	 */
 	public boolean addService(String name, int priceInCents, String duration) {
+		
+		if (priceInCents < 0) {
+			return false;
+		}
+		
+		int durInt = Integer.parseInt(duration);
+		if (durInt % 30 != 0 || durInt < 0) {
+			return false;
+		}
+		
 		return utilities.addService(name, priceInCents, duration);
 	}
 
@@ -128,13 +139,9 @@ public class Controller {
 	public String[][] getCurrentBookings()
 	{
 		//gets the bookings list of all the booking from the time the method is called
-		Booking[] bookings = utilities.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()));
-		
+		Booking[] bookings = utilities.getBookingsAfter(new Date(Calendar.getInstance().getTimeInMillis()/1000));
 		//if there are no bookings in the future then alert the user and exit function
-		if (bookings == null || bookings.length == 0) {
-			LOGGER.log(Level.INFO, "VIEW SUMMARY OF BOOKINGS: failure, no bookings in database in the future");
-			return null;
-		} else {
+		if (bookings != null && bookings.length != 0) {
 			//create a 2d array to copy the booking details from the list of bookings
 			String[][] bookingsStringArray = new String[bookings.length][];
 			
@@ -146,6 +153,9 @@ public class Controller {
 			LOGGER.log(Level.INFO, "VIEW SUMMARY OF BOOKINGS: Success, " + bookingsStringArray.length + " bookings are displayed");
 			return bookingsStringArray;
 		}
+
+		LOGGER.log(Level.INFO, "VIEW SUMMARY OF BOOKINGS: failure, no bookings in database in the future");
+		return null;
 	}
 	
 	/**
@@ -211,6 +221,9 @@ public class Controller {
 	 * @return whether or not the working times are added
 	 */
 	public boolean addWorkingTime(String employeeId, String rawDate, String startTime, String endTime) {
+		if (startTime.equals(endTime) || Integer.parseInt(startTime) < 0 || Integer.parseInt(endTime) < 0) {
+			return false;
+		}
 		return utilities.addShift(employeeId, rawDate, startTime, endTime);
 	
 	}
@@ -298,28 +311,11 @@ public class Controller {
 	 */
 	public boolean addEmployee(String name, String phone, String address) 
 	{
-		String id = "";
-		//create a unique ID for the new employee
-		
-		/* TODO Turn try block into utility method */
-		Employee[] employees = utilities.getAllEmployees();
-		int nextId = -1;
-		for (Employee e : employees) {
-			if (Integer.parseInt(e.getEmployeeId()) > nextId) {
-				nextId = Integer.parseInt(e.getEmployeeId());
-			}
-		}
-		if (nextId == -1) {
-			nextId = 0;
-		}
-
-		id = Integer.toString(nextId);
-		
 		//validate all the user inputs
 		if(name.matches(nameCheckerRegEx) &&
 				phone.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
 				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
-			if (utilities.addNewEmployee(id, name, address, phone, 0)) { //try to add the new employee to the database
+			if (utilities.addNewEmployee(name, address, phone)) { //try to add the new employee to the database
 				LOGGER.log(Level.INFO, "Employee successfully added");
 				return true;
 			}
@@ -393,7 +389,8 @@ public class Controller {
 	 */
 	public String[][] getEmployeeBookingAvailability(String employeeId, Date date) {
 		Timetable bookingAvailability = utilities.getEmployeeBookingAvailability(employeeId, date);
-		if (bookingAvailability != null) {
+		if (bookingAvailability != null && bookingAvailability.getAllPeriods().length != 0) {
+			bookingAvailability.removePeriod(new Period(new Date(0), date));
 			return bookingAvailability.toStringArray();
 		}
 		return null;

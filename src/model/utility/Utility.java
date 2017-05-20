@@ -134,7 +134,6 @@ public class Utility {
 		if (found != null && found.checkPassword(password)) {
 			try {
 				ResultSet rs = masterDB.getOwnerRow(username);
-				System.out.println(username);
 				int businessId = Integer.parseInt(rs.getString("businessid"));
 //				String businessName = masterDB.getBusinessRow(businessId).getString("businessname");
 				this.setBusinessDBConnection(businessId);
@@ -216,7 +215,6 @@ public class Utility {
 			if (rs != null)  {
 				return bookingResultsetToArray(rs);
 			}
-				
 		} catch (SQLException e) {
 			LOGGER.warning(e.getMessage());
 		}
@@ -231,6 +229,7 @@ public class Utility {
 	public boolean addNewBooking(String customerUsername, String employeeId, String start, String end, String services) {
 
 		Timetable t = getEmployeeBookingAvailability(employeeId, new Date(Long.parseLong(start)));	//All employee shifts
+		System.out.println(t);
 		if (t == null) {
 			return false;
 		}
@@ -238,7 +237,7 @@ public class Utility {
 			long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
 			
 			if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
-
+				System.out.println(start + ":" +  end);
 				return db.createBooking(customerUsername, employeeId, start, end, services);
 			}
 		}
@@ -262,7 +261,7 @@ public class Utility {
 	 * @param rs ResultSet of query
 	 * @return Booking[]
 	 */
-	public Booking[] bookingResultsetToArray(ResultSet rs){
+	private Booking[] bookingResultsetToArray(ResultSet rs){
 
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		try {
@@ -366,6 +365,13 @@ public class Utility {
 	 */
 	public boolean addCustomerToDatabase(String username, String password, String business, String name, String address, String mobileno) {
 
+		if(!name.matches("[A-Za-z -']+") ||
+				!mobileno.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") ||
+				!address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+") ||
+				!username.matches("[A-Za-z0-9]+") ||
+				password.length() == 0) {
+			return false;
+		}
 		try {
 			setBusinessDBConnection(masterDB.getBusinessDBFromName(business));
 		} catch(SQLException e) {
@@ -378,8 +384,11 @@ public class Utility {
 	 * Creates an employee based off the information given by the owner.
 	 * @return If creation is a success, return true. Else return false.
 	 */
-	public boolean addNewEmployee(String id, String name, String address, String phonenumber, int timetableID) {
-		return db.createEmployee(name, address, phonenumber, 0);
+	public boolean addNewEmployee(String name, String address, String phonenumber) {
+		if (name.length() == 0 || address.length() == 0 || phonenumber.length() < 6) {
+			return false;
+		}
+		return db.createEmployee(name, address, phonenumber);
 	}
 	
 	/**
@@ -528,15 +537,18 @@ public class Utility {
 	public Timetable getEmployeeBookingAvailability(String employeeId, Date date) {
 		//gets the bookings list of all the booking from the time the method is called
 		Timetable shiftsTimetable = getShift(employeeId);
-		Booking[] bookings = getBookingsAfter(date);
+		Booking[] bookings = this.getBookingsAfter(new Date(0));
 		
 		if (shiftsTimetable != null) {
 			if (bookings != null && bookings.length > 0) {
 				for (Booking b : bookings) {
-					if (b.getEmployeeId().equals(employeeId))
+					if (b.getEmployeeId().equals(employeeId)) {
+						System.out.println(b);
 						shiftsTimetable.removePeriod(b);
+					}
 				}
 			}
+			shiftsTimetable.removePeriod(new Period(new Date(0), date));
 			return shiftsTimetable;
 		}	
 		return null;
@@ -550,6 +562,9 @@ public class Utility {
 	 * @return	whether or not adding the service was a success
 	 */
 	public boolean addService(String name, int priceInCents, String duration) {
+		if (!name.matches("^\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}")) {
+			return false;
+		}
 		return db.addService(name, priceInCents, Integer.parseInt(duration));
 	}
 
@@ -694,10 +709,11 @@ public class Utility {
 				return null;
 			}
 			ArrayList<String> businessList = new ArrayList<String>();
+			
 			do {
 				businessList.add(rs.getString("businessname"));
-				System.out.println(rs.getString("address"));
 			} while(rs.next());
+			
 			String[] businessStringArray = new String[businessList.size()];
 			int i = 0;
 			for(String s : businessList) {
