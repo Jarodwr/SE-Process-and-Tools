@@ -30,10 +30,9 @@ public class SQLiteConnection {
 		
 	public ResultSet getUserRow(String username) throws SQLException {
 		username = username.toLowerCase();
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Userinfo WHERE Username=?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setString(1, username);
 		ResultSet rs = pst.executeQuery();
 		if (rs.next()) {
@@ -52,10 +51,9 @@ public class SQLiteConnection {
    	 **/
 	
 	public ResultSet getOwnerRow(String username) throws SQLException {
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Ownerinfo WHERE Username=?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setString(1, username);
 		ResultSet rs = pst.executeQuery();
 
@@ -74,9 +72,8 @@ public class SQLiteConnection {
    	 **/
 	
 	public void deleteUser(String username) throws SQLException {
-		Connection c = this.conn;
 		String query = "DELETE FROM Userinfo WHERE username = ?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setString(1, username);
 		pst.executeUpdate();
 	}
@@ -91,7 +88,6 @@ public class SQLiteConnection {
 	 * @return success True if creation is successful, else false.
 	 */
 	public boolean createCustomer(String username, String password, String business, String name, String address, String mobileno) {
-		Connection c = this.conn;
 		try {
 			ResultSet rs = getUserRow(username); // search through usernames to check if this user currently exists
 
@@ -101,7 +97,7 @@ public class SQLiteConnection {
 				return false;
 			}
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO Userinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setString(1, username);
 			ps.setString(2, password);
 			ps.setString(3, name);
@@ -125,7 +121,6 @@ public class SQLiteConnection {
 	
 	public boolean deleteCustomer(String username) {
 		username = username.toLowerCase();
-		Connection c = this.conn;
 		try {
 			ResultSet rs = getUserRow(username); // search through businessnames to check if this user currently exists
 
@@ -135,7 +130,7 @@ public class SQLiteConnection {
 			}
 			
 			String query = "DELETE FROM Userinfo WHERE username = ?";
-			PreparedStatement pst = c.prepareStatement(query);
+			PreparedStatement pst = conn.prepareStatement(query);
 			pst.setString(1, username);
 			pst.executeUpdate();
 			rs.close();
@@ -147,10 +142,9 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getAllCustomers() throws SQLException {
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Userinfo";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
@@ -169,9 +163,7 @@ public class SQLiteConnection {
 	 * @return success True if creation is successful, false if unsuccessful.
 	 */
 	public boolean createBooking(String customername, String employeeId, String unixstamp1, String unixstamp2, String data) {
-		
 		customername = customername.toLowerCase();
-		Connection c = this.conn;
 		try {
 			int bookingId = getNextAvailableId(getAllBookings(), "bookingId");
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
@@ -181,7 +173,7 @@ public class SQLiteConnection {
 				return false;
 			}
 			
-			PreparedStatement ps = c.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, bookingId);
 			ps.setString(2, customername);
 			ps.setString(3, employeeId);
@@ -205,7 +197,6 @@ public class SQLiteConnection {
 	 */
 	
 	public boolean deleteBooking(int bookingId) {
-		Connection c = this.conn;
 		try {
 			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
 
@@ -215,7 +206,7 @@ public class SQLiteConnection {
 			rs.close();
 			
 			String query = "DELETE FROM BookingsTable WHERE bookingId = ?";
-			PreparedStatement pst = c.prepareStatement(query);
+			PreparedStatement pst = conn.prepareStatement(query);
 			pst.setInt(1, bookingId);
 			pst.executeUpdate();
 
@@ -229,16 +220,14 @@ public class SQLiteConnection {
 	/**
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
-	public boolean createEmployee(String name, String address, String mobileno, int timetableId) {
-		Connection c = this.conn;
-		
+	public boolean createEmployee(String name, String address, String mobileno) {
 		try {
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
-			ps.setInt(1, this.getNextAvailableId(getAllEmployees(), "employeeId"));
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO Employeeinfo VALUES (?, ?, ?, ?, ?);"); // this creates a new user
+			ps.setInt(1, getNextAvailableId(getAllEmployees(), "employeeId"));
 			ps.setString(2, name);
 			ps.setString(3, address);
 			ps.setString(4, mobileno);
-			ps.setInt(5, timetableId);
+			ps.setInt(5, getNextAvailableId(getAllAvailabilities(), "timetableId"));
 			ps.executeUpdate();
 			ps.close();
 			return true;
@@ -252,7 +241,6 @@ public class SQLiteConnection {
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public boolean deleteEmployee(int employeeId) {
-		Connection c = this.conn;
 		try {
 			ResultSet rs = getEmployeeRow(employeeId); // search through businessnames to check if this user currently exists
 
@@ -263,7 +251,7 @@ public class SQLiteConnection {
 			rs.close();
 			
 			String query = "DELETE FROM Employeeinfo WHERE employeeId = ?";
-			PreparedStatement pst = c.prepareStatement(query);
+			PreparedStatement pst = conn.prepareStatement(query);
 			pst.setInt(1, employeeId);
 			pst.executeUpdate();
 
@@ -275,10 +263,9 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getEmployeeRow(int employeeId) throws SQLException {
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Employeeinfo WHERE employeeId=?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setInt(1, employeeId);
 		ResultSet rs = pst.executeQuery();
 		if (rs.next()) {
@@ -288,10 +275,9 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getBookingRow(int bookingId) throws SQLException {
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE bookingId=?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setInt(1, bookingId);
 		ResultSet rs = pst.executeQuery();
 		if (rs.next()) {
@@ -302,10 +288,9 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getBookingsByEmployeeId(String employeeId) throws SQLException {
-		Connection c = this.conn;
 		// Search for rows with matching employeeId
 		String query = "SELECT * FROM BookingsTable WHERE employeeId=?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setString(1, employeeId);
 		ResultSet rs = pst.executeQuery();
 		if (rs.next()) {
@@ -316,31 +301,10 @@ public class SQLiteConnection {
 		
 	
 	public ResultSet getBookingsByUsername(String username) throws SQLException { // not currently in use
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable WHERE username=?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setString(1, username);
-		ResultSet rs = pst.executeQuery();
-
-		if (rs.next()) {
-			return rs;
-		}
-		else return null;
-	}
-	
-	/**
-	 * Gets all bookings after a certain date
-	 * @param l unixtimestamp format date
-	 * @return	table
-	 * @throws SQLException
-	 */
-	public ResultSet getBookingsByPeriodStart(long l) throws SQLException {
-		Connection c = this.conn;
-		// Search for rows with matching usernames
-		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER) ORDER BY CAST(starttimeunix AS INTEGER)";
-		PreparedStatement pst = c.prepareStatement(query);
-		pst.setLong(1, l);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
@@ -353,7 +317,6 @@ public class SQLiteConnection {
 	 * @return True if creation is successful, false if unsuccessful.
 	 */
 	public boolean createAvailability(int timetableId, String availabilities) {
-		Connection c = this.conn;
 		try {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
 
@@ -362,7 +325,7 @@ public class SQLiteConnection {
 				return false;
 			}
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Timetableinfo VALUES (?, ?);"); // this creates a new user
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO Timetableinfo VALUES (?, ?);"); // this creates a new user
 			ps.setInt(1, timetableId);
 			ps.setString(2, availabilities);
 			ps.executeUpdate();
@@ -379,7 +342,6 @@ public class SQLiteConnection {
 	 * @return True if deletion is successful, false if unsuccessful.
 	 */
 	public boolean deleteAvailabilities(int timetableId) {
-		Connection c = this.conn;
 		try {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this user currently exists
 
@@ -389,7 +351,7 @@ public class SQLiteConnection {
 			rs.close();
 			
 			String query = "DELETE FROM Timetableinfo WHERE timetableId = ?";
-			PreparedStatement pst = c.prepareStatement(query);
+			PreparedStatement pst = conn.prepareStatement(query);
 			pst.setInt(1, timetableId);
 			pst.executeUpdate();
 			pst.close();
@@ -402,10 +364,22 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getAvailabilityRow(int timetableId) throws SQLException {
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Timetableinfo WHERE timetableId=?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
+		pst.setInt(1, timetableId);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
+	}
+	
+	private ResultSet getAllAvailabilities(int timetableId) throws SQLException{
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Timetableinfo";
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setInt(1, timetableId);
 		ResultSet rs = pst.executeQuery();
 
@@ -420,7 +394,6 @@ public class SQLiteConnection {
 	 * @return True if updating the employee's availability is successful, false if unsuccessful.
 	 */
 	public boolean updateAvailabilityforEmployee(int employeeId, int timetableId) {
-		Connection c = this.conn;
 		try {
 			ResultSet rs = getAvailabilityRow(timetableId); // search through businessnames to check if this timetable currently exists
 
@@ -435,7 +408,7 @@ public class SQLiteConnection {
 			}
 			rs2.close();
 			
-			PreparedStatement ps = c.prepareStatement("UPDATE Employeeinfo SET timetableId=? WHERE employeeId=?"); // this creates a new user
+			PreparedStatement ps = conn.prepareStatement("UPDATE Employeeinfo SET timetableId=? WHERE employeeId=?"); // this creates a new user
 			ps.setInt(1, timetableId);
 			ps.setInt(2, employeeId);
 			ps.executeUpdate();
@@ -449,10 +422,9 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getEmployeeAvailability(int employeeId) throws SQLException { // change to return special if timetableId = 0
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query1 = "SELECT timetableId FROM Employeeinfo WHERE employeeId=?";
-		PreparedStatement pst1 = c.prepareStatement(query1);
+		PreparedStatement pst1 = conn.prepareStatement(query1);
 		pst1.setInt(1, employeeId);
 		ResultSet rs1 = pst1.executeQuery();
 
@@ -463,7 +435,7 @@ public class SQLiteConnection {
 			}
 			else {
 				String query2 = "SELECT * FROM Timetableinfo WHERE timetableId= (SELECT timetableId FROM Employeeinfo WHERE employeeId=?)";
-				PreparedStatement pst2 = c.prepareStatement(query2);
+				PreparedStatement pst2 = conn.prepareStatement(query2);
 				pst2.setInt(1, employeeId);
 				ResultSet rs2 = pst2.executeQuery();
 
@@ -478,10 +450,9 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getAllAvailabilities() throws SQLException {
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Timetableinfo";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {
@@ -521,11 +492,10 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getShifts(String start, String end) throws SQLException{
-		Connection c = this.conn;
 		String query = "SELECT * "
 				+ "FROM EmployeeWorkingTimes "
 				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND CAST(unixendtime AS INTEGER) <= CAST(? AS INTEGER)";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setString(1, start);
 		pst.setString(2, end);
 		ResultSet rs = pst.executeQuery();
@@ -537,7 +507,6 @@ public class SQLiteConnection {
 	}
 	
 	public boolean isShiftIn(int employeeId, String start, String end) throws SQLException{
-		Connection c = this.conn;
 		String query = "SELECT * "
 				+ "FROM EmployeeWorkingTimes "
 				+ "WHERE CAST(unixstarttime AS INTEGER) >= CAST(? AS INTEGER) AND "
@@ -545,7 +514,7 @@ public class SQLiteConnection {
 				+ "employeeId = ?";
 		PreparedStatement pst;
 		try {
-			pst = c.prepareStatement(query);
+			pst = conn.prepareStatement(query);
 			pst.setString(1, start);
 			pst.setString(2, end);
 			pst.setInt(3, employeeId);
@@ -561,12 +530,11 @@ public class SQLiteConnection {
 	}
 
 	public boolean addShift(int employeeId, String start, String end){
-		Connection c = this.conn;
 		try {
 			if (isShiftIn(employeeId, start, end))
 				return false;
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO EmployeeWorkingTimes VALUES (?, ?, ?);"); // this creates a new user
 			ps.setInt(1, employeeId);
 			ps.setString(2, start);
 			ps.setString(3, end);
@@ -580,12 +548,12 @@ public class SQLiteConnection {
 	}
 	
 	public boolean removeShift(int employeeId, String start, String end) throws SQLException{
-		Connection c = this.conn;
+		
 		String query = "DELETE FROM EmployeeWorkingTimes WHERE employeeId = ? AND"
 				+ " unixstarttime = ? AND"
 				+ " unixendtime = ?";
 
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setInt(1, employeeId);
 		pst.setString(2, start);
 		pst.setString(3, end);
@@ -595,11 +563,9 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getService(String servicename) throws SQLException { /* TODO */
-	
-		Connection c = this.conn;
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM ServicesTable WHERE servicename = ?";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		pst.setString(1, servicename);
 		ResultSet rs = pst.executeQuery();
 		
@@ -610,11 +576,8 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet getAllServices() throws SQLException{
-		
-		Connection c = this.conn;
-		
 		String query = "SELECT * FROM ServicesTable";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
 		
 		if (rs.next()) {
@@ -624,7 +587,7 @@ public class SQLiteConnection {
 	}
 	
 	public boolean addService(String serviceName, int servicePrice, int serviceMinutes) {
-		Connection c = this.conn;
+		
 		try {
 			ResultSet rs = getService(serviceName);
 			if (rs != null) {
@@ -632,7 +595,7 @@ public class SQLiteConnection {
 				return false;
 			}
 			
-			PreparedStatement ps = c.prepareStatement("INSERT INTO ServicesTable VALUES (?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO ServicesTable VALUES (?, ?, ?);"); // this creates a new user
 			ps.setString(1, serviceName);
 			ps.setInt(2, servicePrice);
 			ps.setInt(3, serviceMinutes);
@@ -647,10 +610,10 @@ public class SQLiteConnection {
 	}
 
 	public ResultSet getAllBookings() throws SQLException {
-		Connection c = this.conn;
+		
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM BookingsTable";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
 	
 		if (rs.next()) {
@@ -661,7 +624,9 @@ public class SQLiteConnection {
 
 	public int getNextAvailableId(ResultSet rs, String idString) throws SQLException { // edit to remove space leakage
 		int i = 0;
-		if (rs == null) return i;
+		if (rs == null) {
+			return i;
+		}
 		do {
 			if (rs.getInt(idString) >= i) {
 				i = rs.getInt(idString) + 1;
@@ -673,9 +638,8 @@ public class SQLiteConnection {
 	}
 	
 	public ResultSet genericGetQuery(String query) throws SQLException {
-		Connection c = this.conn;
 		// Search for rows with matching usernames
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
 	
 		if (rs.next()) {
@@ -683,12 +647,31 @@ public class SQLiteConnection {
 		}
 		else return null;
 
-
 	}
 
 	public void close() throws SQLException {
 		if (conn != null) {
 			conn.close();
 		}
+	}
+
+	/**
+	 * Gets all bookings after a certain date
+	 * @param l unixtimestamp format date
+	 * @return	table
+	 * @throws SQLException
+	 */
+	public ResultSet getBookingsByPeriodStart(long l) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM BookingsTable WHERE CAST(starttimeunix AS INTEGER)>=CAST(? AS INTEGER) ORDER BY CAST(starttimeunix AS INTEGER)";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setLong(1, l);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else return null;
 	}
 }

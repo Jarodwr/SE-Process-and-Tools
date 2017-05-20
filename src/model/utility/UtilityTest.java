@@ -51,12 +51,12 @@ public class UtilityTest {
 		db.createAvailability(6, "1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
 		
 //		db.createEmployee(businessname, name, address, mobileno, timetableId)
-		db.createEmployee("spencer", "any", "0394815108", 1);
-		db.createEmployee("russel", "somewhere", "9382738491", 2);
-		db.createEmployee("jarod", "nowhere", "1738593827", 3);
-		db.createEmployee("anesu", "anywhere", "2918273647", 4);
-		db.createEmployee("anthrax", "blah", "9283746374", 5);
-		db.createEmployee("marvin", "yes", "0192837465", 6);
+		db.createEmployee("spencer", "any", "0394815108");
+		db.createEmployee("russel", "somewhere", "9382738491");
+		db.createEmployee("jarod", "nowhere", "1738593827");
+		db.createEmployee("anesu", "anywhere", "2918273647");
+		db.createEmployee("anthrax", "blah", "9283746374");
+		db.createEmployee("marvin", "yes", "0192837465");
 		
 //		db.addShift(employeeId, businessname, start, end)
 		db.addShift(0, "1497544200", "1497546000");	//06/15/2017 @ 4:30pm-5:00pm (UTC)
@@ -202,9 +202,6 @@ public class UtilityTest {
 	@Test
 	public void getBookingsAfter1() {
 		Booking[] b = u.getBookingsAfter(new Date(0));
-		for (Booking booking : b) {
-			System.out.println(booking);
-		}
 		assert(b != null);
 		assert(b.length == 8);
 	}
@@ -330,7 +327,7 @@ public class UtilityTest {
 	
 	@Test
 	public void removeBooking2() {
-		assert(!u.removeBooking(0));
+		assert(u.removeBooking(0));
 	}
 	
 	@Test
@@ -341,11 +338,6 @@ public class UtilityTest {
 	@Test
 	public void removeBooking4() {
 		assert(!u.removeBooking(60));
-	}
-	
-	@Test
-	public void removeBooking5() {
-		assert(!u.removeBooking(0));
 	}
 	
 	
@@ -399,58 +391,58 @@ public class UtilityTest {
 	
 	@Test
 	public void addCustomer2() {
-		assert(!u.addCustomerToDatabase("!@#$%^&*()??//", "asdf", "Massage Business", "asdf", "asdf", "0412341234"));
+		assert(!u.addCustomerToDatabase("!@#$%^&*()??//", "asdf", "Massage Business", "asdf", "12 asdf", "0412341234"));
 	}
 	
 	@Test
 	public void addCustomer3() {
-		assert(!u.addCustomerToDatabase("bruceW", "asdf", "Massage Business", "bruce", "asdfasdf", "fffffffffffff"));
+		assert(!u.addCustomerToDatabase("bruceW", "asdf", "Massage Business", "bruce", "12 asdfasdf", "fffffffffffff"));
 	}
 	
 	@Test
 	public void addCustomer4() {
-		assert(u.addCustomerToDatabase("kill", "1234", "Massage Business", "Jill", "who cares", "0412345687"));
+		assert(u.addCustomerToDatabase("kill", "1234", "Massage Business", "Jill", "12 who cares", "0412345687"));
 	}
 	
 	@Test
 	public void addCustomer5() {
-		assert(!u.addCustomerToDatabase("CameronO", "", "Massage Business", "Cameron", "yeah yeah", "0412341234"));
+		assert(!u.addCustomerToDatabase("CameronO", "", "Massage Business", "Cameron", "12 yeah yeah", "0412341234"));
 	}
 	
 	@Test
 	public void addCustomer6() {
-		assert(!u.addCustomerToDatabase("", "1234", "Massage Business", "1234", "asdf", "0412341234"));
+		assert(!u.addCustomerToDatabase("", "1234", "Massage Business", "1234", "12 asdf", "0412341234"));
 	}
 	
 	
 	@Test
 	public void addEmployee1() {
-		assert(!u.addNewEmployee("1000", "randomname", "544 sdffds", "0412341234", 0));
+		assert(u.addNewEmployee("randomname", "544 sdffds", "0412341234"));
 	}
 	
 	@Test
 	public void addEmployee2() {
-		assert(u.addNewEmployee("2000", "mike", "21 no one cares where you live", "0412341234", 2000));
+		assert(u.addNewEmployee("mike", "21 no one cares where you live", "0412341234"));
 	}
 	
 	@Test
 	public void addEmployee3() {
-		assert(!u.addNewEmployee("1", "asdsads", "asdfsadf", "0412341234", 9000));
+		assert(u.addNewEmployee("asdsads", "asdfsadf", "0412341234"));
 	}
 	
 	@Test
 	public void addEmployee4() {
-		assert(!u.addNewEmployee("30", "brandon", "57 newry", "0412341234", 30));
+		assert(u.addNewEmployee("brandon", "57 newry", "0412341234"));
 	}
 	
 	@Test
 	public void addEmployee5() {
-		assert(u.addNewEmployee("2001", "mike", "21 no one cares where you live", "", 2001));
+		assert(!u.addNewEmployee("mike", "21 no one cares where you live", ""));
 	}
 	
 	@Test
 	public void addEmployee6() {
-		assert(u.addNewEmployee("2002", "", "21 no one cares where you live", "0412341234", 2002));
+		assert(!u.addNewEmployee("", "21 no one cares where you live", "0412341234"));
 	}
 	
 	
