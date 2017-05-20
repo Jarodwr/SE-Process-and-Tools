@@ -1,5 +1,15 @@
 package application;
 	
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import controller.Controller;
 import gui.login.LoginController;
 import javafx.application.Application;
@@ -12,7 +22,7 @@ import javafx.scene.layout.BorderPane;
 /*
  * This class is contains the main method for the program. runs first of startup
  */
-public class GuiMain extends Application {
+public class App extends Application {
 	/*
 	 * (non-Javadoc)
 	 * @see javafx.application.Application#start(javafx.stage.Stage)
@@ -42,6 +52,23 @@ public class GuiMain extends Application {
 	 * main method of the program, launches the GUI
 	 */
 	public static void main(String[] args) {
+		Logger LOGGER = Logger.getLogger("main");
+		Handler handler;
+		try {
+			handler = new FileHandler("logs\\" + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".txt");
+			LOGGER.setLevel(Level.FINEST);
+			handler.setLevel(Level.FINEST);
+			
+		}catch(IOException e) {
+			handler = new ConsoleHandler();
+			LOGGER.setLevel(Level.WARNING);
+			handler.setLevel(Level.WARNING);
+			LOGGER.warning("Cannot create logging file, using console logger");
+		}
+		handler.setFormatter(new SimpleFormatter());
+		LOGGER.addHandler(handler);
+		LOGGER.setUseParentHandlers(false);
+
 		launch(args);
 	}
 }

@@ -4,14 +4,12 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -74,10 +72,9 @@ public class OwnerViewBookingsController {
 	    		{
 	    			//get the details of the booking
 	    			int id = Integer.parseInt(newBookings[i][0]);
-	    			String businessName = o.getBusinessName();
 	    			
 	    			//delete the booking
-	    			c.removeBooking(id, businessName);
+	    			c.removeBooking(id);
 	    		}
 	    	}
     	}

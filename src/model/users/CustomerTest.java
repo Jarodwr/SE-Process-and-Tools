@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class CustomerTest {
 
-	Customer testCustomer = new Customer("custUsername","custPass","custName","custAddress","custPhoneNo");
+	Customer testCustomer = new Customer("custUsername","custPass", "custName","custAddress","custPhoneNo");
 	
 	@Test
 	public void testGetPermissions1() {

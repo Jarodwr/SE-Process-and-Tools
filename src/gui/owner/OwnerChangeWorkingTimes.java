@@ -9,11 +9,10 @@ import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import model.timetable.Timetable;
 
@@ -30,6 +29,9 @@ public class OwnerChangeWorkingTimes {
 
     @FXML
     private Pane timeMenu;
+    
+    @FXML
+    private Label errorMessage;
     
     private WorkingTimesPicker time;
     
@@ -66,18 +68,18 @@ public class OwnerChangeWorkingTimes {
     	for (int i : unselected) {
     		controller.removeWorkingTime(employeeId, Long.toString(date.toEpochDay() * 24 * 60 * 60), Integer.toString(i * 30 * 60), Integer.toString((i+1) * 30 * 60));
     	}
-    	Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Edit Working Times");
-		alert.setHeaderText("Working times for this day successfully updated!");
-		alert.setContentText("press ok to continue...");
-		
-		alert.showAndWait();
+    	
+    	errorMessage.setStyle("-fx-text-fill: GREEN");
+    	errorMessage.setText("Working times for this day successfully updated!");
     }
     
     public void init(Controller controller) {
     	
     	this.controller = controller;
-    	employeeMenu.getItems().addAll(controller.getEmployeeList());
+    	String[] employees = controller.getEmployeeList();
+    	if (employees != null) {
+        	employeeMenu.getItems().addAll(employees);
+    	}
     	
     	try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("WorkingTimesPicker.fxml"));
@@ -99,8 +101,10 @@ public class OwnerChangeWorkingTimes {
     		time.setEnabled(true);
     		
         	Timetable availabilities = controller.getWorkerAvailabilityTimetable(employeeId);
-        	Timetable openingHours = controller.getOpeningHours(controller.utilities.getCurrentBusiness());
-        	availabilities.mergeTimetable(openingHours);
+        	Timetable openingHours = controller.getOpeningHours();
+        	if (openingHours != null) {
+        		availabilities.mergeTimetable(openingHours);
+        	}
         	String[][] availableTimes = availabilities.toStringArray();
         	if (availableTimes != null && availableTimes.length > 0) {
         		time.setDefaultAvailability(availableTimes, date);
@@ -116,6 +120,7 @@ public class OwnerChangeWorkingTimes {
     	} else {
     		submit.setDisable(true);
     	}
+    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
     }
 
 }

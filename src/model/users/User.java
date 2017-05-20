@@ -64,6 +64,10 @@ public abstract class User {
 		return false;
 	}
 	
+	public boolean isAdmin() {
+		return false;
+	}
+	
    /**
    * All user classes need to implement a format to be stored in the text file/database 
    */

@@ -266,7 +266,7 @@ public class Period {
    	 **/
 	
 	public String toString() {
-		return toStringArray()[0] + "," + toStringArray()[1];
+		return start.getTime() + "," + end.getTime();
 	}
 	
 	/**
