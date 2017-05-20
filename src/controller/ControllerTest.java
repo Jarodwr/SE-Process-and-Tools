@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,11 +22,11 @@ public class ControllerTest{
 	@BeforeClass
 	public static void setup()
 	{
-		new File("test.sqlite").delete();	//Deletes previous test database
-		new File("TESTMasterDB.sqlite").delete();//Deletes previous test master database
+		new File("controllerTest.sqlite").delete();	//Deletes previous test database
+		new File("controllerTest_0.sqlite").delete();//Deletes previous test master database
 		
-		db = new SQLiteConnection("test");
-		masterDB = new SQLMaster("test db");
+		db = new SQLiteConnection("controllerTest_0");
+		masterDB = new SQLMaster("controllerTest");
 //		db.createBusiness(businessname, address, phonenumber)
 		masterDB.createBusiness("Massage Business", "123 nicholson st", "040303030303");
 		
@@ -82,15 +83,20 @@ public class ControllerTest{
 		db.createBooking("grips", "3", "1497508200", "1497510000", "Heavy Massage");
 		db.createBooking("derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
 		
-		c = new Controller("jdbc:sqlite:test.sqlite");
-		c.login("JoeDoe97", "ayylmao");
+		c = new Controller("controllerTest");
 		
+	}
+	
+	@Before
+	public void beforetest() {
+		c.login("joedoe97", "ayylmao");
 	}
 	
 	
 	@Test
 	public void getEmployeeList01() {
 		String[] employees = c.getEmployeeList();
+		assert(employees != null);
 		assert(employees.length == 6);
 	}
 	
@@ -120,7 +126,7 @@ public class ControllerTest{
 
 	@Test
 	public void loginTest01() {
-		User user = c.login("jarod", "naaahaahhaah");
+		User user = c.login("jarod", "naaahaahhaah", "Massage Business");
 		assert(user == null);
 	}
 
@@ -131,13 +137,13 @@ public class ControllerTest{
 	
 	@Test
 	public void loginTest03() {
-		User user = c.login("yeahyeah", "nahnah");
+		User user = c.login("yeahyeah", "nahnah", "Massage Business");
 		assert(user == null);
 	}
 	
 	@Test
 	public void loginTest04() {
-		User user = c.login("jarodwr", "1234");
+		User user = c.login("jarodwr", "1234", "Massage Business");
 		assert(user != null);
 		assert(!user.isOwner());
 	}
@@ -145,7 +151,7 @@ public class ControllerTest{
 	//owner logging in test cases
 	@Test
 	public void loginTest05() {
-		User user = c.login("JoeDoe97", "ayylmao");
+		User user = c.login("joedoe97", "ayylmao");
 		assert(user != null);
 		assert(user.isOwner());
 	}

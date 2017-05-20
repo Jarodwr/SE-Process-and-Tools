@@ -12,7 +12,6 @@ import model.period.Booking;
 import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;
-import model.users.Owner;
 import model.users.User;
 import model.utility.Utility;
 
@@ -22,17 +21,17 @@ import model.utility.Utility;
  */
 public class Controller {
 	private Logger LOGGER = Logger.getLogger("main");
-	public Utility utilities = new Utility();
+	public Utility utilities;
 	private static final String nameCheckerRegEx = "[A-Za-z -']+";
 	
 	public static final String[] Weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 	public Controller() {
-
+		utilities = new Utility();
 	}
 	
 	public Controller(String dbName) {
-		utilities.setConnection(dbName);
+		utilities = new Utility(dbName);
 	}
 	
 	/**

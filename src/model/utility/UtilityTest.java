@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,15 +18,15 @@ import model.users.User;
 
 public class UtilityTest {
 	
-	static Utility u = new Utility();
+	static Utility u;
 
 	@BeforeClass
 	public static void createDB() throws SQLException {
 		new File("test.sqlite").delete();	//Deletes previous test database
-		new File("TESTMasterDB.sqlite").delete();
-		SQLiteConnection db = new SQLiteConnection("test");
+		new File("test_0.sqlite").delete();
+		
 		SQLMaster masterDB = new SQLMaster("test");
-		u.setConnection("test");
+		SQLiteConnection db = new SQLiteConnection("test_0");
 		
 //		db.createBusiness(businessname, address, phonenumber)
 		masterDB.createBusiness("Massage Business", "123 nicholson st", "040303030303");
@@ -83,7 +84,13 @@ public class UtilityTest {
 		db.createBooking("grips", "3", "1497508200", "1497510000", "Heavy Massage");
 		db.createBooking("derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
 		
-		u.searchUserLogin("JoeDoe97", "Massage Business");
+		u = new Utility("test");
+		u.authenticate("joedoe97", "ayylmao");
+	}
+	
+	@Before
+	public void beforeTest() {
+		u.authenticate("joedoe97", "ayylmao");
 	}
 	
 	@Test
@@ -195,6 +202,9 @@ public class UtilityTest {
 	@Test
 	public void getBookingsAfter1() {
 		Booking[] b = u.getBookingsAfter(new Date(0));
+		for (Booking booking : b) {
+			System.out.println(booking);
+		}
 		assert(b != null);
 		assert(b.length == 8);
 	}

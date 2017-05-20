@@ -27,17 +27,20 @@ import model.users.User;
 public class Utility {
 
 	private Logger LOGGER = Logger.getLogger("main");
-	private User currentUser = null;
+	private User currentUser;
 	private int currentBusiness;
-	private SQLiteConnection db = null;
-	private SQLMaster masterDB = new SQLMaster();
+	private SQLiteConnection db;
+	private SQLMaster masterDB;
+	private String masterDBName;
 	
-	/**
-	 * Used for testing
-	 * @param newDb
-	 */
-	public void setConnection(String newDb) {
-		this.db = new SQLiteConnection(newDb);
+	public Utility() {
+		masterDBName = "BookingSystemMasterDB";
+		masterDB = new SQLMaster("BookingSystemMasterDB");
+	}
+	
+	public Utility(String dbname) {
+		masterDBName = dbname;
+		masterDB = new SQLMaster(masterDBName);
 	}
 	
 	/**
@@ -89,7 +92,7 @@ public class Utility {
 		try {
 			ResultSet br = masterDB.getBusinessRow(businessname);
 			if (br != null) {
-				SQLiteConnection tempConn = new SQLiteConnection("businessDB_" + br.getString("businessid"));
+				SQLiteConnection tempConn = new SQLiteConnection(masterDBName + "_" + br.getString("businessid"));
 				rs = tempConn.getUserRow(username);
 				if (username.equals("admin")) {
 					Admin admin = new Admin(rs.getString("password"));
@@ -112,12 +115,12 @@ public class Utility {
 		
 	}
 	
-	private void setBusinessDBConnection(int businessDBFromName) throws SQLException {
+	private void setBusinessDBConnection(int businessId) throws SQLException {
 		if (db != null) {
 			this.db.close();
 		}
-		this.db = new SQLiteConnection("businessDB_" + Integer.toString(businessDBFromName));
-		this.currentBusiness = businessDBFromName;
+		this.db = new SQLiteConnection(masterDBName + "_" + Integer.toString(businessId));
+		this.currentBusiness = businessId;
 	}
 
 	/**
@@ -131,6 +134,7 @@ public class Utility {
 		if (found != null && found.checkPassword(password)) {
 			try {
 				ResultSet rs = masterDB.getOwnerRow(username);
+				System.out.println(username);
 				int businessId = Integer.parseInt(rs.getString("businessid"));
 //				String businessName = masterDB.getBusinessRow(businessId).getString("businessname");
 				this.setBusinessDBConnection(businessId);
@@ -437,18 +441,20 @@ public class Utility {
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		try {
 			ResultSet rs = db.getAllCustomers();
-			do {
-				customers.add(new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
-				
-			} while (rs.next());
-			
+			if (rs != null) {
+				do {
+					customers.add(new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno")));
+					
+				} while (rs.next());
+
+				rs.close();
+			}
+
 			if (!customers.isEmpty()) {
 				Customer[] b = new Customer[customers.size()];
 				customers.toArray(b);
-				rs.close();
 				return b;
 			}
-			rs.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();

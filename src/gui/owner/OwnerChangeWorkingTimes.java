@@ -76,7 +76,7 @@ public class OwnerChangeWorkingTimes {
     public void init(Controller controller) {
     	
     	this.controller = controller;
-    	employeeMenu.getItems().addAll(controller.getEmployeeList());
+    	}
     	
     	try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("WorkingTimesPicker.fxml"));

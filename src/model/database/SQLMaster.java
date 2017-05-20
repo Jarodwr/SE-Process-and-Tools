@@ -13,20 +13,10 @@ public class SQLMaster {
 	private Connection conn = null;
 	private Logger LOGGER = Logger.getLogger("main");
 	
-	public SQLMaster() {
-		try {
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:BookingSystemMasterDB.sqlite");
-			createBusinessTable();
-			createOwnerTable();
-		} catch (Exception x) {
-		}
-	}
-	
 	public SQLMaster(String string) { // TESTING PURPOSES ONLY
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:TESTMasterDB.sqlite");
+			conn = DriverManager.getConnection("jdbc:sqlite:" + string + ".sqlite");
 			createBusinessTable();
 			createOwnerTable();
 		} catch (Exception x) {
