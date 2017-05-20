@@ -205,6 +205,7 @@ public class OwnerViewWorkingTimesController {
         	
         	final int colNo = i;
         	tc.setCellValueFactory(new Callback<CellDataFeatures<String[], String>, ObservableValue<String>>() {
+        		@Override
         		public ObservableValue<String> call(CellDataFeatures<String[], String> p) {
         			return new SimpleStringProperty((p.getValue()[colNo]));
         			}

@@ -26,9 +26,10 @@ public class WorkingTimesPicker extends TimePicker {
 	}
     
     @Override
-    protected void addPaneListener(final Pane p, final int i) {
+    protected void addPaneListener(Pane p, int i) {
     	
     	p.onMouseClickedProperty().set(new EventHandler<MouseEvent>(){
+			@Override
 			public void handle(MouseEvent arg0) {
 				if (focus > -1 && focus != i) {
 					if (focus > i) {
@@ -75,6 +76,7 @@ public class WorkingTimesPicker extends TimePicker {
     	});
     	
     	p.onMouseEnteredProperty().set(new EventHandler<MouseEvent>(){
+			@Override
 			public void handle(MouseEvent arg0) {
 
 				if (focus > -1) {
@@ -106,6 +108,7 @@ public class WorkingTimesPicker extends TimePicker {
     	});
     	
     	p.onMouseExitedProperty().set(new EventHandler<MouseEvent>(){
+			@Override
 			public void handle(MouseEvent arg0) {
 
 				if (focus > -1) {
