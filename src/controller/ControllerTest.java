@@ -287,7 +287,7 @@ public class ControllerTest{
 	@Test
 	public void getCurrentBookings01() {
 		String[][] bookings = c.getCurrentBookings();
-		assert(bookings == null);
+		assert(bookings.length < 9);
 	}
 	
 	@Test
