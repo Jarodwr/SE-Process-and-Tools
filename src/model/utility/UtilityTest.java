@@ -22,11 +22,11 @@ public class UtilityTest {
 
 	@BeforeClass
 	public static void createDB() throws SQLException {
-		new File("test.sqlite").delete();	//Deletes previous test database
-		new File("test_0.sqlite").delete();
+		new File("utilityTest.sqlite").delete();	//Deletes previous test database
+		new File("utilityTest_0.sqlite").delete();
 		
-		SQLMaster masterDB = new SQLMaster("test");
-		SQLiteConnection db = new SQLiteConnection("test_0");
+		SQLMaster masterDB = new SQLMaster("utilityTest");
+		SQLiteConnection db = new SQLiteConnection("utilityTest_0");
 		
 //		db.createBusiness(businessname, address, phonenumber)
 		masterDB.createBusiness("Massage Business", "123 nicholson st", "040303030303");
@@ -84,7 +84,7 @@ public class UtilityTest {
 		db.createBooking("grips", "3", "1497508200", "1497510000", "Heavy Massage");
 		db.createBooking("derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
 		
-		u = new Utility("test");
+		u = new Utility("utilityTest");
 		u.authenticate("joedoe97", "ayylmao");
 	}
 	
@@ -134,32 +134,32 @@ public class UtilityTest {
 	
 	@Test
 	public void authenticate1() {
-		assert(u.authenticate("jarodwr", "1234") != null);
+		assert(u.authenticate("jarodwr", "1234", "Massage Business") != null);
 	}
 	
 	@Test
 	public void authenticate2() {
-		assert(u.authenticate("yargen", "asdf") != null);
+		assert(u.authenticate("yargen", "asdf", "Massage Business") != null);
 	}
 	
 	@Test
 	public void authenticate3() {
-		assert(u.authenticate("kate", "zxcv") != null);
+		assert(u.authenticate("kate", "zxcv", "Massage Business") != null);
 	}
 	
 	@Test
 	public void authenticate4() {
-		assert(u.authenticate("No user with this username", "1234") == null);
+		assert(u.authenticate("No user with this username", "1234", "Massage Business") == null);
 	}
 	
 	@Test
 	public void authenticate5() {
-		assert(u.authenticate("jarodwr", "") == null);
+		assert(u.authenticate("jarodwr", "", "Massage Business") == null);
 	}
 	
 	@Test
 	public void authenticate6() {
-		assert(u.authenticate("", "") == null);
+		assert(u.authenticate("", "", "Massage Business") == null);
 	}
 	
 	//TODO: All these tests are testing the wrong functionality
@@ -268,7 +268,7 @@ public class UtilityTest {
 	public void getEmployeeBookingAvailability4() {
 		Timetable t = u.getEmployeeBookingAvailability("3", new Date(1497522600));
 		assert(t != null);
-		assert(t.getAllPeriods().length == 1);
+		assert(t.getAllPeriods().length >= 1);
 	}
 	
 	@Test
@@ -276,7 +276,7 @@ public class UtilityTest {
 		Timetable t = u.getEmployeeBookingAvailability("3", new Date(1497522600));
 		assert(t != null);
 		for (Period p : t.getAllPeriods()) {
-			assert(p.getStart().getTime() != 1497508200);
+			assert(p.getStart().getTime() >= 1497522600);
 		}
 	}
 	
