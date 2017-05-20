@@ -284,7 +284,9 @@ public class UtilityTest {
 	@Test
 	public void getEmployeeBookingAvailability6() {
 		Timetable t = u.getEmployeeBookingAvailability("3", new Date(1497522601));
-		assert(t == null || t.getAllPeriods().length == 0);
+		for (Period p : t.getAllPeriods()) {
+			assert(p.getStart().getTime() > 1497522600);
+		}
 	}
 	
 	
