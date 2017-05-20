@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.owner.OwnerViewBookingsController">
+<BorderPane prefHeight="500.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SARJ.BookingSystem.gui.owner.OwnerViewBookingsController">
    <center>
       <AnchorPane prefHeight="1699.0" prefWidth="680.0" BorderPane.alignment="CENTER">
          <children>

@@ -32,9 +32,9 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			//open the login page 
-			System.out.println(getClass().getResource("").getPath());
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login/Login.fxml"));
+			//open the login page
+			System.out.println(getClass().getResource("").getPath() + "fxml/login/Login.fxml");
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/login/Login.fxml"));
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
 	        LoginController controller = loader.getController();

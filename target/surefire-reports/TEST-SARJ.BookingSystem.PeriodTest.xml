@@ -46,7 +46,7 @@
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_131\jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -78,12 +78,12 @@
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testGetCurrentWeekBeginning" time="0"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConvertSecondsToDay01" time="0"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConvertSecondsToDay02" time="0"/>
-  <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConvertSecondsToDay03" time="0"/>
+  <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConvertSecondsToDay03" time="0.001"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConvertSecondsToDay04" time="0"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConvertSecondsToDay05" time="0"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConvertSecondsToDay06" time="0"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConvertSecondsToDay07" time="0"/>
-  <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConversion24Hr01" time="0.001"/>
+  <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConversion24Hr01" time="0"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConversion24Hr02" time="0"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConversion24Hr03" time="0"/>
   <testcase classname="SARJ.BookingSystem.PeriodTest" name="testConversion24Hr04" time="0"/>

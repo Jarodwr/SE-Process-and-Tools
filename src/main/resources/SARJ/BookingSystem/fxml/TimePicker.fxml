@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 
-<AnchorPane fx:id="container" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TimePicker">
+<AnchorPane fx:id="container" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SARJ.BookingSystem.gui.TimePicker">
    <children>
       <GridPane fx:id="timeGrid" layoutX="50.0" layoutY="140.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
