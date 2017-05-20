@@ -551,10 +551,7 @@ public class Utility {
 					}
 				}
 			}
-			System.out.println(shiftsTimetable);
 			shiftsTimetable.removePeriod(new Period(new Date(0), date));
-			System.out.println();
-			System.out.println(shiftsTimetable);
 		}	
 		return shiftsTimetable;
 	}

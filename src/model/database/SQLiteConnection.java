@@ -424,7 +424,6 @@ public class SQLiteConnection {
 
 		if (rs1.next()) {
 			String timetableId = rs1.getString(1);
-			System.out.println(timetableId);
 			String query2 = "SELECT * FROM Timetableinfo WHERE timetableId = ?";
 			PreparedStatement pst2 = conn.prepareStatement(query2);
 			pst2.setInt(1, Integer.parseInt(timetableId));

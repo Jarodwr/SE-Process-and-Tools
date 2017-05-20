@@ -70,7 +70,6 @@ public class Timetable {
 			
 			int compareStarts = period.getStart().compareTo(p.getStart());
 			int compareEnds = period.getEnd().compareTo(p.getEnd());
-			System.out.println(period.getEnd().getTime() + ":" + p.getStart().getTime() + "," + period.getEnd().compareTo(p.getStart()));
 			//Exact match, period directly removed
 			if (compareStarts == 0 && compareEnds == 0) {
 				periodRemovals.add(p);
