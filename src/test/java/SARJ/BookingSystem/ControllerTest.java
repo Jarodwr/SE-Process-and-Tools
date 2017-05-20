@@ -9,11 +9,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import controller.Controller;
-import model.database.SQLMaster;
-import model.database.SQLiteConnection;
-import model.exceptions.ValidationException;
-import model.users.User;
+import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.model.database.SQLMaster;
+import SARJ.BookingSystem.model.database.SQLiteConnection;
+import SARJ.BookingSystem.model.exceptions.ValidationException;
+import SARJ.BookingSystem.model.users.User;
 
 public class ControllerTest{
 	static Controller c;

@@ -8,14 +8,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import model.Service;
-import model.Timetable;
-import model.Utility;
-import model.database.SQLMaster;
-import model.database.SQLiteConnection;
-import model.period.Booking;
-import model.period.Period;
-import model.users.User;
+import SARJ.BookingSystem.model.Service;
+import SARJ.BookingSystem.model.Timetable;
+import SARJ.BookingSystem.model.Utility;
+import SARJ.BookingSystem.model.database.SQLMaster;
+import SARJ.BookingSystem.model.database.SQLiteConnection;
+import SARJ.BookingSystem.model.period.Booking;
+import SARJ.BookingSystem.model.period.Period;
+import SARJ.BookingSystem.model.users.User;
 
 public class UtilityTest {
 	

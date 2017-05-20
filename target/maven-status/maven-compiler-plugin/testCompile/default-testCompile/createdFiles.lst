@@ -1,6 +1,6 @@
 SARJ\BookingSystem\PeriodTest.class
-SARJ\BookingSystem\UtilityTest.class
 SARJ\BookingSystem\TimetableTest.class
+SARJ\BookingSystem\UtilityTest.class
 SARJ\BookingSystem\AppTest.class
 SARJ\BookingSystem\SQLiteConnectionTest.class
 SARJ\BookingSystem\ControllerTest.class

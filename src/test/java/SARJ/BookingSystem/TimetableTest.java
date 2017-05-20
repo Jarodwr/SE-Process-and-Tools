@@ -2,8 +2,8 @@ package SARJ.BookingSystem;
 
 import org.junit.Test;
 
-import model.Timetable;
-import model.period.Period;
+import SARJ.BookingSystem.model.Timetable;
+import SARJ.BookingSystem.model.period.Period;
 
 public class TimetableTest {
 

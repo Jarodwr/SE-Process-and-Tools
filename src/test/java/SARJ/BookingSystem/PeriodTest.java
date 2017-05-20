@@ -2,7 +2,7 @@ package SARJ.BookingSystem;
 
 import org.junit.Test;
 
-import model.period.Period;
+import SARJ.BookingSystem.model.period.Period;
 
 public class PeriodTest {
 

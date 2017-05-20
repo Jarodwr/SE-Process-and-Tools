@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import model.database.SQLMaster;
-import model.database.SQLiteConnection;
+import SARJ.BookingSystem.model.database.SQLMaster;
+import SARJ.BookingSystem.model.database.SQLiteConnection;
 
 public class SQLiteConnectionTest {
 	static SQLiteConnection testDB;

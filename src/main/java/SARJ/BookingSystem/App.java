@@ -11,8 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import controller.Controller;
-import gui.login.LoginController;
+import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.login.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.*;
@@ -33,6 +33,7 @@ public class App extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			//open the login page 
+			System.out.println(getClass().getResource("").getPath());
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login/Login.fxml"));
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
