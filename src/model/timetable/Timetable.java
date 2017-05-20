@@ -64,43 +64,49 @@ public class Timetable {
 	 */
 	public boolean removePeriod(Period period) {
 		boolean remove = false;
-		for (int i = 0; i < periods.size(); i++) {
+		ArrayList<Period> periodAdditions = new ArrayList<Period>();
+		ArrayList<Period> periodRemovals = new ArrayList<Period>();
+		for (Period p : periods) {
 			
-			Period p = periods.get(i);
 			int compareStarts = period.getStart().compareTo(p.getStart());
 			int compareEnds = period.getEnd().compareTo(p.getEnd());
-			
 			//Exact match, period directly removed
 			if (compareStarts == 0 && compareEnds == 0) {
-				periods.remove(p);
+				periodRemovals.add(p);
 				remove = true;
 			} 
 			//Subset match, removal period is subset of current period, removal period is removed.
 			else if (compareStarts > 0 && compareEnds < 0) {
-				periods.add(new Period(p.getStart(), period.getStart()));
-				periods.add(new Period(period.getEnd(), p.getEnd()));
-				periods.remove(p);
+				periodAdditions.add(new Period(p.getStart(), period.getStart()));
+				periodAdditions.add(new Period(period.getEnd(), p.getEnd()));
+				periodRemovals.add(p);
 				remove = true;
 				break;
 			}
 			//Superset match, current period is a subset of removal period
 			else if (compareStarts < 0 && compareEnds > 0) {
-				periods.remove(p);
+				periodRemovals.add(p);
 				remove = true;
 			}
 
 			//End match, start of current period to end of removal period is removed.
 			else if (compareStarts <= 0 && compareEnds < 0 && period.getEnd().compareTo(p.getStart()) > 0) {
-				periods.add(new Period(period.getEnd(), p.getEnd()));
-				periods.remove(p);
+				periodAdditions.add(new Period(period.getEnd(), p.getEnd()));
+				periodRemovals.add(p);
 				remove = true;
 			} 
 			//Start match, start of removal period to end of current period is removed.
 			else if (compareStarts > 0 && compareEnds >= 0 && period.getStart().compareTo(p.getEnd()) < 0) {
-				periods.add(new Period(p.getStart(), period.getStart()));
-				periods.remove(p);
+				periodAdditions.add(new Period(p.getStart(), period.getStart()));
+				periodRemovals.add(p);
 				remove = true;
 			}
+		}
+		for (Period p : periodAdditions) {
+			periods.add(p);
+		}
+		for (Period p : periodRemovals) {
+			periods.remove(p);
 		}
 		return remove;
 	}
@@ -108,7 +114,6 @@ public class Timetable {
 	public Timetable applicablePeriods(long duration) {
 		Timetable t = new Timetable();
 		for (Period p : periods) {
-			System.out.println(p.duration() + ":" + duration);
 			if (p.duration() >= duration) {
 				t.addPeriod(new Period(Long.toString(p.getStart().getTime()), Long.toString(p.getEnd().getTime() - duration), false));
 			}

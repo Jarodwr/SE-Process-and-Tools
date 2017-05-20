@@ -42,21 +42,19 @@ public class UtilityTest {
 		db.createCustomer("death", "life", "Massage Business", "Brandon", "Southern cross station", "0411821234");
 		db.createCustomer("grips", "yehnahyehyehnah", "Massage Business", "Will", "entry dataaaaaaaaa", "0412900234");
 		
-//		db.createAvailability(timetableId, businessname, availabilities);
-		db.createAvailability(1, "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
-		db.createAvailability(2, "1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
-		db.createAvailability(3, "1800,14399|27000,86399");
-		db.createAvailability(4, "1800,14399|27000,86399");
-		db.createAvailability(5, "1800,14399|27000,86399");
-		db.createAvailability(6, "1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
-		
 //		db.createEmployee(businessname, name, address, mobileno, timetableId)
 		db.createEmployee("spencer", "any", "0394815108");
+		db.createAvailability(0, "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
 		db.createEmployee("russel", "somewhere", "9382738491");
+		db.createAvailability(1, "1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
 		db.createEmployee("jarod", "nowhere", "1738593827");
+		db.createAvailability(2, "1800,14399|27000,86399");
 		db.createEmployee("anesu", "anywhere", "2918273647");
+		db.createAvailability(3, "1800,14399|27000,86399");
 		db.createEmployee("anthrax", "blah", "9283746374");
+		db.createAvailability(4, "1800,14399|27000,86399");
 		db.createEmployee("marvin", "yes", "0192837465");
+		db.createAvailability(5, "1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
 		
 //		db.addShift(employeeId, businessname, start, end)
 		db.addShift(0, "1497544200", "1497546000");	//06/15/2017 @ 4:30pm-5:00pm (UTC)
@@ -166,36 +164,42 @@ public class UtilityTest {
 	@Test
 	public void getAvailableTimes1() {
 		Timetable t = u.getEmployeeAvailability("0");
+		assert(t != null);
 		assert(t.toString().equals("1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599"));
 	}
 	
 	@Test
 	public void getAvailableTimes2() {
 		Timetable t = u.getEmployeeAvailability("1");
+		assert(t != null);
 		assert(t.toString().equals("1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599"));
 	}
 	
 	@Test
 	public void getAvailableTimes3() {
 		Timetable t = u.getEmployeeAvailability("2");
+		assert(t != null);
 		assert(t.toString().equals("1800,14399|27000,86399"));
 	}
 	
 	@Test
 	public void getAvailableTimes4() {
 		Timetable t = u.getEmployeeAvailability("3");
+		assert(t != null);
 		assert(t.toString().equals("1800,14399|27000,86399"));
 	}
 	
 	@Test
 	public void getAvailableTimes5() {
 		Timetable t = u.getEmployeeAvailability("4");
+		assert(t != null);
 		assert(t.toString().equals("1800,14399|27000,86399"));
 	}
 	
 	@Test
 	public void getAvailableTimes6() {
 		Timetable t = u.getEmployeeAvailability("5");
+		assert(t != null);
 		assert(t.toString().equals("1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599"));
 	}
 	
@@ -280,7 +284,9 @@ public class UtilityTest {
 	@Test
 	public void getEmployeeBookingAvailability6() {
 		Timetable t = u.getEmployeeBookingAvailability("3", new Date(1497522601));
-		assert(t == null || t.getAllPeriods().length == 0);
+		for (Period p : t.getAllPeriods()) {
+			assert(p.getStart().getTime() > 1497522600);
+		}
 	}
 	
 	
@@ -352,7 +358,7 @@ public class UtilityTest {
 	public void getShift2() {
 		Timetable t = u.getShift("1");
 		assert(t != null);
-		assert(t.toString().equals("1497513600,1497520800"));
+		assert(t.toString().equals("1497513600,1497520800|87400,96400"));
 	}
 	
 	@Test
@@ -443,22 +449,6 @@ public class UtilityTest {
 	@Test
 	public void addEmployee6() {
 		assert(!u.addNewEmployee("", "21 no one cares where you live", "0412341234"));
-	}
-	
-	
-	@Test
-	public void getEmployeeAvailability1() {
-		assert(u.getEmployeeAvailability("0").toString().equals("1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599"));
-	}
-	
-	@Test
-	public void getEmployeeAvailability2() {
-		assert(u.getEmployeeAvailability("1").toString().equals("1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599"));
-	}
-	
-	@Test
-	public void getEmployeeAvailability3() {
-		assert(u.getEmployeeAvailability("1").toString().equals("1800,14399|27000,86399"));
 	}
 	
 	
