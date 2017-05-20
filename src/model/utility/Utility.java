@@ -228,17 +228,23 @@ public class Utility {
 	 */
 	public boolean addNewBooking(String customerUsername, String employeeId, String start, String end, String services) {
 
-		Timetable t = getEmployeeBookingAvailability(employeeId, new Date(Long.parseLong(start)));	//All employee shifts
-		System.out.println(t);
-		if (t == null) {
+		if (stringOfServicesToArrayList(services).size() == 0) {
 			return false;
 		}
-		for (Period p : t.getAllPeriods()) {
-			long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
-			
-			if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
-				System.out.println(start + ":" +  end);
-				return db.createBooking(customerUsername, employeeId, start, end, services);
+		
+		for (Customer c : getAllCustomers()) {
+			if (c.getUsername().equals(customerUsername)) {
+				Timetable t = getEmployeeBookingAvailability(employeeId, new Date(Long.parseLong(start)));	//All employee shifts
+				if (t != null) {
+					for (Period p : t.getAllPeriods()) {
+						long allowable = (p.getEnd().getTime() - p.getStart().getTime()) - (Long.parseLong(end) - Long.parseLong(start));	//Max allowable time from the period start
+						
+						if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
+							return db.createBooking(customerUsername, employeeId, start, end, services);
+						}
+					}
+				}
+				return false;
 			}
 		}
 		return false;
@@ -318,19 +324,18 @@ public class Utility {
 	 * @param endTime	end time of the shift
 	 * @return	whether the shift was added or not
 	 */
-	public boolean addShift(String employeeId, String rawDate, String startTime, String endTime) {
+	public boolean addShift(String employeeId, String rawDate, String start, String end) {
 
-		Long starttime = Long.parseLong(rawDate) + Long.parseLong(startTime);
-		Long endtime = Long.parseLong(rawDate) + Long.parseLong(endTime);
+		Long startTime = Long.parseLong(start);
+		Long endTime = Long.parseLong(end);
 		
-		if (starttime > endtime)
-			return false;
-		else
+		if (startTime < endTime && startTime > 0) {
 			try {
-				return (db.addShift(Integer.parseInt(employeeId), Long.toString(starttime), Long.toString(endtime)));
+				return (db.addShift(Integer.parseInt(employeeId), Long.toString(Long.parseLong(rawDate) + startTime), Long.toString(Long.parseLong(rawDate) + endTime)));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
 		return false;
 		
 	}
@@ -429,17 +434,16 @@ public class Utility {
 	public Timetable getEmployeeAvailability(String employeeId) {
 		try {
 			ResultSet rs = db.getEmployeeAvailability(Integer.parseInt(employeeId));
-			if (rs == null) {
-				return new Timetable();
+			if (rs != null) {
+				Timetable t = new Timetable();
+				t.mergeTimetable(rs.getString("availability"));
+				rs.close();
+				return t;
 			}
-			Timetable t = new Timetable();
-			t.mergeTimetable(rs.getString("availability"));
-			rs.close();
-			return t;
 		} catch (SQLException e) {
 			LOGGER.warning(e.getMessage());
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -537,21 +541,19 @@ public class Utility {
 	public Timetable getEmployeeBookingAvailability(String employeeId, Date date) {
 		//gets the bookings list of all the booking from the time the method is called
 		Timetable shiftsTimetable = getShift(employeeId);
-		Booking[] bookings = this.getBookingsAfter(new Date(0));
+		Booking[] bookings = getBookingsAfter(new Date(0));
 		
 		if (shiftsTimetable != null) {
 			if (bookings != null && bookings.length > 0) {
 				for (Booking b : bookings) {
 					if (b.getEmployeeId().equals(employeeId)) {
-						System.out.println(b);
 						shiftsTimetable.removePeriod(b);
 					}
 				}
 			}
 			shiftsTimetable.removePeriod(new Period(new Date(0), date));
-			return shiftsTimetable;
 		}	
-		return null;
+		return shiftsTimetable;
 	}
 
 	/**

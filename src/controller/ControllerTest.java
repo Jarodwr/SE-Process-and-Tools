@@ -97,7 +97,6 @@ public class ControllerTest{
 	public void getEmployeeList01() {
 		String[] employees = c.getEmployeeList();
 		assert(employees != null);
-		System.out.println(employees.length);
 		assert(employees.length == 8);
 	}
 	
@@ -164,7 +163,6 @@ public class ControllerTest{
 	public void registerTest01() {
 		try {
 			User customer = c.register("jarodwr", "asdfasdf", "Massage Business", "asdfasdf", "jarod", "32 asa st", "0400440044");
-			System.out.println(customer);
 			assert(customer == null);
 		} catch(ValidationException e) {
 
