@@ -166,12 +166,6 @@ public class SQLiteConnection {
 		customername = customername.toLowerCase();
 		try {
 			int bookingId = getNextAvailableId(getAllBookings(), "bookingId");
-			ResultSet rs = getBookingRow(bookingId); // search through businessnames to check if this user currently exists
-
-			if (rs != null) {
-				rs.close();
-				return false;
-			}
 			
 			PreparedStatement ps = conn.prepareStatement("INSERT INTO BookingsTable VALUES (?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, bookingId);
@@ -376,7 +370,7 @@ public class SQLiteConnection {
 		else return null;
 	}
 	
-	private ResultSet getAllAvailabilities(int timetableId) throws SQLException{
+	public ResultSet getAllAvailabilities(int timetableId) throws SQLException{
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Timetableinfo";
 		PreparedStatement pst = conn.prepareStatement(query);
@@ -429,23 +423,17 @@ public class SQLiteConnection {
 		ResultSet rs1 = pst1.executeQuery();
 
 		if (rs1.next()) {
-			if (rs1.getInt("timetableId") == 0 ) {
-				System.out.println("test");
-				return null;
-			}
-			else {
-				String query2 = "SELECT * FROM Timetableinfo WHERE timetableId= (SELECT timetableId FROM Employeeinfo WHERE employeeId=?)";
-				PreparedStatement pst2 = conn.prepareStatement(query2);
-				pst2.setInt(1, employeeId);
-				ResultSet rs2 = pst2.executeQuery();
-
-				if (rs2.next()) {
-					return rs2;
-				}
-				else return null;
+			String timetableId = rs1.getString(1);
+			System.out.println(timetableId);
+			String query2 = "SELECT * FROM Timetableinfo WHERE timetableId = ?";
+			PreparedStatement pst2 = conn.prepareStatement(query2);
+			pst2.setInt(1, Integer.parseInt(timetableId));
+			ResultSet rs2 = pst2.executeQuery();
+			if (rs2.next()) {
+				return rs2;
 			}
 		}
-		else return null;
+		return null;
 		
 	}
 	
