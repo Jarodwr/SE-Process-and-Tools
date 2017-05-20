@@ -76,6 +76,9 @@ public class OwnerChangeWorkingTimes {
     public void init(Controller controller) {
     	
     	this.controller = controller;
+    	String[] employees = controller.getEmployeeList();
+    	if (employees != null) {
+        	employeeMenu.getItems().addAll(employees);
     	}
     	
     	try {
