@@ -5,29 +5,28 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.database.SQLMaster;
 import model.database.SQLiteConnection;
 import model.exceptions.ValidationException;
-import model.users.Owner;
 import model.users.User;
 
 public class ControllerTest{
 	static Controller c;
-	static Owner user = new Owner("name", "pass", "SARJ's Milk Business", "Admin", "124 Address", "0412345678");
 	static SQLiteConnection db;
 	static SQLMaster masterDB;
 	
 	@BeforeClass
 	public static void setup()
 	{
-		new File("test.sqlite").delete();	//Deletes previous test database
-		new File("TESTMasterDB.sqlite").delete();//Deletes previous test master database
+		new File("controllerTest.sqlite").delete();	//Deletes previous test database
+		new File("controllerTest_0.sqlite").delete();//Deletes previous test master database
 		
-		db = new SQLiteConnection("jdbc:sqlite:test.sqlite");
-		masterDB = new SQLMaster("test db");
+		db = new SQLiteConnection("controllerTest_0");
+		masterDB = new SQLMaster("controllerTest");
 //		db.createBusiness(businessname, address, phonenumber)
 		masterDB.createBusiness("Massage Business", "123 nicholson st", "040303030303");
 		
@@ -43,55 +42,61 @@ public class ControllerTest{
 		db.createCustomer("grips", "yehnahyehyehnah", "Massage Business", "Will", "entry dataaaaaaaaa", "0412900234");
 		
 //		db.createAvailability(timetableId, businessname, availabilities);
-		db.createAvailability(1, "Massage Business", "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
-		db.createAvailability(2, "Massage Business", "1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
-		db.createAvailability(3, "Massage Business", "1800,14399|27000,86399");
-		db.createAvailability(4, "Massage Business", "1800,14399|27000,86399");
-		db.createAvailability(5, "Massage Business", "1800,14399|27000,86399");
-		db.createAvailability(6, "Massage Business", "1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
+		db.createAvailability(1, "1800,14399|27000,86399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
+		db.createAvailability(2, "1800,14399|27000,86399|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
+		db.createAvailability(3, "1800,14399|27000,86399");
+		db.createAvailability(4, "1800,14399|27000,86399");
+		db.createAvailability(5, "1800,14399|27000,86399");
+		db.createAvailability(6, "1800,14399|27000,86399|189000,203399|441000,442799|446400,448199|450000,451799|453600,455399|457200,458999|460800,462599");
 		
 //		db.createEmployee(businessname, name, address, mobileno, timetableId)
-		db.createEmployee("Massage Business", "spencer", "any", "0394815108", 1);
-		db.createEmployee("Massage Business", "russel", "somewhere", "9382738491", 2);
-		db.createEmployee("Massage Business", "jarod", "nowhere", "1738593827", 3);
-		db.createEmployee("Massage Business", "anesu", "anywhere", "2918273647", 4);
-		db.createEmployee("Massage Business", "anthrax", "blah", "9283746374", 5);
-		db.createEmployee("Massage Business", "marvin", "yes", "0192837465", 6);
+		db.createEmployee("spencer", "any", "0394815108", 1);
+		db.createEmployee("russel", "somewhere", "9382738491", 2);
+		db.createEmployee("jarod", "nowhere", "1738593827", 3);
+		db.createEmployee("anesu", "anywhere", "2918273647", 4);
+		db.createEmployee("anthrax", "blah", "9283746374", 5);
+		db.createEmployee("marvin", "yes", "0192837465", 6);
 		
 //		db.addShift(employeeId, businessname, start, end)
-		db.addShift(0, "Massage Business", "1497544200", "1497546000");	//06/15/2017 @ 4:30pm-5:00pm (UTC)
-		db.addShift(0, "Massage Business", "1497506400", "1497513600");
-		db.addShift(1, "Massage Business", "1497513600", "1497520800");
-		db.addShift(2, "Massage Business", "1497506400", "1497565800");
-		db.addShift(3, "Massage Business", "1497508200", "1497520800");
-		db.addShift(3, "Massage Business", "1497522600", "1497565800");
-		db.addShift(4, "Massage Business", "1497508200", "1497522600");
-		db.addShift(5, "Massage Business", "1497555000", "1497565800");
+		db.addShift(0, "1497544200", "1497546000");	//06/15/2017 @ 4:30pm-5:00pm (UTC)
+		db.addShift(0, "1497506400", "1497513600");
+		db.addShift(1, "1497513600", "1497520800");
+		db.addShift(2, "1497506400", "1497565800");
+		db.addShift(3, "1497508200", "1497520800");
+		db.addShift(3, "1497522600", "1497565800");
+		db.addShift(4, "1497508200", "1497522600");
+		db.addShift(5, "1497555000", "1497565800");
 
 //		db.addService(serviceName, servicePrice, serviceMinutes, businessName)
-		db.addService("Light Massage", 1000, 30, "Massage Business");
-		db.addService("Heavy Massage", 3000, 90, "Massage Business");
-		db.addService("Hair cut", 1500, 60, "Massage Business");
-		db.addService("Spa", 5000, 120, "Massage Business");
+		db.addService("Light Massage", 1000, 30);
+		db.addService("Heavy Massage", 3000, 90);
+		db.addService("Hair cut", 1500, 60);
+		db.addService("Spa", 5000, 120);
 		
 //		db.createBooking(businessname, customername, employeeId, unixstamp1, unixstamp2, data)
-		db.createBooking("Massage Business", "jarodwr", "0", "1497549600", "1497555000", "Light Massage");
-		db.createBooking("Massage Business", "yargen", "0", "1497510000", "1497513600", "Hair cut");
-		db.createBooking("Massage Business", "derkaderka", "1", "1497555000", "1497558600", "Hair cut");
-		db.createBooking("Massage Business", "yargen", "2", "1497558600", "1497565800", "Spa");
-		db.createBooking("Massage Business", "death", "2", "1497513600", "1497520800", "Spa");
-		db.createBooking("Massage Business", "death", "3", "1497520800", "1497522600", "Heavy Massage");
-		db.createBooking("Massage Business", "grips", "3", "1497508200", "1497510000", "Heavy Massage");
-		db.createBooking("Massage Business", "derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
+		db.createBooking("jarodwr", "0", "1497549600", "1497555000", "Light Massage");
+		db.createBooking("yargen", "0", "1497510000", "1497513600", "Hair cut");
+		db.createBooking("derkaderka", "1", "1497555000", "1497558600", "Hair cut");
+		db.createBooking("yargen", "2", "1497558600", "1497565800", "Spa");
+		db.createBooking("death", "2", "1497513600", "1497520800", "Spa");
+		db.createBooking("death", "3", "1497520800", "1497522600", "Heavy Massage");
+		db.createBooking("grips", "3", "1497508200", "1497510000", "Heavy Massage");
+		db.createBooking("derkaderka", "4", "1497506400", "1497508200", "Heavy Massage");
 		
-		c = new Controller("jdbc:sqlite:test.sqlite");
+		c = new Controller("controllerTest");
 		
+	}
+	
+	@Before
+	public void beforetest() {
+		c.login("joedoe97", "ayylmao");
 	}
 	
 	
 	@Test
 	public void getEmployeeList01() {
 		String[] employees = c.getEmployeeList();
+		assert(employees != null);
 		assert(employees.length == 6);
 	}
 	
@@ -106,7 +111,7 @@ public class ControllerTest{
 	@Test
 	public void getServicesList01() {
 		String[] services = c.getServicesList();
-		System.out.println(services.length);
+		assert(services != null);
 		assert(services.length == 5);
 	}
 	
@@ -114,13 +119,15 @@ public class ControllerTest{
 	@Test
 	public void getSummaryOfBookings01() {
 		String[][] bookings = c.getSummaryOfBookings();
+		assert(bookings != null);
 		assert(bookings.length == 8);
 	}
 	
 
 	@Test
 	public void loginTest01() {
-		assert(c.login("jarod", "naaahaahhaah") == null);
+		User user = c.login("jarod", "naaahaahhaah", "Massage Business");
+		assert(user == null);
 	}
 
 	@Test
@@ -130,18 +137,23 @@ public class ControllerTest{
 	
 	@Test
 	public void loginTest03() {
-		assert(c.login("yeahyeah", "nahnah") == null);
+		User user = c.login("yeahyeah", "nahnah", "Massage Business");
+		assert(user == null);
 	}
 	
 	@Test
 	public void loginTest04() {
-		assert(!c.login("jarodwr", "1234").isOwner());
+		User user = c.login("jarodwr", "1234", "Massage Business");
+		assert(user != null);
+		assert(!user.isOwner());
 	}
 	
 	//owner logging in test cases
 	@Test
 	public void loginTest05() {
-		assert(c.login("JoeDoe97", "ayylmao").isOwner());
+		User user = c.login("joedoe97", "ayylmao");
+		assert(user != null);
+		assert(user.isOwner());
 	}
 	
 	
@@ -210,32 +222,32 @@ public class ControllerTest{
 	//add new employee tests
 	@Test
 	public void addEmployeeTest01() {
-		assert(!c.addEmployee("yeahnah", "0412341234", "12 blah st", null));
+		assert(!c.addEmployee("yeahnah", "0412341234", "12 blah st"));
 	}
 	
 	@Test
 	public void addEmployeeTest02() {
-		assert(!c.addEmployee("testEmployee", "04sdfg41234", "21 no one cares where you live", c.getOwner()));
+		assert(!c.addEmployee("testEmployee", "04sdfg41234", "21 no one cares where you live"));
 	}
 	
 	@Test
 	public void addEmployeeTest03() {
-		assert(!c.addEmployee("", "0412341234", "21 no one cares where you live", c.getOwner()));
+		assert(!c.addEmployee("", "0412341234", "21 no one cares where you live"));
 	}
 	
 	@Test
 	public void addEmployeeTest04() {
-		assert(!c.addEmployee("yoyo@#$%@#$yoyo", "0412341234", "21 no one cares where you live", c.getOwner()));
+		assert(!c.addEmployee("yoyo@#$%@#$yoyo", "0412341234", "21 no one cares where you live"));
 	}
 	
 	@Test
 	public void addEmployeeTest05() {
-		assert(!c.addEmployee("McMahon", "0412341234", "", c.getOwner()));
+		assert(!c.addEmployee("McMahon", "0412341234", ""));
 	}
 	
 	@Test
 	public void addEmployeeTest06() {
-		assert(c.addEmployee("bowser", "0412341234", "21 no one cares where you live", c.getOwner()));
+		assert(c.addEmployee("bowser", "0412341234", "21 no one cares where you live"));
 	}
 	
 	
@@ -278,7 +290,7 @@ public class ControllerTest{
 	
 	@Test
 	public void getCurrentBookings02() {
-		db.createBooking("Massage Business", "jarodwr", "2", "1918726200", "1918728000", "Light Massage");	//TODO: Currently freezes the test
+		db.createBooking("jarodwr", "2", "1918726200", "1918728000", "Light Massage");	//TODO: Currently freezes the test
 		String[][] bookings = c.getCurrentBookings();
 		assert(bookings != null);
 	}
@@ -317,27 +329,27 @@ public class ControllerTest{
 	
 	@Test
 	public void removeBookings01() {
-		assert(!c.removeBooking(-1, "Massage Business"));
+		assert(!c.removeBooking(-1));
 	}
 	
 	@Test
 	public void removeBookings02() {
-		assert(!c.removeBooking(2, ""));
+		assert(!c.removeBooking(2));
 	}
 	
 	@Test
 	public void removeBookings03() {
-		assert(c.removeBooking(1, "Massage Business"));
+		assert(c.removeBooking(1));
 	}
 	
 	@Test
 	public void removeBookings04() {
-		assert(c.removeBooking(60, "Massage Business"));
+		assert(c.removeBooking(60));
 	}
 	
 	@Test
 	public void removeBookings05() {
-		assert(c.removeBooking(0, "Massage Business"));
+		assert(c.removeBooking(0));
 	}
 	
 	
@@ -365,18 +377,21 @@ public class ControllerTest{
 	@Test
 	public void getWorkingTimes01() {
 		String[][] workingTimes = c.getWorkingTimes("1");
+		assert(workingTimes != null && workingTimes.length != 0);
 		assert(workingTimes[0][0].equals("1497513600"));
 	}
 	
 	@Test
 	public void getWorkingTimes02() {
 		String[][] workingTimes = c.getWorkingTimes("2");
+		assert(workingTimes != null && workingTimes.length != 0);
 		assert(workingTimes[0][0].equals("1497506400"));
 	}
 	
 	@Test
 	public void getWorkingTimes03() {
 		String[][] workingTimes = c.getWorkingTimes("3");
+		assert(workingTimes != null && workingTimes.length != 0);
 		assert(workingTimes[0][0].equals("1497508200"));
 		assert(workingTimes[1][0].equals("1497522600"));
 	}
@@ -397,6 +412,7 @@ public class ControllerTest{
 	@Test
 	public void getEmployeeBookingAvailability01() {
 		String[][] bookingAvailability = c.getEmployeeBookingAvailability("0", new Date(0));
+		assert(bookingAvailability != null && bookingAvailability.length != 0);
 		assert(bookingAvailability[0][0].equals("1497544200"));
 		assert(bookingAvailability[1][0].equals("1497506400"));
 	}
@@ -404,12 +420,15 @@ public class ControllerTest{
 	@Test
 	public void getEmployeeBookingAvailability02() {
 		String[][] bookingAvailability = c.getEmployeeBookingAvailability("3", new Date(0));
+		assert(bookingAvailability != null && bookingAvailability.length != 0);
 		assert(bookingAvailability[0][0].equals("1497522600"));
 		assert(bookingAvailability[1][0].equals("1497510000"));
 	}
 	
 	@Test
 	public void getEmployeeBookingAvailability03() {
-		assert(c.getEmployeeBookingAvailability("3", new Date(2147410000)).length == 0);
+		String[][] bookingAvailability = c.getEmployeeBookingAvailability("3", new Date(2147410000));
+		assert(bookingAvailability != null && bookingAvailability.length != 0);
+		assert(bookingAvailability.length == 0);
 	}
 }

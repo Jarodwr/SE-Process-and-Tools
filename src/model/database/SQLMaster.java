@@ -13,20 +13,10 @@ public class SQLMaster {
 	private Connection conn = null;
 	private Logger LOGGER = Logger.getLogger("main");
 	
-	public SQLMaster() {
-		try {
-			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:BookingSystemMasterDB.sqlite");
-			createBusinessTable();
-			createOwnerTable();
-		} catch (Exception x) {
-		}
-	}
-	
 	public SQLMaster(String string) { // TESTING PURPOSES ONLY
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conn = DriverManager.getConnection("jdbc:sqlite:TESTMasterDB.sqlite");
+			conn = DriverManager.getConnection("jdbc:sqlite:" + string + ".sqlite");
 			createBusinessTable();
 			createOwnerTable();
 		} catch (Exception x) {
@@ -41,7 +31,14 @@ public class SQLMaster {
 	 * )
 	 */
 	public void createBusinessTable() {
-		String sql = "CREATE TABLE IF NOT EXISTS Businessinfo (businessId integer Primary Key, businessname Varchar(255), address Varchar(255), phonenumber Varchar(255))";
+		String sql = "CREATE TABLE IF NOT EXISTS Businessinfo (businessId integer Primary Key, "
+				+ "businessname Varchar(255), "
+				+ "address Varchar(255), "
+				+ "phonenumber Varchar(255), "
+				+ "openingHours Varchar(255), "
+				+ "logoLink Varchar(255), "
+				+ "colorHex Varchar(255), "
+				+ "header Varchar(255))";
 				try {
 					Connection c = this.conn;
 					Statement stmt = c.createStatement();
@@ -70,6 +67,22 @@ public class SQLMaster {
 		}
 	}
 	
+	public ResultSet getBusinessRow(int businessId) throws SQLException {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
+		PreparedStatement pst = c.prepareStatement(query);
+		pst.setInt(1, businessId);
+		ResultSet rs = pst.executeQuery();
+
+		if (rs.next()) {
+			return rs;
+		}
+		else {
+			LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ businessId);
+			return null;
+		}
+	}
 	
 	public boolean createBusiness(String businessname, String address, String phonenumber) {
 		Connection c = this.conn;
@@ -81,11 +94,15 @@ public class SQLMaster {
 				return false;
 			}
 
-			PreparedStatement ps = c.prepareStatement("INSERT INTO Businessinfo VALUES (?, ?, ?, ?);"); // this creates a new user
+			PreparedStatement ps = c.prepareStatement("INSERT INTO Businessinfo VALUES (?, ?, ?, ?, ?, ?, ?, ?);"); // this creates a new user
 			ps.setInt(1, this.getNextAvailableId(getAllBusinesses(), "businessId"));
 			ps.setString(2, businessname);
 			ps.setString(3, address);
 			ps.setString(4, phonenumber);
+			ps.setString(5, "");	//Default null logo
+			ps.setString(6,"");		//Default null color
+			ps.setString(7, businessname);	//Default header to businessname
+			ps.setString(8, "");	//Default no opening hours
 			ps.executeUpdate();
 			ps.close();
 
@@ -96,11 +113,156 @@ public class SQLMaster {
 		}
 	}
 	
-	public ResultSet getAllBusinesses() throws SQLException {
+	public String getLogo(int id) {
 		Connection c = this.conn;
 		// Search for rows with matching usernames
+		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
+		try {
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setInt(1, id);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("logoLink");
+			}
+			else {
+				LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
+			}
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return null;
+		
+	}
+	
+	public boolean setLogo(int id, String link) {
+		Connection c = this.conn;
+		// Search for rows with matching usernames
+		String query = "UPDATE Businessinfo SET logoLink=? WHERE businessId=?";
+		try {
+			PreparedStatement pst = c.prepareStatement(query);
+			pst.setString(1, link);
+			pst.setInt(2, id);
+			pst.executeUpdate();
+			pst.close();
+			return true;
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return false;
+	}
+	
+	public String getColor(int id) {
+		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
+		try {
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setInt(1, id);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("colorHex");
+			}
+			else {
+				LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
+			}
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return null;
+	}
+	
+	public boolean setColor(int id, String color) {
+		// Search for rows with matching usernames
+		String query = "UPDATE Businessinfo SET colorHex=? WHERE businessId=?";
+		try {
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, color);
+			pst.setInt(2, id);
+			pst.executeUpdate();
+			pst.close();
+			return true;
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return false;
+	}
+	
+	public String getHeader(int id) {
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
+		try {
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setInt(1, id);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("header");
+			}
+			else {
+				LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
+			}
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return null;
+	}
+	
+	public boolean setHeader(int id, String title) {
+		// Search for rows with matching usernames
+		String query = "UPDATE Businessinfo SET header=? WHERE businessId=?";
+		try {
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, title);
+			pst.setInt(2, id);
+			pst.executeUpdate();
+			pst.close();
+			return true;
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return false;
+	}
+	
+	public String getOpeningHours(int id) {
+		// Search for rows with matching usernames
+		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
+		try {
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setInt(1, id);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("openingHours");
+			}
+			else {
+				LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
+			}
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return null;
+	}
+	
+	public boolean setOpeningHours(int id, String openingHours) {
+		// Search for rows with matching usernames
+		String query = "UPDATE Businessinfo SET openingHours=? WHERE businessId=?";
+		try {
+			PreparedStatement pst = conn.prepareStatement(query);
+			pst.setString(1, openingHours);
+			pst.setInt(2, id);
+			pst.executeUpdate();
+			pst.close();
+			return true;
+		} catch (SQLException e) {
+			LOGGER.severe(e.getMessage());
+		}
+		return false;
+	}
+	
+	public ResultSet getAllBusinesses() throws SQLException {
+		// Search for rows with matching usernames
 		String query = "SELECT * FROM Businessinfo";
-		PreparedStatement pst = c.prepareStatement(query);
+		PreparedStatement pst = conn.prepareStatement(query);
 		ResultSet rs = pst.executeQuery();
 
 		if (rs.next()) {

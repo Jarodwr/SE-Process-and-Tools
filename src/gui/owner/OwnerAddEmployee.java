@@ -33,7 +33,7 @@ public class OwnerAddEmployee {
     
     @FXML
     void submitEmployee(ActionEvent event) {
-    	if (controller.addEmployee(name.getText(), phone.getText(), address.getText(), controller.getOwner())) {
+    	if (controller.addEmployee(name.getText(), phone.getText(), address.getText())) {
     		errorMessage.setStyle("-fx-text-fill: GREEN");
         	errorMessage.setText("Employee successfully added!");
     	} else {

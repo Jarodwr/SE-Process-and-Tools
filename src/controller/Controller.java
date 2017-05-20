@@ -12,7 +12,6 @@ import model.period.Booking;
 import model.service.Service;
 import model.timetable.Timetable;
 import model.users.Customer;
-import model.users.Owner;
 import model.users.User;
 import model.utility.Utility;
 
@@ -22,17 +21,17 @@ import model.utility.Utility;
  */
 public class Controller {
 	private Logger LOGGER = Logger.getLogger("main");
-	public Utility utilities = new Utility();
+	public Utility utilities;
 	private static final String nameCheckerRegEx = "[A-Za-z -']+";
 	
 	public static final String[] Weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 	public Controller() {
-
+		utilities = new Utility();
 	}
 	
 	public Controller(String dbName) {
-		utilities.setConnection(dbName);
+		utilities = new Utility(dbName);
 	}
 	
 	/**
@@ -62,7 +61,6 @@ public class Controller {
 		}
 		else
 		{
-			utilities.setCurrentBusiness(user.getBusinessName());
 			LOGGER.log(Level.INFO, "LOGIN: Success");
 		}
 
@@ -199,9 +197,9 @@ public class Controller {
 	 * @param businessname	name of the business we need to remove the booking of
 	 * @return	Whether or not the booking was removed
 	 */
-	public boolean removeBooking(int id, String businessname)
+	public boolean removeBooking(int id)
 	{
-		return utilities.removeBooking(id, businessname);
+		return utilities.removeBooking(id);
 	}
 	
 	/**
@@ -279,11 +277,7 @@ public class Controller {
 			//go through a loop till the user chooses to exit to the menu
 			if (employeeId != null && !employeeId.equals("")) {
 				//get the employees timetable
-				Timetable t = utilities.getEmployeeAvailability(employeeId);
-				if (t.equals(null) || t.getAllPeriods().length == 0)
-					return null;
-				else
-					return t;
+				return utilities.getEmployeeAvailability(employeeId);
 			}
 			
 		} catch(Exception e) {
@@ -291,7 +285,7 @@ public class Controller {
 			LOGGER.warning(e.getMessage());
 		}
 		
-		return null;
+		return new Timetable();
 
 	}
 
@@ -302,10 +296,8 @@ public class Controller {
 	 * @param user the active user which is an owner
 	 * @return true if it succeeds or false if it fails
 	 */
-	public boolean addEmployee(String name, String phone, String address, Owner user) 
+	public boolean addEmployee(String name, String phone, String address) 
 	{
-		//set variables that are used for checking and creating the new employee
-		String business = utilities.getCurrentBusiness();
 		String id = "";
 		//create a unique ID for the new employee
 		
@@ -327,7 +319,7 @@ public class Controller {
 		if(name.matches(nameCheckerRegEx) &&
 				phone.matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}") &&
 				address.matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
-			if (utilities.addNewEmployee(id, business, name, address, phone, 0)) { //try to add the new employee to the database
+			if (utilities.addNewEmployee(id, name, address, phone, 0)) { //try to add the new employee to the database
 				LOGGER.log(Level.INFO, "Employee successfully added");
 				return true;
 			}
@@ -336,14 +328,6 @@ public class Controller {
 		LOGGER.log(Level.INFO, "Employee could not be added, incorrect field formats");
 		return false;
 		
-	}
-	
-	/**
-	 * getter for the owner of the current business
-	 * @return
-	 */
-	public Owner getOwner() {
-		return utilities.getBusinessOwner();
 	}
 	
 	/**
@@ -408,7 +392,11 @@ public class Controller {
 	 * @return	Timetable in string[][] format
 	 */
 	public String[][] getEmployeeBookingAvailability(String employeeId, Date date) {
-		return utilities.getEmployeeBookingAvailability(employeeId, date).toStringArray();
+		Timetable bookingAvailability = utilities.getEmployeeBookingAvailability(employeeId, date);
+		if (bookingAvailability != null) {
+			return bookingAvailability.toStringArray();
+		}
+		return null;
 	}
 
 	/**
@@ -417,8 +405,8 @@ public class Controller {
 	 * @param currentBusiness
 	 * @return	Timetable of the opening hours
 	 */
-	public Timetable getOpeningHours(String currentBusiness) {
-		return utilities.getOpeningHours(currentBusiness);
+	public Timetable getOpeningHours() {
+		return utilities.getOpeningHours();
 	}
 
 	public String[] getBusinessList() {
@@ -505,10 +493,7 @@ public class Controller {
 
 		if (user == null) {
 			LOGGER.log(Level.INFO, "LOGIN: Failed");
-		}
-		else
-		{
-			utilities.setCurrentBusiness(user.getBusinessName());
+		} else {
 			LOGGER.log(Level.INFO, "LOGIN: Success");
 		}
 

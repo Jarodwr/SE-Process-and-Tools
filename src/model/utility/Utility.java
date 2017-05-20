@@ -27,27 +27,20 @@ import model.users.User;
 public class Utility {
 
 	private Logger LOGGER = Logger.getLogger("main");
-	private User currentUser = null;
-	private String currentBusiness;
-	private SQLiteConnection db = new SQLiteConnection();
-	private SQLMaster masterDB = new SQLMaster();
-	
-	
-	/**
-	 * @param username username being searched
-	 * @return Returns the user with the username being searched
-	 */
+	private User currentUser;
+	private int currentBusiness;
+	private SQLiteConnection db;
+	private SQLMaster masterDB;
+	private String masterDBName;
 	
 	public Utility() {
-		this.currentBusiness = null;
+		masterDBName = "BookingSystemMasterDB";
+		masterDB = new SQLMaster("BookingSystemMasterDB");
 	}
 	
-	/**
-	 * Used for testing
-	 * @param newDb
-	 */
-	public void setConnection(String newDb) {
-		this.db = new SQLiteConnection(newDb);
+	public Utility(String dbname) {
+		masterDBName = dbname;
+		masterDB = new SQLMaster(masterDBName);
 	}
 	
 	/**
@@ -68,7 +61,7 @@ public class Utility {
 			else {
 				rs = db.getUserRow(username);
 				
-				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), currentBusiness, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
 				rs.close();
 				return customer;
 			}
@@ -88,7 +81,7 @@ public class Utility {
 		}
 		try {
 				rs = masterDB.getOwnerRow(username);
-				Owner owner = new Owner(username, rs.getString("password"), businessname, rs.getString("name"), rs.getString("address"), rs.getString("phonenumber"));
+				Owner owner = new Owner(username, rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("phonenumber"));
 				LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
 				rs.close();
 				return owner;
@@ -96,44 +89,38 @@ public class Utility {
 			catch (Exception e) {
 		
 			}
-		if (currentBusiness != businessname) {
-			try {
-
-				setBusinessDBConnection(masterDB.getBusinessDBFromName(businessname));
-				currentBusiness = businessname;
-			}
-			catch (SQLException e) {
-				LOGGER.warning(e.getMessage());
-				return null;
-			}
-		}
 		try {
-			rs = db.getUserRow(username);
-			if (username.equals("admin")) {
-				Admin admin = new Admin(rs.getString("password"));
-				LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
-				rs.close();
-				return admin;
-			}
-			else {
-				rs = db.getUserRow(username);
-				
-				Customer customer = new Customer(rs.getString("username"), rs.getString("password"), businessname, rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
-				rs.close();
-				return customer;
+			ResultSet br = masterDB.getBusinessRow(businessname);
+			if (br != null) {
+				SQLiteConnection tempConn = new SQLiteConnection(masterDBName + "_" + br.getString("businessid"));
+				rs = tempConn.getUserRow(username);
+				if (username.equals("admin")) {
+					Admin admin = new Admin(rs.getString("password"));
+					LOGGER.warning("success in finding admin, password = " + rs.getString("password"));
+					rs.close();
+					return admin;
+				}
+				else {
+					rs = tempConn.getUserRow(username);
+					Customer customer = new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno"));
+					rs.close();
+					return customer;
+				}
 			}
 
 		} catch (Exception e) {
 			//LOGGER.warning(e.getMessage()); Exceptions are intended behaviour here, no need to log
-			return null;
 		}
+		return null;
 		
 	}
 	
-	private void setBusinessDBConnection(int businessDBFromName) throws SQLException {
-		this.db.close();
-		this.db = new SQLiteConnection("businessDB_" + Integer.toString(businessDBFromName));
-		
+	private void setBusinessDBConnection(int businessId) throws SQLException {
+		if (db != null) {
+			this.db.close();
+		}
+		this.db = new SQLiteConnection(masterDBName + "_" + Integer.toString(businessId));
+		this.currentBusiness = businessId;
 	}
 
 	/**
@@ -144,8 +131,18 @@ public class Utility {
 	 */
 	public User authenticate(String username, String password) {
 		User found = searchUserLogin(username.toLowerCase(), "");
-		if (found != null && found.checkPassword(password))
+		if (found != null && found.checkPassword(password)) {
+			try {
+				ResultSet rs = masterDB.getOwnerRow(username);
+				System.out.println(username);
+				int businessId = Integer.parseInt(rs.getString("businessid"));
+//				String businessName = masterDB.getBusinessRow(businessId).getString("businessname");
+				this.setBusinessDBConnection(businessId);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			return found;
+		}
 		return null;
 	}
 	
@@ -181,8 +178,8 @@ public class Utility {
 			LOGGER.log(Level.FINE, "EDIT AVAILABILITIES: Failure, no such employee exists");
 			return;
 		}
+		
 		//add the availabilities to the timetable
-		/* TODO turn this try block below into a utility method */
 		try {
 			ResultSet rs = db.getAllAvailabilities();
 			int id;
@@ -193,12 +190,12 @@ public class Utility {
 			else {
 				id = 0;
 			}
-			if (db.createAvailability(id, getCurrentBusiness(), t.toString())){
+			if (db.createAvailability(id, t.toString())){
 				
 			}
 			else {
-				db.deleteAvailabilities(id, getCurrentBusiness());
-				db.createAvailability(id, getCurrentBusiness(), t.toString());
+				db.deleteAvailabilities(id);
+				db.createAvailability(id, t.toString());
 			}
 			db.updateAvailabilityforEmployee(Integer.parseInt(employeeId), id);
 		}
@@ -242,7 +239,7 @@ public class Utility {
 			
 			if (Long.parseLong(start) >= p.getStart().getTime() && Long.parseLong(start) <= p.getStart().getTime() + allowable) {
 
-				return db.createBooking(getCurrentBusiness(), customerUsername, employeeId, start, end, services);
+				return db.createBooking(customerUsername, employeeId, start, end, services);
 			}
 		}
 		return false;
@@ -255,9 +252,9 @@ public class Utility {
 	 * @param businessname, the business name of the booking
 	 * @return true or false for success or failure
 	 */
-	public boolean removeBooking(int bookingID, String businessname)
+	public boolean removeBooking(int bookingID)
 	{
-		return db.deleteBooking(bookingID, businessname);
+		return db.deleteBooking(bookingID);
 	}
 	
 	/**
@@ -331,8 +328,7 @@ public class Utility {
 			return false;
 		else
 			try {
-				return (db.addShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
-						Long.toString(starttime), Long.toString(endtime)));
+				return (db.addShift(Integer.parseInt(employeeId), Long.toString(starttime), Long.toString(endtime)));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -357,8 +353,7 @@ public class Utility {
 			return false;
 		else
 			try {
-				return (db.removeShift(Integer.parseInt(employeeId), "SARJ's Milk Business", 
-						Long.toString(starttime), Long.toString(endtime)));
+				return (db.removeShift(Integer.parseInt(employeeId), Long.toString(starttime), Long.toString(endtime)));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -370,15 +365,11 @@ public class Utility {
 	 * @return If creation is a success, return true. Else return false.
 	 */
 	public boolean addCustomerToDatabase(String username, String password, String business, String name, String address, String mobileno) {
-		if (currentBusiness != business) {
-			try{
 
-				setBusinessDBConnection(masterDB.getBusinessDBFromName(business));
-				currentBusiness = business;
-			}
-			catch (SQLException e) {
-				return false;
-			}
+		try {
+			setBusinessDBConnection(masterDB.getBusinessDBFromName(business));
+		} catch(SQLException e) {
+			
 		}
 		return db.createCustomer(username, password, business, name, address, mobileno);
 	}
@@ -387,18 +378,8 @@ public class Utility {
 	 * Creates an employee based off the information given by the owner.
 	 * @return If creation is a success, return true. Else return false.
 	 */
-	public boolean addNewEmployee(String id, String businessName, String name, String address, String phonenumber, int timetableID) {
-		if (currentBusiness != businessName) {
-			try{
-
-				setBusinessDBConnection(masterDB.getBusinessDBFromName(businessName));
-				currentBusiness = businessName;
-			}
-			catch (SQLException e) {
-				return false;
-			}
-		}
-		return db.createEmployee("", name, address, phonenumber, 0);
+	public boolean addNewEmployee(String id, String name, String address, String phonenumber, int timetableID) {
+		return db.createEmployee(name, address, phonenumber, 0);
 	}
 	
 	/**
@@ -460,40 +441,24 @@ public class Utility {
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		try {
 			ResultSet rs = db.getAllCustomers();
-			do {
-				ResultSet rs2 = db.getUserBusinessRow(rs.getString("username"));
-				String business = "";
-				if (rs2 != null) {
-					business = rs2.getString("businessname");
-					rs2.close();
-				} else {
-					business = this.currentBusiness;
-				}
+			if (rs != null) {
+				do {
+					customers.add(new Customer(rs.getString("username"), rs.getString("password"), rs.getString("name"), rs.getString("address"), rs.getString("mobileno")));
+					
+				} while (rs.next());
 
-				customers.add(new Customer(rs.getString(1), rs.getString(2), business, rs.getString(3), rs.getString(4), rs.getString(5)));
-				
-			} while (rs.next());
-			
+				rs.close();
+			}
+
 			if (!customers.isEmpty()) {
 				Customer[] b = new Customer[customers.size()];
 				customers.toArray(b);
-				rs.close();
 				return b;
 			}
-			rs.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
-	}
-
-	/**
-	 * 	Getter for owner user in the current business
-	 * @return	Current business owner
-	 */
-	public Owner getBusinessOwner() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -509,7 +474,7 @@ public class Utility {
 	 * Getter for the current business
 	 * @return	Current business
 	 */
-	public String getCurrentBusiness() {
+	public int getCurrentBusiness() {
 		return this.currentBusiness;
 	}
 	
@@ -517,7 +482,7 @@ public class Utility {
 	 * Setter for the current business
 	 * @param business	New business
 	 */
-	public void setCurrentBusiness(String business) {
+	public void setCurrentBusiness(int business) {
 		this.currentBusiness = business;
 	}
 
@@ -529,7 +494,7 @@ public class Utility {
 		
 		ArrayList<Service> services = new ArrayList<Service>();
 		try {
-			ResultSet rs = db.getAllServices(currentBusiness);
+			ResultSet rs = db.getAllServices();
 			if (rs == null) {
 				throw new Exception();
 			}
@@ -585,7 +550,7 @@ public class Utility {
 	 * @return	whether or not adding the service was a success
 	 */
 	public boolean addService(String name, int priceInCents, String duration) {
-		return db.addService(name, priceInCents, Integer.parseInt(duration), getCurrentBusiness());
+		return db.addService(name, priceInCents, Integer.parseInt(duration));
 	}
 
 	/**
@@ -599,7 +564,7 @@ public class Utility {
 		
 		try {
 			for(int i = 0; i < servicesSplit.length; i++) {
-				ResultSet rs = db.getService(servicesSplit[i], "SARJ's Milk Business");
+				ResultSet rs = db.getService(servicesSplit[i]);
 				if (rs == null) {
 				}
 				else {
@@ -623,11 +588,9 @@ public class Utility {
 	 * @param businessname	name of the business
 	 * @param times	new times being added
 	 */
-	public void editBusinessHours(String businessname, ArrayList<String> times) {
+	public void editBusinessHours(ArrayList<String> times) {
 
 		Timetable t = new Timetable();
-
-
 		//if the business selected doesn't exist alert the user and exit the function
 		
 		//use an iterator to go through the availabilities
@@ -642,20 +605,8 @@ public class Utility {
 		}
 		//if the employee doesn't exit then alert the user and exit the function
 		//add the availabilities to the timetable
-		try {
-			ResultSet rs = db.getBusinessHours(businessname);
-			int id;	//TODO:????
-			if (rs != null) {
-				rs.close();
-				db.updateBusinessHours(businessname, t.toString());
-			} 
-			else {
-				db.createBusinessHours(businessname, t.toString());
-			}
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+
+		masterDB.setOpeningHours(this.currentBusiness, t.toString());
 		 
 	}
 	
@@ -666,24 +617,15 @@ public class Utility {
 	 * @param currentBusiness name of the business being requested
 	 * @return	Timetable of all opening hours for the business
 	 */
-	public Timetable getOpeningHours(String currentBusiness) {
+	public Timetable getOpeningHours() {
 		Timetable t = new Timetable();
-		ResultSet rs;
-		try {
-			rs = db.getBusinessHours(currentBusiness);
-			if (rs == null) {
-				return t;
-			}
-			else {
-				t.mergeTimetable(rs.getString(1));
-				rs.close();
-				return t;
-			}
-		} catch (SQLException e) {
-			LOGGER.severe(e.getMessage());
-			return t;
+		String oh = masterDB.getOpeningHours(currentBusiness);
+
+		if (oh != null) {
+			t.mergeTimetable(oh);
 		}
 		
+		return t;
 	}
 	
 	/* marked for testing */
@@ -693,22 +635,8 @@ public class Utility {
 	 * @param businessname	name of the requested business
 	 * @return	Hex format color of the current business
 	 */
-	public String getBusinessColor(String businessname) {
-		ResultSet rs;
-		try {
-			rs = db.getBusinessColor(businessname);
-			if (rs == null) {
-				return ""; // TODO HEX FOR RED
-			}
-			else {
-				String colorHex = rs.getString("colorHex");
-				rs.close();
-				return colorHex;
-			}
-		} catch (SQLException e) {
-			return ""; // TODO HEX FOR RED
-		}
-		
+	public String getBusinessColor() {
+		return masterDB.getColor(currentBusiness);
 	}
 	
 	/**
@@ -717,20 +645,8 @@ public class Utility {
 	 * @param businessname	business being requested
 	 * @param colorHex	Color to be set
 	 */
-	public void editBusinessColor(String businessname, String colorHex) {
-		try {
-			ResultSet rs = db.getBusinessColor(businessname);
-			if (rs != null) {
-				rs.close();
-				db.updateBusinessColor(businessname, colorHex);
-			} 
-			else {
-				db.createBusinessColor(businessname, colorHex);
-			}
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+	public void editBusinessColor(String colorHex) {
+		masterDB.setColor(currentBusiness, colorHex);
 	}
 	
 	/* marked for testing */
@@ -739,21 +655,8 @@ public class Utility {
 	 * @param businessname
 	 * @return
 	 */
-	public String getBusinessHeader(String businessname) {
-		ResultSet rs;
-		try {
-			rs = db.getBusinessHeader(businessname);
-			if (rs == null) {
-				return "";
-			}
-			else {
-				String header = rs.getString("header");
-				rs.close();
-				return header;
-			}
-		} catch (SQLException e) {
-			return "";
-		}
+	public String getBusinessHeader() {
+		return masterDB.getHeader(currentBusiness);
 	}
 	
 	/**
@@ -761,20 +664,8 @@ public class Utility {
 	 * @param businessname
 	 * @param header
 	 */
-	public void editBusinessHeader(String businessname, String header) {
-		try {
-			ResultSet rs = db.getBusinessHeader(businessname);
-			if (rs != null) {
-				rs.close();
-				db.updateBusinessHeader(businessname, header);
-			} 
-			else {
-				db.createBusinessHeader(businessname, header);
-			}
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+	public void editBusinessHeader(String header) {
+		masterDB.setHeader(currentBusiness, header);
 	}
 	
 	/* marked for testing */
@@ -783,18 +674,8 @@ public class Utility {
 	 * @param businessname
 	 * @return
 	 */
-	public String getBusinessLogo(String businessname) {
-		ResultSet rs;
-		try {
-			rs = db.getBusinessLogo(businessname);
-			if (rs == null) {
-				return "";
-			}
-			else
-				return rs.getString("logoLink");
-		} catch (SQLException e) {
-			return "";
-		}
+	public String getBusinessLogo() {
+		return masterDB.getLogo(this.currentBusiness);
 	}
 	
 	/**
@@ -802,20 +683,8 @@ public class Utility {
 	 * @param businessname
 	 * @param logoLink
 	 */
-	public void editBusinessLogo(String businessname, String logoLink) {
-		try {
-			ResultSet rs = db.getBusinessLogo(businessname);
-			if (rs != null) {
-				rs.close();
-				db.updateBusinessLogo(businessname, logoLink);
-			} 
-			else {
-				db.createBusinessLogo(businessname, logoLink);
-			}
-		}
-		catch(SQLException e) {
-			LOGGER.warning(e.getMessage());
-		}
+	public void editBusinessLogo(String logoLink) {
+		masterDB.setLogo(currentBusiness, logoLink);
 	}
 
 	public String[] getBusinessList() {
@@ -827,6 +696,7 @@ public class Utility {
 			ArrayList<String> businessList = new ArrayList<String>();
 			do {
 				businessList.add(rs.getString("businessname"));
+				System.out.println(rs.getString("address"));
 			} while(rs.next());
 			String[] businessStringArray = new String[businessList.size()];
 			int i = 0;
@@ -854,8 +724,16 @@ public class Utility {
 
 	public User authenticate(String username, String password, String selectedBusiness) {
 		User found = searchUserLogin(username.toLowerCase(), selectedBusiness);
-		if (found != null && found.checkPassword(password))
+		if (found != null && found.checkPassword(password)) {
+			try {
+				this.setBusinessDBConnection(Integer.parseInt(masterDB.getBusinessRow(selectedBusiness).getString("businessId")));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 			return found;
+		}
 		return null;
 	}
 }

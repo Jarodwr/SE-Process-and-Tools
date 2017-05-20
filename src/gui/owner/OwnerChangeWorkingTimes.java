@@ -76,7 +76,10 @@ public class OwnerChangeWorkingTimes {
     public void init(Controller controller) {
     	
     	this.controller = controller;
-    	employeeMenu.getItems().addAll(controller.getEmployeeList());
+    	String[] employees = controller.getEmployeeList();
+    	if (employees != null) {
+        	employeeMenu.getItems().addAll(employees);
+    	}
     	
     	try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("WorkingTimesPicker.fxml"));
@@ -98,7 +101,7 @@ public class OwnerChangeWorkingTimes {
     		time.setEnabled(true);
     		
         	Timetable availabilities = controller.getWorkerAvailabilityTimetable(employeeId);
-        	Timetable openingHours = controller.getOpeningHours(controller.utilities.getCurrentBusiness());
+        	Timetable openingHours = controller.getOpeningHours();
         	if (openingHours != null) {
         		availabilities.mergeTimetable(openingHours);
         	}
