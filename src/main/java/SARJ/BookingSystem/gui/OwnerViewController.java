@@ -304,7 +304,7 @@ public class OwnerViewController {
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
 			OwnerEditOpeningHours controller = loader.getController();
-			
+			controller.init(c);
 			//controller.changeColour(accent);
     	}
     	catch(Exception e)
