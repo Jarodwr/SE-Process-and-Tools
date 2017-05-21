@@ -81,7 +81,13 @@ public class LoginController
     {
     	//to change the error message when run, if it logs in then the user won't see this as the page will change
     	loginErrorMessage.setStyle("-fx-text-fill: RED");
-    	loginErrorMessage.setText("Incorrect Username/Password");
+    	if (selectedBusiness == null || selectedBusiness == "" || selectedBusiness == "Choose Business") {
+    		
+        	loginErrorMessage.setText("No Business selected.");
+        	
+    	} else {
+        	loginErrorMessage.setText("Incorrect Username/Password");
+    	}
     	
     	try {
     		//try to log in the user and assign the output to a new user object

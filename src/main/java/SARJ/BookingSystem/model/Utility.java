@@ -130,7 +130,10 @@ public class Utility {
 		User found = searchUserLogin(username.toLowerCase(), "");
 		if (found != null && found.checkPassword(password)) {
 			try {
-				ResultSet rs = masterDB.getOwnerRow(username);
+				ResultSet rs = masterDB.getOwnerRow(username.toLowerCase());
+				if (rs == null) {
+					return null;
+				}
 				int businessId = Integer.parseInt(rs.getString("businessid"));
 //				String businessName = masterDB.getBusinessRow(businessId).getString("businessname");
 				this.setBusinessDBConnection(businessId);
