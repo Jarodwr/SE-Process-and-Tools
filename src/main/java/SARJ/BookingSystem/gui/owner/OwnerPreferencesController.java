@@ -37,7 +37,7 @@ public class OwnerPreferencesController implements Accent{
     
     @FXML
     void submit(ActionEvent event) {
-    	if(!headerMessage.getText().matches("{0,50}")) {
+    	if(!headerMessage.getText().matches("[a-zA-Z!'-_*]{0,50}")) {
     		headerMessage.setStyle("-fx-border-color: red");
 			errorMessage.setStyle("-fx-text-fill: RED");
         	errorMessage.setText("Message can not be longer than 50 characters!");
@@ -75,7 +75,7 @@ public class OwnerPreferencesController implements Accent{
     	main = this.main;
     	colour = color;
     	accent.setValue(Color.web(colour));
-    	
+    	headerMessage.setText(c.utilities.getBusinessHeader());
     }
     
     @FXML // This method is called by the FXMLLoader when initialization is complete

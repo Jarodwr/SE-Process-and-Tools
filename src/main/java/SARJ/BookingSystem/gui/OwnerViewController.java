@@ -222,7 +222,7 @@ public class OwnerViewController {
     	try 
     	{
     		//open the login page
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml")); /* TODO replace with page that says "are you sure you want to log out?" */
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
 	        LoginController controller = loader.getController();
