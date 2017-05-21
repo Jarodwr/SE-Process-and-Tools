@@ -47,7 +47,7 @@
             <executions>
               <execution>
               <id>assemble-all</id>
-              <phase>install</phase>
+              <phase>build</phase>
               <goals>
                 <goal>single</goal>
               </goals>
