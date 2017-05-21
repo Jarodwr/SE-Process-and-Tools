@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="65" failures="0" name="SARJ.BookingSystem.UtilityTest" time="0.498" errors="0" skipped="0">
+<testsuite tests="65" failures="0" name="SARJ.BookingSystem.UtilityTest" time="0.861" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_131\jre\bin"/>
@@ -46,7 +46,7 @@
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_131\jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher deploy"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -65,69 +65,69 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee1" time="0.005"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee2" time="0.007"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee3" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee4" time="0.007"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee5" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee6" time="0.002"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllServices1" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllServices2" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser1" time="0.013"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser2" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser3" time="0.002"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser4" time="0.002"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser5" time="0.01"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser6" time="0.011"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking1" time="0.005"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking2" time="0.008"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking3" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking4" time="0.011"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking5" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking6" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking7" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes1" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes2" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes3" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes4" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes5" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes6" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addShift1" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addShift2" time="0.006"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee1" time="0.01"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee2" time="0.009"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee3" time="0.012"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee4" time="0.009"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee5" time="0.004"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addEmployee6" time="0.004"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllServices1" time="0.007"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllServices2" time="0.006"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser1" time="0.007"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser2" time="0.012"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser3" time="0.111"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser4" time="0.065"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser5" time="0.038"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="searchUser6" time="0.049"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking1" time="0.011"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking2" time="0.003"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking3" time="0.012"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking4" time="0.002"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking5" time="0.009"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking6" time="0.019"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addNewBooking7" time="0.004"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes1" time="0.007"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes2" time="0.005"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes3" time="0.003"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes4" time="0.002"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes5" time="0.009"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAvailableTimes6" time="0.003"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addShift1" time="0.002"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addShift2" time="0.009"/>
   <testcase classname="SARJ.BookingSystem.UtilityTest" name="addShift3" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addShift4" time="0.01"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="removeBooking1" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="removeBooking2" time="0.008"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="removeBooking3" time="0.007"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="removeBooking4" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability1" time="0.007"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability2" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability3" time="0.022"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability4" time="0.005"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability5" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability6" time="0.008"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getShift1" time="0.005"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addShift4" time="0.003"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="removeBooking1" time="0.002"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="removeBooking2" time="0.013"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="removeBooking3" time="0.004"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="removeBooking4" time="0.007"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability1" time="0.004"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability2" time="0.005"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability3" time="0.009"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability4" time="0.004"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability5" time="0.001"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getEmployeeBookingAvailability6" time="0.007"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getShift1" time="0.007"/>
   <testcase classname="SARJ.BookingSystem.UtilityTest" name="getShift2" time="0.007"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getShift3" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllCustomers1" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllCustomers2" time="0.005"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllCustomers3" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter1" time="0.005"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter2" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter3" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter4" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter5" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter6" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer1" time="0.015"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer2" time="0.037"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer3" time="0.003"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer4" time="0.01"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer5" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer6" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate1" time="0.029"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate2" time="0.047"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate3" time="0.011"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate4" time="0.011"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate5" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate6" time="0.005"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getShift3" time="0.007"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllCustomers1" time="0.009"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllCustomers2" time="0.008"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getAllCustomers3" time="0.008"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter1" time="0.006"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter2" time="0.009"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter3" time="0.007"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter4" time="0.005"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter5" time="0.009"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="getBookingsAfter6" time="0.008"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer1" time="0.052"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer2" time="0.034"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer3" time="0.007"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer4" time="0.013"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer5" time="0.002"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="addCustomer6" time="0.005"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate1" time="0.015"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate2" time="0.033"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate3" time="0.038"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate4" time="0.023"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate5" time="0.012"/>
+  <testcase classname="SARJ.BookingSystem.UtilityTest" name="authenticate6" time="0.032"/>
 </testsuite>

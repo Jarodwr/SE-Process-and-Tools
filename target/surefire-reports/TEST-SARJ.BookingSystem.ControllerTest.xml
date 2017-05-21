@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="52" failures="0" name="SARJ.BookingSystem.ControllerTest" time="0.942" errors="0" skipped="0">
+<testsuite tests="52" failures="0" name="SARJ.BookingSystem.ControllerTest" time="1.053" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_131\jre\bin"/>
@@ -46,7 +46,7 @@
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_131\jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher deploy"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -65,56 +65,56 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getEmployeeBookingAvailability01" time="0.221"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getEmployeeBookingAvailability02" time="0.069"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getEmployeeBookingAvailability03" time="0.041"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes01" time="0.031"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes02" time="0.016"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes03" time="0.008"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes04" time="0.014"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes05" time="0.011"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest01" time="0.014"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest02" time="0.015"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest03" time="0.011"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest04" time="0.012"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest05" time="0.014"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest06" time="0.013"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest01" time="0.03"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest02" time="0.026"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest03" time="0.022"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest04" time="0.02"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest05" time="0.013"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest06" time="0.011"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addWorkingTime01" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addWorkingTime02" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addWorkingTime03" time="0.007"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addWorkingTime04" time="0.005"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings01" time="0.01"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings02" time="0.014"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings03" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings04" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings05" time="0.008"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService01" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService02" time="0.017"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService03" time="0.005"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService04" time="0.025"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService05" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService06" time="0.013"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking01" time="0.012"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking02" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking03" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking04" time="0.007"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking05" time="0.01"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking06" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getEmployeeList01" time="0.01"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getSummaryOfBookings01" time="0.009"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getCurrentBookings01" time="0.006"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getCurrentBookings02" time="0.012"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest01" time="0.02"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest02" time="0.015"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest03" time="0.016"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest04" time="0.017"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest05" time="0.013"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getEmployeeBookingAvailability01" time="0.043"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getEmployeeBookingAvailability02" time="0.114"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getEmployeeBookingAvailability03" time="0.025"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes01" time="0.014"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes02" time="0.015"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes03" time="0.014"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes04" time="0.013"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getWorkingTimes05" time="0.013"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest01" time="0.022"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest02" time="0.017"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest03" time="0.018"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest04" time="0.023"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest05" time="0.017"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addEmployeeTest06" time="0.016"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest01" time="0.026"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest02" time="0.017"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest03" time="0.02"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest04" time="0.041"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest05" time="0.024"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="registerTest06" time="0.017"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addWorkingTime01" time="0.023"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addWorkingTime02" time="0.012"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addWorkingTime03" time="0.018"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addWorkingTime04" time="0.023"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings01" time="0.014"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings02" time="0.015"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings03" time="0.014"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings04" time="0.011"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="removeBookings05" time="0.006"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService01" time="0.012"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService02" time="0.014"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService03" time="0.015"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService04" time="0.024"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService05" time="0.014"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addService06" time="0.012"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking01" time="0.011"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking02" time="0.008"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking03" time="0.011"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking04" time="0.013"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking05" time="0.005"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="addNewBooking06" time="0.014"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getEmployeeList01" time="0.014"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getSummaryOfBookings01" time="0.041"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getCurrentBookings01" time="0.02"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getCurrentBookings02" time="0.018"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest01" time="0.03"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest02" time="0.025"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest03" time="0.031"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest04" time="0.03"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="loginTest05" time="0.028"/>
   <testcase classname="SARJ.BookingSystem.ControllerTest" name="getCustomerList01" time="0.004"/>
-  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getServicesList01" time="0.008"/>
+  <testcase classname="SARJ.BookingSystem.ControllerTest" name="getServicesList01" time="0.014"/>
 </testsuite>
