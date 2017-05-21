@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SARJ.BookingSystem.gui.OwnerViewController">
+<BorderPane maxHeight="600.0" maxWidth="900.0" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SARJ.BookingSystem.gui.OwnerViewController">
    <left>
       <Pane prefHeight="500.0" prefWidth="220.0" style="-fx-background-color: #dddddd;" BorderPane.alignment="CENTER">
          <children>
@@ -45,7 +45,7 @@
                   <Font name="Calibri" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="changeOpeningTimesButton" layoutY="350.0" mnemonicParsing="false" onAction="#changeOpeningTimes" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Change Opening Times">
+            <Button fx:id="changeOpeningTimesButton" layoutY="350.0" mnemonicParsing="false" onAction="#changeOpeningTimes" prefHeight="50.0" prefWidth="220.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 0 0 0 0;" text="Edit Opening Hours">
                <font>
                   <Font name="Calibri" size="18.0" />
                </font>
