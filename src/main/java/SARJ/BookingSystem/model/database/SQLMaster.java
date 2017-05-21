@@ -347,6 +347,7 @@ public class SQLMaster {
 	
 	public boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
 		username = username.toLowerCase();
+		System.out.println("username is " + username);
 		Connection c = this.conn;
 		try {
 			ResultSet rs = getOwnerRow(username); // search through usernames to check if this user currently exists

@@ -279,7 +279,7 @@ public class RegisterBusinessController{
     //checks the user name to see if it exists
     void checkUsername()
     {
-    	if(c.utilities.searchUser(username.getText()) != null)
+    	if(c.utilities.searchUserLogin(username.getText(), "") != null)
     	{
     		username.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
@@ -360,6 +360,7 @@ public class RegisterBusinessController{
     	try {
     		//try to register a user, it will throw an exception if it is invalid
     		c.registerBusiness(businessName.getText(),  businessAddress.getText(), businessPhoneNumber.getText());
+    		System.out.println("username is " + username.getText());
     		c.registerOwner(username.getText(), password.getText(),  selectedBusiness,  
         			name.getText(), address.getText(), number.getText(), passwordCon.getText());
     		//if it doesnt throw an exception then user was created and alert the user

@@ -742,7 +742,8 @@ public class Utility {
 
 	public boolean addOwnerToDatabase(String username, String password, String business, String name, String address,
 			String phoneNumber) {
-		return masterDB.createOwner(username, password, business, name, address, phoneNumber);
+		System.out.println("username is " + username);
+		return masterDB.createOwner(business, username, password, name, address, phoneNumber);
 	}
 
 	public boolean addBusinessToDatabase(String businessName, String address, String phoneNumber) {
