@@ -142,7 +142,7 @@ public class Utility {
 			}
 			return found;
 		}
-		else if (found.getUsername() == "admin" && found.checkPassword(password)) {
+		else if (found != null && found.getUsername() == "admin" && found.checkPassword(password)) {
 			return found;
 		}
 		return null;
@@ -671,12 +671,18 @@ public class Utility {
 	
 	/* marked for testing */
 	/**
-	 * 
-	 * @param businessname
 	 * @return
 	 */
 	public String getBusinessHeader() {
-		return masterDB.getHeader(currentBusiness);
+		System.out.println("test");
+		if (masterDB.getHeader(currentBusiness) != null) {
+			System.out.println(masterDB.getHeader(currentBusiness));
+			return masterDB.getHeader(currentBusiness);
+		}
+		else {
+			System.out.println(masterDB.getBusinessNameFromID(currentBusiness));
+			return masterDB.getBusinessNameFromID(currentBusiness);
+		}
 	}
 	
 	/**
@@ -736,7 +742,8 @@ public class Utility {
 
 	public boolean addOwnerToDatabase(String username, String password, String business, String name, String address,
 			String phoneNumber) {
-		return masterDB.createOwner(username, password, business, name, address, phoneNumber);
+		System.out.println("username is " + username);
+		return masterDB.createOwner(business, username, password, name, address, phoneNumber);
 	}
 
 	public boolean addBusinessToDatabase(String businessName, String address, String phoneNumber) {

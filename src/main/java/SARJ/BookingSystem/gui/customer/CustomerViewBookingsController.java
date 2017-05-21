@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import SARJ.BookingSystem.model.users.Customer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +16,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-public class CustomerViewBookingsController {
+public class CustomerViewBookingsController implements Accent{
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -165,5 +166,10 @@ public class CustomerViewBookingsController {
     	
     	
     }
+    
+    public void changeColour(String colour) {
+		deleteBookings.setStyle("-fx-background-color: " + colour);
+		
+	}
 }
 

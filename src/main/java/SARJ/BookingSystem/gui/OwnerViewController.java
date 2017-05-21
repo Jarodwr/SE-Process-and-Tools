@@ -4,13 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import SARJ.BookingSystem.controller.Controller;
-import SARJ.BookingSystem.gui.owner.OwnerAddBooking;
-import SARJ.BookingSystem.gui.owner.OwnerAddEmployee;
-import SARJ.BookingSystem.gui.owner.OwnerAddEmployeeAvailabilitiesController;
-import SARJ.BookingSystem.gui.owner.OwnerAddService;
-import SARJ.BookingSystem.gui.owner.OwnerChangeWorkingTimes;
-import SARJ.BookingSystem.gui.owner.OwnerViewBookingsController;
-import SARJ.BookingSystem.gui.owner.OwnerViewWorkingTimesController;
+import SARJ.BookingSystem.gui.owner.*;
 import SARJ.BookingSystem.model.users.Owner;
 import SARJ.BookingSystem.model.users.User;
 import javafx.event.ActionEvent;
@@ -21,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 /*
  * This class is the main controller for the owner view
@@ -56,12 +51,24 @@ public class OwnerViewController {
 
     @FXML
     private Button addBookingButton;
+    
+    @FXML
+    private Button changeOpeningTimesButton;
+
+    @FXML
+    private Button preferencesButton;
+
+    @FXML
+    private Pane header;
 
     @FXML
     private Button logoutButton;
     
     @FXML
     private Label welcometxt;
+    
+    @FXML
+    private Label headerText;
     
     @FXML
     private BorderPane mainScreen;
@@ -73,6 +80,7 @@ public class OwnerViewController {
 
 	private User u;
 
+	private String accent = "";
     /*
      * opens the add booking page when the button is clicked
      */
@@ -86,9 +94,10 @@ public class OwnerViewController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/AddBooking.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
-			OwnerAddBooking addBookingController = loader.getController();
+			OwnerAddBooking controller = loader.getController();
 			//inject variables
-			addBookingController.init(c);
+			controller.init(c);
+			controller.changeColour(accent);
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
@@ -110,10 +119,10 @@ public class OwnerViewController {
 			mainScreen.getChildren().clear();
 			//add to main screen
 			mainScreen.getChildren().add((Node) loader.load());
-			OwnerAddEmployee addEmployeeController = loader.getController();
+			OwnerAddEmployee controller = loader.getController();
 			//inject variables
-			addEmployeeController.init(c);
-			
+			controller.init(c);
+			controller.changeColour(accent);
     	}
     	catch(Exception e)
     	{
@@ -141,7 +150,7 @@ public class OwnerViewController {
 			OwnerAddService controller = loader.getController();
 			//inject variables
 			controller.init(this.c);
-			
+			controller.changeColour(accent);
     	}
     	catch(Exception e)
     	{
@@ -168,7 +177,7 @@ public class OwnerViewController {
 			OwnerChangeWorkingTimes controller = loader.getController();
 			//inject variables
 		    controller.init(c);
-			
+		    controller.changeColour(accent);
     	}
     	catch(Exception e)
     	{
@@ -195,7 +204,7 @@ public class OwnerViewController {
 			OwnerAddEmployeeAvailabilitiesController controller = loader.getController();
 			//inject variables
 		    controller.init(c);
-			
+		    controller.changeColour(accent);
 			
     	}
     	catch(Exception e)
@@ -213,7 +222,7 @@ public class OwnerViewController {
     	try 
     	{
     		//open the login page
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml")); /* TODO replace with page that says "are you sure you want to log out?" */
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
 	        LoginController controller = loader.getController();
@@ -246,6 +255,7 @@ public class OwnerViewController {
 			OwnerViewBookingsController controller = loader.getController();
 			//inject variables
 			controller.init(c, (Owner) u, mainScreen);
+			controller.changeColour(accent);
 			
     	}
     	catch(Exception e)
@@ -273,6 +283,7 @@ public class OwnerViewController {
 			String[] allEmployees = this.c.getEmployeeList();
 			//inject data to controller for the page
 			controller.initData(c, allEmployees);
+			controller.changeColour(accent);
 			
     	}
     	catch(Exception e)
@@ -282,6 +293,50 @@ public class OwnerViewController {
     	
     }
     
+    @FXML
+    void changeOpeningTimes(ActionEvent event) {
+    	selectButton(changeOpeningTimesButton);
+    	
+    	try
+    	{
+			//open the page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/OwnerEditOpeningHours.fxml"));
+			mainScreen.getChildren().clear();
+			mainScreen.getChildren().add((Node) loader.load());
+			OwnerEditOpeningHours controller = loader.getController();
+			controller.init(c);
+			controller.changeColour(accent);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    
+    
+    @FXML
+    public void preferences(ActionEvent event) {
+    	selectButton(preferencesButton);
+    	
+    	try
+    	{
+			//open the page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/OwnerPreferences.fxml"));
+			mainScreen.getChildren().clear();
+			//add to the main screen
+			mainScreen.getChildren().add((Node) loader.load());
+			OwnerPreferencesController controller = loader.getController();
+			//inject variables
+		    controller.init(c, u, main, accent);
+			controller.changeColour(accent);
+			
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    
     /*
      * injects the main, controller and the current user into the page
      */
@@ -289,6 +344,14 @@ public class OwnerViewController {
     	this.main = main;
     	this.u = u;
     	this.c = c;
+    	
+    	accent = c.utilities.getBusinessColor();
+    	if (accent == "" || accent == null) {
+    		accent = "#ff471a";
+    	}
+    	header.setStyle("-fx-background-color: " + accent);
+    	
+    	headerText.setText(c.utilities.getBusinessHeader());
 	}
     
     /*
@@ -321,9 +384,11 @@ public class OwnerViewController {
     	editEmployeeAvailabilityButton.setStyle("-fx-background-color: #e6e6e6");
     	AddServiceButton.setStyle("-fx-background-color: #e6e6e6");
     	addBookingButton.setStyle("-fx-background-color: #e6e6e6");
+    	changeOpeningTimesButton.setStyle("-fx-background-color: #e6e6e6");
+    	preferencesButton.setStyle("-fx-background-color: #e6e6e6");
     	
     	//change the selected button to the selected colour
-    	selected.setStyle("-fx-background-color: #ff5930");
+    	selected.setStyle("-fx-background-color: " + accent);
     	
     }
 

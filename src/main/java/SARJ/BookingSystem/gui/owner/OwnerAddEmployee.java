@@ -1,6 +1,7 @@
 package SARJ.BookingSystem.gui.owner;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -9,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-public class OwnerAddEmployee {
+public class OwnerAddEmployee implements Accent{
 
     @FXML
     private TextField name;
@@ -101,4 +102,10 @@ public class OwnerAddEmployee {
     	}
     		
     }
+
+
+	public void changeColour(String colour) {
+		submitEmployee.setStyle("-fx-background-color: " + colour);
+		
+	}
 }

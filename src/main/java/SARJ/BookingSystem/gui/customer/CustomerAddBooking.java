@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import SARJ.BookingSystem.model.users.Customer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,17 +15,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 
-public class CustomerAddBooking {
+public class CustomerAddBooking implements Accent{
 
     @FXML
     private ComboBox<String> employeeMenu;
@@ -40,6 +40,9 @@ public class CustomerAddBooking {
 
     @FXML
     private Button AddBookingBtn;
+    
+    @FXML
+    private Label errorMessage;
     
     @FXML
     private Pane timeMenu;
@@ -112,25 +115,23 @@ public class CustomerAddBooking {
     		}
     	}
     	
-    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId)) {
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Add booking");
-    		alert.setHeaderText("Booking successfully added!");
-    		alert.setContentText("press ok to continue...");
-
-    		alert.showAndWait();
-    	} else {
-    		Alert alert = new Alert(AlertType.INFORMATION);
-    		alert.setTitle("Add booking");
-    		if (time.validPeriod()) {
-    			alert.setHeaderText("invalid period");
-    		} else {
-    			alert.setHeaderText("failed to add booking");
-    		}
-    		
-    		alert.setContentText("press ok to continue...");
-    		alert.showAndWait();
-    	}
+    	if (time.validPeriod()) {
+	    	if (controller.addNewBooking(customerUsername, Long.toString(startTime), listOfServices, employeeId))
+	    	{
+	    		errorMessage.setStyle("-fx-text-fill: GREEN");
+	        	errorMessage.setText("Booking successfully added!");
+	    	}
+	    	else
+	    	{
+	    		errorMessage.setStyle("-fx-text-fill: RED");
+	        	errorMessage.setText("Failed to add Booking!");
+	    	}
+	    	
+		} else {
+			errorMessage.setStyle("-fx-text-fill: RED");
+        	errorMessage.setText("Invalid Period!");
+		}
+    	
     	this.update();
     }
     
@@ -197,4 +198,9 @@ public class CustomerAddBooking {
             }
         });
     }
+
+	public void changeColour(String colour) {
+		AddBookingBtn.setStyle("-fx-background-color: " + colour);
+		
+	}
 }

@@ -469,7 +469,7 @@ public class Controller {
 					LOGGER.log(Level.INFO, "REGISTER: Failure, phone number does not match regex");
 					throw new ValidationException("Mobile number is not valid!");
 				}
-				
+				System.out.println("username is " + username);
 				// if they all pass then try to create a new user and return the created user
 				if (utilities.addOwnerToDatabase(username.toLowerCase(), password, business, name, address, phoneNumber)) {
 					LOGGER.log(Level.INFO, "REGISTER: Success, user added to system");

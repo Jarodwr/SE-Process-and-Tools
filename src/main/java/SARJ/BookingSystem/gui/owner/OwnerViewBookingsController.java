@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import SARJ.BookingSystem.gui.owner.OwnerViewWorkingTimesController;
 import SARJ.BookingSystem.model.users.Owner;
 import javafx.event.ActionEvent;
@@ -19,7 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
-public class OwnerViewBookingsController {
+public class OwnerViewBookingsController implements Accent{
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -221,6 +222,10 @@ public class OwnerViewBookingsController {
     	
     	
     }
+
+	public void changeColour(String colour) {
+		deleteBookings.setStyle("-fx-background-color: " + colour);
+	}
     
    
 }

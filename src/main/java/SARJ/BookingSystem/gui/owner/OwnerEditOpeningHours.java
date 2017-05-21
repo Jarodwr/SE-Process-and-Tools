@@ -7,17 +7,20 @@ import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
 import SARJ.BookingSystem.gui.Accent;
-import SARJ.BookingSystem.model.period.Period;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
+import SARJ.BookingSystem.model.period.Period;
+import SARJ.BookingSystem.model.Timetable;
 
-public class OwnerAddEmployeeAvailabilitiesController implements Accent{
+public class OwnerEditOpeningHours implements Accent{
 	
 	private Controller c;
 	
@@ -37,9 +40,6 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
 	private final String[] listOfDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     @FXML
-    private ComboBox<String> pickEmployee;
-
-    @FXML
     private Label warning;
 
     @FXML
@@ -51,12 +51,7 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
     @FXML
     private Pane TimePickerPane;
   
-    @FXML
-    private Label errorMessage;
-
     private TimePicker time;
-
-	private String employeeId;
     
     public void init(Controller c) {
     	this.c = c;
@@ -70,15 +65,10 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
     	fullListOfDays.add(saturdayTimes);
     	fullListOfDays.add(sundayTimes);
     	
-    	String[] employees = c.getEmployeeList();
-    	if (employees != null) {
-    		pickEmployee.getItems().addAll(employees);
-    	}
-    	
     	pickDay.getItems().addAll("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
     	
     	try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("AvailabilityPicker.fxml"));  // load GUI element
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OpeningHoursPicker.fxml"));  // load GUI element
 			TimePickerPane.getChildren().clear();
 			TimePickerPane.getChildren().add((Node) loader.load());
 			
@@ -89,6 +79,13 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
 		}
     	
     	pickDay.getSelectionModel().select(0); // pick monday
+    	Timetable t = c.utilities.getOpeningHours();
+    	if (t == null) {
+    		loadCurrentAvailabilities(null);
+    	}
+    	else {
+        	loadCurrentAvailabilities(t.toStringArray());
+    	}
     }
 
     @FXML
@@ -99,7 +96,7 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
     			fullListOfDays.get(whichDay(currentDay)).add(s);
     		}
     	}
-    	ArrayList<String> availabilitiesToSubmit = new ArrayList<String>();
+    	ArrayList<String> openingHoursToSubmit = new ArrayList<String>();
     	for(ArrayList<String> days : fullListOfDays) { //  copy into final arraylist
     		int i = 1;
     		for(String currentTime : days) {
@@ -107,17 +104,17 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
     				//continue; // not sure if this works in java but blank works as well so leaving this here
     			}
     			else {
-        			availabilitiesToSubmit.add(currentTime + " " + days.get(i));
+    				openingHoursToSubmit.add(currentTime + " " + days.get(i));
     				
     			}
     			i++;
     		}
     	}
-    	Iterator<String> iter = availabilitiesToSubmit.iterator();
+    	Iterator<String> iter = openingHoursToSubmit.iterator();
     	while(iter.hasNext()) {
     		String s = iter.next();
     		int i = 0;
-    		for(String s2 : availabilitiesToSubmit) {
+    		for(String s2 : openingHoursToSubmit) {
     			if (s2.equals(s)) {
     				if (i == 0) {
     					i++;
@@ -130,17 +127,13 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
     		}
     	}
     	
-    	c.editAvailability(employeeId, availabilitiesToSubmit);
-    	errorMessage.setStyle("-fx-text-fill: GREEN");
-    	errorMessage.setText("Availability successfully updated!");
-    }
-
-    @FXML
-    void employeeSelect(ActionEvent event) {
-    	this.employeeId = new StringTokenizer(pickEmployee.getSelectionModel().getSelectedItem()).nextToken(":");
-    	this.clearAvailabilities();
-    	loadCurrentAvailabilities(this.c.utilities.getEmployeeAvailability(employeeId).toStringArray());
-    	update();
+    	c.utilities.editBusinessHours( openingHoursToSubmit);
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Edit Opening Hours");
+		alert.setHeaderText("Opening hours successfully updated!");
+		alert.setContentText("press ok to continue...");
+		
+		alert.showAndWait();
     }
 
     private void clearAvailabilities() { // empty selected availabilities
@@ -152,13 +145,8 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
 
 	private void update() { // refresh page with new data
     	time.deselectAll();
-    	if (employeeId != null) {
-    		
-       	 	ArrayList<String> cDay = fullListOfDays.get(whichDay(currentDay));
-           	time.setDefaultAvailabilityFromList(cDay, currentDay);
-           	
-    	}
-    	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
+       	 ArrayList<String> cDay = fullListOfDays.get(whichDay(currentDay));
+         time.setDefaultAvailabilityFromList(cDay, currentDay);
 	}
 
 	@FXML
@@ -178,7 +166,7 @@ public class OwnerAddEmployeeAvailabilitiesController implements Accent{
     }
 	
 	int whichDay(String day) {  // gives a number from 0 - 6 indicating the index of the day in the fullListOfDays array
-		for(int i = 0; i < 7; i++) {
+		for(int i = 0; i < 6; i++) {
 			if (listOfDays[i] == day) {
 				return i;
 			} 

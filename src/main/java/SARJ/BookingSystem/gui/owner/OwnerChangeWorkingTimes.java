@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import SARJ.BookingSystem.model.Timetable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +18,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
-public class OwnerChangeWorkingTimes {
+public class OwnerChangeWorkingTimes implements Accent{
 
     @FXML
     private ComboBox<String> employeeMenu;
@@ -139,5 +140,9 @@ public class OwnerChangeWorkingTimes {
     	}
     	errorMessage.setStyle("-fx-text-fill: #F2F2F2");
     }
+
+	public void changeColour(String colour) {
+		submit.setStyle("-fx-background-color: " + colour);
+	}
 
 }

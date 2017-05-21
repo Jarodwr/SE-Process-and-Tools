@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 
-public class OwnerAddBooking {
+public class OwnerAddBooking implements Accent{
 
     @FXML
     private ComboBox<String> employeeMenu;
@@ -215,4 +216,9 @@ public class OwnerAddBooking {
             }
         });
     }
+
+	public void changeColour(String colour) 
+	{
+		AddBookingBtn.setStyle("-fx-background-color: " + colour);
+	}
 }

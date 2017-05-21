@@ -105,9 +105,9 @@ public class SQLMaster {
 			ps.setString(3, address);
 			ps.setString(4, phonenumber);
 			ps.setString(5, "");	//Default null logo
-			ps.setString(6,"");		//Default null color
-			ps.setString(7, businessname);	//Default header to businessname
-			ps.setString(8, "");	//Default no opening hours
+			ps.setString(6, "");		//Default null color
+			ps.setString(7, "#ff471a");	//Default header to businessname
+			ps.setString(8, businessname);	//Default no opening hours
 			ps.executeUpdate();
 			ps.close();
 
@@ -165,15 +165,18 @@ public class SQLMaster {
 			ResultSet rs = pst.executeQuery();
 
 			if (rs.next()) {
-				return rs.getString("colorHex");
+				String s = rs.getString("colorHex");
+				rs.close();
+				return s;
 			}
 			else {
-				LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
+				LOGGER.log(Level.INFO, "Failed to find a color in the database with the Id: "+ id);
+				return "#ff471a";
 			}
 		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
+			return "#ff471a";
 		}
-		return null;
 	}
 	
 	public boolean setColor(int id, String color) {
@@ -192,6 +195,28 @@ public class SQLMaster {
 		return false;
 	}
 	
+	public String getBusinessNameFromID(int id){
+		String query = "SELECT * FROM Businessinfo WHERE businessId = ?";
+				try {
+					PreparedStatement pst = conn.prepareStatement(query);
+					pst.setInt(1, id);
+					ResultSet rs = pst.executeQuery();
+					pst.close();
+					if (rs.next()) {
+						String s = rs.getString("businessname");
+						rs.close();
+						return s;
+					}
+					else {
+						LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
+					}
+				} catch (SQLException e) {
+					LOGGER.severe(e.getMessage());
+					return "";
+				}
+				return "";
+	}
+	
 	public String getHeader(int id) {
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
@@ -201,7 +226,9 @@ public class SQLMaster {
 			ResultSet rs = pst.executeQuery();
 
 			if (rs.next()) {
-				return rs.getString("header");
+				String s = rs.getString("header");
+				rs.close();
+				return s;
 			}
 			else {
 				LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
@@ -209,7 +236,7 @@ public class SQLMaster {
 		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
 		}
-		return null;
+		return "ASRJ Booking System";
 	}
 	
 	public boolean setHeader(int id, String title) {
@@ -323,6 +350,7 @@ public class SQLMaster {
 	
 	public boolean createOwner(String businessname, String username, String password, String name, String address, String mobileno) {
 		username = username.toLowerCase();
+		System.out.println("username is " + username);
 		Connection c = this.conn;
 		try {
 			ResultSet rs = getOwnerRow(username); // search through usernames to check if this user currently exists

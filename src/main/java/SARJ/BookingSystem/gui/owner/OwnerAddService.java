@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,7 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public class OwnerAddService {
+public class OwnerAddService implements Accent{
 	
 	private Controller c;
     
@@ -222,6 +223,10 @@ public class OwnerAddService {
 
 	public void init(Controller controller) {
 		this.c = controller;
+	}
+	public void changeColour(String colour) {
+		addService.setStyle("-fx-background-color: " + colour);
+		
 	}
 }
 
