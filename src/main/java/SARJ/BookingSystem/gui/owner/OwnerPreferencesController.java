@@ -37,10 +37,10 @@ public class OwnerPreferencesController implements Accent{
     
     @FXML
     void submit(ActionEvent event) {
-    	if(!headerMessage.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z])+")) {
+    	if(!headerMessage.getText().matches("{0,50}")) {
     		headerMessage.setStyle("-fx-border-color: red");
 			errorMessage.setStyle("-fx-text-fill: RED");
-        	errorMessage.setText("Please enter a valid address!");
+        	errorMessage.setText("Message can not be longer than 50 characters!");
     	} else {
     		headerMessage.setStyle("-fx-border-color: green");
     		
