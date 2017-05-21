@@ -2,7 +2,6 @@ package SARJ.BookingSystem.gui.owner;
 
 import SARJ.BookingSystem.controller.Controller;
 import SARJ.BookingSystem.gui.Accent;
-import SARJ.BookingSystem.gui.LoginController;
 import SARJ.BookingSystem.gui.OwnerViewController;
 import SARJ.BookingSystem.model.users.User;
 import javafx.event.ActionEvent;
