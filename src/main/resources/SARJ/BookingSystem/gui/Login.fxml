@@ -42,8 +42,10 @@
                         <Font name="Calibri" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="loginErrorMessage" contentDisplay="CENTER" layoutX="58.0" layoutY="289.0" style="-fx-alignment: CENTER;" text="Incorrect Username/Password" textAlignment="CENTER" textFill="#dddddd" />
-                  <HBox alignment="CENTER" layoutX="19.0" layoutY="289.0" prefHeight="17.0" prefWidth="233.0" />
+                  <HBox alignment="CENTER" layoutX="19.0" layoutY="289.0" prefHeight="17.0" prefWidth="233.0">
+                     <children>
+                        <Label fx:id="loginErrorMessage" contentDisplay="CENTER" style="-fx-alignment: CENTER;" text="Incorrect Username/Password" textAlignment="CENTER" textFill="#dddddd" />
+                     </children></HBox>
                   <ComboBox fx:id="chooseBusinessComboBox" layoutX="42.0" layoutY="118.0" onAction="#chooseBusiness" prefHeight="25.0" prefWidth="188.0" promptText="Choose Business" />
                </children>
                <effect>
