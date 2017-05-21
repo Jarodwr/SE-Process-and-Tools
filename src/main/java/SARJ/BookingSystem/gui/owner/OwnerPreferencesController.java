@@ -70,8 +70,8 @@ public class OwnerPreferencesController implements Accent{
 
     public void init(Controller c, User u, Stage main, String color)
     {
-    	c = this.c;
-    	u = this.u;
+    	this.c = c;
+    	this.u = u;
     	main = this.main;
     	colour = color;
     	accent.setValue(Color.web(colour));
