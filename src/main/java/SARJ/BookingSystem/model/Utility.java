@@ -128,7 +128,7 @@ public class Utility {
 	 */
 	public User authenticate(String username, String password) {
 		User found = searchUserLogin(username.toLowerCase(), "");
-		if (found != null && found.checkPassword(password)) {
+		if (found != null && found.checkPassword(password) && found.getUsername() != "admin") {
 			try {
 				ResultSet rs = masterDB.getOwnerRow(username.toLowerCase());
 				if (rs == null) {
@@ -140,6 +140,9 @@ public class Utility {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			return found;
+		}
+		else if (found.getUsername() == "admin" && found.checkPassword(password)) {
 			return found;
 		}
 		return null;
