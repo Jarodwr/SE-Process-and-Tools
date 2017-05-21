@@ -1,0 +1,32 @@
+May 21, 2017 4:50:15 PM controller.Controller login
+INFO: LOGIN: Login details: Username - admin, Password - banana
+May 21, 2017 4:50:15 PM controller.Controller login
+INFO: LOGIN: Failed
+May 21, 2017 4:50:22 PM controller.Controller login
+INFO: LOGIN: Login details: Username - admin, Password - banana
+May 21, 2017 4:50:22 PM controller.Controller login
+INFO: LOGIN: Failed
+May 21, 2017 4:50:25 PM controller.Controller login
+INFO: LOGIN: Login details: Username - admin, Password - banana
+May 21, 2017 4:50:25 PM controller.Controller login
+INFO: LOGIN: Failed
+May 21, 2017 4:50:25 PM controller.Controller login
+INFO: LOGIN: Login details: Username - admin, Password - banana
+May 21, 2017 4:50:25 PM controller.Controller login
+INFO: LOGIN: Failed
+May 21, 2017 4:50:26 PM controller.Controller login
+INFO: LOGIN: Login details: Username - admin, Password - banana
+May 21, 2017 4:50:26 PM controller.Controller login
+INFO: LOGIN: Failed
+May 21, 2017 4:50:26 PM controller.Controller login
+INFO: LOGIN: Login details: Username - admin, Password - banana
+May 21, 2017 4:50:26 PM controller.Controller login
+INFO: LOGIN: Failed
+May 21, 2017 4:50:26 PM controller.Controller login
+INFO: LOGIN: Login details: Username - admin, Password - banana
+May 21, 2017 4:50:26 PM controller.Controller login
+INFO: LOGIN: Failed
+May 21, 2017 4:50:26 PM controller.Controller login
+INFO: LOGIN: Login details: Username - admin, Password - banana
+May 21, 2017 4:50:26 PM controller.Controller login
+INFO: LOGIN: Failed

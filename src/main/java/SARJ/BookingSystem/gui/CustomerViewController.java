@@ -56,6 +56,11 @@ public class CustomerViewController {
     private Controller c;
     
     private Stage main;
+    
+    /**
+	 * Add booking button pressed
+	 * @param event	the event information of the button press
+	 */
 
     @FXML
     void addBooking(ActionEvent event) {
@@ -73,6 +78,12 @@ public class CustomerViewController {
     		e.printStackTrace();
     	}
     }
+    
+    
+    /**
+	 * View booking button pressed
+	 * @param event	the event information of the button press
+	 */
 
     @FXML
     void viewBookings(ActionEvent event) {
@@ -91,12 +102,18 @@ public class CustomerViewController {
     	}
     }
     
+    
+    /**
+	 * Log the user out on logout button press
+	 * @param event	the event information of the button press
+	 */
+    
     @FXML
     void logout(ActionEvent event) 
     {
     	try 
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml")); /* TODO replace with page that says "are you sure you want to log out?" */
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
 	        LoginController controller = loader.getController();
@@ -109,6 +126,10 @@ public class CustomerViewController {
 			e.printStackTrace();
 		}
     }
+    
+    /**
+	 * Initialize fxml object rules for the GUI
+	 */
 
     @FXML
     void initialize() {
@@ -118,6 +139,13 @@ public class CustomerViewController {
         assert welcometxt != null : "fx:id=\"welcometxt\" was not injected: check your FXML file 'CustomerView.fxml'.";
 
     }
+    
+    /**
+	 * Initialize and setup the variables for the view
+	 * @param main	the GUI fxaml main stage
+	 * @param c	cthe controller object
+	 * @param u the current user object
+	 */
     
     public void init(Stage main, Controller c, User u) 
     {
@@ -131,6 +159,11 @@ public class CustomerViewController {
     	header.setStyle("-fx-background-color : " + color);
     	
 	}
+    
+    /**
+	 * Change colour of the selected option for visual feedback on selection
+	 * @param button	button/option selected
+	 */
     
     @FXML
     private void selectButton(Button selected) {

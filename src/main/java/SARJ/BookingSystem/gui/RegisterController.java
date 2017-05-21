@@ -67,13 +67,21 @@ public class RegisterController{
     private String selectedBusiness;
     private Stage main;
     
-    //when any field is changed check all validation
+    /**
+	 * when any field is changed check all validation
+	 */
+    
     @FXML
     void checkAll(KeyEvent event) {
     	checkAll();
     }
     
-    //checks and updates the password strength field based on complexity of password
+    
+    /**
+   	 * checks and updates the password strength field based on complexity of password,
+   	 * show error message when check fails
+   	 */
+    
     void checkStrength()
     {
     	String pass = password.getText();
@@ -105,7 +113,11 @@ public class RegisterController{
     }
 
     
-    //checks the address against regex
+    /**
+   	 * checks the address against regex,
+   	 * Show error message when check fails
+   	 */
+    
     void checkAddress()
     {
     	//checks the address against regex
@@ -123,7 +135,7 @@ public class RegisterController{
     	}
     }
     
-    /*
+    /**
      * this method check the password and shows errors on why it doesnt match
      */
     void checkPassword()
@@ -170,7 +182,11 @@ public class RegisterController{
 		}
     }
     
-    //checks if the passwords matches each other
+    /**
+   	 * checks if the passwords matches each other,
+   	 * show error message if check fails
+   	 */
+    
     void checkConfPassword()
     {
     	//check if the passwords match
@@ -188,7 +204,12 @@ public class RegisterController{
 		}
     }
     
-    //checks the name characters
+
+    /**
+   	 * checks the name characters,
+   	 * show error message if check fails
+   	 */
+    
     void checkName()
     {
     	//check if it only contains certain characters
@@ -206,6 +227,11 @@ public class RegisterController{
 		}
     }
     
+    /**
+   	 * checks the name characters,
+   	 * show error message when check fails
+   	 */
+    
     void checkPhoneNumber()
     {
     	if(!number.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
@@ -221,7 +247,12 @@ public class RegisterController{
 		}
     }
     
-    //checks the user name to see if it exists
+    
+    /**
+   	 * checks the user name to see if it exists,
+   	 * Show error message when check fails
+   	 */
+    
     void checkUsername()
     {
     	if(c.utilities.searchUser(username.getText()) != null || (username.getText() == null || username.getText() == "") || username.getText().length() <= 3) {
@@ -238,7 +269,10 @@ public class RegisterController{
 				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
     	}
     }
-    //runs all checks
+    
+    /**
+   	 * runs all checks
+   	 */
     void checkAll()
     {
     	checkPhoneNumber();
@@ -249,9 +283,10 @@ public class RegisterController{
     	checkUsername();
     }
     
-    /*
+    /**
      * if the back button is pressed, go to the login screen
      */
+    
     @FXML
     void onBackButtonClick(ActionEvent event) 
     {
@@ -274,7 +309,10 @@ public class RegisterController{
 		}
     }
     
-    //if an enter button is pressed from any input buttons then try to register
+    /**
+     * if an enter button is pressed from any input buttons then try to register
+     */
+    
     @FXML
     void checkEnter(KeyEvent event) {
     	if (event.getCode() == KeyCode.ENTER) {
@@ -286,8 +324,11 @@ public class RegisterController{
     		}
         }
     }
-
-    //when the register button is clicked try to create a user
+    
+    /**
+     * when the register button is clicked try to create a user
+     */
+    
     @FXML
     void onRegisterClick(ActionEvent event) 
     {
@@ -300,7 +341,11 @@ public class RegisterController{
     	this.selectedBusiness = chooseBusiness.getSelectionModel().getSelectedItem();
     }
     
-    //try to create a user
+    
+    /**
+     * try to create a user
+     */
+    
     void createUser()
     {
     	try {
@@ -325,7 +370,11 @@ public class RegisterController{
 		}
 	}
 
-	//make sure that the fxml objects exist
+    
+    /**
+     * make sure that the fxml objects exist
+     */
+    
     @FXML
     void initialize() {
         assert username != null : "fx:id=\"username\" was not injected: check your FXML file 'Register.fxml'.";
@@ -339,8 +388,11 @@ public class RegisterController{
         assert backButton != null : "fx:id=\"backButton\" was not injected: check your FXML file 'Register.fxml'.";
 
     }
+
+    /**
+     * used for dependency injection for the main stage and the controller instance
+     */
     
-    //used for dependency injection for the main stage and the controller instance
     public void initData(Stage stage, Controller c)
     {
     	this.c = c;
@@ -352,7 +404,10 @@ public class RegisterController{
     	}
     }
     
-    //checks all fields against regex's
+    /**
+     * checks all fields against regex's
+     */
+    
     private boolean checkFields() {
     	if(password.getText().equals(passwordCon.getText()) &&
     			name.getText().matches("[A-Za-z -']+") && 

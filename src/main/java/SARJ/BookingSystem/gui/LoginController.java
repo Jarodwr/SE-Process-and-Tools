@@ -184,7 +184,6 @@ public class LoginController
 			//show to the user
 	    	main.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

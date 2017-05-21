@@ -203,8 +203,6 @@ public class Controller {
 	/**
 	 * Remove a booking
 	 * @param id	id of the booking
-	 * TODO: remove the business name parameter, use this.currentBusiness in utility
-	 * @param businessname	name of the business we need to remove the booking of
 	 * @return	Whether or not the booking was removed
 	 */
 	public boolean removeBooking(int id)
@@ -255,7 +253,6 @@ public class Controller {
 		if (t != null) {
 			String[][] shifts = t.toStringArray();
 			
-			//TODO: Convert to unix time stamps in model
 			//loop through the array convert all the start and end times to Unix time stamps
 			for (int i = 0; i < shifts.length; i++) {
 				shifts[i][0] = Long.toString(Long.parseLong(shifts[i][0]));
@@ -382,7 +379,6 @@ public class Controller {
 	
 	/**
 	 * Getter for employee booking availability
-	 * TODO: Potentially a duplicate function
 	 * @param employeeId	employee in focus
 	 * @param date	day being observed
 	 * @return	Timetable in string[][] format
@@ -398,18 +394,28 @@ public class Controller {
 
 	/**
 	 * Getter for opening hours for the current business
-	 * TODO: don't need current business parameter, use this.currentBusiness in utility
-	 * @param currentBusiness
-	 * @return	Timetable of the opening hours
 	 */
 	public Timetable getOpeningHours() {
 		return utilities.getOpeningHours();
 	}
+	
+	/**
+	 * Getter for list of buisnesses
+	 */
 
 	public String[] getBusinessList() {
 		return utilities.getBusinessList();
 		
 	}
+	
+	
+	 /**
+		 * Registers the given a new business using provided details,
+		 * throws exception as needed on failure 
+		 * @param businessName	Name of the buisness
+		 * @param address	physical location address of the buisness
+		 * @param phoneNumber	phine number of the buisness
+		 **/
 
 	public void registerBusiness(String businessName, String address, String phoneNumber) throws ValidationException {
 		if(!businessName.matches(nameCheckerRegEx)) {
@@ -437,6 +443,16 @@ public class Controller {
 		}
 		
 	}
+	
+	/**
+	 * Registers an owner to a business
+	 * @param username	username for the owner
+	 * @param businessName	Name of the buisness
+	 * @param name	name of the owner
+	 * @param address	physical location address of the owner's home
+	 * @param phoneNumber	owner's phone number
+	 * @param passwordConfirmation	password confirmation
+	 **/
 
 	public User registerOwner(String username, String password, String business, String name, String address,
 			String phoneNumber, String passwordConfirmation) throws ValidationException {
@@ -482,6 +498,14 @@ public class Controller {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	/**
+	 * Login user into a to a business
+	 * @param username	username of the user
+	 * @param password user's password
+	 * @param selectedBusiness	business to login to
+	 **/
 
 	public User login(String username, String password, String selectedBusiness) {
 		LOGGER.log(Level.INFO, "LOGIN: Login details: Username - " + username + ", Password - " + password);

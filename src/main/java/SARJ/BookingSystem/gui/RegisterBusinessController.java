@@ -211,7 +211,9 @@ public class RegisterBusinessController{
 		}
     }
     
-    //checks the name characters
+    /**
+	 * checks the name characters
+	 */
     void checkName()
     {
     	//check if it only contains certain characters
@@ -228,6 +230,12 @@ public class RegisterBusinessController{
 				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
 		}
     }
+    
+    
+    /**
+	 * checks if the buisness name is valid i.e contains valid characters,
+	 * Displays error message when it doesn't
+	 */
     
     void checkBusinessName()
     {
@@ -246,6 +254,11 @@ public class RegisterBusinessController{
 		}
     }
     
+    /**
+	 * checks if the phone number is valid i.e contains valid numbers characters,
+	 * Displays error message when it doesn't
+	 */
+    
     void checkPhoneNumber()
     {
     	if(!number.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
@@ -260,6 +273,11 @@ public class RegisterBusinessController{
 				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
 		}
     }
+    
+    /**
+	 * checks if the buisness phone number is valid i.e contains valid numbers characters,
+	 * Displays error message when it doesn't
+	 */
     
     void checkBusinessPhoneNumber()
     {
@@ -276,7 +294,12 @@ public class RegisterBusinessController{
 		}
     }
     
-    //checks the user name to see if it exists
+
+    /**
+	 * checks the user name to see if it exists,
+	 * Displays error message the username already exists
+	 */
+    
     void checkUsername()
     {
     	if(c.utilities.searchUser(username.getText()) != null || (username.getText() == null || username.getText() == "") || username.getText().length() <= 3){
@@ -293,7 +316,11 @@ public class RegisterBusinessController{
 				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
     	}
     }
-    //runs all checks
+    
+    /**
+	 * Run all validation check fucntions,
+	 */
+    
     void checkAll()
     {
     	checkBusinessPhoneNumber();
@@ -307,7 +334,7 @@ public class RegisterBusinessController{
     	checkUsername();
     }
     
-    /*
+    /**
      * if the back button is pressed, go to the login screen
      */
     @FXML
@@ -332,7 +359,10 @@ public class RegisterBusinessController{
 		}
     }
     
-    //if an enter button is pressed from any input buttons then try to register
+    /**
+	 * if an enter button is pressed from any input buttons then try to register
+	 */
+    
     @FXML
     void checkEnter(KeyEvent event) {
     	if (event.getCode() == KeyCode.ENTER) {
@@ -345,7 +375,10 @@ public class RegisterBusinessController{
         }
     }
 
-    //when the register button is clicked try to create a user
+    /**
+	 * when the register button is clicked try to create a user
+	 */
+    
     @FXML
     void onRegisterClick(ActionEvent event) 
     {
@@ -353,7 +386,11 @@ public class RegisterBusinessController{
     	createBusinessAndOwner();
     }
     
-    //try to create a user
+    
+    /**
+	 * try to create a user
+	 */
+    
     void createBusinessAndOwner()
     {
     	try {
@@ -373,7 +410,11 @@ public class RegisterBusinessController{
 		}    	
     }
 
-	//make sure that the fxml objects exist
+
+    /**
+	 * Initialise all fxml objects and make sure that they exist
+	 */
+    
     @FXML
     void initialize() {
         assert username != null : "fx:id=\"username\" was not injected: check your FXML file 'Register.fxml'.";
@@ -388,14 +429,22 @@ public class RegisterBusinessController{
 
     }
     
-    //used for dependency injection for the main stage and the controller instance
+    
+    /**
+	 * Used for dependency injection for the main stage and the controller instance
+	 */
+    
     public void initData(Stage stage, Controller c)
     {
     	this.c = c;
     	main = stage;
     }
     
-    //checks all fields against regex's
+
+    /**
+	 * Checks all fields against regex's
+	 */
+    
     private boolean checkFields() {
     	if(password.getText().equals(passwordCon.getText()) &&
     			name.getText().matches("[A-Za-z -']+") && 
