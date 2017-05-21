@@ -283,7 +283,7 @@ public class RegisterBusinessController{
     	{
     		username.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Username is already taken!");
+	    	registerErrorMessage.setText("Username is already taken or too short!");
     	}
     	else
     	{
