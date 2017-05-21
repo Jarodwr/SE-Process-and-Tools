@@ -1,6 +1,0 @@
-Apr 09, 2017 4:28:17 PM main.Main main
-WARNING: test
-Apr 09, 2017 4:28:21 PM model.database.SQLiteConnection deleteAvailabilities
-WARNING: [SQLITE_BUSY]  The database file is locked (database is locked)
-Apr 09, 2017 4:28:21 PM model.database.SQLiteConnection createAvailability
-WARNING: [SQLITE_CONSTRAINT_PRIMARYKEY]  A PRIMARY KEY constraint failed (UNIQUE constraint failed: Timetableinfo.timetableId)
