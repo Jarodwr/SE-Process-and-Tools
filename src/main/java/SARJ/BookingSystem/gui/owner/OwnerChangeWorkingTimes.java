@@ -85,8 +85,8 @@ public class OwnerChangeWorkingTimes {
         	errorMessage.setStyle("-fx-text-fill: GREEN");
         	errorMessage.setText("Working times for this day successfully updated!");
     	} else {
-        	errorMessage.setStyle("-fx-text-fill: YELLOW");
-        	errorMessage.setText("Times updated however working times scheduled on unavailable days");
+        	errorMessage.setStyle("-fx-text-fill: #CCCC00");
+        	errorMessage.setText("Times updated however working times scheduled on unavailable periods");
     	}
     }
     
