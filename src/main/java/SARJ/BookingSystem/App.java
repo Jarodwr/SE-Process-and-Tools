@@ -2,6 +2,7 @@ package SARJ.BookingSystem;
 	
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.ConsoleHandler;
@@ -57,11 +58,14 @@ public class App extends Application {
 		Logger LOGGER = Logger.getLogger("main");
 		Handler handler;
 		try {
-			File file = new File("/logs/");
+			String path = App.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+			String decodedPath = URLDecoder.decode(path, "UTF-8");
+			decodedPath = decodedPath.substring(0, decodedPath.length()-8);
+			File file = new File(decodedPath + "logs/");
 			if (!file.exists()) {
 				file.mkdir();
 			}
-			handler = new FileHandler("/logs/" + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".txt");
+			handler = new FileHandler(file.getPath() + "\\" + new SimpleDateFormat("yyyyMMddhhmmss").format(Calendar.getInstance().getTime()) + ".txt");
 			LOGGER.setLevel(Level.FINEST);
 			handler.setLevel(Level.FINEST);
 			
