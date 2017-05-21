@@ -73,7 +73,7 @@ public class OwnerViewController {
 
 	private User u;
 
-    /*
+    /**
      * opens the add booking page when the button is clicked
      */
     @FXML
@@ -94,7 +94,7 @@ public class OwnerViewController {
     	}
     }
 
-    /*
+    /**
      * opens the add employee page when the button is clicked
      */
     @FXML
@@ -121,7 +121,7 @@ public class OwnerViewController {
     	}
     }
 
-    /*
+    /**
      * opens the add service page when the button is clicked
      */
     @FXML
@@ -149,7 +149,7 @@ public class OwnerViewController {
     	}
     }
 
-    /*
+    /**
      * opens the add working times page when the button is clicked
      */
     @FXML
@@ -176,7 +176,7 @@ public class OwnerViewController {
     	}
     }
 
-    /*
+    /**
      * opens the edit employee availability page when the button is clicked
      */
     @FXML
@@ -204,7 +204,7 @@ public class OwnerViewController {
     	}
     }
 
-    /*
+    /**
      * opens the login page when the button is clicked
      */
     @FXML
@@ -228,7 +228,7 @@ public class OwnerViewController {
 		}
     }
 
-    /*
+    /**
      * opens the view bookings page when the button is clicked
      */
     @FXML
@@ -254,7 +254,7 @@ public class OwnerViewController {
     	}
     }
 
-    /*
+    /**
      * opens the view working times page when the button is clicked
      */
     @FXML
@@ -282,7 +282,7 @@ public class OwnerViewController {
     	
     }
     
-    /*
+    /**
      * injects the main, controller and the current user into the page
      */
     public void init(Stage main, Controller c, User u) {
@@ -291,7 +291,7 @@ public class OwnerViewController {
     	this.c = c;
 	}
     
-    /*
+    /**
      * check that all the button elements definitely exist on the page
      */
     @FXML
@@ -307,7 +307,7 @@ public class OwnerViewController {
 
     }
     
-    /*
+    /**
      * this method changes the button colour to indicate which option is selected
      */
     @FXML
