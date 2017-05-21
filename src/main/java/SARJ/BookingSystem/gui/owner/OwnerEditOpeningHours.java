@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ import javafx.scene.layout.Pane;
 import SARJ.BookingSystem.model.period.Period;
 import SARJ.BookingSystem.model.Timetable;
 
-public class OwnerEditOpeningHours {
+public class OwnerEditOpeningHours implements Accent{
 	
 	private Controller c;
 	
@@ -185,6 +186,10 @@ public class OwnerEditOpeningHours {
 			fullListOfDays.get(whichDay(dayToInsert)).add(s[1]);
 			
 		}
+	}
+
+	public void changeColour(String colour) {
+		SubmitButton.setStyle("-fx-background-color: " + colour);
 	}
 
 }
