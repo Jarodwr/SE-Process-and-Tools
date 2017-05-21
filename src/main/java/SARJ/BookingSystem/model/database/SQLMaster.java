@@ -165,15 +165,18 @@ public class SQLMaster {
 			ResultSet rs = pst.executeQuery();
 
 			if (rs.next()) {
-				return rs.getString("colorHex");
+				String s = rs.getString("colorHex");
+				rs.close();
+				return s;
 			}
 			else {
-				LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
+				LOGGER.log(Level.INFO, "Failed to find a color in the database with the Id: "+ id);
+				return "#ff471a";
 			}
 		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
+			return "#ff471a";
 		}
-		return "#ff471a";
 	}
 	
 	public boolean setColor(int id, String color) {
