@@ -233,7 +233,7 @@ public class SQLMaster {
 		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
 		}
-		return null;
+		return "ASRJ Booking System";
 	}
 	
 	public boolean setHeader(int id, String title) {

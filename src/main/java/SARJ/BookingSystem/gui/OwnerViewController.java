@@ -349,7 +349,7 @@ public class OwnerViewController {
     	
     	header.setStyle("-fx-background-color: " + accent);
     	
-    	//headerText.setText(c.utilities.getBusinessHeader(u.getBusinessName()));
+    	headerText.setText(c.utilities.getBusinessHeader());
 	}
     
     /*
