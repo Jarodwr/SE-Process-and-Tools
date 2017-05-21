@@ -119,7 +119,7 @@ public class RegisterBusinessController{
     		//alert user that it is not valid
 			address.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Enter a valid Address!");
+	    	registerErrorMessage.setText("Owner address is not valid!");
     	} else {
     		//if it is valid mark as good
 			address.setStyle("-fx-border-color: green");
@@ -136,7 +136,7 @@ public class RegisterBusinessController{
     		//alert user that it is not valid
     		businessAddress.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Enter a valid Bussiness Address!");
+	    	registerErrorMessage.setText("Business address is not valid!");
     	} else {
     		//if it is valid mark as good
     		businessAddress.setStyle("-fx-border-color: green");
@@ -159,27 +159,27 @@ public class RegisterBusinessController{
     		if(!pass.matches("^(?=.*[0-9]).{8,}$"))
 			{
 				//if it doesn't have a number in it, print error
-    			registerErrorMessage.setText("Password must contain atleast 1 number!");
+    			registerErrorMessage.setText("Password must contain at least 1 number!");
 			}
 			if(!pass.matches("^(?=.*[a-z]).{8,}$"))
 			{
 				//if it doesn't have a lower case letter, print error
-				registerErrorMessage.setText("Password must contain atleast 1 lower case Letter!");
+				registerErrorMessage.setText("Password must contain at least 1 lower case Letter!");
 			}
 			if(!pass.matches("^(?=.*[A-Z]).{8,}$"))
 			{
 				//if it doesn't have a upper case letter, print error
-				registerErrorMessage.setText("Password must contain atleast 1 upper case Letter!");
+				registerErrorMessage.setText("Password must contain at least 1 upper case Letter!");
 			}
 			if(!pass.matches("^(?=.*[!`~@#\\$%\\^&\\+=]).{8,}$"))
 			{
 				//if it doesn't have a special character, print error
-				registerErrorMessage.setText("Password must contain atleast 1 special character!");
+				registerErrorMessage.setText("Password must contain at least 1 special character!");
 			}
 			if(!pass.matches(".{8,}"))
 			{
 				//if password is not long enough, print error
-				registerErrorMessage.setText("Password must be atleast 8 characters long!");
+				registerErrorMessage.setText("Password must be at least 8 characters long!");
 			}
     		password.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
@@ -221,7 +221,7 @@ public class RegisterBusinessController{
     		//if it doesn't, print error
 			name.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Name must only contain only letteres!");
+	    	registerErrorMessage.setText("Name must only contain only letters!");
 		} else {
 			//if it passes show good box border colour
 			name.setStyle("-fx-border-color: green");
@@ -244,7 +244,7 @@ public class RegisterBusinessController{
     		//if it doesn't, print error
 			businessName.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Business Name must only contain only letteres!");
+	    	registerErrorMessage.setText("Business name must only contain only letters!");
 		} else {
 			//if it passes show good box border colour
 			businessName.setStyle("-fx-border-color: green");
@@ -264,7 +264,7 @@ public class RegisterBusinessController{
     	if(!number.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
 			number.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Enter a valid Phone Number!");
+	    	registerErrorMessage.setText("Phone number is not valid!");
 		} else {
 			//if it passes show good box border colour
 			number.setStyle("-fx-border-color: green");
@@ -284,7 +284,7 @@ public class RegisterBusinessController{
     	if(!businessPhoneNumber.getText().matches("\\d{4}[-\\.\\s]?\\d{3}[-\\.\\s]?\\d{3}")) {
 			businessPhoneNumber.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Enter a valid Business Phone Number!");
+	    	registerErrorMessage.setText("Business phone number is not valid!");
 		} else {
 			//if it passes show good box border colour
 			businessPhoneNumber.setStyle("-fx-border-color: green");
@@ -302,11 +302,10 @@ public class RegisterBusinessController{
     
     void checkUsername()
     {
-    	if(c.utilities.searchUser(username.getText()) != null)
-    	{
+    	if(c.utilities.searchUser(username.getText()) != null || (username.getText() == null || username.getText() == "") || username.getText().length() <= 3){
     		username.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
-	    	registerErrorMessage.setText("Username is already Taken!");
+	    	registerErrorMessage.setText("Username is already taken!");
     	}
     	else
     	{
@@ -344,7 +343,7 @@ public class RegisterBusinessController{
     	try 
     	{
 			//load fxml file
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/login/Login.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
     		//load it into a pane
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
@@ -397,11 +396,12 @@ public class RegisterBusinessController{
     	try {
     		//try to register a user, it will throw an exception if it is invalid
     		c.registerBusiness(businessName.getText(),  businessAddress.getText(), businessPhoneNumber.getText());
+    		System.out.println("username is " + username.getText());
     		c.registerOwner(username.getText(), password.getText(),  selectedBusiness,  
         			name.getText(), address.getText(), number.getText(), passwordCon.getText());
     		//if it doesnt throw an exception then user was created and alert the user
 			registerErrorMessage.setStyle("-fx-text-fill: GREEN");
-			registerErrorMessage.setText("User created!");
+			registerErrorMessage.setText("Business and Owner created!");
 			
 		} catch (ValidationException e) {
 			//if an error occurs then alert the user about the error

@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
@@ -42,6 +43,14 @@ public class CustomerViewController {
     @FXML
     private Label welcometxt;
     
+    @FXML
+    private Pane header;
+    
+    @FXML
+    private Label headerMessage;
+    
+    private String color = "";
+    
     private Customer customer;
     
     private Controller c;
@@ -63,6 +72,7 @@ public class CustomerViewController {
 			mainScreen.getChildren().add((Node) loader.load());
 			CustomerAddBooking controller = loader.getController();
 		    controller.init(c, customer);
+		    controller.changeColour(color);
 			
     	} catch(Exception e) {
     		e.printStackTrace();
@@ -85,6 +95,7 @@ public class CustomerViewController {
 			mainScreen.getChildren().add((Node) loader.load());
 			CustomerViewBookingsController controller = loader.getController();
 		    controller.init(c, customer);
+		    controller.changeColour(color);
 			
     	} catch(Exception e) {
     		e.printStackTrace();
@@ -141,6 +152,12 @@ public class CustomerViewController {
     	this.main = main;
     	customer = (Customer) u;
     	this.c = c;
+    	
+    	color = c.utilities.getBusinessColor();
+    	
+    	headerMessage.setText(c.utilities.getBusinessHeader()); 
+    	header.setStyle("-fx-background-color : " + color);
+    	
 	}
     
     /**
@@ -153,7 +170,7 @@ public class CustomerViewController {
     	addBookingButton.setStyle("-fx-background-color: #e6e6e6");
     	viewBookingButton.setStyle("-fx-background-color: #e6e6e6");
     	
-    	selected.setStyle("-fx-background-color: #ff5930");
+    	selected.setStyle("-fx-background-color: " + color);
     	
     }
 }

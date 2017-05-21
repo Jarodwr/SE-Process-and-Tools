@@ -1,0 +1,54 @@
+May 22, 2017 2:30:02 AM SARJ.BookingSystem.controller.Controller login
+INFO: LOGIN: Login details: Username - russell, Password - 1234
+May 22, 2017 2:30:02 AM SARJ.BookingSystem.model.Utility searchUserLogin
+WARNING: success in finding admin, password = 1234
+May 22, 2017 2:30:02 AM SARJ.BookingSystem.controller.Controller login
+INFO: LOGIN: Success
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:13 first:1495866600 second:1495872000 namejarodwr servs: Heavy Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:12 first:1495875600 second:1495879200 namekate servs: Hair cut employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:7 first:1497506400 second:1497508200 namederkaderka servs: Heavy Massage employeeId:4
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:6 first:1497508200 second:1497510000 namegrips servs: Heavy Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:4 first:1497513600 second:1497520800 namedeath servs: Spa employeeId:2
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:5 first:1497520800 second:1497522600 namedeath servs: Heavy Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:8 first:1497524400 second:1497526200 namejarodwr servs: Light Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:9 first:1497524500 second:1497526300 namekate servs: Light Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:10 first:1497526200 second:1497528000 namekate servs: Light Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:2 first:1497555000 second:1497558600 namederkaderka servs: Hair cut employeeId:1
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:3 first:1497558600 second:1497565800 nameyargen servs: Spa employeeId:2
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.controller.Controller getSummaryOfBookings
+INFO: VIEW SUMMARY OF BOOKINGS: Success, 11 bookings are displayed
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:13 first:1495866600 second:1495872000 namejarodwr servs: Heavy Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:12 first:1495875600 second:1495879200 namekate servs: Hair cut employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:7 first:1497506400 second:1497508200 namederkaderka servs: Heavy Massage employeeId:4
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:6 first:1497508200 second:1497510000 namegrips servs: Heavy Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:4 first:1497513600 second:1497520800 namedeath servs: Spa employeeId:2
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:5 first:1497520800 second:1497522600 namedeath servs: Heavy Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:8 first:1497524400 second:1497526200 namejarodwr servs: Light Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:9 first:1497524500 second:1497526300 namekate servs: Light Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:10 first:1497526200 second:1497528000 namekate servs: Light Massage employeeId:3
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:2 first:1497555000 second:1497558600 namederkaderka servs: Hair cut employeeId:1
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.model.period.Booking toStringArray
+FINE: Booking toStringArray bookingID:3 first:1497558600 second:1497565800 nameyargen servs: Spa employeeId:2
+May 22, 2017 2:30:04 AM SARJ.BookingSystem.controller.Controller getSummaryOfBookings
+INFO: VIEW SUMMARY OF BOOKINGS: Success, 11 bookings are displayed
