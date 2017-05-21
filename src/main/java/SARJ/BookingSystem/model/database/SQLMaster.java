@@ -106,8 +106,8 @@ public class SQLMaster {
 			ps.setString(4, phonenumber);
 			ps.setString(5, "");	//Default null logo
 			ps.setString(6,"");		//Default null color
-			ps.setString(7, businessname);	//Default header to businessname
-			ps.setString(8, "");	//Default no opening hours
+			ps.setString(7, "");	//Default header to businessname
+			ps.setString(8, businessname);	//Default no opening hours
 			ps.executeUpdate();
 			ps.close();
 
