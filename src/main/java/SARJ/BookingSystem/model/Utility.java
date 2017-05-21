@@ -665,12 +665,18 @@ public class Utility {
 	
 	/* marked for testing */
 	/**
-	 * 
-	 * @param businessname
 	 * @return
 	 */
 	public String getBusinessHeader() {
-		return masterDB.getHeader(currentBusiness);
+		System.out.println("test");
+		if (masterDB.getHeader(currentBusiness) != null) {
+			System.out.println(masterDB.getHeader(currentBusiness));
+			return masterDB.getHeader(currentBusiness);
+		}
+		else {
+			System.out.println(masterDB.getBusinessNameFromID(currentBusiness));
+			return masterDB.getBusinessNameFromID(currentBusiness);
+		}
 	}
 	
 	/**

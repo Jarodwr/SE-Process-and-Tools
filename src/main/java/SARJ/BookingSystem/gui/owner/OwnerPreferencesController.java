@@ -75,7 +75,8 @@ public class OwnerPreferencesController implements Accent{
     	main = this.main;
     	colour = color;
     	accent.setValue(Color.web(colour));
-    	headerMessage.setText(c.utilities.getBusinessHeader());
+    	String header = c.utilities.getBusinessHeader();
+    	headerMessage.setText(header);
     }
     
     @FXML // This method is called by the FXMLLoader when initialization is complete

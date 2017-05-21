@@ -192,6 +192,28 @@ public class SQLMaster {
 		return false;
 	}
 	
+	public String getBusinessNameFromID(int id){
+		String query = "SELECT * FROM Businessinfo WHERE businessId = ?";
+				try {
+					PreparedStatement pst = conn.prepareStatement(query);
+					pst.setInt(1, id);
+					ResultSet rs = pst.executeQuery();
+					pst.close();
+					if (rs.next()) {
+						String s = rs.getString("businessname");
+						rs.close();
+						return s;
+					}
+					else {
+						LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
+					}
+				} catch (SQLException e) {
+					LOGGER.severe(e.getMessage());
+					return "";
+				}
+				return "";
+	}
+	
 	public String getHeader(int id) {
 		// Search for rows with matching usernames
 		String query = "SELECT * FROM Businessinfo WHERE businessId=?";
@@ -201,7 +223,9 @@ public class SQLMaster {
 			ResultSet rs = pst.executeQuery();
 
 			if (rs.next()) {
-				return rs.getString("header");
+				String s = rs.getString("header");
+				rs.close();
+				return s;
 			}
 			else {
 				LOGGER.log(Level.INFO, "Failed to find a business in the database with the Id: "+ id);
