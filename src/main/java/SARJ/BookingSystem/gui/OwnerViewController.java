@@ -300,10 +300,11 @@ public class OwnerViewController {
     	try
     	{
 			//open the page
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/OwnerChangeOpeningTimes.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/OwnerEditOpeningHours.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
-			OwnerChangeOpeningTimesController controller = loader.getController();
+			OwnerEditOpeningHours controller = loader.getController();
+			
 			//controller.changeColour(accent);
     	}
     	catch(Exception e)

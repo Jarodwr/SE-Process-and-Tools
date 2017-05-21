@@ -52,7 +52,7 @@ public class OwnerEditOpeningHours {
   
     private TimePicker time;
     
-    void init(Controller c) {
+    public void init(Controller c) {
     	this.c = c;
    
     	
