@@ -67,6 +67,7 @@ public class CustomerViewController {
 			mainScreen.getChildren().add((Node) loader.load());
 			CustomerAddBooking controller = loader.getController();
 		    controller.init(c, customer);
+		    controller.changeColour(color);
 			
     	} catch(Exception e) {
     		e.printStackTrace();
@@ -83,6 +84,7 @@ public class CustomerViewController {
 			mainScreen.getChildren().add((Node) loader.load());
 			CustomerViewBookingsController controller = loader.getController();
 		    controller.init(c, customer);
+		    controller.changeColour(color);
 			
     	} catch(Exception e) {
     		e.printStackTrace();
