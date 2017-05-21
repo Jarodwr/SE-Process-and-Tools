@@ -159,27 +159,27 @@ public class RegisterBusinessController{
     		if(!pass.matches("^(?=.*[0-9]).{8,}$"))
 			{
 				//if it doesn't have a number in it, print error
-    			registerErrorMessage.setText("Password must contain atleast 1 number!");
+    			registerErrorMessage.setText("Password must contain at least 1 number!");
 			}
 			if(!pass.matches("^(?=.*[a-z]).{8,}$"))
 			{
 				//if it doesn't have a lower case letter, print error
-				registerErrorMessage.setText("Password must contain atleast 1 lower case Letter!");
+				registerErrorMessage.setText("Password must contain at least 1 lower case Letter!");
 			}
 			if(!pass.matches("^(?=.*[A-Z]).{8,}$"))
 			{
 				//if it doesn't have a upper case letter, print error
-				registerErrorMessage.setText("Password must contain atleast 1 upper case Letter!");
+				registerErrorMessage.setText("Password must contain at least 1 upper case Letter!");
 			}
 			if(!pass.matches("^(?=.*[!`~@#\\$%\\^&\\+=]).{8,}$"))
 			{
 				//if it doesn't have a special character, print error
-				registerErrorMessage.setText("Password must contain atleast 1 special character!");
+				registerErrorMessage.setText("Password must contain at least 1 special character!");
 			}
 			if(!pass.matches(".{8,}"))
 			{
 				//if password is not long enough, print error
-				registerErrorMessage.setText("Password must be atleast 8 characters long!");
+				registerErrorMessage.setText("Password must be at least 8 characters long!");
 			}
     		password.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
@@ -279,8 +279,7 @@ public class RegisterBusinessController{
     //checks the user name to see if it exists
     void checkUsername()
     {
-    	if(c.utilities.searchUserLogin(username.getText(), "") != null)
-    	{
+    	if(c.utilities.searchUser(username.getText()) != null || (username.getText() == null || username.getText() == "") || username.getText().length() <= 3){
     		username.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
 	    	registerErrorMessage.setText("Username is already taken!");
