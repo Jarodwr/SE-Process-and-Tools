@@ -177,7 +177,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
     }
 	
 	int whichDay(String day) {  // gives a number from 0 - 6 indicating the index of the day in the fullListOfDays array
-		for(int i = 0; i < 6; i++) {
+		for(int i = 0; i < 7; i++) {
 			if (listOfDays[i] == day) {
 				return i;
 			} 
