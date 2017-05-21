@@ -58,20 +58,36 @@ public class OwnerChangeWorkingTimes {
     	int[] selected = time.getSelectedPeriods();
     	ArrayList<Integer> unselected = new ArrayList<Integer>();
     	
-    	for (int i = 0; i < 48; i++)
+    	for (int i = 0; i < 48; i++) {
     		unselected.add(i);
-    	
+    	}
+
+    	boolean warn = false;
     	for (int i : selected) {
     		unselected.remove(Integer.valueOf(i));
     		controller.addWorkingTime(employeeId, Long.toString(date.toEpochDay() * 24 * 60 * 60), Integer.toString(i * 30 * 60), Integer.toString((i+1) * 30 * 60));
+    		boolean isIn = false;
+    		for (int j : time.available) {
+    			if (i == j) {
+    				isIn = true;
+    			}
+    		}
+    		if (!isIn) {
+    			warn = true;
+    		}
     	}
-    	
     	for (int i : unselected) {
     		controller.removeWorkingTime(employeeId, Long.toString(date.toEpochDay() * 24 * 60 * 60), Integer.toString(i * 30 * 60), Integer.toString((i+1) * 30 * 60));
+
     	}
     	
-    	errorMessage.setStyle("-fx-text-fill: GREEN");
-    	errorMessage.setText("Working times for this day successfully updated!");
+    	if (!warn) {
+        	errorMessage.setStyle("-fx-text-fill: GREEN");
+        	errorMessage.setText("Working times for this day successfully updated!");
+    	} else {
+        	errorMessage.setStyle("-fx-text-fill: #CCCC00");
+        	errorMessage.setText("Times updated however working times scheduled on unavailable periods");
+    	}
     }
     
     public void init(Controller controller) {
