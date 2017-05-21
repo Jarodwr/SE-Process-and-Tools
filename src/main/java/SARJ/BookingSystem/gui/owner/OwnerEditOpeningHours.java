@@ -78,7 +78,7 @@ public class OwnerEditOpeningHours {
 		}
     	
     	pickDay.getSelectionModel().select(0); // pick monday
-    	Timetable t = c.utilities.getOpeningHours(c.utilities.getCurrentBusiness());
+    	Timetable t = c.utilities.getOpeningHours();
     	if (t == null) {
     		loadCurrentAvailabilities(null);
     	}
@@ -126,7 +126,7 @@ public class OwnerEditOpeningHours {
     		}
     	}
     	
-    	c.utilities.editBusinessHours(c.utilities.getCurrentBusiness(), openingHoursToSubmit);
+    	c.utilities.editBusinessHours( openingHoursToSubmit);
     	Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Edit Opening Hours");
 		alert.setHeaderText("Opening hours successfully updated!");
