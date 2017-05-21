@@ -37,7 +37,7 @@ public class OwnerPreferencesController implements Accent{
     
     @FXML
     void submit(ActionEvent event) {
-    	if(!headerMessage.getText().matches("[a-zA-Z!'-_*]{0,50}")) {
+    	if(!headerMessage.getText().matches("[a-zA-Z!'-_*\\d ]{0,50}")) {
     		headerMessage.setStyle("-fx-border-color: red");
 			errorMessage.setStyle("-fx-text-fill: RED");
         	errorMessage.setText("Message can not be longer than 50 characters!");
@@ -52,7 +52,7 @@ public class OwnerPreferencesController implements Accent{
         	try 
         	{
         		//open the login page
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerView.fxml")); 
+    			FXMLLoader loader = new FXMLLoader(getClass().getResource("../OwnerView.fxml")); 
     			BorderPane root = loader.load();
     	        Scene scene = new Scene(root, 900, 600);
     	        OwnerViewController controller = loader.getController();
@@ -72,7 +72,7 @@ public class OwnerPreferencesController implements Accent{
     {
     	this.c = c;
     	this.u = u;
-    	main = this.main;
+    	this.main = main;
     	colour = color;
     	accent.setValue(Color.web(colour));
     	String header = c.utilities.getBusinessHeader();
