@@ -94,9 +94,10 @@ public class OwnerViewController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/AddBooking.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
-			OwnerAddBooking addBookingController = loader.getController();
+			OwnerAddBooking controller = loader.getController();
 			//inject variables
-			addBookingController.init(c);
+			controller.init(c);
+			controller.changeColour(accent);
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
@@ -118,10 +119,10 @@ public class OwnerViewController {
 			mainScreen.getChildren().clear();
 			//add to main screen
 			mainScreen.getChildren().add((Node) loader.load());
-			OwnerAddEmployee addEmployeeController = loader.getController();
+			OwnerAddEmployee controller = loader.getController();
 			//inject variables
-			addEmployeeController.init(c);
-			
+			controller.init(c);
+			controller.changeColour(accent);
     	}
     	catch(Exception e)
     	{
@@ -149,7 +150,7 @@ public class OwnerViewController {
 			OwnerAddService controller = loader.getController();
 			//inject variables
 			controller.init(this.c);
-			
+			controller.changeColour(accent);
     	}
     	catch(Exception e)
     	{
@@ -176,7 +177,7 @@ public class OwnerViewController {
 			OwnerChangeWorkingTimes controller = loader.getController();
 			//inject variables
 		    controller.init(c);
-			
+		    controller.changeColour(accent);
     	}
     	catch(Exception e)
     	{
@@ -203,7 +204,7 @@ public class OwnerViewController {
 			OwnerAddEmployeeAvailabilitiesController controller = loader.getController();
 			//inject variables
 		    controller.init(c);
-			
+		    controller.changeColour(accent);
 			
     	}
     	catch(Exception e)
@@ -254,6 +255,7 @@ public class OwnerViewController {
 			OwnerViewBookingsController controller = loader.getController();
 			//inject variables
 			controller.init(c, (Owner) u, mainScreen);
+			controller.changeColour(accent);
 			
     	}
     	catch(Exception e)
@@ -281,6 +283,7 @@ public class OwnerViewController {
 			String[] allEmployees = this.c.getEmployeeList();
 			//inject data to controller for the page
 			controller.initData(c, allEmployees);
+			controller.changeColour(accent);
 			
     	}
     	catch(Exception e)
@@ -301,7 +304,7 @@ public class OwnerViewController {
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
 			OwnerChangeOpeningTimesController controller = loader.getController();
-			
+			//controller.changeColour(accent);
     	}
     	catch(Exception e)
     	{
@@ -311,7 +314,7 @@ public class OwnerViewController {
     
     
     @FXML
-    void preferences(ActionEvent event) {
+    public void preferences(ActionEvent event) {
     	selectButton(preferencesButton);
     	
     	try
@@ -323,8 +326,8 @@ public class OwnerViewController {
 			mainScreen.getChildren().add((Node) loader.load());
 			OwnerPreferencesController controller = loader.getController();
 			//inject variables
-		    controller.init(c, accent);
-			
+		    controller.init(c, u, main, accent);
+			controller.changeColour(accent);
 			
     	}
     	catch(Exception e)

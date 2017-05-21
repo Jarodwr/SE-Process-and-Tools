@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,7 +30,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 
 import javafx.util.Callback;
 
-public class OwnerViewWorkingTimesController {
+public class OwnerViewWorkingTimesController implements Accent{
 	
 	private String[] allEmployees;
 
@@ -463,4 +464,10 @@ public class OwnerViewWorkingTimesController {
     
    
     }
+
+
+
+	public void changeColour(String colour) {
+		
+	}
 }

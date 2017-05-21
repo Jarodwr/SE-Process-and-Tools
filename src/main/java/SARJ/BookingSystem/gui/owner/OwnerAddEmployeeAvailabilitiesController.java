@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
+import SARJ.BookingSystem.gui.Accent;
 import SARJ.BookingSystem.model.period.Period;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
-public class OwnerAddEmployeeAvailabilitiesController {
+public class OwnerAddEmployeeAvailabilitiesController implements Accent{
 	
 	private Controller c;
 	
@@ -197,6 +198,10 @@ public class OwnerAddEmployeeAvailabilitiesController {
 			fullListOfDays.get(whichDay(dayToInsert)).add(s[1]);
 			
 		}
+	}
+
+	public void changeColour(String colour) {
+		SubmitButton.setStyle("-fx-background-color: " + colour);
 	}
 
 }

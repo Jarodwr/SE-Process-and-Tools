@@ -173,7 +173,7 @@ public class SQLMaster {
 		} catch (SQLException e) {
 			LOGGER.severe(e.getMessage());
 		}
-		return null;
+		return "#ff471a";
 	}
 	
 	public boolean setColor(int id, String color) {
