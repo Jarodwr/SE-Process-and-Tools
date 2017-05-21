@@ -109,12 +109,18 @@ public class RegisterController{
     void checkAddress()
     {
     	//checks the address against regex
-    	if(!address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+[,]?\\s[a-zA-Z])+")) {
+    	if(!address.getText().matches("\\d+\\s+([a-zA-Z]+|[a-zA-Z]+[,]?\\s[a-zA-Z])+") && address.getText() != "") {
     		//alert user that it is not valid
 			address.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: RED");
 	    	registerErrorMessage.setText("Enter a valid address!");
-    	} else {
+    	} else if(address.getText() != "") {
+    		//if it is valid mark as good
+			address.setStyle("-fx-border-color: blue");
+			//check all fields and if true remove error message
+			if(checkFields())
+				registerErrorMessage.setStyle("-fx-text-fill: #dddddd");
+    	}else {
     		//if it is valid mark as good
 			address.setStyle("-fx-border-color: green");
 			//check all fields and if true remove error message

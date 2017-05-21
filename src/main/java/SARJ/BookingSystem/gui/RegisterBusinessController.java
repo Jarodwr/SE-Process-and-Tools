@@ -317,7 +317,7 @@ public class RegisterBusinessController{
     	try 
     	{
 			//load fxml file
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../gui/login/Login.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
     		//load it into a pane
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
