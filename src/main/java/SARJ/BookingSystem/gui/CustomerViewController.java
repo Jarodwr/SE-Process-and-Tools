@@ -53,7 +53,7 @@ public class CustomerViewController {
     	selectButton(addBookingButton);
     	
     	try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("AddBooking.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("customer/AddBooking.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
 			CustomerAddBooking controller = loader.getController();
@@ -69,7 +69,7 @@ public class CustomerViewController {
     	selectButton(viewBookingButton);
     	
     	try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewBooking.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("customer/ViewBooking.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
 			CustomerViewBookingsController controller = loader.getController();
@@ -85,7 +85,7 @@ public class CustomerViewController {
     {
     	try 
     	{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml")); /* TODO replace with page that says "are you sure you want to log out?" */
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml")); /* TODO replace with page that says "are you sure you want to log out?" */
 			BorderPane root = loader.load();
 	        Scene scene = new Scene(root, 900, 600);
 	        LoginController controller = loader.getController();

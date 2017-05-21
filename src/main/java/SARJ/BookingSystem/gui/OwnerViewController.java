@@ -240,7 +240,7 @@ public class OwnerViewController {
     	try
     	{
 			//open page
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/owner/ViewBookingSummary.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/ViewBookingSummary.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
 			OwnerViewBookingsController controller = loader.getController();
@@ -265,7 +265,7 @@ public class OwnerViewController {
     	try
     	{
 			//open the page
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/owner/ViewWorkingTimes.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/ViewWorkingTimes.fxml"));
 			mainScreen.getChildren().clear();
 			mainScreen.getChildren().add((Node) loader.load());
 			OwnerViewWorkingTimesController controller = loader.getController();
