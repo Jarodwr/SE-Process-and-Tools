@@ -76,7 +76,7 @@ public class CustomerViewBookingsController {
         
     }
     
-    void init(Controller c, Customer o)
+    public void init(Controller c, Customer o)
     {
     	this.c = c;
     	this.o = o;

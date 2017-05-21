@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
-import SARJ.BookingSystem.gui.TimePicker;
 import SARJ.BookingSystem.model.period.Period;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,7 +57,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
 
 	private String employeeId;
     
-    void init(Controller c) {
+    public void init(Controller c) {
     	this.c = c;
    
     	
@@ -78,7 +77,7 @@ public class OwnerAddEmployeeAvailabilitiesController {
     	pickDay.getItems().addAll("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
     	
     	try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/owner/AvailabilityPicker.fxml"));  // load GUI element
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("AvailabilityPicker.fxml"));  // load GUI element
 			TimePickerPane.getChildren().clear();
 			TimePickerPane.getChildren().add((Node) loader.load());
 			

@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
-import SARJ.BookingSystem.gui.TimePicker;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -174,7 +173,7 @@ public class OwnerAddBooking {
     	
     	//Alternate time grid init
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/TimePicker.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("TimePicker.fxml"));
 			timeMenu.getChildren().clear();
 			timeMenu.getChildren().add((Node) loader.load());
 			

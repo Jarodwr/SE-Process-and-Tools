@@ -220,7 +220,7 @@ public class OwnerAddService {
 
     }
 
-	void init(Controller controller) {
+	public void init(Controller controller) {
 		this.c = controller;
 	}
 }

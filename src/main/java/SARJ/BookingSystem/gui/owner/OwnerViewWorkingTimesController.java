@@ -123,7 +123,7 @@ public class OwnerViewWorkingTimesController {
 	 * @param Employees	all the employees in the system
 	 **/
     
-    void initData(Controller c, String[] Employees)
+    public void initData(Controller c, String[] Employees)
     {
     	
     	this.c = c;

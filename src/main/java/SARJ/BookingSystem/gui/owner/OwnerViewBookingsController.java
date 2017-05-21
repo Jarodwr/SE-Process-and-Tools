@@ -82,7 +82,7 @@ public class OwnerViewBookingsController {
     	try
     	{
 			//open page
-    		FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/owner/OwnerViewBookingSummary.fxml"));
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/OwnerViewBookingSummary.fxml"));
 			b.getChildren().clear();
 			b.getChildren().add((Node) loader.load());
 			OwnerViewBookingsController controller = loader.getController();
@@ -106,7 +106,7 @@ public class OwnerViewBookingsController {
     }
     
     //Dependency injection to get the current instance of the controller and the owner who is making changes
-    void init(Controller c, Owner o, BorderPane b)
+    public void init(Controller c, Owner o, BorderPane b)
     {
     	this.c = c;
     	this.o = o;

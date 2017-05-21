@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import SARJ.BookingSystem.controller.Controller;
-import SARJ.BookingSystem.gui.WorkingTimesPicker;
 import SARJ.BookingSystem.model.Timetable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -84,7 +83,7 @@ public class OwnerChangeWorkingTimes {
     	}
     	
     	try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../../fxml/owner/WorkingTimesPicker.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("WorkingTimesPicker.fxml"));
 			timeMenu.getChildren().clear();
 			timeMenu.getChildren().add((Node) loader.load());
 			
