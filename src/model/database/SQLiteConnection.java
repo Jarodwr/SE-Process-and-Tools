@@ -950,4 +950,10 @@ public class SQLiteConnection {
 			return null;
 		}
 	}
-}
+
+	public void close() throws SQLException {
+		if (conn != null) {
+			conn.close();
+		}
+	}
+}	
