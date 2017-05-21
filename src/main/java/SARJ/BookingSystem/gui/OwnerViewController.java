@@ -346,7 +346,9 @@ public class OwnerViewController {
     	this.c = c;
     	
     	accent = c.utilities.getBusinessColor();
-    	
+    	if (accent == "" || accent == null) {
+    		accent = "#ff471a";
+    	}
     	header.setStyle("-fx-background-color: " + accent);
     	
     	headerText.setText(c.utilities.getBusinessHeader());

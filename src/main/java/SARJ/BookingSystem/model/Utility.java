@@ -142,7 +142,7 @@ public class Utility {
 			}
 			return found;
 		}
-		else if (found.getUsername() == "admin" && found.checkPassword(password)) {
+		else if (found != null && found.getUsername() == "admin" && found.checkPassword(password)) {
 			return found;
 		}
 		return null;
