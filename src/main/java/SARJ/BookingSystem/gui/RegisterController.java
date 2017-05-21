@@ -230,7 +230,7 @@ public class RegisterController{
     //checks the user name to see if it exists
     void checkUsername()
     {
-    	if(c.utilities.searchUser(username.getText()) != null && (username.getText() != null || username.getText() != "") && username.getText().length() >= 3)
+      	if(c.utilities.searchUser(username.getText()) != null || (username.getText() == null || username.getText() == "") || username.getText().length() <= 3)
     	{
     		username.setStyle("-fx-border-color: red");
 			registerErrorMessage.setStyle("-fx-text-fill: red");
