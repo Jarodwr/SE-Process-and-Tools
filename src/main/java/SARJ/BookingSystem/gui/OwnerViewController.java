@@ -80,7 +80,8 @@ public class OwnerViewController {
 
 	private User u;
 
-    /**
+	private String accent = "";
+    /*
      * opens the add booking page when the button is clicked
      */
     @FXML
@@ -102,7 +103,7 @@ public class OwnerViewController {
     	}
     }
 
-    /**
+    /*
      * opens the add employee page when the button is clicked
      */
     @FXML
@@ -129,7 +130,7 @@ public class OwnerViewController {
     	}
     }
 
-    /**
+    /*
      * opens the add service page when the button is clicked
      */
     @FXML
@@ -157,7 +158,7 @@ public class OwnerViewController {
     	}
     }
 
-    /**
+    /*
      * opens the add working times page when the button is clicked
      */
     @FXML
@@ -184,7 +185,7 @@ public class OwnerViewController {
     	}
     }
 
-    /**
+    /*
      * opens the edit employee availability page when the button is clicked
      */
     @FXML
@@ -212,7 +213,7 @@ public class OwnerViewController {
     	}
     }
 
-    /**
+    /*
      * opens the login page when the button is clicked
      */
     @FXML
@@ -236,7 +237,7 @@ public class OwnerViewController {
 		}
     }
 
-    /**
+    /*
      * opens the view bookings page when the button is clicked
      */
     @FXML
@@ -263,7 +264,7 @@ public class OwnerViewController {
     	}
     }
 
-    /**
+    /*
      * opens the view working times page when the button is clicked
      */
     @FXML
@@ -292,7 +293,51 @@ public class OwnerViewController {
     	
     }
     
-    /**
+    @FXML
+    void changeOpeningTimes(ActionEvent event) {
+    	selectButton(changeOpeningTimesButton);
+    	
+    	try
+    	{
+			//open the page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/OwnerEditOpeningHours.fxml"));
+			mainScreen.getChildren().clear();
+			mainScreen.getChildren().add((Node) loader.load());
+			OwnerEditOpeningHours controller = loader.getController();
+			controller.init(c);
+			controller.changeColour(accent);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    
+    
+    @FXML
+    public void preferences(ActionEvent event) {
+    	selectButton(preferencesButton);
+    	
+    	try
+    	{
+			//open the page
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("owner/OwnerPreferences.fxml"));
+			mainScreen.getChildren().clear();
+			//add to the main screen
+			mainScreen.getChildren().add((Node) loader.load());
+			OwnerPreferencesController controller = loader.getController();
+			//inject variables
+		    controller.init(c, u, main, accent);
+			controller.changeColour(accent);
+			
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    
+    /*
      * injects the main, controller and the current user into the page
      */
     public void init(Stage main, Controller c, User u) {
@@ -309,7 +354,7 @@ public class OwnerViewController {
     	headerText.setText(c.utilities.getBusinessHeader());
 	}
     
-    /**
+    /*
      * check that all the button elements definitely exist on the page
      */
     @FXML
@@ -325,7 +370,7 @@ public class OwnerViewController {
 
     }
     
-    /**
+    /*
      * this method changes the button colour to indicate which option is selected
      */
     @FXML
