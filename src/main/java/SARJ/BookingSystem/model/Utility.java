@@ -412,7 +412,7 @@ public class Utility {
 				return null;
 			}
 			do {
-				employees.add(new Employee(rs.getString(1), rs.getString(3), null));
+				employees.add(new Employee(rs.getString(1), rs.getString(2), null));
 			} while (rs.next());
 			if (!employees.isEmpty()) {
 				Employee[] b = new Employee[employees.size()];
